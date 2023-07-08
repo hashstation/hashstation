@@ -34,7 +34,10 @@ def stop_job(job):
     job.status = status_to_code['finishing']
 
 def resume_job(job):
-    job.time_end = None
+    now = datetime.datetime.utcnow()
+    # Cancel old planned end time
+    if job.time_end <= now:
+        job.time_end = None
     job.status = status_to_code['running']
 
 def kill_job(job, db):
