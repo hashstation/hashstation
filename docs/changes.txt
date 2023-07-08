@@ -10,6 +10,7 @@ New features:
 * Added support to automatically extract hashes from your Bitcoin/Litecoin/Ethereum/Exodus/MetaMask/Electrum wallets.
 * Added possibility to set priority (low/normal/high) of a new job in 'Additional settings'.
 * Added possibility to resume timeouted jobs.
+* Updated to BOINC v7.23.
 
 Fixes:
 * Fixed slow loading of a host detail page.

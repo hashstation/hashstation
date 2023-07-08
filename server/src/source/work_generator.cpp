@@ -12,6 +12,7 @@
 #include <SimpleGenerator.h>
 
 /** BOINC includes */
+#include <filesys.h>
 #include <util.h>
 #include <sched_util_basic.h>
 
