@@ -43,7 +43,7 @@
         </router-link>
       </template>
       <template v-slot:item.jobs="{ item }">
-        {{ item.jobs.map(j => j.status === 10 ? 1 : 0).reduce((a, b) => a + b, 0) }}
+        {{ item.jobs.map(j => [10, 12].includes(j.status) ? 1 : 0).reduce((a, b) => a + b, 0) }}
       </template>
       <template v-slot:item.p_model="{ item }">
         <span class="oneline">{{ item.p_model.replace(/(?:\(R\)|\(TM\)|Intel|AMD)/g, '') }}</span>
