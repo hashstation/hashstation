@@ -72,7 +72,10 @@ void TaskBase::reportProgress() {
     trickle_xml.addElement("progress", percent_done);
 
     if (!status_info_.empty()) {
-      trickle_xml.addElement("total_speed", getTotalSpeed());
+      // Also see TaskBenchmark
+      uint64_t salt_count = status_info_.at("recovered_salts").at(1);
+      salt_count = std::max<uint64_t>(salt_count, 1);
+      trickle_xml.addElement("total_speed", getTotalSpeed() / salt_count);
 
       for (const auto &device : status_info_.at("devices")) {
         std::string id = std::to_string((int)device.at("device_id"));
@@ -84,7 +87,7 @@ void TaskBase::reportProgress() {
 
         trickle_xml.addElement("device_" + id + "_name", name);
         trickle_xml.addElement("device_" + id + "_type", type);
-        trickle_xml.addElement("device_" + id + "_speed", speed);
+        trickle_xml.addElement("device_" + id + "_speed", speed / salt_count);
         trickle_xml.addElement("device_" + id + "_temp", temp);
         trickle_xml.addElement("device_" + id + "_util", util);
       }
