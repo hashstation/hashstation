@@ -16,3 +16,4 @@ Fixes:
 * Fixed slow loading of a host detail page.
 * Hosts view: job is active if its status is running or finishing.
 * Fixed speed numbers in job detail page when cracking salted hashes.
+* Improved the precision of reported benchmark speeds.

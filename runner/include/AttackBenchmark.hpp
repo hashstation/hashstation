@@ -46,38 +46,12 @@ AttackBenchmark<BaseAttack>::AttackBenchmark(const ConfigTask& config, Directory
   
 }
 
-namespace
-{
-	struct StatusTimerSearcher
-	{
-		bool operator()(const std::string &arg) const
-		{
-			static const std::string searched = "--status-timer=";
-			return arg.substr(0, searched.length()) == searched;
-		}
-	};
-}
-
 template <typename BaseAttack>
 void AttackBenchmark<BaseAttack>::addSpecificArguments() {
 	BaseAttack::addSpecificArguments();
-  this->addArgument("--runtime");
-	if(this->getExternalGeneratorName().empty())
-	{
-		this->addArgument("3");
-	}
-	else
-	{
-		//hashcat 5 for some reason updates the status for fast hashes only once every blue moon for some reason
-		Logging::debugPrint(Logging::Detail::GeneralInfo, "benchmarking process fed by pipe, longer observation required");
-		this->addArgument("30");
-		std::vector<std::string>::iterator pos = std::find_if(this->arguments_.begin(), this->arguments_.end(), StatusTimerSearcher());
-		if(pos == this->arguments_.end())
-		{
-			RunnerUtils::runtimeException("Benchmark attack failed to find the status timer argument");
-		}
-		*pos = "--status-timer=2";
-	}
+  	this->addArgument("--runtime");
+	// Slow hashes or attacks with generators may need more time to stabilize and report correct speed.
+	this->addArgument("30");
 }
 
 struct PasswordLenCount
