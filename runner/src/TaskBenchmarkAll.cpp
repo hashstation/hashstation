@@ -13,11 +13,13 @@ TaskBenchmarkAll::TaskBenchmarkAll(Directory &directory,
                                    const std::string &output_file,
                                    const std::string &workunit_name)
     : TaskBase(directory, task_config, host_config, output_file, workunit_name),
-      total_exec_time_(0), hashcat_mutex_(RunnerConstants::HashcatMutexName) {
+      hashcat_mutex_(RunnerConstants::HashcatMutexName) {
   mode_ = "a";
 }
 
-TaskBenchmarkAll::~TaskBenchmarkAll() {}
+TaskBenchmarkAll::~TaskBenchmarkAll() {
+  delete process_hashcat_;
+}
 
 std::string TaskBenchmarkAll::generateOutputMessage() {
 
@@ -27,7 +29,7 @@ std::string TaskBenchmarkAll::generateOutputMessage() {
   if (exit_code_ == HashcatConstant::Succeded) {
 
     msg << ProjectConstants::TaskFinalStatus::Succeded << '\n';
-    msg << total_exec_time_ << '\n';
+    msg << getRunTime() << '\n';
 
     for (const auto &result : results_) {
       msg << result.first << ':' << result.second << '\n';
@@ -69,15 +71,14 @@ void TaskBenchmarkAll::progress() {
   args.push_back("--quiet");
   args.push_back("--machine-readable");
 
-  std::unique_ptr<ProcessBase> process_hashcat(
-      Process::create(args, directory_));
+  process_hashcat_ = Process::create(args, directory_);
 
   hashcat_mutex_.lock();
-  process_hashcat->run();
+  process_hashcat_->run();
 
-  while (process_hashcat->isRunning()) {
+  while (process_hashcat_->isRunning()) {
 
-    line = process_hashcat->readOutPipeLine();
+    line = process_hashcat_->readOutPipeLine();
     int device_id, corespeed_dev, memoryspeed_dev;
     float exec_msec_dev;
     unsigned hash_mode;
@@ -96,7 +97,10 @@ void TaskBenchmarkAll::progress() {
     }
   }
 
-  exit_code_ = process_hashcat->finish();
+  exit_code_ = process_hashcat_->finish();
   hashcat_mutex_.unlock();
-  total_exec_time_ = process_hashcat->getExecutionTime();
+}
+
+double TaskBenchmarkAll::getRunTime() const {
+  return process_hashcat_->getExecutionTime();
 }

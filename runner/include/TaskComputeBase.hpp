@@ -65,7 +65,7 @@ class TaskComputeBase: public TaskBase {
 	 * @brief   Getter of elapsed time when process was running
 	 * @return  Time in seconds
 	 */
-	double getRunTime() const;
+	double getRunTime() const override;
 
 	/**
 	 * @brief   Finishes the task by finishing process and printing process's stderr

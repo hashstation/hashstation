@@ -15,8 +15,8 @@
 class TaskBenchmarkAll: public TaskBase {
 private:
 
-	std::map<unsigned, uint64_t> results_; ///< Results for each hash
-	double total_exec_time_;
+	std::map<unsigned, uint64_t> results_; ///< Results for each hash type.
+	ProcessBase *process_hashcat_;          /**< Pointer to process executing the task */
 	NamedMutex hashcat_mutex_;
 
 public:
@@ -48,6 +48,12 @@ public:
 		* @brief   Sets total_keyspace_ value base on ConfigTask object
 		*/
 	void initializeTotalHashes();
+
+	/**
+	 * @brief   Getter of elapsed time when process was running
+	 * @return  Time in seconds
+	 */
+	double getRunTime() const override;
 
 	/**
 	 * @brief   Finishes the task by finishing all benchmark tasks

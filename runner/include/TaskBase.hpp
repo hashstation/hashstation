@@ -72,6 +72,8 @@ protected:
    */
   virtual std::string generateOutputMessage() = 0;
 
+  virtual double getRunTime() const = 0;
+
 public:
   /**
    * @brief   Constructor

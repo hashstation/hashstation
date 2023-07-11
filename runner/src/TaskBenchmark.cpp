@@ -14,8 +14,6 @@ bool TaskBenchmark::parseHashcatBenchmark(std::string &output_line) {
     return false;
   }
 
-  benchmarked_speeds_.insert(getTotalSpeed());
-
   if (salt_count_ <= 1) {
     uint64_t salt_count = status_info_.at("recovered_salts").at(1);
     salt_count_ = std::max<uint64_t>(salt_count, 1);
@@ -52,7 +50,7 @@ std::string TaskBenchmark::generateOutputMessage() {
     output_message += ProjectConstants::TaskFinalStatus::Succeded + "\n";
     // divide by salt count. This is done since hashcat prints it and finding it
     // out on the server would be a PITA
-    uint64_t speed = getBenchmarkedSpeed() / salt_count_;
+    uint64_t speed = getTotalSpeed() / salt_count_;
     output_message += RunnerUtils::toString(speed) + "\n";
     output_message +=
         RunnerUtils::toString(process_hashcat_->getExecutionTime()) + "\n";
@@ -68,45 +66,6 @@ std::string TaskBenchmark::generateOutputMessage() {
   }
 
   return output_message;
-}
-
-uint64_t TaskBenchmark::getBenchmarkedSpeed() {
-  if (attack_->getExternalGeneratorName().empty()) {
-    return getTotalSpeed();
-  }
-  // if this is generator process, some magic is required, since hashcat 5+ can
-  // update status sporadically when fed by pipe therefore we remove the extreme
-  // values and take the average of the rest. zero speeds are worthless
-  benchmarked_speeds_.erase(0);
-  std::set<uint64_t>::const_iterator iter = benchmarked_speeds_.begin();
-  if (benchmarked_speeds_.size() == 0) {
-    return 0;
-  }
-  size_t ignore_start = 0;
-  size_t ignore_end = 0;
-  if (benchmarked_speeds_.size() > 1) {
-    // there tends to be a huge number at first, we don't want that
-    ignore_end += 1;
-  }
-  if (benchmarked_speeds_.size() > 2) {
-    // also ignore smallest value
-    ++iter;
-    ignore_start += 1;
-  }
-  // if we have enough, discard more of the extreme values
-  if (benchmarked_speeds_.size() > 7) {
-    ignore_end += 1;
-  }
-  if (benchmarked_speeds_.size() > 8) {
-    ++iter;
-    ignore_start += 1;
-  }
-  size_t total = 0;
-  for (size_t i = ignore_start; i < benchmarked_speeds_.size() - ignore_end;
-       ++i) {
-    total += *(iter++);
-  }
-  return total / (benchmarked_speeds_.size() - ignore_end - ignore_start);
 }
 
 void TaskBenchmark::initializeTotalHashes() { total_hashes_ = 1; }

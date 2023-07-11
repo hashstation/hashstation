@@ -15,8 +15,6 @@ class TaskBenchmark: public TaskComputeBase {
 	//! No copying
 	TaskBenchmark(const TaskBenchmark&);
 protected:
-	std::set<uint64_t> benchmarked_speeds_;
-
 	uint64_t salt_count_;
 
 	/**
@@ -34,8 +32,6 @@ public:
 	 * @return  Information as string 
 	 */
 	std::string generateOutputMessage();
-
-	uint64_t getBenchmarkedSpeed();
 
 	/**
 	 * @brief   Sets total_keyspace_ value to 1 since each benchmark task
