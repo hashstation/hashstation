@@ -212,19 +212,22 @@ int handle_trickle(MSG_FROM_HOST &mfh) {
     exit(1);
   }
 
-  std::cerr << "Updating workunit speed..." << std::endl;
+  uint64_t workunit_speed = std::stoull(total_speed);
+  if (workunit_speed > 0) {
+    std::cerr << "Updating workunit speed..." << std::endl;
 
-  snprintf(buf, SQL_BUF_SIZE,
-           "UPDATE `fc_workunit` SET `speed` = %" PRIu64
-           " WHERE `id` = %" PRIu64 " LIMIT 1 ;",
-           std::stoull(total_speed), fc_workunit_id);
+    snprintf(buf, SQL_BUF_SIZE,
+             "UPDATE `fc_workunit` SET `speed` = %" PRIu64
+             " WHERE `id` = %" PRIu64 " LIMIT 1 ;",
+             workunit_speed, fc_workunit_id);
 
-  retval = boinc_db.do_query(buf);
-  if (retval) {
-    std::cerr << "Problem with DB query: " << buf << "\nShutting down now."
-              << std::endl;
-    boinc_db.close();
-    exit(1);
+    retval = boinc_db.do_query(buf);
+    if (retval) {
+      std::cerr << "Problem with DB query: " << buf << "\nShutting down now."
+                << std::endl;
+      boinc_db.close();
+      exit(1);
+    }
   }
 
   std::cerr << "Updating workunit remaining time..." << std::endl;

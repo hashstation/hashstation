@@ -82,7 +82,16 @@ void TaskBase::reportProgress() {
       // Also see TaskBenchmark
       uint64_t salt_count = status_info_.at("recovered_salts").at(1);
       salt_count = std::max<uint64_t>(salt_count, 1);
-      trickle_xml.addElement("total_speed", getTotalSpeed() / salt_count);
+
+      uint64_t total_speed = getTotalSpeed();
+      if (total_speed == 0) {
+        // Workaround: hashcat may sometimes report zero speeds during status
+        // updates. Compute total speed from total hashes and cracking time.
+        uint64_t total_hashes = status_info_.at("progress").at(1);
+        total_speed = total_hashes / cracking_time;
+      }
+      trickle_xml.addElement("total_speed", total_speed / salt_count);
+
       for (const auto &device : status_info_.at("devices")) {
         std::string id = std::to_string((int)device.at("device_id"));
         std::string name = device.at("device_name");
