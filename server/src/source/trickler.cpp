@@ -51,12 +51,14 @@ int handle_trickle(MSG_FROM_HOST &mfh) {
   bool got_wu_name = false;
   bool got_total_speed = false;
   bool got_remaining_time = false;
+  bool got_cracking_time = false;
 
   double progress;
   char buf[SQL_BUF_SIZE];
   std::string wu_name;
   std::string total_speed;
   std::string remaining_time;
+  std::string cracking_time;
   std::map<uint32_t, Device> devices;
   uint64_t fc_workunit_id;
 
@@ -133,6 +135,13 @@ int handle_trickle(MSG_FROM_HOST &mfh) {
       continue;
     }
 
+    if (xp.parse_string("cracking_time", cracking_time)) {
+      std::cerr << "Succesfully parsed cracking time: " << cracking_time
+                << std::endl;
+      got_cracking_time = true;
+      continue;
+    }
+
     char s1[SQL_BUF_SIZE];
     char s2[SQL_BUF_SIZE];
     char s3[SQL_BUF_SIZE];
@@ -178,7 +187,7 @@ int handle_trickle(MSG_FROM_HOST &mfh) {
   }
 
   /** Check values */
-  if (!got_progress || !got_wu_name || !got_total_speed || !got_remaining_time) {
+  if (!got_progress || !got_wu_name || !got_total_speed || !got_remaining_time || !got_cracking_time) {
     std::cerr << "ERROR: Could not parse all mandatory data." << std::endl;
     return 1;
   }
@@ -224,6 +233,21 @@ int handle_trickle(MSG_FROM_HOST &mfh) {
            "UPDATE `fc_workunit` SET `remaining_time` = %" PRIu64
            " WHERE `id` = %" PRIu64 " LIMIT 1 ;",
            std::stoull(remaining_time), fc_workunit_id);
+
+  retval = boinc_db.do_query(buf);
+  if (retval) {
+    std::cerr << "Problem with DB query: " << buf << "\nShutting down now."
+              << std::endl;
+    boinc_db.close();
+    exit(1);
+  }
+
+  std::cerr << "Updating workunit cracking time..." << std::endl;
+
+  snprintf(buf, SQL_BUF_SIZE,
+           "UPDATE `fc_workunit` SET `cracking_time` = %" PRIu64
+           " WHERE `id` = %" PRIu64 " LIMIT 1 ;",
+           std::stoull(cracking_time), fc_workunit_id);
 
   retval = boinc_db.do_query(buf);
   if (retval) {

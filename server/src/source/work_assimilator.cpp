@@ -714,8 +714,8 @@ int assimilate_handler(WORKUNIT& wu, vector<RESULT>& /*results*/, RESULT& canoni
                 std::snprintf(buf, SQL_BUF_SIZE, "UPDATE `%s` SET workunit_sum_time = workunit_sum_time + %lf WHERE id = %" PRIu64 " ;", mysql_table_job.c_str(), cracking_time, job_id);
                 update_mysql(buf);
 
-                std::snprintf(buf, SQL_BUF_SIZE, "UPDATE `%s` SET cracking_time = %lf WHERE `workunit_id` = %lu LIMIT 1;", mysql_table_workunit.c_str(), cracking_time, wu.id);
-                update_mysql(buf);
+                // std::snprintf(buf, SQL_BUF_SIZE, "UPDATE `%s` SET cracking_time = %lf WHERE `workunit_id` = %lu LIMIT 1;", mysql_table_workunit.c_str(), cracking_time, wu.id);
+                // update_mysql(buf);
             }
 
             /** Result ERROR */
@@ -791,8 +791,8 @@ int assimilate_handler(WORKUNIT& wu, vector<RESULT>& /*results*/, RESULT& canoni
                     std::snprintf(buf, SQL_BUF_SIZE, "UPDATE `%s` SET workunit_sum_time = workunit_sum_time + %lf WHERE id = %" PRIu64 " ;", mysql_table_job.c_str(), cracking_time, job_id);
                     update_mysql(buf);
 
-                    std::snprintf(buf, SQL_BUF_SIZE, "UPDATE `%s` SET cracking_time = %lf WHERE `workunit_id` = %lu LIMIT 1;", mysql_table_workunit.c_str(), cracking_time, wu.id);
-                    update_mysql(buf);
+                    // std::snprintf(buf, SQL_BUF_SIZE, "UPDATE `%s` SET cracking_time = %lf WHERE `workunit_id` = %lu LIMIT 1;", mysql_table_workunit.c_str(), cracking_time, wu.id);
+                    // update_mysql(buf);
                 }
 
                 /** Parse the results */
@@ -927,8 +927,8 @@ int assimilate_handler(WORKUNIT& wu, vector<RESULT>& /*results*/, RESULT& canoni
                     std::snprintf(buf, SQL_BUF_SIZE, "UPDATE `%s` SET workunit_sum_time = workunit_sum_time + %lf WHERE id = %" PRIu64 " ;", mysql_table_job.c_str(), cracking_time, job_id);
                     update_mysql(buf);
 
-                    std::snprintf(buf, SQL_BUF_SIZE, "UPDATE `%s` SET cracking_time = %lf WHERE `workunit_id` = %lu LIMIT 1;", mysql_table_workunit.c_str(), cracking_time, wu.id);
-                    update_mysql(buf);
+                    // std::snprintf(buf, SQL_BUF_SIZE, "UPDATE `%s` SET cracking_time = %lf WHERE `workunit_id` = %lu LIMIT 1;", mysql_table_workunit.c_str(), cracking_time, wu.id);
+                    // update_mysql(buf);
 
                     /** Update the host power, if workunit was large enough (more then 1/2 benchmarked power) */
                     if (power_keyspace > (0.15 * seconds_per_workunit * old_power))
@@ -1009,7 +1009,7 @@ int assimilate_handler(WORKUNIT& wu, vector<RESULT>& /*results*/, RESULT& canoni
                 }
 
                 std::cerr << __LINE__ << " - Benchmark time: " << cracking_time << "s" << std::endl;
-
+                // TODO ???
                 std::snprintf(buf, SQL_BUF_SIZE, "UPDATE `%s` SET cracking_time = %lf WHERE `workunit_id` = %lu LIMIT 1 ;",
                     mysql_table_workunit.c_str(), cracking_time, wu.id);
                 update_mysql(buf);
