@@ -36,7 +36,7 @@ def stop_job(job):
 def resume_job(job):
     now = datetime.datetime.utcnow()
     # Cancel old planned end time
-    if job.time_end <= now:
+    if job.time_end and job.time_end <= now:
         job.time_end = None
     job.status = status_to_code['running']
 
