@@ -63,7 +63,7 @@ bool CAttackDict::makeWorkunit()
 
     configFile << generateBasicConfig(
         m_job->getAttackMode(), m_job->getAttackSubmode(),
-        m_job->getDistributionMode(), m_job->getName(), m_job->getHashType(), 0,
+        m_job->getDistributionMode(), m_job->getName(), m_job->getHashType(),
         m_job->getHWTempAbort(), m_job->getOptimizedFlag(),
         m_job->getDeviceTypes(), m_job->getWorkloadProfile());
 

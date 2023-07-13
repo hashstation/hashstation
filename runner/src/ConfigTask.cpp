@@ -17,7 +17,6 @@ const char *ConfigTask::MIN_PASSWORD_LEN = "min_password_len";
 const char *ConfigTask::MAX_PASSWORD_LEN = "max_password_len";
 const char *ConfigTask::MIN_ELEM_IN_CHAIN = "min_elem_in_chain";
 const char *ConfigTask::MAX_ELEM_IN_CHAIN = "max_elem_in_chain";
-const char *ConfigTask::GENERATE_RANDOM_RULES = "generate_random_rules";
 const char *ConfigTask::HWMON_TEMP_ABORT = "hwmon_temp_abort";
 const char *ConfigTask::OPTIMIZED = "optimized";
 const char *ConfigTask::DISTRIBUTION_MODE = "distribution_mode";
@@ -76,7 +75,6 @@ void ConfigTask::initSupported() {
   supported_.push_back(ConfigTask::MIN_ELEM_IN_CHAIN);
   supported_.push_back(ConfigTask::MAX_ELEM_IN_CHAIN);
   supported_.push_back(ConfigTask::SKIP_FROM_START);
-  supported_.push_back(ConfigTask::GENERATE_RANDOM_RULES);
   supported_.push_back(ConfigTask::HWMON_TEMP_ABORT);
   supported_.push_back(ConfigTask::OPTIMIZED);
   supported_.push_back(ConfigTask::DISTRIBUTION_MODE);

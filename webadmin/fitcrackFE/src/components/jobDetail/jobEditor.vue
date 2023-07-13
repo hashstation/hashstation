@@ -172,19 +172,6 @@
           />
         </v-list-item-content>
       </v-list-item>
-
-      <v-list-item>
-        <v-list-item-content>
-          <v-text-field
-            v-model="edit.generate_random_rules"
-            outlined
-            label="Generate random rules"
-            required
-            type="number"
-            min="0"
-          />
-        </v-list-item-content>
-      </v-list-item>
     </template>
     <!-- save button -->
     <v-list-item>
@@ -236,7 +223,6 @@ export default {
         max_password_len: this.data.max_password_len,
         min_elem_in_chain: this.data.min_elem_in_chain,
         max_elem_in_chain: this.data.max_elem_in_chain,
-        generate_random_rules: this.data.generate_random_rules
       }
     }
   },

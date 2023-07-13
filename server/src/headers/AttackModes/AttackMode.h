@@ -96,7 +96,7 @@ protected:
         virtual std::string generateBasicConfig(
             unsigned attackMode, unsigned attackSubmode,
             unsigned distributionMode, std::string name, unsigned hashType,
-            unsigned generateRandomRules = 0, unsigned hwTempAbort = 90,
+            unsigned hwTempAbort = 90,
             bool optimized = true, unsigned deviceTypes = 0,
             unsigned workloadProfile = 0, std::string ruleLeft = "",
             std::string ruleRight = "", std::string charset1 = "",
@@ -129,7 +129,7 @@ protected:
 
         virtual PtrMask FindCurrentMask(std::vector<PtrMask> &masks, bool useRealKeyspace) const;
 
-        uint64_t getPasswordCountToProcess() const;
+        virtual uint64_t getPasswordCountToProcess() const;
 
         virtual uint64_t getMinPassCount() const {return Config::minPassCount;}
 

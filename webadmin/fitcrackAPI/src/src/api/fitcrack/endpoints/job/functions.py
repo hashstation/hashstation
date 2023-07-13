@@ -58,7 +58,6 @@ def kill_job(job, db):
     job.indexes_verified = 0
     job.current_index = 0
     job.current_index_2 = 0
-    job.workunit_sum_time = 0
     job.time_start = job.time_end = None
     if job.attack_mode == attack_modes['mask'] or job.attack_mode == attack_modes['hybrid (wordlist + mask)']:
         masks = FcMask.query.filter(FcMask.job_id == id).all()
@@ -154,7 +153,6 @@ def create_job(data):
         comment=job['comment'],
         time_start=None if not job['time_start'] else  datetime.datetime.strptime(job['time_start'], '%Y-%m-%dT%H:%M'),
         time_end=None if not job['time_end'] else datetime.datetime.strptime(job['time_end'], '%Y-%m-%dT%H:%M'),
-        workunit_sum_time='0',
         seconds_per_workunit=job['seconds_per_job'] if job['seconds_per_job'] > 60 else 60,
         charset1=job['charset1'] if job.get('charset1') else '',
         charset2=job['charset2'] if job.get('charset2') else '',
@@ -172,7 +170,6 @@ def create_job(data):
         max_password_len=job['attack_settings'].get('max_password_len', 0),
         min_elem_in_chain=job['attack_settings'].get('min_elem_in_chain', 0),
         max_elem_in_chain=job['attack_settings'].get('max_elem_in_chain', 0),
-        generate_random_rules=job['attack_settings'].get('generate_random_rules', 0),
         optimized=job['attack_settings'].get('optimized', 1),
         device_types = job.get('device_types', 0), # Default: Host default
         workload_profile = job.get('workload_profile', 0), # Default: Host default
@@ -372,10 +369,7 @@ def computeCrackingTime(data):
         dictsKeyspace = compute_prince_keyspace(attackSettings)
         if dictsKeyspace == -1:
              abort(400, 'Unable to compute job keyspace.')
-        random_rules = 0
-        if attackSettings['generate_random_rules']:
-            random_rules = int(attackSettings['generate_random_rules'])
-        rulesKeyspace = random_rules
+        rulesKeyspace = 0
         if attackSettings['rules']:
             rules = FcRule.query.filter(FcRule.id == attackSettings['rules']['id']).first()
             rulesKeyspace = rules.count

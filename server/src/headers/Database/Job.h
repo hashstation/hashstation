@@ -137,7 +137,6 @@ class CJob {
         uint32_t m_maxPasswordLen;
         uint32_t m_minElemInChain;
         uint32_t m_maxElemInChain;
-        uint32_t m_generateRandomRules;
         bool m_optimized;
         uint32_t m_deviceTypes;
         uint32_t m_workloadProfile;
@@ -183,6 +182,7 @@ class CJob {
         const std::string & getRules() const;
         const std::string & getRuleLeft() const;
         const std::string & getRuleRight() const;
+        uint64_t getRulesCount() const;
         const std::string & getCharset1() const;
         const std::string & getCharset2() const;
         const std::string & getCharset3() const;
@@ -196,7 +196,6 @@ class CJob {
         uint32_t getMaxPasswordLen() const;
         uint32_t getMinElemInChain() const;
         uint32_t getMaxElemInChain() const;
-        uint32_t getRandomRulesCount() const;
         bool getOptimizedFlag() const;
         DictDeploymentMode getDictDeploymentMode() const;
         bool getKillFlag() const;

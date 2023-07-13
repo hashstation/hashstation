@@ -77,6 +77,8 @@ void TaskBase::reportProgress() {
       uint64_t cracking_time = getRunTime();
 
       trickle_xml.addElement("cracking_time", cracking_time);
+      // TODO: ETA from hashcat is not reliable it seems.. tried with slow hash and it was a bit off.
+      // Consider using cracking speed and remaining hashes instead.
       trickle_xml.addElement("remaining_time", estimated_stop - time_start); 
    
       // Also see TaskBenchmark

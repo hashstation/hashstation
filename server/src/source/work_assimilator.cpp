@@ -385,34 +385,6 @@ void plan_new_benchmark(uint64_t host_id)
     update_mysql(buf);
 }
 
-
-void update_power(uint64_t host_id, uint64_t count, double elapsed_time)
-{
-    char buf[SQL_BUF_SIZE];
-    uint64_t power = std::round(count / elapsed_time);
-    if(power == 0)
-    {
-        power = 1;
-    }
-    //uint64_t actualPower;
-    /*
-    std::snprintf(buf, SQL_BUF_SIZE, "SELECT `power` FROM `fc_host` WHERE id = %" PRIu64 " LIMIT 1;", host_id);
-    power = get_num_from_mysql(buf);
-    */
-
-    std::cerr << __LINE__ << " - Updating power: " << power << " to host_id: " << host_id << std::endl;
-    std::snprintf(buf, SQL_BUF_SIZE, "UPDATE `%s` SET power = %" PRIu64 ", time = now() WHERE id = %" PRIu64 " LIMIT 1;", mysql_table_host.c_str(), power, host_id);
-    update_mysql(buf);
-
-/*
-    // Power is in hc_indexes, not real passwords, we cannot put that to fc_benchmark
-    std::cerr << __LINE__ << " - Updating power in fc_benchmark: " << power << " to boinc_host_id: " << boinc_host_id << std::endl;
-    std::snprintf(buf, SQL_BUF_SIZE, "UPDATE `%s` SET `power` = %" PRIu64 ", `last_update` = now() WHERE `boinc_host_id` = %" PRIu64 " AND `hash_type` = %u LIMIT 1 ;",
-                                mysql_table_benchmark.c_str(), power, boinc_host_id, hash_type);
-    update_mysql(buf);
-*/
-}
-
 /**
  * @brief Search fc_benchmark table for all entries of current host
  * @param benchmarked_attackmodes_per_types out Returned set of benchmarked attack modes per hash types
@@ -500,8 +472,6 @@ int assimilate_handler(WORKUNIT& wu, vector<RESULT>& /*results*/, RESULT& canoni
     char buf[SQL_BUF_SIZE] = {0};     // SQL queries
     char mode;          // Result mode (b/n)
     int code;           // Result status code (0 OK, 1 notFound/err, etc.)
-    long long unsigned int power; // Host power (bench)
-    double cracking_time;       // Cracking time
     char param[256] = {0};    // Other string params (err msg)
     char hash_string[MAX_HASH_SIZE] = {0};   // hash results
 
@@ -603,38 +573,11 @@ int assimilate_handler(WORKUNIT& wu, vector<RESULT>& /*results*/, RESULT& canoni
                 std::cerr << __LINE__ << " - B_CODE: 0 (bench OK)" << std::endl;
                 log_messages.printf(MSG_DEBUG, "code %d\n", code);
 
-                /** Read Power (p/s) */
-                retval = std::fscanf(f,"%llu\n", &power);
-                if (retval != 1)
-                {
-                    std::cerr << __LINE__ << " - ERROR: Failed to read host power." << std::endl;
-                    plan_new_benchmark(host_id);
-                    break;
-                }
+                std::snprintf(buf, SQL_BUF_SIZE, "SELECT speed FROM `%s` WHERE workunit_id = %" PRIu64 " LIMIT 1;", mysql_table_workunit.c_str(), wu.id);
+                uint64_t workunit_speed = get_num_from_mysql(buf);
 
-                /** Save original power for fc_benchmark */
-                long long unsigned int original_power = power;
-
-                //power is in hashes per second, and rules multiply the keyspace
-                std::snprintf(buf, SQL_BUF_SIZE, "SELECT rules FROM `%s` WHERE id = %" PRIu64 " LIMIT 1;", mysql_table_job.c_str(), job_id);
-                std::string rulesFilename = get_str_from_mysql(buf);
-                if(!rulesFilename.empty())
-                {
-                    std::ifstream rulesFile(Config::rulesDir+rulesFilename);
-                    if(rulesFile)
-                    {
-                        size_t ruleCount = 0;
-                        std::string line;
-                        while(std::getline(rulesFile, line))
-                        {
-                            if(!line.empty())
-                            {
-                                ruleCount += 1;
-                            }
-                        }
-                        power /= ruleCount;
-                    }
-                }
+                // TODO: power is in hashes per second, and rules multiply the keyspace
+                // Handle it in generator?
 
                 /** Update fc_benchmark power */
                 std::snprintf(buf, SQL_BUF_SIZE, "SELECT hash_type FROM `%s` WHERE id = %" PRIu64 " LIMIT 1;", mysql_table_job.c_str(), job_id);
@@ -656,7 +599,7 @@ int assimilate_handler(WORKUNIT& wu, vector<RESULT>& /*results*/, RESULT& canoni
                           "WHERE `boinc_host_id` = %" PRIu64
                           " AND `hash_type` = %" PRIu64
                           " AND `attack_mode` = %" PRIu64 " LIMIT 1 ;",
-                          mysql_table_benchmark.c_str(), original_power,
+                          mysql_table_benchmark.c_str(), workunit_speed,
                           boinc_host_id, hash_type, attack_mode);
                       update_mysql(buf);
                     } else {
@@ -669,7 +612,7 @@ int assimilate_handler(WORKUNIT& wu, vector<RESULT>& /*results*/, RESULT& canoni
                           "power`) VALUES (%" PRIu64 ", %" PRIu64 ", %" PRIu64
                           ", %" PRIu64 ") ;",
                           mysql_table_benchmark.c_str(), boinc_host_id,
-                          hash_type, attack_mode, original_power);
+                          hash_type, attack_mode, workunit_speed);
                       update_mysql(buf);
                     }
                   } else {
@@ -680,7 +623,7 @@ int assimilate_handler(WORKUNIT& wu, vector<RESULT>& /*results*/, RESULT& canoni
                                   "power`) VALUES (%" PRIu64 ", %" PRIu64
                                   ", %" PRIu64 ", %" PRIu64 ") ;",
                                   mysql_table_benchmark.c_str(), boinc_host_id,
-                                  hash_type, attack_mode, original_power);
+                                  hash_type, attack_mode, workunit_speed);
                     update_mysql(buf);
                   }
                 } else {
@@ -692,30 +635,14 @@ int assimilate_handler(WORKUNIT& wu, vector<RESULT>& /*results*/, RESULT& canoni
                                 "power`) VALUES (%" PRIu64 ", %" PRIu64
                                 ", %" PRIu64 ", %" PRIu64 ") ;",
                                 mysql_table_benchmark.c_str(), boinc_host_id,
-                                hash_type, attack_mode, original_power);
+                                hash_type, attack_mode, workunit_speed);
                   update_mysql(buf);
                 }
 
                 /** Update fc_host power */
-                std::cerr << __LINE__ << " - New host power: " << power << std::endl;
-                std::snprintf(buf, SQL_BUF_SIZE, "UPDATE `%s` SET power = %llu, status = %d, time = now() WHERE id = %" PRIu64 " ;", mysql_table_host.c_str(), power ? power : 1, Host_normal, host_id);
+                std::cerr << __LINE__ << " - New host power: " << workunit_speed << std::endl;
+                std::snprintf(buf, SQL_BUF_SIZE, "UPDATE `%s` SET power = %llu, status = %d, time = now() WHERE id = %" PRIu64 " ;", mysql_table_host.c_str(), workunit_speed, Host_normal, host_id);
                 update_mysql(buf);
-
-                /** Read cracking_time */
-                retval = std::fscanf(f,"%lf\n", &cracking_time);
-                if (retval != 1)
-                {
-                    std::cerr << __LINE__ << " - ERROR: Failed to read cracking_time." << std::endl;
-                    plan_new_benchmark(host_id);
-                    break;
-                }
-                std::cerr << __LINE__ << " - Benchmark time: " << cracking_time << "s" << std::endl;
-
-                std::snprintf(buf, SQL_BUF_SIZE, "UPDATE `%s` SET workunit_sum_time = workunit_sum_time + %lf WHERE id = %" PRIu64 " ;", mysql_table_job.c_str(), cracking_time, job_id);
-                update_mysql(buf);
-
-                // std::snprintf(buf, SQL_BUF_SIZE, "UPDATE `%s` SET cracking_time = %lf WHERE `workunit_id` = %lu LIMIT 1;", mysql_table_workunit.c_str(), cracking_time, wu.id);
-                // update_mysql(buf);
             }
 
             /** Result ERROR */
@@ -747,12 +674,14 @@ int assimilate_handler(WORKUNIT& wu, vector<RESULT>& /*results*/, RESULT& canoni
             /** Read workunit keyspace for updating*/
             std::snprintf(buf, SQL_BUF_SIZE, "SELECT hc_keyspace FROM `%s` WHERE workunit_id = %lu LIMIT 1;", mysql_table_workunit.c_str(), wu.id);
             uint64_t hc_keyspace = get_num_from_mysql(buf);
-            uint64_t power_keyspace = hc_keyspace;
 
             // If attack has mask and is not hybrid with mask on right side, convert power from mask indices/s to passwords/s
             std::snprintf(buf, SQL_BUF_SIZE, "SELECT attack_mode FROM `%s` WHERE id = %" PRIu64 " LIMIT 1;", mysql_table_job.c_str(), job_id);
             uint64_t attack_mode = get_num_from_mysql(buf);
 
+            #if 0
+            // power_keyspace NOT NEEDED
+            uint64_t power_keyspace = hc_keyspace;
             //these two actually don't have WU keyspace divided by the mask factor
             if(attack_mode != 6 && attack_mode != 7)
             {
@@ -768,32 +697,17 @@ int assimilate_handler(WORKUNIT& wu, vector<RESULT>& /*results*/, RESULT& canoni
                     power_keyspace *= maskKeyspace/maskHcKeyspace;
                 }
             }
+            #endif
 
             /** Read workunit properties */
             std::snprintf(buf, SQL_BUF_SIZE, "SELECT seconds_per_workunit FROM `%s` WHERE id = %" PRIu64 " LIMIT 1;", mysql_table_job.c_str(), job_id);
             uint64_t seconds_per_workunit = get_num_from_mysql(buf);
-
-            std::snprintf(buf, SQL_BUF_SIZE, "SELECT power FROM `%s` WHERE id = %" PRIu64 " LIMIT 1;", mysql_table_host.c_str(), host_id);
-            uint64_t old_power = get_num_from_mysql(buf);
 
             /** SOME of the passwords FOUND */
             if (code == 0)
             {
                 std::cerr << __LINE__ << " - N_CODE: 0 (some of passes FOUND)" << std::endl;
                 log_messages.printf(MSG_DEBUG, "code %d\n", code);
-
-                /** Read cracking_time */
-                retval = std::fscanf(f,"%lf\n", &cracking_time);
-                if (retval == 1)
-                {
-                    std::cerr << __LINE__ << " - Cracking time: " << cracking_time << "s" << std::endl;
-
-                    std::snprintf(buf, SQL_BUF_SIZE, "UPDATE `%s` SET workunit_sum_time = workunit_sum_time + %lf WHERE id = %" PRIu64 " ;", mysql_table_job.c_str(), cracking_time, job_id);
-                    update_mysql(buf);
-
-                    // std::snprintf(buf, SQL_BUF_SIZE, "UPDATE `%s` SET cracking_time = %lf WHERE `workunit_id` = %lu LIMIT 1;", mysql_table_workunit.c_str(), cracking_time, wu.id);
-                    // update_mysql(buf);
-                }
 
                 /** Parse the results */
                 if (is_binary(job_id))
@@ -902,11 +816,12 @@ int assimilate_handler(WORKUNIT& wu, vector<RESULT>& /*results*/, RESULT& canoni
                     std::snprintf(buf, SQL_BUF_SIZE, "UPDATE `%s` SET indexes_verified = indexes_verified + %" PRIu64 " WHERE id = %" PRIu64 " LIMIT 1;", mysql_table_job.c_str(), hc_keyspace, job_id);
                     update_mysql(buf);
 
-                    /** Update the host power, if workunit was large enough (more then 1/2 benchmarked power) */
-                    if (power_keyspace > (0.5 * seconds_per_workunit * old_power))
-                        update_power(host_id, power_keyspace, cracking_time);
-                    else
-                        std::cerr << __LINE__ << " - WARNING: Assimilated workunit is too small for update_power calculation" << std::endl;
+                    std::snprintf(buf, SQL_BUF_SIZE, "SELECT speed FROM `%s` WHERE workunit_id = %" PRIu64 " LIMIT 1;", mysql_table_workunit.c_str(), wu.id);
+                    uint64_t workunit_speed = get_num_from_mysql(buf);
+
+                    // Update host power
+                    std::snprintf(buf, SQL_BUF_SIZE, "UPDATE `%s` SET power = %" PRIu64 ", time = now() WHERE id = %" PRIu64 " LIMIT 1;", mysql_table_host.c_str(), workunit_speed, host_id);
+                    update_mysql(buf);
                 }
             }
 
@@ -916,33 +831,16 @@ int assimilate_handler(WORKUNIT& wu, vector<RESULT>& /*results*/, RESULT& canoni
                 std::cerr << __LINE__ << " - N_CODE: 1 (pass NOT found)" << std::endl;
                 log_messages.printf(MSG_DEBUG, "code %d\n", code);
 
-
-
-                /** Read cracking_time */
-                retval = std::fscanf(f,"%lf\n", &cracking_time);
-                if (retval == 1)
-                {
-                    std::cerr << __LINE__ << " - Cracking time: " << cracking_time << "s" << std::endl;
-
-                    std::snprintf(buf, SQL_BUF_SIZE, "UPDATE `%s` SET workunit_sum_time = workunit_sum_time + %lf WHERE id = %" PRIu64 " ;", mysql_table_job.c_str(), cracking_time, job_id);
-                    update_mysql(buf);
-
-                    // std::snprintf(buf, SQL_BUF_SIZE, "UPDATE `%s` SET cracking_time = %lf WHERE `workunit_id` = %lu LIMIT 1;", mysql_table_workunit.c_str(), cracking_time, wu.id);
-                    // update_mysql(buf);
-
-                    /** Update the host power, if workunit was large enough (more then 1/2 benchmarked power) */
-                    if (power_keyspace > (0.15 * seconds_per_workunit * old_power))
-                        update_power(host_id, power_keyspace, cracking_time);
-                    else
-                        std::cerr << __LINE__ << " - WARNING: Assimilated workunit is too small for update_power calculation" << std::endl;
-                }
-                else
-                    std::cerr << __LINE__ << " - WARNING: Was NOT able to read cracking_time of a workunit, not updating power" << std::endl;
-
                 // Update job progress
                 std::snprintf(buf, SQL_BUF_SIZE, "UPDATE `%s` SET indexes_verified = indexes_verified + %" PRIu64 " WHERE id = %" PRIu64 " LIMIT 1;", mysql_table_job.c_str(), hc_keyspace, job_id);
                 update_mysql(buf);
 
+                std::snprintf(buf, SQL_BUF_SIZE, "SELECT speed FROM `%s` WHERE workunit_id = %" PRIu64 " LIMIT 1;", mysql_table_workunit.c_str(), wu.id);
+                uint64_t workunit_speed = get_num_from_mysql(buf);
+
+                // Update host power
+                std::snprintf(buf, SQL_BUF_SIZE, "UPDATE `%s` SET power = %" PRIu64 ", time = now() WHERE id = %" PRIu64 " LIMIT 1;", mysql_table_host.c_str(), workunit_speed, host_id);
+                update_mysql(buf);
             }
 
             /** Host error */
@@ -1000,6 +898,7 @@ int assimilate_handler(WORKUNIT& wu, vector<RESULT>& /*results*/, RESULT& canoni
                 log_messages.printf(MSG_DEBUG, "code %d\n", code);
 
                 /** Read cracking_time */
+                double cracking_time;
                 retval = std::fscanf(f,"%lf\n", &cracking_time);
                 if (retval != 1)
                 {
@@ -1009,7 +908,7 @@ int assimilate_handler(WORKUNIT& wu, vector<RESULT>& /*results*/, RESULT& canoni
                 }
 
                 std::cerr << __LINE__ << " - Benchmark time: " << cracking_time << "s" << std::endl;
-                // TODO ???
+
                 std::snprintf(buf, SQL_BUF_SIZE, "UPDATE `%s` SET cracking_time = %lf WHERE `workunit_id` = %lu LIMIT 1 ;",
                     mysql_table_workunit.c_str(), cracking_time, wu.id);
                 update_mysql(buf);
@@ -1022,6 +921,7 @@ int assimilate_handler(WORKUNIT& wu, vector<RESULT>& /*results*/, RESULT& canoni
                 if (find_benchmark_results(benchmarked_attackmodes_per_types, boinc_host_id))
                 {
                     /** benchmark was already run in the past */
+                    double power;
                     while (std::fscanf(f,"%u:%llu\n", &hash_type, &power) == 2)
                     {
                       auto it =
@@ -1076,6 +976,7 @@ int assimilate_handler(WORKUNIT& wu, vector<RESULT>& /*results*/, RESULT& canoni
                 else
                 {
                     /** No results for this host yet */
+                    double power;
                     while (std::fscanf(f,"%u:%llu\n", &hash_type, &power) == 2)
                     {
                       std::snprintf(

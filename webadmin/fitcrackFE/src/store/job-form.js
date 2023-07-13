@@ -52,7 +52,6 @@ export const empty = {
   maxPasswordLen: 8,
   minElemInChain: 1,
   maxElemInChain: 8,
-  generateRandomRules: 0,
   // other
   optimized: true,
   startNow: true,
@@ -96,7 +95,6 @@ export default {
         'max_password_len': parseInt(state.maxPasswordLen),
         'min_elem_in_chain': parseInt(state.minElemInChain),
         'max_elem_in_chain': parseInt(state.maxElemInChain),
-        'generate_random_rules': parseInt(state.generateRandomRules),
          // other
         'optimized': Vue.prototype.$optimizedOnly ? true : state.optimized,
         'dict_deployment_mode': parseInt(state.dictDeploymentMode),
@@ -158,10 +156,6 @@ export default {
           if (state.maxElemInChain > state.maxPasswordLen)
             return false;
           if (state.keyspaceLimit < 0)
-            return false;
-          if (state.generateRandomRules < 0)
-            return false;
-          if (state.rules.length > 0 && state.generateRandomRules > 0)
             return false;
 
           // All ok!

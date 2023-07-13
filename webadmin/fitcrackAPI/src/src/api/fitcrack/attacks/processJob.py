@@ -306,11 +306,8 @@ def process_job_8(job):
     job['hc_keyspace'] = compute_prince_keyspace(job['attack_settings'])
     if job['hc_keyspace'] == -1:
         abort(400, 'Unable to compute job keyspace.')
-    random_rules_count = 0
-    if job['attack_settings']['generate_random_rules']:
-        random_rules_count = int(job['attack_settings']['generate_random_rules'])
-    ruleFileMultiplier = random_rules_count
-
+    
+    ruleFileMultiplier = 0
     if job['attack_settings']['rules']:
         rules = FcRule.query.filter(FcRule.id == job['attack_settings']['rules']['id']).first()
         ruleFileMultiplier = rules.count
@@ -324,7 +321,7 @@ def process_job_8(job):
         job['attack_settings']['attack_submode'] = 1
         job['rules'] = rules.name
 
-    prince_settings = ["case_permute", "check_duplicates", "min_password_len", "max_password_len", "min_elem_in_chain", "max_elem_in_chain", "generate_random_rules"]
+    prince_settings = ["case_permute", "check_duplicates", "min_password_len", "max_password_len", "min_elem_in_chain", "max_elem_in_chain"]
     for setting in prince_settings:
         job[setting] = job['attack_settings'][setting]
 

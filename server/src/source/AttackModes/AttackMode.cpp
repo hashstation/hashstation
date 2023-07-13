@@ -34,7 +34,7 @@ void AttackMode::setDefaultWorkunitParams(DB_WORKUNIT * wu)
 }
 
 
-std::string AttackMode::generateBasicConfig(unsigned attackMode, unsigned attackSubmode, unsigned distributionMode, std::string name, unsigned hashType, unsigned generateRandomRules,
+std::string AttackMode::generateBasicConfig(unsigned attackMode, unsigned attackSubmode, unsigned distributionMode, std::string name, unsigned hashType,
                                             unsigned hwTempAbort, bool optimized, unsigned deviceTypes, unsigned workloadProfile, std::string ruleLeft, std::string ruleRight, std::string charset1,
                                             std::string charset2, std::string charset3, std::string charset4)
 {
@@ -65,11 +65,6 @@ std::string AttackMode::generateBasicConfig(unsigned attackMode, unsigned attack
 
     if (!charset4.empty())
         result += "|||charset4|String|" + std::to_string(charset4.length()) + "|" + charset4 + "|||\n";
-
-    if (generateRandomRules)
-      result += "|||generate_random_rules|UInt|" +
-                std::to_string(std::to_string(generateRandomRules).length()) +
-                "|" + std::to_string(generateRandomRules) + "|||\n";
 
     if (hwTempAbort)
       result += "|||hwmon_temp_abort|UInt|" +
@@ -147,7 +142,6 @@ PtrMask AttackMode::FindCurrentMask(std::vector<PtrMask> &masks, bool useRealKey
     return nullptr;
 }
 
-uint64_t AttackMode::getPasswordCountToProcess() const
-{
-    return m_host->getPower()*m_seconds;
+uint64_t AttackMode::getPasswordCountToProcess() const {
+    return m_host->getPower() * m_seconds;
 }

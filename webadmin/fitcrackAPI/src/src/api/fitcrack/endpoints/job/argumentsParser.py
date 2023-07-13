@@ -258,7 +258,6 @@ editJob_argument.add_argument('min_password_len', type=int, required=True)
 editJob_argument.add_argument('max_password_len', type=int, required=True)
 editJob_argument.add_argument('min_elem_in_chain', type=int, required=True)
 editJob_argument.add_argument('max_elem_in_chain', type=int, required=True)
-editJob_argument.add_argument('generate_random_rules', type=int, required=True)
 
 job_permissions_arguments = reqparse.RequestParser()
 job_permissions_arguments.add_argument('user_id', type=int, help='user to grant/revoke permissions on', required=True, location='json')

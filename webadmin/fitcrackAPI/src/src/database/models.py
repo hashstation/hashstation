@@ -215,7 +215,6 @@ class FcJob(Base):
     comment = Column(Text(collation='utf8_bin'), nullable=False)
     time_start = Column(DateTime)
     time_end = Column(DateTime)
-    workunit_sum_time = Column(Float(asdecimal=True), nullable=False, server_default=text("'0'"))
     seconds_per_workunit = Column(BigInteger, nullable=False, server_default=text("'3600'"))
     charset1 = Column(String(4096, 'utf8_bin'))
     charset2 = Column(String(4096, 'utf8_bin'))
@@ -233,7 +232,6 @@ class FcJob(Base):
     max_password_len = Column(Integer, nullable=False, server_default=text("'8'"))
     min_elem_in_chain = Column(Integer, nullable=False, server_default=text("'1'"))
     max_elem_in_chain = Column(Integer, nullable=False, server_default=text("'8'"))
-    generate_random_rules = Column(Integer, nullable=False, server_default=text("'0'"))
     dict_deployment_mode = Column(Integer, nullable=False, server_default=text("'0'"))
     optimized = Column(Integer, nullable=False, server_default=text("'1'"))
     device_types = Column(Integer, nullable=False, server_default=text("'0'"))
@@ -322,6 +320,12 @@ class FcJob(Base):
                 total_time += (now - last_run_time).total_seconds()
 
             return total_time
+
+    @hybrid_property
+    def workunit_sum_time(self):
+        if not self.time_start:
+            return 0
+        return sum([wu.cracking_time for wu in self.workunits if wu.time >= self.time_start])
 
     @hybrid_property
     def efficiency(self):
@@ -676,7 +680,7 @@ class FcWorkunit(Base):
     @hybrid_property
     def keyspace(self):
         if self.job.attack_mode == 8:
-            rules = self.job.generate_random_rules
+            rules = 0
             if self.job.rulesFile:
                 rules = self.job.rulesFile.count
             return self.hc_keyspace * rules if rules else self.hc_keyspace
@@ -691,11 +695,9 @@ class FcWorkunit(Base):
             return self.start_index * self.job.hc_keyspace + self.start_index_2
         else:
             if self.job.attack_mode == 8:
-                rules = self.job.generate_random_rules
+                rules = 0
                 if self.job.rulesFile:
                     rules = self.job.rulesFile.count
-                if rules != 0:
-                    return self.start_index * rules
                 return self.start_index * rules if rules else self.start_index
             else:
                 if self.job.rulesFile:
@@ -715,8 +717,12 @@ class FcWorkunit(Base):
 
     @hybrid_property
     def remaining_time_str(self):
-        if self.keyspace > 0 and not self.finished: # normal wu, not a benchmark
-            return str(datetime.timedelta(seconds=math.floor(self.remaining_time)))
+        if not self.finished: # normal wu
+            if self.keyspace == 0: # benchmark wu has runtime limit 30 seconds
+                remaining_time = 0 if self.cracking_time > 30 else 30 - self.cracking_time
+                return str(datetime.timedelta(seconds=math.floor(remaining_time)))
+            elif self.keyspace > 0: # normal wu
+                return str(datetime.timedelta(seconds=math.floor(self.remaining_time)))
         return "–"
 
 

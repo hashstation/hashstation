@@ -140,7 +140,6 @@ class ConfigTask {
         static const char *MAX_PASSWORD_LEN;
         static const char *MIN_ELEM_IN_CHAIN;
         static const char *MAX_ELEM_IN_CHAIN;
-        static const char *GENERATE_RANDOM_RULES;
         static const char *HWMON_TEMP_ABORT;
         static const char *OPTIMIZED;
         static const char *DISTRIBUTION_MODE;

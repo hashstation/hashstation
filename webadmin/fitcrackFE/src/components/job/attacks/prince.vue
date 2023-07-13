@@ -122,21 +122,6 @@
       @input="checkValid"
     />
 
-    <v-card-title>
-      <span>Generate random rules</span>
-    </v-card-title>
-    <v-text-field
-      v-model.number="generateRandomRules"
-      text
-      single-line
-      :value="generateRandomRules"
-      required
-      type="number"
-      suffix="rules"
-      min="0"
-      @input="checkValid"
-    />
-
     <v-divider />
     <v-checkbox
       v-if="!$optimizedOnly"
@@ -169,7 +154,7 @@
     },
     computed: mapTwoWayState('jobForm', twoWayMap(['leftDicts', 'rules', 'checkDuplicates',
     'casePermute', 'minPasswordLen', 'maxPasswordLen', 'minElemInChain', 'maxElemInChain', 
-    'keyspaceLimit', 'generateRandomRules', 'optimized'])),
+    'keyspaceLimit', 'optimized'])),
     methods: {
       checkValid: function () {
         if (this.minPasswordLen <= 0) {
@@ -210,15 +195,6 @@
         }
         if (this.keyspaceLimit < 0) {
             this.$error('Keyspace limit must be nonnegative value.')
-            return false;
-        }
-        if (this.generateRandomRules < 0) {
-            this.$error('Random rules count must be nonnegative value.')
-            return false;
-        }
-
-        if (this.rules.length > 0 && this.generateRandomRules > 0) {
-            this.$error('Cannot combine a rule file together with random rules generation.')
             return false;
         }
 

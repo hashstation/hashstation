@@ -104,6 +104,15 @@ uint64_t CSqlLoader::getWorkunitCount(uint64_t jobId, uint64_t hostId)
             hostId, jobId));
 }
 
+uint64_t CSqlLoader::getRulesCount(uint64_t jobId) {
+    // TODO: "fc_rule" -> CRule::getTableName()
+    return getSqlNumber(formatQuery("SELECT `%s`.`count` FROM `%s` INNER JOIN `%s` "
+                                    "ON `%s`.`rules` = `%s`.`name` WHERE `%s`.`id` = %" PRIu64 " LIMIT 1",
+                                    "fc_rule", CJob::getTableName().c_str(), 
+                                    "fc_rule", CJob::getTableName().c_str(), 
+                                    "fc_rule", CJob::getTableName().c_str(), jobId));
+}
+
 uint64_t CSqlLoader::getTotalWorkunitCount(uint64_t jobId, uint64_t hostId)
 {
     return getRowCount<CWorkunit>(formatQuery(

@@ -48,12 +48,6 @@ std::string TaskBenchmark::generateOutputMessage() {
       exit_code_ == HashcatConstant::RuntimeAbort) {
 
     output_message += ProjectConstants::TaskFinalStatus::Succeded + "\n";
-    // divide by salt count. This is done since hashcat prints it and finding it
-    // out on the server would be a PITA
-    uint64_t speed = getTotalSpeed() / salt_count_;
-    output_message += RunnerUtils::toString(speed) + "\n";
-    output_message +=
-        RunnerUtils::toString(process_hashcat_->getExecutionTime()) + "\n";
     // communicate success to the outside world
     exit_code_ = HashcatConstant::Succeded;
 

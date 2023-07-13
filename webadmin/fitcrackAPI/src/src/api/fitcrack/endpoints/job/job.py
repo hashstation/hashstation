@@ -313,10 +313,7 @@ class JobByID(Resource):
             else:
                 new_hc_keyspace = job.hc_keyspace
 
-            random_rules_count = 0
-            if args['generate_random_rules']:
-                random_rules_count = int(args['generate_random_rules'])
-            ruleFileMultiplier = random_rules_count
+            ruleFileMultiplier = 0
             if rule_file:
                 ruleFileMultiplier = rule_file.count
 
@@ -336,7 +333,6 @@ class JobByID(Resource):
             job.max_password_len = args['max_password_len']
             job.min_elem_in_chain = args['min_elem_in_chain']
             job.max_elem_in_chain = args['max_elem_in_chain']
-            job.generate_random_rules = args['generate_random_rules']
 
         try:
             db.session.commit()
@@ -386,7 +382,6 @@ class OperationWithJob(Resource):
             job.indexes_verified = 0
             job.current_index = 0
             job.current_index_2 = 0
-            job.workunit_sum_time = 0
             job.time_start = None
             job.time_end = None
             if job.attack_mode == attack_modes['mask'] or job.attack_mode == attack_modes['hybrid (wordlist + mask)']:

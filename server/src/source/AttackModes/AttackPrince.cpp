@@ -69,9 +69,8 @@ bool CAttackPrince::makeWorkunit()
     configFile << generateBasicConfig(
         m_job->getAttackMode(), m_job->getAttackSubmode(),
         m_job->getDistributionMode(), m_job->getName(), m_job->getHashType(),
-        m_job->getRandomRulesCount(), m_job->getHWTempAbort(),
-        m_job->getOptimizedFlag(), m_job->getDeviceTypes(),
-        m_job->getWorkloadProfile());
+        m_job->getHWTempAbort(), m_job->getOptimizedFlag(),
+        m_job->getDeviceTypes(), m_job->getWorkloadProfile());
 
     /** Output mode */
     uint64_t startIndex = m_workunit->getStartIndex();
@@ -332,4 +331,11 @@ bool CAttackPrince::generateWorkunit() {
   m_job->updateIndex(currentIndex + passwordsRange);
 
   return true;
+}
+
+uint64_t CAttackPrince::getPasswordCountToProcess() const {
+  if (m_job->getAttackSubmode() == 1)
+    return AttackMode::getPasswordCountToProcess() / m_job->getRulesCount();
+
+  return AttackMode::getPasswordCountToProcess();
 }

@@ -132,7 +132,7 @@ bool CAttackPcfgRules::makeWorkunit()
 
     f << generateBasicConfig(m_job->getAttackMode(), m_job->getAttackSubmode(),
                              m_job->getDistributionMode(), m_job->getName(),
-                             m_job->getHashType(), 0, m_job->getHWTempAbort(),
+                             m_job->getHashType(), m_job->getHWTempAbort(),
                              m_job->getOptimizedFlag(), m_job->getDeviceTypes(),
                              m_job->getWorkloadProfile());
 
@@ -324,4 +324,10 @@ bool CAttackPcfgRules::loadNextPreterminals(std::string & preterminals, uint64_t
     preterminals = m_client.GetNextItems(realKeyspace);
     m_client.Acknowledge();
     return !preterminals.empty() && realKeyspace != 0;
+}
+
+uint64_t CAttackPcfgRules::getPasswordCountToProcess() const {
+  // bool with_rules = m_job->getAttackSubmode() == 1;
+
+  return AttackMode::getPasswordCountToProcess() / m_job->getRulesCount();
 }

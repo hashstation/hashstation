@@ -46,7 +46,6 @@ CJob::CJob(DbMap &jobMap, CSqlLoader * sqlLoader)
         this->m_maxPasswordLen = std::stoul(jobMap["max_password_len"]);
         this->m_minElemInChain = std::stoul(jobMap["min_elem_in_chain"]);
         this->m_maxElemInChain = std::stoul(jobMap["max_elem_in_chain"]);
-        this->m_generateRandomRules = std::stoul(jobMap["generate_random_rules"]);
         this->m_optimized = std::stoul(jobMap["optimized"]);
         this->m_dictDeploymentMode = static_cast<DictDeploymentMode>(std::stoul(jobMap["dict_deployment_mode"]));
         this->m_deviceTypes = std::stoul(jobMap["device_types"]);
@@ -315,7 +314,6 @@ const std::string & CJob::getRules() const
     return m_rules;
 }
 
-
 const std::string & CJob::getRuleLeft() const
 {
     return m_ruleLeft;
@@ -325,6 +323,15 @@ const std::string & CJob::getRuleLeft() const
 const std::string & CJob::getRuleRight() const
 {
     return m_ruleRight;
+}
+
+uint64_t CJob::getRulesCount() const {
+    uint64_t rules_count = 0;
+    if (!m_ruleLeft.empty()) rules_count += 1;
+    if (!m_ruleRight.empty()) rules_count += 1;
+    if (!m_rules.empty()) rules_count += m_sqlLoader->getRulesCount(this->m_id);
+
+    return rules_count;
 }
 
 
@@ -341,12 +348,6 @@ uint64_t CJob::getGrammarId() const
 const std::string & CJob::getMarkov() const
 {
     return m_markov;
-}
-
-
-uint32_t CJob::getRandomRulesCount() const
-{
-    return m_generateRandomRules;
 }
 
 bool CJob::getKillFlag() const

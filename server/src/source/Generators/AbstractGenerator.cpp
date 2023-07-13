@@ -13,8 +13,14 @@
 
 #include <cmath>
 
+
+#define NEW_LOGIC 1
 uint64_t CAbstractGenerator::calculateSecondsIcdf2c(PtrJob &job, CSqlLoader &loader)
 {
+    #ifdef NEW_LOGIC
+    return job->getSecondsPerWorkunit();
+    #endif
+
     uint64_t desiredSeconds = job->getSecondsPerWorkunit();
     uint64_t maximum = loader.getEnableRampUp() ? job->getMaxSeconds() : desiredSeconds;
     uint64_t minimum = std::max<uint64_t>(loader.getAbsoluteMinimumWorkunitSeconds(), desiredSeconds*loader.getRampDownCoefficient());

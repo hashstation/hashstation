@@ -164,15 +164,11 @@ std::string TaskNormal::generateOutputMessage() {
   if (exit_code_ == HashcatConstant::Succeded || !passwords_.empty()) {
 
     output_info += ProjectConstants::TaskFinalStatus::Succeded + "\n";
-    output_info +=
-        RunnerUtils::toString(process_hashcat_->getExecutionTime()) + "\n";
     output_info += passwords_;
 
   } else if (exit_code_ == HashcatConstant::Exhausted) {
 
     output_info += ProjectConstants::TaskFinalStatus::Exhausted + "\n";
-    output_info +=
-        RunnerUtils::toString(process_hashcat_->getExecutionTime()) + "\n";
 
   } else {
 
