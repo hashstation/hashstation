@@ -325,16 +325,6 @@ const std::string & CJob::getRuleRight() const
     return m_ruleRight;
 }
 
-uint64_t CJob::getRulesCount() const {
-    uint64_t rules_count = 0;
-    if (!m_ruleLeft.empty()) rules_count += 1;
-    if (!m_ruleRight.empty()) rules_count += 1;
-    if (!m_rules.empty()) rules_count += m_sqlLoader->getRulesCount(this->m_id);
-
-    return rules_count;
-}
-
-
 const std::string & CJob::getGrammar() const
 {
     return m_grammar;

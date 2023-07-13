@@ -182,7 +182,6 @@ class CJob {
         const std::string & getRules() const;
         const std::string & getRuleLeft() const;
         const std::string & getRuleRight() const;
-        uint64_t getRulesCount() const;
         const std::string & getCharset1() const;
         const std::string & getCharset2() const;
         const std::string & getCharset3() const;

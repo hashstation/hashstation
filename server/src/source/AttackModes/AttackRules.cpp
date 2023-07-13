@@ -449,5 +449,6 @@ bool CAttackRules::generateWorkunit()
 }
 
 uint64_t CAttackRules::getPasswordCountToProcess() const {
-  return AttackMode::getPasswordCountToProcess() / m_job->getRulesCount();
+  uint64_t rules_count = m_job->getKeyspace() / m_job->getHcKeyspace();
+  return AttackMode::getPasswordCountToProcess() / rules_count;
 }

@@ -327,7 +327,6 @@ bool CAttackPcfgRules::loadNextPreterminals(std::string & preterminals, uint64_t
 }
 
 uint64_t CAttackPcfgRules::getPasswordCountToProcess() const {
-  // bool with_rules = m_job->getAttackSubmode() == 1;
-
-  return AttackMode::getPasswordCountToProcess() / m_job->getRulesCount();
+  uint64_t rules_count = m_job->getKeyspace() / m_job->getHcKeyspace();
+  return AttackMode::getPasswordCountToProcess() / rules_count;
 }
