@@ -22,10 +22,10 @@ void AttackMode::setWorkunit(PtrWorkunit &workunit)
 
 void AttackMode::setDefaultWorkunitParams(DB_WORKUNIT * wu)
 {
-    wu->rsc_fpops_est = 1e13;   // Estimated FLOPs
-    wu->rsc_fpops_bound = 1e17; // FLOPs Bound
-    wu->rsc_memory_bound = 4e9; // Memory Bound (4 GB)
-    wu->rsc_disk_bound = 4e9;   // Disk Bound (4 GB)
+    wu->rsc_fpops_est = 1e12;
+    wu->rsc_fpops_bound = 1e16;
+    wu->rsc_memory_bound = 1e8;
+    wu->rsc_disk_bound = 1e9;
     wu->min_quorum = Config::replicationFactor;
     wu->target_nresults = Config::replicationFactor;
     wu->max_error_results = Config::replicationFactor * 4;

@@ -215,7 +215,7 @@ echo "|  * user: fitcrack                                        |"
 echo "|  * password: FITCRACK                                    |"
 echo "+----------------------------------------------------------+"
 
-read -e -p "Do you with to START the Fitcrack server? [y/N] (default: y)" START_SERVER
+read -e -p "Do you want to START the Fitcrack server? [y/N] (default: y)" START_SERVER
 START_SERVER=${START_SERVER:-y}
 
 if [ $START_SERVER = "y" ]; then

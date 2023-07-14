@@ -43,12 +43,15 @@
 
 class DictStatBuilder {
   FILE *fp;
-
+  const char *ds_filename;
 public:
-  DictStatBuilder(const char *outfile = DICTSTAT_FILENAME) {
+  DictStatBuilder() {}
+
+  bool create(const char *outfile = DICTSTAT_FILENAME) {
     fp = fopen(outfile, "wb");
     if (!fp)
-      return;
+      return false;
+    ds_filename = outfile;
 
     uint64_t v = DICTSTAT_VERSION;
     uint64_t z = 0;
@@ -58,6 +61,7 @@ public:
 
     fwrite(&v, sizeof(uint64_t), 1, fp);
     fwrite(&z, sizeof(uint64_t), 1, fp);
+    return true;
   }
 
   bool addStatForDict(const char *filename, uint64_t passwords) {
@@ -106,9 +110,14 @@ public:
     return true;
   }
 
-  ~DictStatBuilder(void) {
+  void close() {
     if (fp)
       fclose(fp);
+  }
+
+  ~DictStatBuilder(void) {
+    if (ds_filename)
+      remove(ds_filename);
   }
 };
 

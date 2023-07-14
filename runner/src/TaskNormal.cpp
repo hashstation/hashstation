@@ -212,7 +212,12 @@ void TaskNormal::progress() {
 
   PRINT_POSITION_IN_CODE();
 
-  while (process_hashcat_->isRunning()) {
+  while (true) {
+    if (!process_hashcat_->isRunning()) {
+      Logging::debugPrint(Logging::Detail::GeneralInfo,
+                         "Hashcat finished.");
+      break;
+    }
 
     PRINT_POSITION_IN_CODE();
 

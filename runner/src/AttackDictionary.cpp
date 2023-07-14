@@ -4,7 +4,6 @@
 */
 
 #include "AttackDictionary.hpp"
-#include "Dictstat.hpp"
 
 AttackDictionary::AttackDictionary(const ConfigTask& config, Directory& directory) : AttackCrackingBase(config, directory) {
   
@@ -68,12 +67,14 @@ void AttackDictionary::addSpecificArguments() {
     // Build hashcat.dictstat2 so hashcat does not have to recompute
     // number of passwords in this dictionary - could be a bottleneck for huge
     // dictionaries.
-    DictStatBuilder dsBuilder;
-    bool dict1StatAdded =
-        dsBuilder.addStatForDict(pathToDictionary.c_str(), stoull(dict1Keyspace));
-    if (dict1StatAdded) {
-      Logging::debugPrint(Logging::Detail::GeneralInfo,
-                          "dictstat2 created for " + pathToDictionary);
+    if (dsBuilder.create()) {
+      bool dict1StatAdded = dsBuilder.addStatForDict(pathToDictionary.c_str(),
+                                                     stoull(dict1Keyspace));
+      if (dict1StatAdded) {
+        Logging::debugPrint(Logging::Detail::GeneralInfo,
+                            "dictstat2 created for " + pathToDictionary);
+      }
+      dsBuilder.close();
     }
   }
 }

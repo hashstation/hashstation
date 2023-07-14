@@ -89,8 +89,7 @@ void TaskBase::reportProgress() {
       if (total_speed == 0) {
         // Workaround: hashcat may sometimes report zero speeds during status
         // updates. Compute total speed from total hashes and cracking time.
-        uint64_t total_hashes = status_info_.at("progress").at(1);
-        total_speed = total_hashes / cracking_time;
+        total_speed = total_hashes_ / cracking_time;
       }
       trickle_xml.addElement("total_speed", total_speed / salt_count);
 

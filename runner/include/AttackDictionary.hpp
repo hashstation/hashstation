@@ -7,10 +7,11 @@
 #define ATTACKDICTIONARY_HPP
 
 #include "AttackCrackingBase.hpp"
+#include "Dictstat.hpp"
 
 /** Class representing hashcat's dictionary attack */
 class AttackDictionary: public AttackCrackingBase {
-
+    DictStatBuilder dsBuilder;
     protected:
 
         /**
