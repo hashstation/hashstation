@@ -32,7 +32,7 @@ diff -ruN boinc_org/py/Boinc/database.py boinc/py/Boinc/database.py
 diff -ruN boinc_org/py/Boinc/setup_project.py boinc/py/Boinc/setup_project.py
 --- boinc_org/py/Boinc/setup_project.py	2022-11-19 00:14:20.045529464 +0100
 +++ boinc/py/Boinc/setup_project.py	2022-11-19 00:24:27.756566567 +0100
-@@ -520,6 +520,15 @@
+@@ -520,6 +520,14 @@
              config.min_sendwork_interval = 6
          self.scheduler_url = os.path.join(cgi_url     , 'cgi')
  
@@ -41,7 +41,6 @@ diff -ruN boinc_org/py/Boinc/setup_project.py boinc/py/Boinc/setup_project.py
 +        config.next_rpc_delay = 10
 +        config.maintenance_delay = 60
 +        config.max_wus_in_progress = 1
-+        config.max_ncpus = 1
 +        config.prefer_primary_platform = 1
 +        config.min_sendwork_interval = 6
 +

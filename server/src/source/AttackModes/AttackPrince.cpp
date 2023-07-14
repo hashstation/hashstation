@@ -78,9 +78,7 @@ bool CAttackPrince::makeWorkunit()
     std::string skipFromStart = std::to_string(startIndex);
     configFile << "|||skip_from_start|BigUInt|" << skipFromStart.size() << "|" << skipFromStart << "|||\n";
     std::string dictHcKeyspace = std::to_string(m_workunit->getHcKeyspace());
-    // TODO: dict_hc_keyspace => limit? generator limit?
     configFile << "|||dict_hc_keyspace|BigUInt|" << dictHcKeyspace.size() << "|" << dictHcKeyspace << "|||\n";
-    configFile << "|||hc_keyspace|BigUInt|" << dictHcKeyspace.size() << "|" << dictHcKeyspace << "|||\n";
     std::string casePermute = std::to_string(m_job->getCasePermuteFlag());
     configFile << "|||case_permute|UInt|1|" << casePermute << "|||\n";
     std::string checkDuplicates = std::to_string(m_job->getCheckDuplicatesFlag());
