@@ -24,27 +24,22 @@ public:
 	 * @param name The global name of the mutex
 	 */
 	NamedMutexHandle(const std::string &name) {
-          runner_mutex = "/tmp/FitcrackRunnerMutex_" + name;
-          handle =
-              open(runner_mutex.c_str(), O_CREAT | O_RDONLY | O_CLOEXEC,
-                   S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
-
+		  std::string runner_mutex;
           // /tmp may not work on newer Linux systems (new security feature to protect /tmp)
 		  // Try other directories...
           // https://github.com/BOINC/boinc/issues/4125
-          if (handle == -1) {
-            runner_mutex = "/var/lib/boinc-client/FitcrackRunnerMutex_" +
-                           name; // Almost all distros.
-            handle =
-                open(runner_mutex.c_str(), O_CREAT | O_RDONLY | O_CLOEXEC,
-                     S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
+          std::vector<std::string> possible_paths = {
+              "/var/lib/boinc-client/FitcrackRunnerMutex_" + name,
+              "/var/lib/boinc/FitcrackRunnerMutex_" + name,
+              "/tmp/FitcrackRunnerMutex_" + name};
 
-            if (handle == -1) {
-              runner_mutex =
-                  "/var/lib/boinc/FitcrackRunnerMutex_" + name; // Debian
-              handle = open(
-                  runner_mutex.c_str(), O_CREAT | O_RDONLY | O_CLOEXEC,
-                  S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
+          for (auto &path : possible_paths) {
+            handle =
+                open(path.c_str(), O_CREAT | O_RDONLY | O_CLOEXEC,
+                     S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
+            if (handle != -1) {
+              runner_mutex = path;
+              break;
             }
           }
 
@@ -60,12 +55,9 @@ public:
 	~NamedMutexHandle()
 	{
 		close(handle);
-		unlink(runner_mutex.c_str());
 	}
 	//!The file descriptor
 	int handle;
-	//!Path to named mutex
-	std::string runner_mutex;
 };
 
 NamedMutex::NamedMutex(const std::string &name):
