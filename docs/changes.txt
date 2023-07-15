@@ -11,8 +11,8 @@ New features:
 * Added possibility to resume timeouted jobs.
 
 General improvements:
-* Improved/reimplemeted generator and scheduling logic. Better speeds, better precision, more predictable workunit sizes. Default desired seconds per workunit changed to 600 seconds.
-* Improved the precision of reported benchmark speeds.
+* Improved/reimplemeted generator and scheduling logic. Better precision, more predictable workunit sizes. Default desired seconds per workunit changed to 600 seconds.
+* Improved benchmarking logic.
 * It is now possible to upgrade standard (non-dockerized) Fitcrack to newer versions. Please see UPGRADE.md file.
 * Updated to BOINC v7.23.
 

@@ -51,6 +51,7 @@ workunit_model = api.model('Workunit', {
     'result': fields.Nested(boincResult_model),
     'progress': fields.Integer(),
     'speed': fields.Integer(),
+    'hashrate': fields.Integer(),
     'remaining_time': fields.Integer(),
     'remaining_time_str': fields.String(),
 })

@@ -95,12 +95,12 @@
           />
         </div>
       </template>
-      <template v-slot:item.speed="{ item }">
-        <span v-if="item.speed >= 1000000">
-          {{ fmt(item.speed / 1000, {maximumFractionDigits: 0}) }}&nbsp;kH/s
+      <template v-slot:item.hashrate="{ item }">
+        <span v-if="item.hashrate >= 1000000">
+          {{ fmt(item.hashrate / 1000, {maximumFractionDigits: 0}) }}&nbsp;kH/s
         </span>
-        <span v-else-if="item.speed > 0">
-          {{ fmt(item.speed) }}&nbsp;H/s
+        <span v-else-if="item.hashrate > 0">
+          {{ fmt(item.hashrate) }}&nbsp;H/s
         </span>
         <span v-else>–</span>
       </template>
@@ -188,7 +188,7 @@ export default {
           value: 'host_id',
         },
         {text: 'Progress', align: 'end', value: 'progress'},
-        {text: 'Speed', align: 'end', value: 'speed'},
+        {text: 'Hashrate', align: 'end', value: 'hashrate'},
         {text: 'Cracking time', align: 'end', value: 'cracking_time_str'},
         {text: 'Generated', align: 'end', value: 'time'},
         {text: 'Start index', align: 'end', value: 'start_index_real'},

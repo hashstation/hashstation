@@ -14,11 +14,6 @@ bool TaskBenchmark::parseHashcatBenchmark(std::string &output_line) {
     return false;
   }
 
-  if (salt_count_ <= 1) {
-    uint64_t salt_count = status_info_.at("recovered_salts").at(1);
-    salt_count_ = std::max<uint64_t>(salt_count, 1);
-  }
-
   return true;
 }
 
@@ -29,8 +24,7 @@ TaskBenchmark::TaskBenchmark(Directory &directory, ConfigTask task_config,
                              const std::string &output_file,
                              const std::string &workunit_name)
     : TaskComputeBase(directory, task_config, host_config, output_file,
-                      workunit_name),
-      salt_count_(1) {
+                      workunit_name) {
   mode_ = "b";
   initializeTotalHashes();
 }

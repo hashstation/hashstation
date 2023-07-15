@@ -15,8 +15,6 @@ class TaskBenchmark: public TaskComputeBase {
 	//! No copying
 	TaskBenchmark(const TaskBenchmark&);
 protected:
-	uint64_t salt_count_;
-
 	/**
 	 * @brief Parse hashcat benchmark line  
 	 * @param output_line

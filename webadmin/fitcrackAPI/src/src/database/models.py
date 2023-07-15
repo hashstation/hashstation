@@ -661,6 +661,7 @@ class FcWorkunit(Base):
     hc_keyspace = Column(BigInteger, nullable=False)
     progress = Column(Float(asdecimal=True), nullable=False, server_default=text("'0'"))
     speed = Column(BigInteger, nullable=False, server_default=text("'0'"))
+    hashrate = Column(BigInteger, nullable=False, server_default=text("'0'"))
     remaining_time = Column(BigInteger, nullable=False, server_default=text("'0'"))
     mask_id = Column(BigInteger, nullable=False)
     dictionary_id = Column(BigInteger, nullable=False)

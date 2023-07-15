@@ -49,16 +49,18 @@ int handle_trickle(MSG_FROM_HOST &mfh) {
   /** Define local variables */
   bool got_progress = false;
   bool got_wu_name = false;
-  bool got_total_speed = false;
+  bool got_speed = false;
   bool got_remaining_time = false;
   bool got_cracking_time = false;
+  bool got_hashrate = false;
 
   double progress;
   char buf[SQL_BUF_SIZE];
   std::string wu_name;
-  std::string total_speed;
+  std::string speed;
   std::string remaining_time;
   std::string cracking_time;
+  std::string hashrate;
   std::map<uint32_t, Device> devices;
   uint64_t fc_workunit_id;
 
@@ -121,10 +123,17 @@ int handle_trickle(MSG_FROM_HOST &mfh) {
       continue;
     }
 
-    if (xp.parse_string("total_speed", total_speed)) {
-      std::cerr << "Succesfully parsed total speed: " << total_speed
+    if (xp.parse_string("speed", speed)) {
+      std::cerr << "Succesfully parsed speed: " << speed
                 << std::endl;
-      got_total_speed = true;
+      got_speed = true;
+      continue;
+    }
+
+    if (xp.parse_string("hashrate", hashrate)) {
+      std::cerr << "Succesfully parsed hash rate: " << hashrate
+                << std::endl;
+      got_hashrate = true;
       continue;
     }
 
@@ -187,7 +196,7 @@ int handle_trickle(MSG_FROM_HOST &mfh) {
   }
 
   /** Check values */
-  if (!got_progress || !got_wu_name || !got_total_speed || !got_remaining_time || !got_cracking_time) {
+  if (!got_progress || !got_wu_name || !got_speed || !got_remaining_time || !got_cracking_time || !got_hashrate) {
     std::cerr << "ERROR: Could not parse all mandatory data." << std::endl;
     return 1;
   }
@@ -212,7 +221,7 @@ int handle_trickle(MSG_FROM_HOST &mfh) {
     exit(1);
   }
 
-  uint64_t workunit_speed = std::stoull(total_speed);
+  uint64_t workunit_speed = std::stoull(speed);
   if (workunit_speed > 0) {
     std::cerr << "Updating workunit speed..." << std::endl;
 
@@ -220,6 +229,24 @@ int handle_trickle(MSG_FROM_HOST &mfh) {
              "UPDATE `fc_workunit` SET `speed` = %" PRIu64
              " WHERE `id` = %" PRIu64 " LIMIT 1 ;",
              workunit_speed, fc_workunit_id);
+
+    retval = boinc_db.do_query(buf);
+    if (retval) {
+      std::cerr << "Problem with DB query: " << buf << "\nShutting down now."
+                << std::endl;
+      boinc_db.close();
+      exit(1);
+    }
+  }
+
+  uint64_t workunit_hashrate = std::stoull(hashrate);
+  if (workunit_hashrate > 0) {
+    std::cerr << "Updating workunit hash rate..." << std::endl;
+
+    snprintf(buf, SQL_BUF_SIZE,
+             "UPDATE `fc_workunit` SET `hashrate` = %" PRIu64
+             " WHERE `id` = %" PRIu64 " LIMIT 1 ;",
+             workunit_hashrate, fc_workunit_id);
 
     retval = boinc_db.do_query(buf);
     if (retval) {

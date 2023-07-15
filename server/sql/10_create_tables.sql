@@ -167,6 +167,7 @@ CREATE TABLE IF NOT EXISTS `fc_workunit` (
   `hc_keyspace` bigint(20) unsigned NOT NULL,
   `progress` double NOT NULL DEFAULT '0',
   `speed` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `hashrate` bigint(20) unsigned NOT NULL DEFAULT '0',
   `remaining_time` bigint(20) unsigned NOT NULL DEFAULT '0',
   `mask_id` bigint(20) unsigned NOT NULL,
   `dictionary_id` bigint(20) unsigned NOT NULL,
