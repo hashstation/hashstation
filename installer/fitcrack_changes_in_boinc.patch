@@ -39,7 +39,7 @@ diff -ruN boinc_org/py/Boinc/setup_project.py boinc/py/Boinc/setup_project.py
 +        # FITCRACK-specific config options
 +        config.enable_assignment = 1
 +        config.next_rpc_delay = 10
-+        config.maintenance_delay = 60
++        config.maintenance_delay = 10
 +        config.max_wus_in_progress = 1
 +        config.prefer_primary_platform = 1
 +        config.min_sendwork_interval = 6
