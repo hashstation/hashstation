@@ -134,6 +134,8 @@ void TaskBase::reportProgress() {
       std::string boinc_error = boincerror(ret);
       Logging::debugPrint(Logging::Detail::ObjectContentRevision,
                           " boinc error :" + boinc_error);
+    } else {
+      Logging::debugPrint(Logging::Detail::ObjectContentRevision, "Trickle message sent.");
     }
     boinc_fraction_done(fraction_done); // progress to BOINC manager
   }
