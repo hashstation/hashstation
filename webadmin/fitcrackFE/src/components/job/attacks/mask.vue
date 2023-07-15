@@ -163,9 +163,8 @@
 
     <v-divider />
     <v-checkbox
-      v-if="!$optimizedOnly"
-       v-model="optimized"
-       label="Use optimized computing kernels (limits password length, disable for passwords over 256 chars long)"
+      v-model="slowCandidates"
+      label="Enable slow candidates mode"
     />
   </div>
 </template>
@@ -196,7 +195,7 @@
       }
     },
     computed: {
-      ...mapTwoWayState('jobForm', twoWayMap(['masks', 'submode', 'markovThresh', 'markov', 'charset', 'optimized']))
+      ...mapTwoWayState('jobForm', twoWayMap(['masks', 'submode', 'markovThresh', 'markov', 'charset', 'slowCandidates']))
     },
     methods: {
       ...mapMutations('jobForm', ['addMask', 'deleteMask', 'updateMask', 'mergeMasks']),

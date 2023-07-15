@@ -50,6 +50,7 @@ CJob::CJob(DbMap &jobMap, CSqlLoader * sqlLoader)
         this->m_dictDeploymentMode = static_cast<DictDeploymentMode>(std::stoul(jobMap["dict_deployment_mode"]));
         this->m_deviceTypes = std::stoul(jobMap["device_types"]);
         this->m_workloadProfile = std::stoul(jobMap["workload_profile"]);
+        this->m_slowCandidates = std::stoul(jobMap["slow_candidates"]);
         this->m_killFlag = std::stoul(jobMap["kill"]) != 0;
 
         uint64_t minSeconds = m_sqlLoader->getAbsoluteMinimumWorkunitSeconds();
@@ -358,6 +359,11 @@ bool CJob::getCheckDuplicatesFlag() const
 bool CJob::getOptimizedFlag() const
 {
     return m_optimized;
+}
+
+bool CJob::getSlowCandidatesFlag() const
+{
+    return m_slowCandidates;
 }
 
 uint32_t CJob::getDeviceTypes() const {

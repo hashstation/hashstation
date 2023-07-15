@@ -171,11 +171,12 @@ def create_job(data):
         max_password_len=job['attack_settings'].get('max_password_len', 0),
         min_elem_in_chain=job['attack_settings'].get('min_elem_in_chain', 0),
         max_elem_in_chain=job['attack_settings'].get('max_elem_in_chain', 0),
-        optimized=job['attack_settings'].get('optimized', 1),
+        optimized=job.get('optimized', 1),
         device_types = job.get('device_types', 0), # Default: Host default
         workload_profile = job.get('workload_profile', 0), # Default: Host default
         priority = job.get('priority', 1), # Default: Normal
         dict_deployment_mode=job['attack_settings'].get('dict_deployment_mode', 0),
+        slow_candidates=job['attack_settings'].get('slow_candidates', 0),
         deleted=False
         )
 

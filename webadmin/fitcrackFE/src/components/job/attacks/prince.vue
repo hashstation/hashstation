@@ -121,14 +121,6 @@
       v-model="rules"
       @input="checkValid"
     />
-
-    <v-divider />
-    <v-checkbox
-      v-if="!$optimizedOnly"
-       v-model="optimized"
-       label="Use optimized computing kernels (limits password length, disable for passwords over 256 chars long)"
-    />
-
   </div>
 </template>
 
@@ -154,7 +146,7 @@
     },
     computed: mapTwoWayState('jobForm', twoWayMap(['leftDicts', 'rules', 'checkDuplicates',
     'casePermute', 'minPasswordLen', 'maxPasswordLen', 'minElemInChain', 'maxElemInChain', 
-    'keyspaceLimit', 'optimized'])),
+    'keyspaceLimit'])),
     methods: {
       checkValid: function () {
         if (this.minPasswordLen <= 0) {

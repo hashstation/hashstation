@@ -531,7 +531,7 @@
             editable
             step="4"
           >
-            Additional settings
+            Advanced settings
           </v-stepper-step>
           <v-stepper-content step="4">
             <v-container>
@@ -611,6 +611,13 @@
                   </v-radio-group>
                 </v-col>
               </v-row>
+              <v-row>
+                <v-checkbox
+                  v-if="!$optimizedOnly"
+                  v-model="optimized"
+                  label="Use optimized computing kernels (limits maximal length of passwords)"
+                />
+               </v-row>
             </v-container>
           </v-stepper-content>
         </v-stepper>

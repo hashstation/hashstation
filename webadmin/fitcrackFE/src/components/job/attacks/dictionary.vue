@@ -64,9 +64,8 @@
 
     <v-divider />
     <v-checkbox
-      v-if="!$optimizedOnly"
-       v-model="optimized"
-       label="Use optimized computing kernels (limits password length, disable for passwords over 256 chars long)"
+      v-model="slowCandidates"
+      label="Enable slow candidates mode"
     />
   </div>
 </template>
@@ -84,7 +83,7 @@
       'dict-selector': dictSelector,
       'rules-selector': ruleSelector
     },
-    computed: mapTwoWayState('jobForm', twoWayMap(['leftDicts', 'rules', 'optimized', 'distributionMode', 'dictDeploymentMode'])),
+    computed: mapTwoWayState('jobForm', twoWayMap(['leftDicts', 'rules', 'distributionMode', 'dictDeploymentMode', 'slowCandidates'])),
     methods: {
       checkValid: function () {
         if (this.leftDicts.length > 0) {

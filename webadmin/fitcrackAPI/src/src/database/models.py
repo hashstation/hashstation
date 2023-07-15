@@ -238,6 +238,7 @@ class FcJob(Base):
     device_types = Column(Integer, nullable=False, server_default=text("'0'"))
     workload_profile = Column(Integer, nullable=False, server_default=text("'0'"))
     priority = Column(Integer, nullable=False, server_default=text("'1'"))
+    slow_candidates = Column(Integer, nullable=False, server_default=text("'0'"))
     deleted = Column(Integer, nullable=False, server_default=text("'0'"))
     kill = Column(Integer, nullable=False, server_default=text("'0'"))
     batch_id = Column(ForeignKey('fc_batch.id', ondelete='SET NULL'), index=True)

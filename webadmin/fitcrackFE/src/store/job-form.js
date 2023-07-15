@@ -59,6 +59,7 @@ export const empty = {
   timeForJob: undefined,
   deviceTypes: 0, // Default: Host default
   workloadProfile: 0, // Default: Host default
+  slowCandidates: false,
 }
 
 export default {
@@ -96,8 +97,8 @@ export default {
         'min_elem_in_chain': parseInt(state.minElemInChain),
         'max_elem_in_chain': parseInt(state.maxElemInChain),
          // other
-        'optimized': Vue.prototype.$optimizedOnly ? true : state.optimized,
         'dict_deployment_mode': parseInt(state.dictDeploymentMode),
+        'slow_candidates' : state.slowCandidates,
       }
     },
     jobSettings (state, { attackSettings }) {
@@ -117,6 +118,7 @@ export default {
         "device_types": parseInt(state.deviceTypes),
         'workload_profile': parseInt(state.workloadProfile),
         'priority': parseInt(state.priority),
+        'optimized': Vue.prototype.$optimizedOnly ? true : state.optimized,
       }
     },
     validAttackSpecificSettings (state) {

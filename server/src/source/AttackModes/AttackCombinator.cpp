@@ -64,8 +64,8 @@ bool CAttackCombinator::makeWorkunit()
                              m_job->getDistributionMode(), m_job->getName(),
                              m_job->getHashType(), m_job->getHWTempAbort(),
                              m_job->getOptimizedFlag(), m_job->getDeviceTypes(),
-                             m_job->getWorkloadProfile(), m_job->getRuleLeft(),
-                             m_job->getRuleRight());
+                             m_job->getWorkloadProfile(), m_job->getSlowCandidatesFlag(),
+                             m_job->getRuleLeft(), m_job->getRuleRight());
 
     /** Load current workunit dictionary */
     PtrDictionary workunitDict = GetWorkunitDict();

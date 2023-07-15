@@ -49,13 +49,6 @@
         />
       </v-col>
     </v-row>
-
-    <v-divider />
-    <v-checkbox
-      v-if="!$optimizedOnly"
-       v-model="optimized"
-       label="Use optimized computing kernels (limits password length, disable for passwords over 256 chars long)"
-    />
   </div>
 </template>
 
@@ -81,7 +74,7 @@
         ]
       }
     },
-    computed: mapTwoWayState('jobForm', twoWayMap(['ruleLeft', 'rightDicts', 'ruleRight', 'hybridMask', 'optimized'])),
+    computed: mapTwoWayState('jobForm', twoWayMap(['ruleLeft', 'rightDicts', 'ruleRight', 'hybridMask'])),
     methods: {
       dictSelected: function (id, dictNubmer) {
         this.selectedDict2Id = id

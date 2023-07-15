@@ -98,7 +98,8 @@ protected:
             unsigned distributionMode, std::string name, unsigned hashType,
             unsigned hwTempAbort = 90,
             bool optimized = true, unsigned deviceTypes = 0,
-            unsigned workloadProfile = 0, std::string ruleLeft = "",
+            unsigned workloadProfile = 0, bool slowCandidates = true, 
+            std::string ruleLeft = "",
             std::string ruleRight = "", std::string charset1 = "",
             std::string charset2 = "", std::string charset3 = "",
             std::string charset4 = "");

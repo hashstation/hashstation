@@ -138,6 +138,7 @@ class CJob {
         uint32_t m_minElemInChain;
         uint32_t m_maxElemInChain;
         bool m_optimized;
+        bool m_slowCandidates;
         uint32_t m_deviceTypes;
         uint32_t m_workloadProfile;
         DictDeploymentMode m_dictDeploymentMode;
@@ -196,6 +197,7 @@ class CJob {
         uint32_t getMinElemInChain() const;
         uint32_t getMaxElemInChain() const;
         bool getOptimizedFlag() const;
+        bool getSlowCandidatesFlag() const;
         DictDeploymentMode getDictDeploymentMode() const;
         bool getKillFlag() const;
 

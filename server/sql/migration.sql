@@ -18,3 +18,7 @@ ADD `hashrate` bigint(20) unsigned NOT NULL DEFAULT '0';
 
 ALTER TABLE `fc_device_info`
 ADD `hashrate` bigint(20) unsigned NOT NULL;
+
+ALTER TABLE `fc_job`
+ADD `slow_candidates` tinyint(1) NOT NULL DEFAULT '0';
+

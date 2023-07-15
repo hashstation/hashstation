@@ -323,6 +323,7 @@ CREATE TABLE IF NOT EXISTS `fc_job` (
   `device_types` tinyint(3) NOT NULL DEFAULT '0',
   `workload_profile` tinyint(3) NOT NULL DEFAULT '0',
   `priority` tinyint(3) NOT NULL DEFAULT '1',
+  `slow_candidates` tinyint(1) NOT NULL DEFAULT '0',
   `deleted` tinyint(1) NOT NULL DEFAULT '0',
   `kill` int(11) NOT NULL DEFAULT '0',
   `batch_id` int(11),

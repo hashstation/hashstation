@@ -33,13 +33,6 @@
     <rules-selector
       v-model="rules"
     />
-
-    <v-divider />
-    <v-checkbox
-      v-if="!$optimizedOnly"
-       v-model="optimized"
-       label="Use optimized computing kernels (limits password length, disable for passwords over 256 chars long)"
-    />
   </div>
 </template>
 
@@ -69,7 +62,7 @@
         }
       }
     },
-    computed: mapTwoWayState('jobForm', twoWayMap(['rules', 'pcfg', 'keyspaceLimit', 'optimized'])),
+    computed: mapTwoWayState('jobForm', twoWayMap(['rules', 'pcfg', 'keyspaceLimit'])),
     methods: {
       checkValid: function () {
         if(this.pcfg.length > 0 && this.keyspaceLimit > this.pcfg[0].keyspace) {
