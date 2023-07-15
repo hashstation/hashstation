@@ -91,7 +91,7 @@ void TaskBase::reportProgress() {
         // updates. Compute total speed from total hashes and cracking time.
         total_speed = total_hashes_ / cracking_time;
       }
-      trickle_xml.addElement("total_speed", total_speed / salt_count);
+      trickle_xml.addElement("total_speed", total_speed);
 
       for (const auto &device : status_info_.at("devices")) {
         std::string id = std::to_string((int)device.at("device_id"));
@@ -103,7 +103,7 @@ void TaskBase::reportProgress() {
 
         trickle_xml.addElement("device_" + id + "_name", name);
         trickle_xml.addElement("device_" + id + "_type", type);
-        trickle_xml.addElement("device_" + id + "_speed", speed / salt_count);
+        trickle_xml.addElement("device_" + id + "_speed", speed);
         trickle_xml.addElement("device_" + id + "_temp", temp);
         trickle_xml.addElement("device_" + id + "_util", util);
       }
