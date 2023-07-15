@@ -32,6 +32,7 @@ const unsigned int SQL_BUF_SIZE = 1024;
 struct Device {
   std::string name;
   std::string type;
+  std::string hashrate;
   std::string speed;
   std::string temp;
   std::string util;
@@ -169,6 +170,12 @@ int handle_trickle(MSG_FROM_HOST &mfh) {
         std::string device_type;
         if (xp.parse_string(xp.parsed_tag, device_type)) {
           devices[device_id].type = device_type;
+          continue;
+        }
+      } else if (tag == "hashrate") {
+        std::string device_hashrate;
+        if (xp.parse_string(xp.parsed_tag, device_hashrate)) {
+          devices[device_id].hashrate = device_hashrate;
           continue;
         }
       } else if (tag == "speed") {
@@ -343,10 +350,11 @@ int handle_trickle(MSG_FROM_HOST &mfh) {
 
     std::snprintf(buf, SQL_BUF_SIZE,
                   "INSERT INTO `fc_device_info` "
-                  "(`device_id`,`workunit_id`,`speed`,`temperature`,`"
-                  "utilization`) VALUES (%" PRIu64 ", %" PRIu64 ", %" PRId64
+                  "(`device_id`,`workunit_id`,`hashrate`,`speed`,`temperature`,`"
+                  "utilization`) VALUES (%" PRIu64 ", %" PRIu64 ", %" PRId64 ", %" PRId64
                   ", %" PRId64 ", %" PRId64 ");",
-                  fc_device_id, fc_workunit_id, std::stoll(device.second.speed),
+                  fc_device_id, fc_workunit_id, std::stoll(device.second.hashrate),
+                  std::stoll(device.second.speed),
                   std::stoll(device.second.temp),
                   std::stoll(device.second.util));
     retval = boinc_db.do_query(buf);

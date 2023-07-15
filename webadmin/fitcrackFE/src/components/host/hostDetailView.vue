@@ -78,13 +78,13 @@
                 Inactive – no current data.
               </v-list-item-subtitle>
               <v-list-item-subtitle v-else>
-                Speed: {{ device.device_info[0].speed}} H/s<span v-show="device.device_info[0].temperature >= 0">, Temp: {{ device.device_info[0].temperature}} °C, Util: {{ device.device_info[0].utilization}} %</span>
+                Hashrate: {{ device.device_info[0].hashrate}} H/s<span v-show="device.device_info[0].temperature >= 0">, Temp: {{ device.device_info[0].temperature}} °C, Util: {{ device.device_info[0].utilization}} %</span>
               </v-list-item-subtitle>
               <div class="device-charts">
                 <res-mon
                   class="chart"
                   :usage-data="device.device_info.slice(0,30)"
-                  :metrics="['speed']"
+                  :metrics="['hashrate']"
                   :unit-callback="x => `${x} H/s`"
                 />
                 <res-mon

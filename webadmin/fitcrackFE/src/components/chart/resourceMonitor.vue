@@ -136,6 +136,7 @@ export default {
         net_recv: 'Download',
         net_sent: 'Upload',
         ram: 'Memory',
+        hashrate: 'Hashrate',
         speed: 'Speed',
         temperature: 'Temperature',
         utilization: 'Utilization'
@@ -150,6 +151,7 @@ export default {
         'Download': 'kb/s',
         'Upload': 'kb/s',
         'Memory': '%',
+        'Hashrate': 'H/s',
         'Speed': 'H/s',
         'Temperature': '°C',
         'Utilization': '%'

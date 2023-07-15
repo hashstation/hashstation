@@ -143,10 +143,10 @@ public:
   void saveResult();
 
   	/**
-	 * @brief   Computes total speed of node
-	 * @return  Total speed
+	 * @brief   Computes total hashrate of host
+	 * @return  Total hashrate
 	 */
-	uint64_t getTotalSpeed();
+	uint64_t getTotalHashrate();
 };
 
 #endif // TASKBASE_HPP

@@ -85,26 +85,27 @@ void TaskBase::reportProgress() {
       uint64_t salt_count = status_info_.at("recovered_salts").at(1);
       salt_count = std::max<uint64_t>(salt_count, 1);
 
-      uint64_t total_speed = getTotalSpeed();
-      if (total_speed == 0) {
+      uint64_t total_hashrate = getTotalHashrate();
+      if (total_hashrate == 0) {
         // Workaround: hashcat may sometimes report zero speeds during status
         // updates. Compute total speed from total hashes and cracking time.
-        total_speed = total_hashes_ / cracking_time;
+        total_hashrate = total_hashes_ / cracking_time;
       }
-      trickle_xml.addElement("hashrate", total_speed);
-      trickle_xml.addElement("speed", total_speed / salt_count);
+      trickle_xml.addElement("hashrate", total_hashrate);
+      trickle_xml.addElement("speed", total_hashrate / salt_count);
 
       for (const auto &device : status_info_.at("devices")) {
         std::string id = std::to_string((int)device.at("device_id"));
         std::string name = device.at("device_name");
         std::string type = device.at("device_type");
-        int64_t speed = device.at("speed");
+        int64_t hashrate = device.at("speed");
         int64_t temp = device.value("temp", -1); // -1 when hwmon is disabled
         int64_t util = device.at("util");
 
         trickle_xml.addElement("device_" + id + "_name", name);
         trickle_xml.addElement("device_" + id + "_type", type);
-        trickle_xml.addElement("device_" + id + "_speed", speed);
+        trickle_xml.addElement("device_" + id + "_hashrate", hashrate);
+        trickle_xml.addElement("device_" + id + "_speed", hashrate / salt_count);
         trickle_xml.addElement("device_" + id + "_temp", temp);
         trickle_xml.addElement("device_" + id + "_util", util);
       }
@@ -163,7 +164,7 @@ void TaskBase::saveResult() {
   writeOutputFile(output_message);
 }
 
-uint64_t TaskBase::getTotalSpeed() {
+uint64_t TaskBase::getTotalHashrate() {
   if (!status_info_.contains("devices"))
     return 0;
 

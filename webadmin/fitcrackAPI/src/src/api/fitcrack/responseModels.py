@@ -67,9 +67,7 @@ device_info_model = api.model('Compute device info log', {
     # device_id = Column(BigInteger, ForeignKey('fc_device.id'), nullable=False)
     # workunit_id = Column(BigInteger, ForeignKey('fc_workunit.id'), nullable=False)
     'workunit_id': fields.Integer(readOnly=True, required=False, description='id of the workunit being processed'),
-    # speed = Column(BigInteger, nullable=False)
-    # temperature = Column(Integer, nullable=False)
-    # utilization = Column(Integer, nullable=False)
+    'hashrate': fields.Integer(readOnly=True, required=False, description='computing hashrate'),
     'speed': fields.Integer(readOnly=True, required=False, description='computing speed'),
     'temperature': fields.Integer(readOnly=True, required=False, description='device temperature'),
     'utilization': fields.Integer(readOnly=True, required=False, description='device utilization'),

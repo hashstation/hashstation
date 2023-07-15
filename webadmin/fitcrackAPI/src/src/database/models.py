@@ -83,6 +83,7 @@ class FcDeviceInfo(Base):
     id = Column(BigInteger, primary_key=True)
     device_id = Column(BigInteger, ForeignKey('fc_device.id'), nullable=False)
     workunit_id = Column(BigInteger, ForeignKey('fc_workunit.id'), nullable=False)
+    hashrate = Column(BigInteger, nullable=False)
     speed = Column(BigInteger, nullable=False)
     temperature = Column(Integer, nullable=False)
     utilization = Column(Integer, nullable=False)

@@ -15,3 +15,6 @@ ADD `priority` tinyint(3) NOT NULL DEFAULT '1';
 
 ALTER TABLE `fc_workunit`
 ADD `hashrate` bigint(20) unsigned NOT NULL DEFAULT '0';
+
+ALTER TABLE `fc_device_info`
+ADD `hashrate` bigint(20) unsigned NOT NULL;
