@@ -42,6 +42,7 @@ protected:
                    */
 
   unsigned long long computed_hashes_; /**< Already computed hashes */
+  std::string trickle_message_;
   unsigned long long
       total_hashes_; /**< Total number or hashes to compute in the task */
 

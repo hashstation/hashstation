@@ -111,26 +111,14 @@ void TaskBase::reportProgress() {
       }
     }
 
-    const std::string &trickle_message = trickle_xml.getXml();
-
-    int ret;
-    int retries = 3;
-    do {
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored                                                 \
-    "-Wwrite-strings" // disable G++ warning about deprecated cast
-      ret = boinc_send_trickle_up(
-          const_cast<char *>(BoincConstants::TrickleDeamonName.c_str()),
-          const_cast<char *>(
-              trickle_message.c_str())); // progress to boinc project server
-      if (ret == 0)
-        break;
-#pragma GCC diagnostic pop
-    } while (--retries);
-
+    trickle_message_ = trickle_xml.getXml();
+    int ret = boinc_send_trickle_up(
+        (char*)BoincConstants::TrickleDeamonName.c_str(),
+        (char*)trickle_message_.c_str()); // progress to boinc project server
     if (ret != 0) {
       Logging::debugPrint(Logging::Detail::ObjectContentRevision,
-                          " failed to send trickle message :" + trickle_message);
+                          " failed to send trickle message :" +
+                              trickle_message_);
       std::string boinc_error = boincerror(ret);
       Logging::debugPrint(Logging::Detail::ObjectContentRevision,
                           " boinc error :" + boinc_error);
@@ -147,6 +135,10 @@ void TaskBase::reportProgress() {
 int TaskBase::saveAndFinish() {
   PRINT_POSITION_IN_CODE();
   finish();
+  // Resend last trickle message.
+  boinc_send_trickle_up(
+      (char*)BoincConstants::TrickleDeamonName.c_str(),
+      (char*)trickle_message_.c_str());
   PRINT_POSITION_IN_CODE();
   saveResult();
   PRINT_POSITION_IN_CODE();

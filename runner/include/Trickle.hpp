@@ -16,7 +16,7 @@ public:
         "<" + tag + ">" + std::to_string(value) + "</" + tag + ">" + "\n";
   }
 
-  const std::string &getXml() { return trickle_xml_; }
+  std::string getXml() { return trickle_xml_; }
 };
 
 #endif // TRICKLE_HPP
