@@ -35,7 +35,8 @@ void AttackMode::setDefaultWorkunitParams(DB_WORKUNIT * wu)
 
 
 std::string AttackMode::generateBasicConfig(unsigned attackMode, unsigned attackSubmode, unsigned distributionMode, std::string name, unsigned hashType,
-                                            unsigned hwTempAbort, bool optimized, unsigned deviceTypes, unsigned workloadProfile, bool slowCandidates, std::string ruleLeft, std::string ruleRight, std::string charset1,
+                                            unsigned hwTempAbort, bool optimized, unsigned deviceTypes, unsigned workloadProfile, bool slowCandidates, 
+                                            std::string extraHcArgs, std::string ruleLeft, std::string ruleRight, std::string charset1,
                                             std::string charset2, std::string charset3, std::string charset4)
 {
     std::string result = "|||mode|String|1|" + std::string(1, getModeLetter()) + "|||\n";
@@ -78,6 +79,9 @@ std::string AttackMode::generateBasicConfig(unsigned attackMode, unsigned attack
     result += "|||workload_profile|UInt|1|" + std::to_string(workloadProfile) + "|||\n";
 
     result += "|||slow_candidates|UInt|1|" + std::to_string(slowCandidates) + "|||\n";
+
+    if (!extraHcArgs.empty())
+        result += "|||extra_hc_args|String|" + std::to_string(extraHcArgs.length()) + "|" + extraHcArgs + "|||\n";
 
     Tools::printDebug("%s", result.c_str());
     return result;

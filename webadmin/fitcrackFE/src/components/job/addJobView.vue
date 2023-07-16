@@ -617,7 +617,17 @@
                   v-model="optimized"
                   label="Use optimized computing kernels (limits maximal length of passwords)"
                 />
-               </v-row>
+              </v-row>
+              <v-row>
+                <v-textarea
+                  id="extra-hc-args-input"
+                  v-model="extraHcArgs"
+                  label="Extra hashcat arguments"
+                  outlined
+                  auto-grow
+                  :rows="1"
+                />
+              </v-row>
             </v-container>
           </v-stepper-content>
         </v-stepper>
@@ -736,6 +746,7 @@
       ...mapTwoWayState('jobForm', twoWayMap([
         'step', 'attackSettingsTab', 'validatedHashes', 'name', 'inputMethod', 'hashList', 'hashType', 'ignoreHashes', 'startDate', 
         'endDate', 'template', 'comment', 'hosts', 'startNow', 'endNever', 'timeForJob', 'deviceTypes', 'workloadProfile', 'priority',
+        'optimized', 'extraHcArgs',
       ])),
       ...mapGetters('jobForm', ['jobSettings', 'valid', 'validAttackSpecificSettings', 'keyspaceKnown']),
       templateItems () {

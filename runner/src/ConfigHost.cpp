@@ -39,7 +39,7 @@ void ConfigHost::load() {
   }
 }
 
-std::vector<std::string> ConfigHost::getExtraHashcatArgs() {
+std::vector<std::string> ConfigHost::getHostExtraHashcatArgs() {
   auto config_item_it = configuration_.find("extra_hashcat_args");
   if (config_item_it == configuration_.end())
     return {};

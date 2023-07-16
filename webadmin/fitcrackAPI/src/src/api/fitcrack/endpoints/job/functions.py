@@ -177,6 +177,7 @@ def create_job(data):
         priority = job.get('priority', 1), # Default: Normal
         dict_deployment_mode=job['attack_settings'].get('dict_deployment_mode', 0),
         slow_candidates=job['attack_settings'].get('slow_candidates', 0),
+        extra_hc_args=job.get('extra_hc_args', ''),
         deleted=False
         )
 

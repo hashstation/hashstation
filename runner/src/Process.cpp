@@ -35,3 +35,11 @@ ProcessBase* Process::create(std::string prefix, const std::vector<std::string>&
   #error "No viable Process implementation. This is caused by your target platfrom. Supported platforms are __linux__, _WIN32, __APPLE__."
   #endif
 }
+
+void Process::sleep(unsigned seconds) {
+#if defined(_WIN32) 
+  Sleep(seconds * 1000);
+#else
+  ::sleep(seconds);
+#endif
+}

@@ -20,5 +20,6 @@ namespace Process {
      */
     ProcessBase* create(const std::vector<std::string>& arguments, Directory& directory);
     ProcessBase* create(std::string prefix, const std::vector<std::string>& arguments, Directory &directory);
+    void sleep(unsigned seconds); 
 };
 #endif // PROCESS_HPP

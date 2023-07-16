@@ -187,6 +187,7 @@ job_big_model = api.model('Job', {
     'priority': fields.Integer(),
     'priority_str': fields.String(),
     'slow_candidates': fields.Boolean(),
+    'extra_hc_args': fields.String(),
 })
 
 job_nano_model = api.model('Job nano', {

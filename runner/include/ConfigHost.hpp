@@ -22,7 +22,7 @@ class ConfigHost {
     public:
         ConfigHost(std::string config_path);
         void load();
-        std::vector<std::string> getExtraHashcatArgs();
+        std::vector<std::string> getHostExtraHashcatArgs();
         std::string getPrestoredDictsPath();
 };
 

@@ -149,6 +149,7 @@ class ConfigTask {
         static const char *DEVICE_TYPES;
         static const char *WORKLOAD_PROFILE;
         static const char *SLOW_CANDIDATES;
+        static const char *EXTRA_HC_ARGS;
 };
 
 #endif // CONFIGTASK_HPP

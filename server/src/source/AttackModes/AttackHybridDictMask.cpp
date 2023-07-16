@@ -66,7 +66,8 @@ bool CAttackHybridDictMask::makeWorkunit()
         m_job->getDistributionMode(), m_job->getName(),
         m_job->getHashType(), m_job->getHWTempAbort(),
         m_job->getOptimizedFlag(), m_job->getDeviceTypes(),
-        m_job->getWorkloadProfile(), m_job->getSlowCandidatesFlag(), m_job->getRuleLeft());
+        m_job->getWorkloadProfile(), m_job->getSlowCandidatesFlag(),
+		m_job->getExtraHcArgs(), m_job->getRuleLeft());
 
     auto dictVec = m_job->getDictionaries();
 	bool hexDicts = std::all_of(dictVec.begin(), dictVec.end(), [](auto dict){ return dict->isHexDict(); });

@@ -51,6 +51,7 @@ CJob::CJob(DbMap &jobMap, CSqlLoader * sqlLoader)
         this->m_deviceTypes = std::stoul(jobMap["device_types"]);
         this->m_workloadProfile = std::stoul(jobMap["workload_profile"]);
         this->m_slowCandidates = std::stoul(jobMap["slow_candidates"]);
+        this->m_extraHcArgs = jobMap["extra_hc_args"];
         this->m_killFlag = std::stoul(jobMap["kill"]) != 0;
 
         uint64_t minSeconds = m_sqlLoader->getAbsoluteMinimumWorkunitSeconds();
@@ -364,6 +365,11 @@ bool CJob::getOptimizedFlag() const
 bool CJob::getSlowCandidatesFlag() const
 {
     return m_slowCandidates;
+}
+
+const std::string & CJob::getExtraHcArgs() const
+{
+    return m_extraHcArgs;
 }
 
 uint32_t CJob::getDeviceTypes() const {

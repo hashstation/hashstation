@@ -239,6 +239,7 @@ class FcJob(Base):
     workload_profile = Column(Integer, nullable=False, server_default=text("'0'"))
     priority = Column(Integer, nullable=False, server_default=text("'1'"))
     slow_candidates = Column(Integer, nullable=False, server_default=text("'0'"))
+    extra_hc_args = Column(Text(collation='utf8_bin'), nullable=False)
     deleted = Column(Integer, nullable=False, server_default=text("'0'"))
     kill = Column(Integer, nullable=False, server_default=text("'0'"))
     batch_id = Column(ForeignKey('fc_batch.id', ondelete='SET NULL'), index=True)

@@ -57,6 +57,12 @@ void AttackCrackingBase::addSpecificArguments() {
 
   if (config_.find(ConfigTask::WORKLOAD_PROFILE, value) && value != "0")
     addArgument("--workload-profile=" + value);
+
+  // Add as last.
+  if (config_.find(ConfigTask::EXTRA_HC_ARGS, value)) {
+    for (auto &arg : split(value, ' '))
+      addArgument(arg);
+  }
 }
 
 std::string AttackCrackingBase::addRequiredFile(const std::string& file_name) {

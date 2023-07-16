@@ -70,7 +70,8 @@ bool CAttackPrince::makeWorkunit()
         m_job->getAttackMode(), m_job->getAttackSubmode(),
         m_job->getDistributionMode(), m_job->getName(), m_job->getHashType(),
         m_job->getHWTempAbort(), m_job->getOptimizedFlag(),
-        m_job->getDeviceTypes(), m_job->getWorkloadProfile(), m_job->getSlowCandidatesFlag());
+        m_job->getDeviceTypes(), m_job->getWorkloadProfile(),
+        m_job->getSlowCandidatesFlag(), m_job->getExtraHcArgs());
 
     /** Output mode */
     uint64_t startIndex = m_workunit->getStartIndex();

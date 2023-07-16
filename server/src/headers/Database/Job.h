@@ -139,6 +139,7 @@ class CJob {
         uint32_t m_maxElemInChain;
         bool m_optimized;
         bool m_slowCandidates;
+        std::string m_extraHcArgs;
         uint32_t m_deviceTypes;
         uint32_t m_workloadProfile;
         DictDeploymentMode m_dictDeploymentMode;
@@ -198,6 +199,7 @@ class CJob {
         uint32_t getMaxElemInChain() const;
         bool getOptimizedFlag() const;
         bool getSlowCandidatesFlag() const;
+        const std::string & getExtraHcArgs() const;
         DictDeploymentMode getDictDeploymentMode() const;
         bool getKillFlag() const;
 

@@ -60,6 +60,7 @@ export const empty = {
   deviceTypes: 0, // Default: Host default
   workloadProfile: 0, // Default: Host default
   slowCandidates: false,
+  extraHcArgs: '',
 }
 
 export default {
@@ -119,6 +120,7 @@ export default {
         'workload_profile': parseInt(state.workloadProfile),
         'priority': parseInt(state.priority),
         'optimized': Vue.prototype.$optimizedOnly ? true : state.optimized,
+        "extra_hc_args": state.extraHcArgs,
       }
     },
     validAttackSpecificSettings (state) {
