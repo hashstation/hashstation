@@ -18,7 +18,11 @@
 uint64_t CAbstractGenerator::calculateSecondsIcdf2c(PtrJob &job, CSqlLoader &loader)
 {
     #ifdef NEW_LOGIC
-    return job->getSecondsPerWorkunit();
+    uint64_t secondsPerWorkunit = job->getSecondsPerWorkunit();
+    Tools::printDebugJob(Config::DebugType::Log, job->getId(),
+                         "Desired seconds per workunit: %" PRIu64 "\n",
+                         secondsPerWorkunit);
+    return secondsPerWorkunit;
     #endif
 
     uint64_t desiredSeconds = job->getSecondsPerWorkunit();
