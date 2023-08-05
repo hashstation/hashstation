@@ -33,8 +33,6 @@ class CAttackPrince : public AttackMode {
          */
         bool makeWorkunit() override ;
 
-        uint64_t getPasswordCountToProcess() const override;
-
         virtual bool requiresDicts() const override {return true;}
 
     private:

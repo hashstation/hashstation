@@ -333,8 +333,3 @@ bool CAttackPrince::generateWorkunit() {
 
   return true;
 }
-
-uint64_t CAttackPrince::getPasswordCountToProcess() const {
-  uint64_t rules_count = m_job->getKeyspace() / m_job->getHcKeyspace();
-  return AttackMode::getPasswordCountToProcess() / rules_count;
-}

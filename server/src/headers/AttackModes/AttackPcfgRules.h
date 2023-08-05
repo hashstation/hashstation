@@ -36,8 +36,6 @@ class CAttackPcfgRules : public AttackMode {
          */
         bool makeWorkunit() override ;
 
-        uint64_t getPasswordCountToProcess() const override;
-
     private:
         /**
          * @brief Function to generate new CWorkunit for certain host for given time

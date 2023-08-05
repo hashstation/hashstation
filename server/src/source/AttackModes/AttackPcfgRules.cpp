@@ -326,8 +326,3 @@ bool CAttackPcfgRules::loadNextPreterminals(std::string & preterminals, uint64_t
     m_client.Acknowledge();
     return !preterminals.empty() && realKeyspace != 0;
 }
-
-uint64_t CAttackPcfgRules::getPasswordCountToProcess() const {
-  uint64_t rules_count = m_job->getKeyspace() / m_job->getHcKeyspace();
-  return AttackMode::getPasswordCountToProcess() / rules_count;
-}
