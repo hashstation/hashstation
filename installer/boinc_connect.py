@@ -29,6 +29,10 @@ if __name__ == "__main__":
     output = subprocess.check_output(['boinccmd', '--create_account', args.url, args.email, args.password, args.username], cwd=boinc_dir)
     key = output.split()[-1]
     ret = subprocess.call(['boinccmd', '--project_attach', args.url, key], cwd=boinc_dir)
-    subprocess.call(['boinccmd', '--project', args.url, 'update'], cwd=boinc_dir)
+    if ret == 0:
+        subprocess.call(['boinccmd', '--project', args.url, 'update'], cwd=boinc_dir)
+        print("Success")
+    else:
+        print("Failed")
     sys.exit(ret)
     

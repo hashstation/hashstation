@@ -216,7 +216,7 @@ class FcJob(Base):
     comment = Column(Text(collation='utf8_bin'), nullable=False)
     time_start = Column(DateTime)
     time_end = Column(DateTime)
-    seconds_per_workunit = Column(BigInteger, nullable=False, server_default=text("'3600'"))
+    seconds_per_workunit = Column(BigInteger, nullable=False, server_default=text("'600'"))
     charset1 = Column(String(4096, 'utf8_bin'))
     charset2 = Column(String(4096, 'utf8_bin'))
     charset3 = Column(String(4096, 'utf8_bin'))
@@ -239,7 +239,7 @@ class FcJob(Base):
     workload_profile = Column(Integer, nullable=False, server_default=text("'0'"))
     priority = Column(Integer, nullable=False, server_default=text("'1'"))
     slow_candidates = Column(Integer, nullable=False, server_default=text("'0'"))
-    extra_hc_args = Column(Text(collation='utf8_bin'), nullable=False)
+    extra_hc_args = Column(String(4096, 'utf8_bin'))
     deleted = Column(Integer, nullable=False, server_default=text("'0'"))
     kill = Column(Integer, nullable=False, server_default=text("'0'"))
     batch_id = Column(ForeignKey('fc_batch.id', ondelete='SET NULL'), index=True)
@@ -513,7 +513,7 @@ class FcSetting(Base):
     __tablename__ = 'fc_settings'
 
     id = Column(Integer, primary_key=True)
-    default_seconds_per_workunit = Column(Integer, nullable=False, server_default=text("'3600'"))
+    default_seconds_per_workunit = Column(Integer, nullable=False, server_default=text("'600'"))
     workunit_timeout_factor = Column(Integer, nullable=False, server_default=text("'2'"))
     hwmon_temp_abort = Column(Integer, nullable=False, server_default=text("'90'"))
     bench_all = Column(Integer, nullable=False, server_default=text("'1'"))

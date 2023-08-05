@@ -23,4 +23,4 @@ ALTER TABLE `fc_job`
 ADD `slow_candidates` tinyint(1) NOT NULL DEFAULT '0';
 
 ALTER TABLE `fc_job`
-ADD `extra_hc_args` varchar(4096) COLLATE utf8_bin DEFAULT '';
+ADD `extra_hc_args` varchar(4096) COLLATE utf8_bin DEFAULT NULL;

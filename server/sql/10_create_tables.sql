@@ -301,7 +301,7 @@ CREATE TABLE IF NOT EXISTS `fc_job` (
   `comment` text COLLATE utf8_bin NOT NULL,
   `time_start` timestamp NULL DEFAULT NULL,
   `time_end` timestamp NULL DEFAULT NULL,
-  `seconds_per_workunit` bigint(20) unsigned NOT NULL DEFAULT '3600',
+  `seconds_per_workunit` bigint(20) unsigned NOT NULL DEFAULT '600',
   `charset1` varchar(4096) COLLATE utf8_bin DEFAULT NULL,
   `charset2` varchar(4096) COLLATE utf8_bin DEFAULT NULL,
   `charset3` varchar(4096) COLLATE utf8_bin DEFAULT NULL,
@@ -324,7 +324,7 @@ CREATE TABLE IF NOT EXISTS `fc_job` (
   `workload_profile` tinyint(3) NOT NULL DEFAULT '0',
   `priority` tinyint(3) NOT NULL DEFAULT '1',
   `slow_candidates` tinyint(1) NOT NULL DEFAULT '0',
-  `extra_hc_args` varchar(4096) COLLATE utf8_bin DEFAULT '',
+  `extra_hc_args` varchar(4096) COLLATE utf8_bin DEFAULT NULL,
   `deleted` tinyint(1) NOT NULL DEFAULT '0',
   `kill` int(11) NOT NULL DEFAULT '0',
   `batch_id` int(11),
@@ -467,7 +467,7 @@ CREATE TABLE `fc_pcfg_grammar` (
 
 CREATE TABLE IF NOT EXISTS `fc_settings` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `default_seconds_per_workunit` int(10) unsigned NOT NULL DEFAULT '3600',
+  `default_seconds_per_workunit` int(10) unsigned NOT NULL DEFAULT '600',
   `workunit_timeout_factor` int(10) unsigned NOT NULL DEFAULT '6',
   `hwmon_temp_abort` int(10) unsigned NOT NULL DEFAULT '90',
   `bench_all` tinyint(1) unsigned NOT NULL DEFAULT '1',

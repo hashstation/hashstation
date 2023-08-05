@@ -39,7 +39,7 @@ XTOHASHCAT_EXECUTABLE = ROOT_DIR + '/../xtohashcat/XtoHashcat.py'
 XTOHASHCAT_PATH = ROOT_DIR + '/../xtohashcat/'
 
 # Fitcrack Settings
-SECONDS_PER_JOB = 3600
+SECONDS_PER_JOB = 600
 PROJECT_USER = 'root'
 PROJECT_NAME = 'fitcrack'
 PROJECT_DIR = '/home/' + PROJECT_USER + '/projects/' + PROJECT_NAME
