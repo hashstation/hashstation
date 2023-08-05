@@ -152,5 +152,8 @@ uint64_t AttackMode::getPasswordCountToProcess() const {
     uint64_t amplifier = m_job->getKeyspace() / m_job->getHcKeyspace();
     double host_power = m_host->getPower();
     host_power /= amplifier;
+    Tools::printDebugHost(Config::DebugType::Log, m_job->getId(), m_host->getBoincHostId(),
+                    "Power: %" PRIu64 " - ampl: %" PRIu64 " - result: %" PRIu64 "\n",
+                    host_power, amplifier, host_power * m_seconds);
     return host_power * m_seconds;
 }
