@@ -23,6 +23,7 @@ class CAttackHybridDictMask : public AttackMode {
 		virtual bool requiresMasks() const override {return true;}
 		virtual bool masksUseRealKeyspace() const override {return true;}
 		virtual bool hasStickyLeftDict() const override {return true;}
+		virtual uint64_t getAmplifier() const override;
 
 	private:
 		/**
