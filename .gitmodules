@@ -2,3 +2,7 @@
 	path = boinc
 	url = https://github.com/BOINC/boinc
 	ignore = dirty
+[submodule "hashcat"]
+	path = hashcat
+	url = https://github.com/hashcat/hashcat
+	ignore = dirty

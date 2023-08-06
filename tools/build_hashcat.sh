@@ -1,20 +1,21 @@
-git clone https://github.com/hashcat/hashcat
+#!/bin/bash
+set -e
+
+cp -r ../hashcat hashcat
 cd hashcat
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-make linux -j
+make linux -j4 PRODUCTION=1
 
 # Needs win-iconv
 # https://github.com/hashcat/hashcat/blob/master/BUILD_WSL.md
-make win -j
-
-chmod +x hashcat
+make win -j4 PRODUCTION=1
 else
 patch -p1 < ../hashcat.patch
-make -j
+make -j4 PRODUCTION=1
 fi
 
-chmod +x hashcat
+chmod +x hashcat.bin
 ./hashcat.bin --hash-info --machine-readable --quiet > tmp.json
 python3 -m json.tool tmp.json hash_info.json
 

@@ -1,3 +1,6 @@
+#!/bin/bash
+set -e
+
 bash build_hashcat.sh
 
 cp -f hashcat.bin ../server/client_bin/x86_64-pc-linux-gnu/hashcat1.bin

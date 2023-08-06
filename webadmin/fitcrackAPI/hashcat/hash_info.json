@@ -2070,8 +2070,8 @@
         "is_deprecated": false,
         "is_salted": true,
         "salt_type": "generic",
-        "salt_len_min": 0,
-        "salt_len_max": 256,
+        "salt_len_min": 1,
+        "salt_len_max": 4,
         "kernel_type": [
             "optimized"
         ],
@@ -2222,6 +2222,35 @@
         ],
         "example_hash_format": "plain",
         "example_hash": "$PHPS$30353031383437363132$f02b0b2f25e5754edb04522c346ba243",
+        "example_pass": "hashcat",
+        "benchmark_mask": "?b?b?b?b?b?b?b",
+        "benchmark_charset1": "N/A",
+        "autodetect_enabled": true,
+        "self_test_enabled": true,
+        "potfile_enabled": true,
+        "custom_plugin": false,
+        "plaintext_encoding": [
+            "ASCII",
+            "HEX"
+        ]
+    },
+    "2630": {
+        "name": "md5(md5($pass.$salt))",
+        "category": "Raw Hash salted and/or iterated",
+        "slow_hash": false,
+        "password_len_min": 0,
+        "password_len_max": 256,
+        "is_deprecated": false,
+        "is_salted": true,
+        "salt_type": "generic",
+        "salt_len_min": 0,
+        "salt_len_max": 256,
+        "kernel_type": [
+            "pure",
+            "optimized"
+        ],
+        "example_hash_format": "plain",
+        "example_hash": "0127eecea3120e34c8934ba3b72a390a:0",
         "example_pass": "hashcat",
         "benchmark_mask": "?b?b?b?b?b?b?b",
         "benchmark_charset1": "N/A",
@@ -2388,6 +2417,35 @@
         ],
         "example_hash_format": "plain",
         "example_hash": "9882d0778518b095917eb589f6998441",
+        "example_pass": "hashcat",
+        "benchmark_mask": "?b?b?b?b?b?b?b",
+        "benchmark_charset1": "N/A",
+        "autodetect_enabled": true,
+        "self_test_enabled": true,
+        "potfile_enabled": true,
+        "custom_plugin": false,
+        "plaintext_encoding": [
+            "ASCII",
+            "HEX"
+        ]
+    },
+    "3610": {
+        "name": "md5(md5(md5($pass)).$salt)",
+        "category": "Raw Hash salted and/or iterated",
+        "slow_hash": false,
+        "password_len_min": 0,
+        "password_len_max": 256,
+        "is_deprecated": false,
+        "is_salted": true,
+        "salt_type": "generic",
+        "salt_len_min": 0,
+        "salt_len_max": 256,
+        "kernel_type": [
+            "pure",
+            "optimized"
+        ],
+        "example_hash_format": "plain",
+        "example_hash": "a0ab79f9e2b5a4434d2da61673b56362:1234",
         "example_pass": "hashcat",
         "benchmark_mask": "?b?b?b?b?b?b?b",
         "benchmark_charset1": "N/A",
@@ -2674,6 +2732,64 @@
         ],
         "example_hash_format": "plain",
         "example_hash": "bc8319c0220bff8a0d7f5d703114a725:34659348756345251",
+        "example_pass": "hashcat",
+        "benchmark_mask": "?b?b?b?b?b?b?b",
+        "benchmark_charset1": "N/A",
+        "autodetect_enabled": true,
+        "self_test_enabled": true,
+        "potfile_enabled": true,
+        "custom_plugin": false,
+        "plaintext_encoding": [
+            "ASCII",
+            "HEX"
+        ]
+    },
+    "4420": {
+        "name": "md5(sha1($pass.$salt))",
+        "category": "Raw Hash salted and/or iterated",
+        "slow_hash": false,
+        "password_len_min": 0,
+        "password_len_max": 256,
+        "is_deprecated": false,
+        "is_salted": true,
+        "salt_type": "generic",
+        "salt_len_min": 0,
+        "salt_len_max": 256,
+        "kernel_type": [
+            "pure",
+            "optimized"
+        ],
+        "example_hash_format": "plain",
+        "example_hash": "34ebbba3e5c98f6253c160eae53da092:6224378456121050285",
+        "example_pass": "hashcat",
+        "benchmark_mask": "?b?b?b?b?b?b?b",
+        "benchmark_charset1": "N/A",
+        "autodetect_enabled": true,
+        "self_test_enabled": true,
+        "potfile_enabled": true,
+        "custom_plugin": false,
+        "plaintext_encoding": [
+            "ASCII",
+            "HEX"
+        ]
+    },
+    "4430": {
+        "name": "md5(sha1($salt.$pass))",
+        "category": "Raw Hash salted and/or iterated",
+        "slow_hash": false,
+        "password_len_min": 0,
+        "password_len_max": 256,
+        "is_deprecated": false,
+        "is_salted": true,
+        "salt_type": "generic",
+        "salt_len_min": 0,
+        "salt_len_max": 256,
+        "kernel_type": [
+            "pure",
+            "optimized"
+        ],
+        "example_hash_format": "plain",
+        "example_hash": "df0e9ede5b6c7d1f1b47199f86029002:59132809201799180722359939692710461886",
         "example_pass": "hashcat",
         "benchmark_mask": "?b?b?b?b?b?b?b",
         "benchmark_charset1": "N/A",
@@ -7952,6 +8068,34 @@
             "HEX"
         ]
     },
+    "17040": {
+        "name": "GPG (CAST5 (SHA-1($pass)))",
+        "category": "Private Key",
+        "slow_hash": true,
+        "password_len_min": 0,
+        "password_len_max": 256,
+        "is_deprecated": false,
+        "is_salted": true,
+        "salt_type": "embedded",
+        "salt_len_min": 0,
+        "salt_len_max": 256,
+        "kernel_type": [
+            "pure"
+        ],
+        "example_hash_format": "plain",
+        "example_hash": "$gpg$*1*1308*4096*ddf02802e2d06319bcf5962745b73677ecfa229649fed991e3360bdf2fffe71f521b8f877bccfcdce9a4fb4aeb63bd21fed6e37f96f193a6f7d3c476f4a7e01e7421d0eba5bfcd59544e37887572cd40e8d03e901574ec0f3afdff35ad3f25cb818ddadee84ddfef636207febd8d12d8a98983c86afa46608d178dba5ec51e98a182bd9687b6431fba87b5a16b5e0cf872db7dc12c55bfe7faaa443044d5a84ddf034198e5bc6b4b707b5f4a4c5999ff3885975113fca02693620f36f8f20570bdaf581726053b6c982cb988a3091dc206624f9d36372b151b22c7dc2cb71b9aaed95dc5630c4c4b045f80c403836cc9c84951fc04b8d6e413e1d4f6b3815508f43cf80c25c7db3882b5b6572f1395a00dcda7fe65ce2155f9ea2cfe13588e0fb10316e7dd978e1d89cffc06a5e722ec765315926d2ee9060d8f449ead31cbacea88a5251be3b518d23984530da9f930114e614b7ed30f748c7512bddca8604bb5310ed76b9982eb88acaf49a29325e9db6987c6dea3878e2cb7daf3800177579ddcaafeacdba8edd147fae61bae36ab83a98db69a6c92017b3db8cff68985db989a03ee1bd045e6a577151486cdaeaf26517027b2f140b8493e2f401ea222511c2ce61c7057d64e8c3568e3f547f4b2875db59bc8c4f3346e0faf54e30745f583494b59e570bacb2b9eb71eb834e57f68aadda9af4bdb03276f71770c611aad0278033bb8c108471c4f4a2aa9070774367b9334661daf8a5e3eaf3d8dcca723d64ae7264c8709987a6cee9f42287b6e20d1d753262ff74886f3995412e59d09c61e4c637b6e97e6a3b08f9fa6adf9a1ec44a0372e893febd6712decc00bbd9cdacaf6bb9302fe8bd2ca27fdf5156c33582d56781ab0e5bd14da4b1edd73edd8f2a034a56d1a6f836724b605657f4714d59d522805e0ab02c6c5daed0973f93120ae01623ce0a96fbdf4402ce20ebb4f97fabbc90da5bb12aac3cd5f15c1add2d3863be59e843dca564ce9aa25b43ca1044b1e7e65d03d1f55f77d2a39cd85536ff38058837a23743c4e252f7de5654a562506b55d2b8fa29c7f4ecd307a8ae686cbb73fea6a8f72775d9e417ec346415024263a9f339dda286b682ccc8f93f7d4f59921620dd276188441fd44fc63925d18caa30a75c79c37a2ea45d14f6e423d2146281f9c6699a0658e50d69cfbc174090a0420bbb6f4e6b5b1f2b81b26f035aaf5c2e558c812496cb494587c78bf75350fb1a36e8c88076b4684094e0cba5dcdc4f672dbd2b432306b75077ae07b8fd88ba5b829eaed3fd2959a09b162329b75ac8fc20d4eea6e5971f54b31a23952dd4c111765822182cd60ee0de3cce3752c648918e3ec4c52643223132dcc885140faf8108230ebf4ef4149cbfa3070c91ec013404c15c1cecaa1efd544ab8313d378ef0e77c615b76b8ec07769960873ce9c7bdb1d75e7faef4c8a0b015c95a4e2bcd9ff7f5dfddd9a243fc0688db09e534ef1f3ebebd0c73b75bd57b8e02667da5744b1400dc695d4ae1e255d3487d1dead115de7d48962a15c7aecb97444173c40c028a46a7cfdd8cc7421f71d757cb809341c5148aedeab16f9289bc55b7475d646ae4993ab36fe5609a05121d140d4390289c94e4d87fd902fe03c8bfa13e7cfc9c21355ab6461d214137e4d90dff4a8f599020f12d7560fa4b5aaee1727f21c873fde76415b65357ecb923a547ddcdb20dde0880a287ed26d5ea4ce45514b907e368527c62e39ffdf2efeb817cd59694d23bafd48862e723f45e3c258cff3c804c5d2f17e24be8fe81a00f11f519beb9cde7be95226ac2a7f11e0f4f09dc040c11e1bf63172aa0f8a*1*254*2*3*8*0000000000000000*0*a11df265e4e54bee",
+        "example_pass": "Hashcat1!",
+        "benchmark_mask": "?b?b?b?b?b?b?b",
+        "benchmark_charset1": "N/A",
+        "autodetect_enabled": true,
+        "self_test_enabled": true,
+        "potfile_enabled": true,
+        "custom_plugin": false,
+        "plaintext_encoding": [
+            "ASCII",
+            "HEX"
+        ]
+    },
     "17200": {
         "name": "PKZIP (Compressed)",
         "category": "Archive",
@@ -9096,6 +9240,35 @@
             "HEX"
         ]
     },
+    "20712": {
+        "name": "RSA Security Analytics / NetWitness (sha256)",
+        "category": "Enterprise Application Software (EAS)",
+        "slow_hash": false,
+        "password_len_min": 0,
+        "password_len_max": 256,
+        "is_deprecated": false,
+        "is_salted": true,
+        "salt_type": "generic",
+        "salt_len_min": 0,
+        "salt_len_max": 256,
+        "kernel_type": [
+            "pure",
+            "optimized"
+        ],
+        "example_hash_format": "plain",
+        "example_hash": "6F48F44C46F5ADC534597687B086278F0AAF7D262ADDB3978562A7D55BBDF467:MDAwMzY1NzYwODI4MQ==",
+        "example_pass": "hashcat",
+        "benchmark_mask": "?b?b?b?b?b?b?b",
+        "benchmark_charset1": "N/A",
+        "autodetect_enabled": true,
+        "self_test_enabled": true,
+        "potfile_enabled": true,
+        "custom_plugin": false,
+        "plaintext_encoding": [
+            "ASCII",
+            "HEX"
+        ]
+    },
     "20720": {
         "name": "sha256($salt.sha256($pass))",
         "category": "Raw Hash salted and/or iterated",
@@ -9276,6 +9449,34 @@
         ],
         "example_hash_format": "plain",
         "example_hash": "799dc7d9aa4d3f404cc21a4936dbdcde:68617368636174",
+        "example_pass": "hashcat",
+        "benchmark_mask": "?b?b?b?b?b?b?b",
+        "benchmark_charset1": "N/A",
+        "autodetect_enabled": true,
+        "self_test_enabled": true,
+        "potfile_enabled": true,
+        "custom_plugin": false,
+        "plaintext_encoding": [
+            "ASCII",
+            "HEX"
+        ]
+    },
+    "21310": {
+        "name": "md5($salt1.sha1($salt2.$pass))",
+        "category": "Raw Hash salted and/or iterated",
+        "slow_hash": false,
+        "password_len_min": 0,
+        "password_len_max": 256,
+        "is_deprecated": false,
+        "is_salted": true,
+        "salt_type": "generic",
+        "salt_len_min": 0,
+        "salt_len_max": 256,
+        "kernel_type": [
+            "pure"
+        ],
+        "example_hash_format": "plain",
+        "example_hash": "dc91b5a658ef4b7d859e90742f340e24:708237:d270e9eea5802e346bcaa9b229f37766",
         "example_pass": "hashcat",
         "benchmark_mask": "?b?b?b?b?b?b?b",
         "benchmark_charset1": "N/A",
@@ -11846,7 +12047,7 @@
     },
     "29000": {
         "name": "sha1($salt.sha1(utf16le($username).':'.utf16le($pass)))",
-        "category": "Operating System",
+        "category": "Raw Hash salted and/or iterated",
         "slow_hash": false,
         "password_len_min": 0,
         "password_len_max": 256,
@@ -13908,7 +14109,8 @@
         "salt_len_min": 0,
         "salt_len_max": 256,
         "kernel_type": [
-            "pure"
+            "pure",
+            "optimized"
         ],
         "example_hash_format": "plain",
         "example_hash": "S:\"Config Passphrase\"=02:ded7137400e0a1004a12f1708453968ccc270908ba02ab0345c83690d1de3d9937587be66ad2a7fe8cc6cb16ecff02e61ac05e09d4f49f284efd24f6b16d6ae3",
@@ -13997,6 +14199,483 @@
         "example_hash_format": "plain",
         "example_hash": "$metamaskMobile$MjU1NTA5MTU2ODY5MjY4OQ==$3cccb51c401e54abc82987fd9310a8d3$WQhIECN0blOaV31RC3lKfQ==",
         "example_pass": "hashcat1",
+        "benchmark_mask": "?b?b?b?b?b?b?b",
+        "benchmark_charset1": "N/A",
+        "autodetect_enabled": true,
+        "self_test_enabled": true,
+        "potfile_enabled": true,
+        "custom_plugin": false,
+        "plaintext_encoding": [
+            "ASCII",
+            "HEX"
+        ]
+    },
+    "32000": {
+        "name": "NetIQ SSPR (MD5)",
+        "category": "Enterprise Application Software (EAS)",
+        "slow_hash": true,
+        "password_len_min": 0,
+        "password_len_max": 256,
+        "is_deprecated": false,
+        "is_salted": true,
+        "salt_type": "virtual",
+        "salt_len_min": 0,
+        "salt_len_max": 256,
+        "kernel_type": [
+            "pure"
+        ],
+        "example_hash_format": "plain",
+        "example_hash": "$sspr$0$100000$NONE$2c8586ef492e3c3dd3795395507dc14f",
+        "example_pass": "hashcat",
+        "benchmark_mask": "?b?b?b?b?b?b?b",
+        "benchmark_charset1": "N/A",
+        "autodetect_enabled": true,
+        "self_test_enabled": true,
+        "potfile_enabled": true,
+        "custom_plugin": false,
+        "plaintext_encoding": [
+            "ASCII",
+            "HEX"
+        ]
+    },
+    "32010": {
+        "name": "NetIQ SSPR (SHA1)",
+        "category": "Enterprise Application Software (EAS)",
+        "slow_hash": true,
+        "password_len_min": 0,
+        "password_len_max": 256,
+        "is_deprecated": false,
+        "is_salted": true,
+        "salt_type": "virtual",
+        "salt_len_min": 0,
+        "salt_len_max": 256,
+        "kernel_type": [
+            "pure"
+        ],
+        "example_hash_format": "plain",
+        "example_hash": "$sspr$1$100000$NONE$b3485214dfa55b038a606a183a560dab7db4ecf1",
+        "example_pass": "hashcat",
+        "benchmark_mask": "?b?b?b?b?b?b?b",
+        "benchmark_charset1": "N/A",
+        "autodetect_enabled": true,
+        "self_test_enabled": true,
+        "potfile_enabled": true,
+        "custom_plugin": false,
+        "plaintext_encoding": [
+            "ASCII",
+            "HEX"
+        ]
+    },
+    "32020": {
+        "name": "NetIQ SSPR (SHA-1 with Salt)",
+        "category": "Enterprise Application Software (EAS)",
+        "slow_hash": true,
+        "password_len_min": 0,
+        "password_len_max": 256,
+        "is_deprecated": false,
+        "is_salted": true,
+        "salt_type": "embedded",
+        "salt_len_min": 32,
+        "salt_len_max": 32,
+        "kernel_type": [
+            "pure"
+        ],
+        "example_hash_format": "plain",
+        "example_hash": "$sspr$2$100000$CxCpGqosk9PkCBcoRFp6DLjjRhVEJKK8$a33283d71c2ecaf4f3017b0a89feca2fc879221c",
+        "example_pass": "hashcat",
+        "benchmark_mask": "?b?b?b?b?b?b?b",
+        "benchmark_charset1": "N/A",
+        "autodetect_enabled": true,
+        "self_test_enabled": true,
+        "potfile_enabled": true,
+        "custom_plugin": false,
+        "plaintext_encoding": [
+            "ASCII",
+            "HEX"
+        ]
+    },
+    "32030": {
+        "name": "NetIQ SSPR (SHA-256 with Salt)",
+        "category": "Enterprise Application Software (EAS)",
+        "slow_hash": true,
+        "password_len_min": 0,
+        "password_len_max": 256,
+        "is_deprecated": false,
+        "is_salted": true,
+        "salt_type": "embedded",
+        "salt_len_min": 32,
+        "salt_len_max": 32,
+        "kernel_type": [
+            "pure"
+        ],
+        "example_hash_format": "plain",
+        "example_hash": "$sspr$3$100000$ODk2NDA5Mjc2NDIwMjMwMjQyMTQ1NzMz$7195873d47c7e3627510862e37fe7cab9bc83b91feecb9864841bf80cff92419",
+        "example_pass": "hashcat",
+        "benchmark_mask": "?b?b?b?b?b?b?b",
+        "benchmark_charset1": "N/A",
+        "autodetect_enabled": true,
+        "self_test_enabled": true,
+        "potfile_enabled": true,
+        "custom_plugin": false,
+        "plaintext_encoding": [
+            "ASCII",
+            "HEX"
+        ]
+    },
+    "32031": {
+        "name": "Adobe AEM (SSPR, SHA-256 with Salt)",
+        "category": "Enterprise Application Software (EAS)",
+        "slow_hash": true,
+        "password_len_min": 0,
+        "password_len_max": 256,
+        "is_deprecated": false,
+        "is_salted": true,
+        "salt_type": "embedded",
+        "salt_len_min": 16,
+        "salt_len_max": 16,
+        "kernel_type": [
+            "pure"
+        ],
+        "example_hash_format": "plain",
+        "example_hash": "$sspr$3$1000$f9bbf1381f481427$a1b45fd7eb190cc7f0bf831698cb777207eebbb4b7ea2abd6fff84be539aae62",
+        "example_pass": "hashcat",
+        "benchmark_mask": "?b?b?b?b?b?b?b",
+        "benchmark_charset1": "N/A",
+        "autodetect_enabled": true,
+        "self_test_enabled": true,
+        "potfile_enabled": true,
+        "custom_plugin": false,
+        "plaintext_encoding": [
+            "ASCII",
+            "HEX"
+        ]
+    },
+    "32040": {
+        "name": "NetIQ SSPR (SHA-512 with Salt)",
+        "category": "Enterprise Application Software (EAS)",
+        "slow_hash": true,
+        "password_len_min": 0,
+        "password_len_max": 256,
+        "is_deprecated": false,
+        "is_salted": true,
+        "salt_type": "embedded",
+        "salt_len_min": 32,
+        "salt_len_max": 32,
+        "kernel_type": [
+            "pure"
+        ],
+        "example_hash_format": "plain",
+        "example_hash": "$sspr$4$100000$NzYwNjMyNDc2MTQ2OTE4NTUzODAyODE3$0ce2e8b8efa4280e6e003d77cb45d45300dff3960c5c073f68303565fe62fe4ff3ada8cee7d3b87d0457335ab0df73c5c64ee1f71ccf6b8bd43a316ecb42ecd4",
+        "example_pass": "hashcat",
+        "benchmark_mask": "?b?b?b?b?b?b?b",
+        "benchmark_charset1": "N/A",
+        "autodetect_enabled": true,
+        "self_test_enabled": true,
+        "potfile_enabled": true,
+        "custom_plugin": false,
+        "plaintext_encoding": [
+            "ASCII",
+            "HEX"
+        ]
+    },
+    "32041": {
+        "name": "Adobe AEM (SSPR, SHA-512 with Salt)",
+        "category": "Enterprise Application Software (EAS)",
+        "slow_hash": true,
+        "password_len_min": 0,
+        "password_len_max": 256,
+        "is_deprecated": false,
+        "is_salted": true,
+        "salt_type": "embedded",
+        "salt_len_min": 16,
+        "salt_len_max": 16,
+        "kernel_type": [
+            "pure"
+        ],
+        "example_hash_format": "plain",
+        "example_hash": "$sspr$4$1000$9ad596c50a5c9acd$d4cdc3c7d227e3cc57a9c9014b1eff1684808ef40191482cd8ae6e9d7b66211a5f04e4b34f494b0513a5f67b9614c5ff16e95e624a60f41b16b90533f305146e",
+        "example_pass": "hashcat",
+        "benchmark_mask": "?b?b?b?b?b?b?b",
+        "benchmark_charset1": "N/A",
+        "autodetect_enabled": true,
+        "self_test_enabled": true,
+        "potfile_enabled": true,
+        "custom_plugin": false,
+        "plaintext_encoding": [
+            "ASCII",
+            "HEX"
+        ]
+    },
+    "32050": {
+        "name": "NetIQ SSPR (PBKDF2WithHmacSHA1)",
+        "category": "Enterprise Application Software (EAS)",
+        "slow_hash": true,
+        "password_len_min": 0,
+        "password_len_max": 256,
+        "is_deprecated": false,
+        "is_salted": true,
+        "salt_type": "embedded",
+        "salt_len_min": 64,
+        "salt_len_max": 64,
+        "kernel_type": [
+            "pure"
+        ],
+        "example_hash_format": "plain",
+        "example_hash": "$pbkdf2-hmac-sha1$100000$7134180503252384106490944216249411431665011151428170747164626720$990e0c5f62b1384d48cbe3660329b9741c4a8473",
+        "example_pass": "hashcat",
+        "benchmark_mask": "?b?b?b?b?b?b?b",
+        "benchmark_charset1": "N/A",
+        "autodetect_enabled": true,
+        "self_test_enabled": true,
+        "potfile_enabled": true,
+        "custom_plugin": false,
+        "plaintext_encoding": [
+            "ASCII",
+            "HEX"
+        ]
+    },
+    "32060": {
+        "name": "NetIQ SSPR (PBKDF2WithHmacSHA256)",
+        "category": "Enterprise Application Software (EAS)",
+        "slow_hash": true,
+        "password_len_min": 0,
+        "password_len_max": 256,
+        "is_deprecated": false,
+        "is_salted": true,
+        "salt_type": "embedded",
+        "salt_len_min": 43,
+        "salt_len_max": 43,
+        "kernel_type": [
+            "pure"
+        ],
+        "example_hash_format": "plain",
+        "example_hash": "$pbkdf2-sha256$100000$MDUzMTE4NjQyNDc5NTQxMjAwMjg1OTYxNjAxNDgzNzc$bwYpAyQ2g5PqdnMj8mJ46mkwQbyztw8gEQqnhDHj48c",
+        "example_pass": "hashcat",
+        "benchmark_mask": "?b?b?b?b?b?b?b",
+        "benchmark_charset1": "N/A",
+        "autodetect_enabled": true,
+        "self_test_enabled": true,
+        "potfile_enabled": true,
+        "custom_plugin": false,
+        "plaintext_encoding": [
+            "ASCII",
+            "HEX"
+        ]
+    },
+    "32070": {
+        "name": "NetIQ SSPR (PBKDF2WithHmacSHA512)",
+        "category": "Enterprise Application Software (EAS)",
+        "slow_hash": true,
+        "password_len_min": 0,
+        "password_len_max": 256,
+        "is_deprecated": false,
+        "is_salted": true,
+        "salt_type": "embedded",
+        "salt_len_min": 64,
+        "salt_len_max": 64,
+        "kernel_type": [
+            "pure"
+        ],
+        "example_hash_format": "plain",
+        "example_hash": "$pbkdf2-hmac-sha512$100000.0211258841559010919749469547425215185689838310218571790549787198.1659e40e64daf84d635a5f1ed2f5708f6735233bed471994bdc0307b3c5f77597f79bdcdd088d1e79357b383809ddfd84379006b49e14f4ff45c449071478777",
+        "example_pass": "hashcat",
+        "benchmark_mask": "?b?b?b?b?b?b?b",
+        "benchmark_charset1": "N/A",
+        "autodetect_enabled": true,
+        "self_test_enabled": true,
+        "potfile_enabled": true,
+        "custom_plugin": false,
+        "plaintext_encoding": [
+            "ASCII",
+            "HEX"
+        ]
+    },
+    "32100": {
+        "name": "Kerberos 5, etype 17, AS-REP",
+        "category": "Network Protocol",
+        "slow_hash": true,
+        "password_len_min": 0,
+        "password_len_max": 256,
+        "is_deprecated": false,
+        "is_salted": true,
+        "salt_type": "embedded",
+        "salt_len_min": 0,
+        "salt_len_max": 256,
+        "kernel_type": [
+            "pure"
+        ],
+        "example_hash_format": "plain",
+        "example_hash": "$krb5asrep$17$user$EXAMPLE.COM$a419c4030e555734b06c2629$c09a1421f96eb126c757a4b87830381f142477d9a85b2beb3093dbfd44f38ddb6016a479537fb7b36e046315869fe79187217971ff6a12c1e0a2df3f68045e03814b21f756d8981f781803d65e8572823c88979581d93cf7d768f2efced16f3719b8d1004d9e73d798de255383476bced47d1982f16be77d0feb55a1f44f58bd013fa4caee58ac614caf0f1cf9101ec9623c5b8c2a1491b73f134f074790088fdb360b5ebce0d32a8145ed00a81ddf77188e150b92d8e8ddd0285d27f1514253e5546e6bba864b362bb1e6483b26d08fa4cc268bfbefe0f690039bcc524b774599df3680c1c3431d891bfa99514a877f964e",
+        "example_pass": "hashcat",
+        "benchmark_mask": "?b?b?b?b?b?b?b",
+        "benchmark_charset1": "N/A",
+        "autodetect_enabled": true,
+        "self_test_enabled": true,
+        "potfile_enabled": true,
+        "custom_plugin": false,
+        "plaintext_encoding": [
+            "ASCII",
+            "HEX"
+        ]
+    },
+    "32200": {
+        "name": "Kerberos 5, etype 18, AS-REP",
+        "category": "Network Protocol",
+        "slow_hash": true,
+        "password_len_min": 0,
+        "password_len_max": 256,
+        "is_deprecated": false,
+        "is_salted": true,
+        "salt_type": "embedded",
+        "salt_len_min": 0,
+        "salt_len_max": 256,
+        "kernel_type": [
+            "pure"
+        ],
+        "example_hash_format": "plain",
+        "example_hash": "$krb5asrep$18$user$EXAMPLE.COM$aa4c494f520b27873a4de8f7$ebc9976a77f62e8ccca02d43d68bafcc66a81fcbb44a336b00ce401982f32975a5f9bcdc752643252185866685b0a30aaf50e449e392a5994e6979f23aba25f7704c90b2efa03b703c3c2f9e3617cc588ed226d0417e7742d45407878fd946d046b4a9732b9a203cb857811714b009c195b7c96b9bccb7e48832b11a4e92ecf24c49e54de8d0d5d5351445b5126db90bb7eebc7861db1e61de1175824b0a45023a6fa06c2a9d3035fdcf863bea922648e3dc28b48e39b1dec0869e7fe4de399cb52dfcf2596599da54a4bb0169c72d9496de2e137a4594e0e8a69082fc558ac9ace65d32eae5e260a65ca3f2f5871aaeee7a3b090b50f39321d120c144421e0abe7d",
+        "example_pass": "hashcat",
+        "benchmark_mask": "?b?b?b?b?b?b?b",
+        "benchmark_charset1": "N/A",
+        "autodetect_enabled": true,
+        "self_test_enabled": true,
+        "potfile_enabled": true,
+        "custom_plugin": false,
+        "plaintext_encoding": [
+            "ASCII",
+            "HEX"
+        ]
+    },
+    "32300": {
+        "name": "Empire CMS (Admin password)",
+        "category": "Forums, CMS, E-Commerce",
+        "slow_hash": false,
+        "password_len_min": 0,
+        "password_len_max": 256,
+        "is_deprecated": false,
+        "is_salted": true,
+        "salt_type": "generic",
+        "salt_len_min": 0,
+        "salt_len_max": 256,
+        "kernel_type": [
+            "pure",
+            "optimized"
+        ],
+        "example_hash_format": "plain",
+        "example_hash": "5962d4ada95d6493379cd9c05ce7a376:726620866134417802643053384570:6056291339665060317728572165496183",
+        "example_pass": "hashcat",
+        "benchmark_mask": "?b?b?b?b?b?b?b",
+        "benchmark_charset1": "N/A",
+        "autodetect_enabled": true,
+        "self_test_enabled": true,
+        "potfile_enabled": true,
+        "custom_plugin": false,
+        "plaintext_encoding": [
+            "ASCII",
+            "HEX"
+        ]
+    },
+    "32410": {
+        "name": "sha512(sha512($pass).$salt)",
+        "category": "Raw Hash salted and/or iterated",
+        "slow_hash": false,
+        "password_len_min": 0,
+        "password_len_max": 256,
+        "is_deprecated": false,
+        "is_salted": true,
+        "salt_type": "generic",
+        "salt_len_min": 0,
+        "salt_len_max": 256,
+        "kernel_type": [
+            "pure"
+        ],
+        "example_hash_format": "plain",
+        "example_hash": "25d509824028a999f4ee851b5de404bb316b78ae8e974874376484018f58520e082747a7ce9f769bcaccb5f63878356c780f602e23393f12b650a6931e4b9338:21881837027919828109608",
+        "example_pass": "hashcat",
+        "benchmark_mask": "?b?b?b?b?b?b?b",
+        "benchmark_charset1": "N/A",
+        "autodetect_enabled": true,
+        "self_test_enabled": true,
+        "potfile_enabled": true,
+        "custom_plugin": false,
+        "plaintext_encoding": [
+            "ASCII",
+            "HEX"
+        ]
+    },
+    "32420": {
+        "name": "sha512(sha512_bin($pass).$salt)",
+        "category": "Raw Hash salted and/or iterated",
+        "slow_hash": false,
+        "password_len_min": 0,
+        "password_len_max": 256,
+        "is_deprecated": false,
+        "is_salted": true,
+        "salt_type": "generic",
+        "salt_len_min": 0,
+        "salt_len_max": 256,
+        "kernel_type": [
+            "pure"
+        ],
+        "example_hash_format": "plain",
+        "example_hash": "c1bade2bd4ebc8db841ac6ab3e0a5035a29619e5b1a6135782b77da5d7cfaccee096f3ddb9ee23b9866378cfc2fb19f2c013fed1b7e1fffd18340a4f39238412:789",
+        "example_pass": "hashcat",
+        "benchmark_mask": "?b?b?b?b?b?b?b",
+        "benchmark_charset1": "N/A",
+        "autodetect_enabled": true,
+        "self_test_enabled": true,
+        "potfile_enabled": true,
+        "custom_plugin": false,
+        "plaintext_encoding": [
+            "ASCII",
+            "HEX"
+        ]
+    },
+    "32500": {
+        "name": "Dogechain.info Wallet",
+        "category": "Cryptocurrency Wallet",
+        "slow_hash": true,
+        "password_len_min": 0,
+        "password_len_max": 256,
+        "is_deprecated": false,
+        "is_salted": true,
+        "salt_type": "embedded",
+        "salt_len_min": 0,
+        "salt_len_max": 256,
+        "kernel_type": [
+            "pure"
+        ],
+        "example_hash_format": "plain",
+        "example_hash": "$dogechain$0*5000*EEmAkgiMlVrToRhu2suq91R5Frf+VQCvNzv9lj6OwRWIf/3IM31wqhJM7gGQpinXH9kqHkuQ2DMZxspgA7QFAddsUWvZxGdNAkaeKy90EAsTLIuDQnH3plfBQfmL6j5NPaH7Nr7kF1PdvM0pbUw6XHySBYkD/rPHNM6n58NRK4xfO4VVMykeX3+m2LaVyv5s269r/op38svRPT0YFGpRcanY6/U1BeSrvG2IXii1BKXXAcVEN4GFmyEQRWKI0uZE+3M0atf7UEPD4K9tmEKosqdsF4MFLiBtfI4eq0+926ijoezDmUPvHIiyQZ9CH2jZ*6jOgqW/GxL9He1afQiINIg==",
+        "example_pass": "hashcat",
+        "benchmark_mask": "?b?b?b?b?b?b?b",
+        "benchmark_charset1": "N/A",
+        "autodetect_enabled": true,
+        "self_test_enabled": true,
+        "potfile_enabled": true,
+        "custom_plugin": false,
+        "plaintext_encoding": [
+            "ASCII",
+            "HEX"
+        ]
+    },
+    "32600": {
+        "name": "CubeCart (whirlpool($salt.$pass.$salt))",
+        "category": "Raw Hash salted and/or iterated",
+        "slow_hash": false,
+        "password_len_min": 0,
+        "password_len_max": 256,
+        "is_deprecated": false,
+        "is_salted": true,
+        "salt_type": "generic",
+        "salt_len_min": 0,
+        "salt_len_max": 256,
+        "kernel_type": [
+            "pure"
+        ],
+        "example_hash_format": "plain",
+        "example_hash": "a2c0342a2617026fbaeed01130c826cc3f58242799894b3ecc1abfa811ede03fd712efd14a886af6fa74045502f22c9feb1c45a291cf2d7bbe9bb94c388b6403:deadbeef",
+        "example_pass": "hashcat",
         "benchmark_mask": "?b?b?b?b?b?b?b",
         "benchmark_charset1": "N/A",
         "autodetect_enabled": true,
