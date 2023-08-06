@@ -40,6 +40,8 @@ class CAttackCombinator : public AttackMode {
         
         virtual bool hasStickyLeftDict() const override {return true;}
 
+        virtual uint64_t getAmplifier() const override;
+
     private:
         /**
          * @brief Function to generate new CWorkunit for certain host for given time

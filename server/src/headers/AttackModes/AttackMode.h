@@ -133,6 +133,8 @@ protected:
 
         virtual uint64_t getPasswordCountToProcess() const;
 
+        virtual uint64_t getAmplifier() const;
+
         virtual uint64_t getMinPassCount() const {return Config::minPassCount;}
 
         PtrWorkunit m_workunit; /**< Instance of CWorkunit which is used to create this attack instance */

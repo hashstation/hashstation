@@ -149,7 +149,7 @@ PtrMask AttackMode::FindCurrentMask(std::vector<PtrMask> &masks, bool useRealKey
 }
 
 uint64_t AttackMode::getPasswordCountToProcess() const {
-    uint64_t amplifier = m_job->getKeyspace() / m_job->getHcKeyspace();
+    uint64_t amplifier = getAmplifier();
     double host_power = m_host->getPower();
     host_power /= amplifier;
     uint64_t pass_count = host_power * m_seconds;
@@ -157,4 +157,8 @@ uint64_t AttackMode::getPasswordCountToProcess() const {
                     "Host power: %" PRIu64 ", adj. power: %" PRIu64 ", ampl: %" PRIu64 ", seconds: %" PRIu64 ", pass count: %" PRIu64 "\n",
                     m_host->getPower(), (uint64_t)host_power, amplifier, m_seconds, pass_count);
     return pass_count;
+}
+
+uint64_t AttackMode::getAmplifier() const {
+    return m_job->getKeyspace() / m_job->getHcKeyspace();
 }

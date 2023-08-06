@@ -428,3 +428,10 @@ bool CAttackCombinator::generateWorkunit()
      */
     return true;
 }
+
+uint64_t CAttackCombinator::getAmplifier() const {
+    // We cannot use keyspace / hc_keyspace as hc_keyspace in our case is size
+    // of left dict, not the whole keyspace. So just hardcoded correct return
+    // value.
+    return 1;
+}
