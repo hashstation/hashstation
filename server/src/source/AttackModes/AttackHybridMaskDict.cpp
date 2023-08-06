@@ -413,3 +413,7 @@ bool CAttackHybridMaskDict::generateWorkunit()
 	 */
 	return true;
 }
+
+uint64_t CAttackHybridMaskDict::getAmplifier() const {
+    return 1;
+}
