@@ -72,15 +72,16 @@ void TaskBase::reportProgress() {
     trickle_xml.addElement("progress", percent_done);
 
     if (!status_info_.empty()) {
-      uint64_t time_start = status_info_.at("time_start");
-      uint64_t estimated_stop = status_info_.at("estimated_stop");
       uint64_t cracking_time = getRunTime();
 
       trickle_xml.addElement("cracking_time", cracking_time);
-      // TODO: ETA from hashcat is not reliable it seems.. tried with slow hash and it was a bit off.
-      // Consider using cracking speed and remaining hashes instead.
-      trickle_xml.addElement("remaining_time", estimated_stop - time_start); 
-   
+      // ETA from hashcat is not reliable it seems.. tried with slow hash and it was a bit off.
+      // uint64_t time_start = status_info_.at("time_start");
+      // uint64_t estimated_stop = status_info_.at("estimated_stop");
+      // uint64_t remaining_time = estimated_stop - time_start;
+      uint64_t remaining_time = ((100.0 / percent_done) * cracking_time) - cracking_time;
+      trickle_xml.addElement("remaining_time", remaining_time);
+
       // Also see TaskBenchmark
       uint64_t salt_count = status_info_.at("recovered_salts").at(1);
       salt_count = std::max<uint64_t>(salt_count, 1);
