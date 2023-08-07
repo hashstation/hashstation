@@ -13,8 +13,6 @@
 #include <string>
 #include <sstream>
 
-static const int DICT_GEN_TIME_LIMIT = 5;
-
 /** Class representing hashcat's attack benchmark */
 template <typename BaseAttack>
 class AttackBenchmark: public BaseAttack {

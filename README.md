@@ -27,7 +27,7 @@ Any issue or feature request? Join Fitcrack community [on Discord](https://disco
 
 <a name="clone"></a>
 ### Clone Fitcrack repository with submodules
-Run ``git clone --recursive https://github.com/nesfit/fitcrack``
+Run ``git clone --recursive https://github.com/davidbolvansky/fitcrack``
 
 
 <a name="inst"></a>
