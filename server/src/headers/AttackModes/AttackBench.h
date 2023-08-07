@@ -85,6 +85,40 @@ std::string CAttackBench<BaseAttack>::generateBasicConfig(unsigned attackMode, u
         attackMode, attackSubmode, distributionMode, name, hashType,
         hwTempAbort, optimized, deviceTypes, workloadProfile, slowCandidates,
         extraHcArgs, ruleLeft, ruleRight, charset1, charset2, charset3, charset4);
+    auto dicts = this->m_job->getDictionaries();
+    bool hasRightDicts = false;
+    if (!this->hasStickyLeftDict()) {
+      std::string pwd_dist;
+      for (auto &dict : dicts) {
+        if (!dict->isLeft()) {
+          hasRightDicts = true;
+          continue;
+        }
+
+        pwd_dist += dict->getPasswordDistribution();
+      }
+
+      if (!pwd_dist.empty()) {
+        configBuilder << "|||benchmark_dict1|String|" << pwd_dist.size() << '|'
+                      << pwd_dist << "|||\n";
+      }
+    }
+
+    if (this->hasStickyLeftDict() || hasRightDicts) {
+      std::string pwd_dist;
+      for (auto &dict : dicts) {
+        if (dict->isLeft()) {
+          continue;
+        }
+        hasRightDicts = true;
+
+        pwd_dist += dict->getPasswordDistribution();
+      }
+      if (hasRightDicts) {
+        configBuilder << "|||benchmark_dict2|String|" << pwd_dist.size() << '|'
+                      << pwd_dist << "|||\n";
+      }
+    }
 
     return configBuilder.str();
 }
@@ -92,7 +126,12 @@ std::string CAttackBench<BaseAttack>::generateBasicConfig(unsigned attackMode, u
 template <typename BaseAttack>
 std::unique_ptr<InputDict>
 CAttackBench<BaseAttack>::makeInputDict(PtrDictionary dict, bool isSticky) {
-    return BaseAttack::makeInputDict(dict, isSticky);
+    // do NOT screw up sticky files
+    if (isSticky) {
+      return BaseAttack::makeInputDict(dict, isSticky);
+    }
+    std::string path = Config::dictDir + dict->getDictFileName();
+    return std::unique_ptr<InputDict>(new InputDictBenchmark(path));
 }
 
 template <typename BaseAttack>
