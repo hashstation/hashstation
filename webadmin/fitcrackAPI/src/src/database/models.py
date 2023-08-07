@@ -666,7 +666,7 @@ class FcWorkunit(Base):
     speed = Column(BigInteger, nullable=False, server_default=text("'0'"))
     hashrate = Column(BigInteger, nullable=False, server_default=text("'0'"))
     remaining_time = Column(BigInteger, nullable=False, server_default=text("'0'"))
-    mask_id = Column(BigInteger, nullable=False)
+    mask_id = Column(BigInteger, ForeignKey('fc_mask.id'), nullable=False)
     dictionary_id = Column(BigInteger, nullable=False)
     duplicated = Column(Integer, nullable=False, server_default=text("'0'"))
     duplicate = Column(BigInteger, nullable=False, server_default=text("'0'"))
@@ -677,36 +677,28 @@ class FcWorkunit(Base):
 
     job = relationship("FcJob", back_populates="workunits")
     host = relationship("Host", back_populates="workunits")
+    mask = relationship('FcMask')
     device_info = relationship("FcDeviceInfo")
 
     result = relationship('Result',  uselist=False, primaryjoin="FcWorkunit.workunit_id==Result.workunitid", viewonly=True)
 
     @hybrid_property
     def keyspace(self):
-        if self.job.attack_mode == 8:
-            rules = 0
-            if self.job.rulesFile:
-                rules = self.job.rulesFile.count
-            return self.hc_keyspace * rules if rules else self.hc_keyspace
-        else:
-            if self.job.rulesFile:
-                return self.hc_keyspace * self.job.rulesFile.count
-            return self.hc_keyspace
+        if self.job.attack_mode == 3:
+            return self.hc_keyspace * (self.mask.keyspace / self.mask.hc_keyspace)
+        if self.job.rulesFile:
+            return self.hc_keyspace * self.job.rulesFile.count
+        return self.hc_keyspace
 
     @hybrid_property
     def start_index_real(self):
         if self.job.attack_mode in [1,6,7]:
             return self.start_index * self.job.hc_keyspace + self.start_index_2
-        else:
-            if self.job.attack_mode == 8:
-                rules = 0
-                if self.job.rulesFile:
-                    rules = self.job.rulesFile.count
-                return self.start_index * rules if rules else self.start_index
-            else:
-                if self.job.rulesFile:
-                    return self.start_index * self.job.rulesFile.count
-                return self.start_index
+        if self.job.attack_mode == 3:
+            return self.start_index * (self.mask.keyspace / self.mask.hc_keyspace)
+        if self.job.rulesFile:
+            return self.start_index * self.job.rulesFile.count
+        return self.start_index
 
     def as_graph(self):
         return {

@@ -187,28 +187,31 @@ bool CAttackMask::generateWorkunit()
         return false;
     }
     uint64_t maskHcKeyspace = currentMask->getHcKeyspace();
-    uint64_t maskKeyspace = currentMask->getKeyspace();
-
-    uint64_t hcDivisionFactor = maskKeyspace/maskHcKeyspace;
-    //round up
-    uint64_t hcKeyspace = (passCount+hcDivisionFactor-1)/hcDivisionFactor;
-
     uint64_t maskIndex = currentMask->getCurrentIndex();
-    if (maskIndex + hcKeyspace > maskHcKeyspace)
+    if (maskIndex + passCount > maskHcKeyspace)
     {
         /** Host is too powerful for this mask, it will finish it */
-        hcKeyspace = maskHcKeyspace - maskIndex;
+        passCount = maskHcKeyspace - maskIndex;
         Tools::printDebugHost(Config::DebugType::Log, m_job->getId(), m_host->getBoincHostId(),
-                "Adjusting #passwords, mask too small, new #: %" PRIu64 "\n", hcKeyspace);
+                "Adjusting #passwords, mask too small, new #: %" PRIu64 "\n", passCount);
     }
 
     /** Create new mask workunit */
-    m_workunit = CWorkunit::create(m_job->getId(), m_host->getId(), m_host->getBoincHostId(), maskIndex, 0, hcKeyspace,
+    m_workunit = CWorkunit::create(m_job->getId(), m_host->getId(), m_host->getBoincHostId(), maskIndex, 0, passCount,
                          currentMask->getId(), 0, false, 0, false);
 
     /** Update indexes for job and mask*/
-    m_job->updateIndex(m_job->getCurrentIndex() + hcKeyspace);
-    currentMask->updateIndex(maskIndex + hcKeyspace);
+    m_job->updateIndex(m_job->getCurrentIndex() + passCount);
+    currentMask->updateIndex(maskIndex + passCount);
 
     return true;
+}
+
+uint64_t CAttackMask::getAmplifier() const {
+    std::vector<PtrMask> maskVec = m_job->getMasks();
+    PtrMask currentMask = FindCurrentMask(maskVec, false);
+    if (!currentMask)
+        return 1;
+
+    return currentMask->getKeyspace() / currentMask->getHcKeyspace();
 }
