@@ -36,6 +36,7 @@ class CAttackMarkov : public AttackMode {
         bool makeWorkunit() override ;
 
         virtual bool requiresMasks() const override {return true;}
+        virtual uint64_t getAmplifier() const override;
 
     private:
         /**
