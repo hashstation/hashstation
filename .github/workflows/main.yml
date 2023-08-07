@@ -64,14 +64,14 @@ jobs:
     # Commit & push back
     - name: Commit files
       run: |
-        git config --local user.email "me@ovi.moe"
-        git config --local user.name "Webpacker"
+        git config --local user.email "david.bolvansky@gmail.com"
+        git config --local user.name "Assets Builder"
         git add webadmin/fitcrackFE/public/static/configuration.js
         git add server/client_bin/windows_x86_64/runner1.exe -f
         git add server/client_bin/x86_64-pc-linux-gnu/runner1.bin -f
         git add runner/bin/*.debug -f
         git add .
-        git commit -m "Build webadmin frontend and Runner 🚀"
+        git commit -m "Build webadmin frontend and Runner"
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
