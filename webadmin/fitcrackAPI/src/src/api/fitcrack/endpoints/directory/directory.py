@@ -10,7 +10,6 @@ from pathlib import Path
 from flask_restx import Resource, abort
 from flask import request
 
-from settings import SERVER_BROWSER_ROOT
 from src.api.apiConfig import api
 from src.api.fitcrack.endpoints.directory.argumentsParser import directory_parser
 from src.api.fitcrack.endpoints.directory.responseModels import directory_model
@@ -18,9 +17,6 @@ from src.database.models import FcMasksSet
 
 log = logging.getLogger(__name__)
 ns = api.namespace('directory', description='Endpoinsts for browsing filesystem of server.')
-
-ALLOWED_EXTENSIONS = set(['txt'])
-
 
 @ns.route('')
 class maskCollection(Resource):
@@ -32,8 +28,7 @@ class maskCollection(Resource):
         Returns list of files in directory.
         """
         args = directory_parser.parse_args(request)
-        ipath = args['path']
-        realpath = ipath if ipath.startswith(SERVER_BROWSER_ROOT) else SERVER_BROWSER_ROOT + ipath
+        realpath = args['path']
 
         result = {
             'path': realpath,
@@ -45,6 +40,10 @@ class maskCollection(Resource):
         try:
             os.listdir()
             for entry in os.listdir(realpath):
+                if entry.startswith('.'):
+                    continue
+                if entry.endswith('.txt'):
+                    continue
                 entryPath = os.path.join(realpath, entry)
                 if os.path.isfile(entryPath):
                     result['files'].append({
