@@ -10,7 +10,7 @@ from pathlib import Path
 from flask_restx import Resource, abort
 from flask import request
 
-from settings import SERVER_BROWSER_ROOT as prefix
+from settings import SERVER_BROWSER_ROOT
 from src.api.apiConfig import api
 from src.api.fitcrack.endpoints.directory.argumentsParser import directory_parser
 from src.api.fitcrack.endpoints.directory.responseModels import directory_model
@@ -20,8 +20,6 @@ log = logging.getLogger(__name__)
 ns = api.namespace('directory', description='Endpoinsts for browsing filesystem of server.')
 
 ALLOWED_EXTENSIONS = set(['txt'])
-
-prefixlen = len(prefix)
 
 
 @ns.route('')
@@ -35,17 +33,13 @@ class maskCollection(Resource):
         """
         args = directory_parser.parse_args(request)
         ipath = args['path']
-        realpath = ipath if ipath.startswith(prefix) else prefix + ipath
-        is_root_dir = os.path.abspath(realpath) == os.path.abspath(prefix)
-
-        if not os.path.realpath(realpath).startswith(prefix):
-            abort(500, 'Folder not accessible')
+        realpath = ipath if ipath.startswith(SERVER_BROWSER_ROOT) else SERVER_BROWSER_ROOT + ipath
 
         result = {
             'path': realpath,
             'files': [],
             'folders': [],
-            'parent': '' if is_root_dir else Path(realpath).parent
+            'parent': Path(realpath).parent
         }
 
         try:
