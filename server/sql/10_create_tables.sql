@@ -471,10 +471,6 @@ CREATE TABLE IF NOT EXISTS `fc_settings` (
   `workunit_timeout_factor` int(10) unsigned NOT NULL DEFAULT '6',
   `hwmon_temp_abort` int(10) unsigned NOT NULL DEFAULT '90',
   `bench_all` tinyint(1) unsigned NOT NULL DEFAULT '1',
-  `distribution_coefficient_alpha` decimal(5,2) NOT NULL DEFAULT '0.1',
-  `t_pmin` int(10) unsigned NOT NULL DEFAULT '20',
-  `ramp_up_workunits` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `ramp_down_coefficient` decimal(5,2) NOT NULL DEFAULT '0.25',
   `verify_hash_format` tinyint(1) unsigned NOT NULL DEFAULT '1',
   `auto_add_hosts_to_running_jobs` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)

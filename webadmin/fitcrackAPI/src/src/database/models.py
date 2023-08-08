@@ -517,10 +517,6 @@ class FcSetting(Base):
     workunit_timeout_factor = Column(Integer, nullable=False, server_default=text("'2'"))
     hwmon_temp_abort = Column(Integer, nullable=False, server_default=text("'90'"))
     bench_all = Column(Integer, nullable=False, server_default=text("'1'"))
-    distribution_coefficient_alpha = Column(Numeric(5, 2), nullable=False, server_default=text("'0.1'"))
-    t_pmin = Column(Integer, nullable=False, server_default=text("'20'"))
-    ramp_up_workunits = Column(Integer, nullable=False, server_default=text("'1'"))
-    ramp_down_coefficient = Column(Numeric(5, 2), nullable=False, server_default=text("'0.25'"))
     verify_hash_format = Column(Integer, nullable=False, server_default=text("'1'"))
     auto_add_hosts_to_running_jobs = Column(Integer, nullable=False, server_default=text("'0'"))
 

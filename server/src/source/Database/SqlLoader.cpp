@@ -225,35 +225,6 @@ unsigned int CSqlLoader::getHWTempAbort()
                                                   Config::tableNameSettings.c_str()));
 }
 
-/// Gets the distribution coefficient from the database
-double CSqlLoader::getDistributionCoefficient()
-{
-    return getSqlDouble(formatQuery("SELECT `distribution_coefficient_alpha` FROM `%s` LIMIT 1",
-                                                Config::tableNameSettings.c_str()));
-}
-
-/// Gets the setting for the absolute minimum time a workunit should take
-unsigned CSqlLoader::getAbsoluteMinimumWorkunitSeconds()
-{
-    return getSqlNumber(formatQuery("SELECT `t_pmin` FROM `%s` LIMIT 1",
-                                                  Config::tableNameSettings.c_str()));
-}
-
-/// returns whether there should be a ramp up of WU time
-bool CSqlLoader::getEnableRampUp()
-{
-    return getSqlNumber(formatQuery("SELECT `ramp_up_workunits` FROM `%s` LIMIT 1",
-                                                  Config::tableNameSettings.c_str()));
-}
-
-/// Gets the ramp-down coefficient from the database
-double CSqlLoader::getRampDownCoefficient()
-{
-    return getSqlDouble(formatQuery("SELECT `ramp_down_coefficient` FROM `%s` LIMIT 1",
-                                                Config::tableNameSettings.c_str()));
-}
-
-
 uint32_t CSqlLoader::getHostStatus(uint64_t host_id)
 {
     return (uint32_t)(getSqlNumber(formatQuery("SELECT `status` FROM `%s` WHERE id = %" PRIu64 " LIMIT 1",

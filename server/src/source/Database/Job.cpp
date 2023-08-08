@@ -54,17 +54,6 @@ CJob::CJob(DbMap &jobMap, CSqlLoader * sqlLoader)
         this->m_extraHcArgs = jobMap["extra_hc_args"];
         this->m_killFlag = std::stoul(jobMap["kill"]) != 0;
 
-        uint64_t minSeconds = m_sqlLoader->getAbsoluteMinimumWorkunitSeconds();
-
-        /** Check for valid values */
-        if (this->m_secondsPerWorkunit < minSeconds)
-        {
-            Tools::printDebugJob(Config::DebugType::Warn, this->m_id,
-                                 "Found seconds_per_workunit=%" PRIu64 ", falling back to minimum of %" PRIu64"s\n",
-                                 this->m_secondsPerWorkunit, minSeconds);
-            this->m_secondsPerWorkunit = minSeconds;
-        }
-
         if (this->m_keyspace == 0 && this->m_id != Config::benchAllId)
         {
             Tools::printDebugJob(Config::DebugType::Error, this->m_id,
@@ -80,11 +69,6 @@ CJob::CJob(DbMap &jobMap, CSqlLoader * sqlLoader)
         /** Load parameters used for adaptive planning */
         m_secondsPassed = m_sqlLoader->getSecondsPassed(this->m_id);
         m_totalPower = m_sqlLoader->getTotalPower(this->m_id);
-
-        m_maxSeconds = m_secondsPassed + minSeconds;
-
-        if(m_maxSeconds > this->m_secondsPerWorkunit)
-            m_maxSeconds = this->m_secondsPerWorkunit;
 
         /** Load workunit timeout */
         m_timeoutFactor = m_sqlLoader->getTimeoutFactor();
@@ -438,12 +422,6 @@ uint64_t CJob::getTotalPower() const
 uint64_t CJob::getSecondsPassed() const
 {
     return m_secondsPassed;
-}
-
-
-uint64_t CJob::getMaxSeconds() const
-{
-    return m_maxSeconds;
 }
 
 

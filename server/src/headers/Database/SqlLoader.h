@@ -187,18 +187,6 @@ class CSqlLoader {
          */
         unsigned int getHWTempAbort();
 
-        /// Gets the distribution coefficient from the database
-        double getDistributionCoefficient();
-
-        /// Gets the setting for the absolute minimum time a workunit should take
-        unsigned getAbsoluteMinimumWorkunitSeconds();
-
-        /// returns whether there should be a ramp up of WU time
-        bool getEnableRampUp();
-
-        /// Gets the ramp-down coefficient from the database
-        double getRampDownCoefficient();
-
         /**
          * Returns fresh host status from DB
          * @param host_id ID of the host

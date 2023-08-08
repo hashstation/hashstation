@@ -14,40 +14,13 @@
 #include <cmath>
 
 
-#define NEW_LOGIC 1
-uint64_t CAbstractGenerator::calculateSecondsIcdf2c(PtrJob &job, CSqlLoader &loader)
+uint64_t CAbstractGenerator::getSecondsPerWorkunit(PtrJob &job, CSqlLoader &loader)
 {
-    #ifdef NEW_LOGIC
     uint64_t secondsPerWorkunit = job->getSecondsPerWorkunit();
     Tools::printDebugJob(Config::DebugType::Log, job->getId(),
                          "Desired seconds per workunit: %" PRIu64 "\n",
                          secondsPerWorkunit);
     return secondsPerWorkunit;
-    #endif
-
-    uint64_t desiredSeconds = job->getSecondsPerWorkunit();
-    uint64_t maximum = loader.getEnableRampUp() ? job->getMaxSeconds() : desiredSeconds;
-    uint64_t minimum = std::max<uint64_t>(loader.getAbsoluteMinimumWorkunitSeconds(), desiredSeconds*loader.getRampDownCoefficient());
-
-    uint64_t curIndex = job->getCurrentIndex();
-    uint64_t passCount = job->getKeyspace();
-    //power is in passwords/second, make sure index is counted in passwords
-    curIndex *= passCount/job->getEndIndex();
-    //in most jobs it is 0, so it won't hurt. When it is not 0, it is always in passwords
-    curIndex += job->getCurrentIndex2();
-
-    uint64_t seconds = std::round(((passCount - curIndex) / (job->getTotalPower() + 1))*loader.getDistributionCoefficient());
-
-    if (seconds < minimum)
-        seconds = minimum;
-    else if (seconds > maximum)
-        seconds = maximum;
-
-    Tools::printDebugJob(Config::DebugType::Log, job->getId(),
-                         "Calculating seconds: seconds_per_workunit = %" PRIu64 ", real seconds = %" PRIu64"\n",
-                         desiredSeconds, seconds);
-
-    return seconds;
 }
 
 

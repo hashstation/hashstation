@@ -145,50 +145,6 @@
               class="mb-4"
             />
             <v-text-field
-              v-model="settings.distribution_coefficient_alpha"
-              :loading="loading"
-              outlined
-              type="number"
-              label="Distribution coefficient α"
-              hint="Maximum percentage of the remaining keyspace that can be assigned with a single workunit unless it would be below the minimum."
-              persistent-hint
-              class="mb-4"
-            />
-            <v-text-field
-              v-model="settings.t_pmin"
-              :loading="loading"
-              outlined
-              type="number"
-              label="T_pmin"
-              min="10"
-              max="3600"
-              hint="Absolute minimum seconds per workunit (including the start of hashcat, etc.). Prevents creation of extremely small workunits."
-              persistent-hint
-              suffix="seconds"
-              class="mb-4"
-            />
-            <v-switch
-              v-model="settings.ramp_up_workunits"
-              :loading="loading"
-              outlined
-              label="Ramp-up workunits"
-              hint="If enabled, Fitcrack creates smaller workunits at start. The size increases until the solving time hits the “Time per workunit” value."
-              persistent-hint
-              class="mb-4"
-            />
-            <v-text-field
-              v-model="settings.ramp_down_coefficient"
-              :loading="loading"
-              outlined
-              type="number"
-              min="0.0"
-              max="1.0"
-              label="Ramp down coefficient"
-              hint="Minimum fraction of “Time per workunit” that can be created. Influences the size of workunits at the end of the job. The lower the value, the smaller the size workunits at the end. 1.0 means no ramp down, 0.0 ramp down is limited only by T_pmin."
-              persistent-hint
-              class="mb-4"
-            />
-            <v-text-field
               v-model="settings.hwmon_temp_abort"
               :loading="loading"
               outlined
@@ -286,22 +242,6 @@
           this.loading = false
         },
         saveSettings () {
-          if (this.settings.ramp_down_coefficient < 0.0) {
-            this.$error('Ramp down coefficient must be higher or equal to 0.0.')
-            return
-          }
-          if (this.settings.ramp_down_coefficient > 1.0) {
-            this.$error('Ramp down coefficient must be smaller or equal to 1.0.')
-            return
-          }
-          if (this.settings.t_pmin < 10) {
-            this.$error('Absolute minimum seconds per workunit must be higher or equal to 10.')
-            return
-          }
-          if (this.settings.t_pmin > 3600) {
-            this.$error('Absolute minimum seconds per workunit must be smaller or equal to 3600.')
-            return
-          }
           if (this.settings.workunit_timeout_factor < 5) { // see minTimeoutFactor in generator's Config.h
             this.$error('Workunit timeout factor cannot be smaller than 5.')
             return

@@ -41,10 +41,6 @@ class settings(Resource):
         wtf = args['workunit_timeout_factor']
         hta = args['hwmon_temp_abort']
         dba = args['bench_all']
-        dca = args['distribution_coefficient_alpha']
-        tpmin = args['t_pmin']
-        ruw = args['ramp_up_workunits']
-        rdc = args['ramp_down_coefficient']
         vhf = args['verify_hash_format']
         aahtrj = args['auto_add_hosts_to_running_jobs']
 
@@ -53,10 +49,6 @@ class settings(Resource):
         if (wtf is not None): settings.workunit_timeout_factor = wtf
         if (hta is not None): settings.hwmon_temp_abort = hta
         if (dba is not None): settings.bench_all = dba
-        if (dca is not None): settings.distribution_coefficient_alpha = dca
-        if (tpmin is not None): settings.t_pmin = tpmin
-        if (ruw is not None): settings.ramp_up_workunits = ruw
-        if (rdc is not None): settings.ramp_down_coefficient = rdc
         if (vhf is not None): settings.verify_hash_format = vhf
         if (aahtrj is not None): settings.auto_add_hosts_to_running_jobs = aahtrj
         db.session.commit()
