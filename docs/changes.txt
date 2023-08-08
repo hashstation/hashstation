@@ -15,6 +15,7 @@ New features:
 General improvements:
 * Improved/reimplemeted generator and scheduling logic. Better precision, more predictable workunit sizes. Default desired seconds per workunit changed to 600 seconds.
 * Improved benchmarking logic.
+* It is now possible to upload dictionaries from any folders on the server.
 * It is now possible to upgrade standard (non-dockerized) Fitcrack to newer versions. Please see UPGRADE.md file.
 * Updated to BOINC v7.23.
 
