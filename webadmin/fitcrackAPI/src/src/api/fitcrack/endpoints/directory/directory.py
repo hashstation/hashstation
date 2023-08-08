@@ -40,9 +40,7 @@ class maskCollection(Resource):
         try:
             os.listdir()
             for entry in os.listdir(realpath):
-                if entry.startswith('.'):
-                    continue
-                if entry.endswith('.txt'):
+                if entry.startswith('.') or not entry.endswith('.txt'):
                     continue
                 entryPath = os.path.join(realpath, entry)
                 if os.path.isfile(entryPath):
