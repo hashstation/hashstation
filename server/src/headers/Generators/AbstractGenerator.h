@@ -29,10 +29,10 @@ class CAbstractGenerator
         virtual void run() = 0;
 
         /**
-         * Calculates duration of workunit according to adaptive algorithm presented on ICDF2C
+         * Get desired duration of workunit
          * @return Number of seconds for a workunit
          */
-        uint64_t calculateSecondsIcdf2c(PtrJob &job, CSqlLoader &loader);
+        uint64_t getSecondsPerWorkunit(PtrJob &job, CSqlLoader &loader);
 
         /**
          * @brief Wait for the transitioner to create instances of the workunits we just created.
