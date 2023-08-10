@@ -28,6 +28,12 @@
           select-all
           @input="checkValid"
         />
+        <v-alert
+          v-if="leftDicts.length > 0"
+          type="info"
+        >
+          <b>Order:</b> {{ leftDicts.map(d => d.name).join(', ') }}
+        </v-alert>
       </v-col>
       <v-col cols="6">
         <dict-selector
@@ -35,6 +41,12 @@
           select-all
           @input="checkValid"
         />
+        <v-alert
+          v-if="rightDicts.length > 0"
+          type="info"
+        >
+          <b>Order:</b> {{ rightDicts.map(d => d.name).join(', ') }}
+        </v-alert>
       </v-col>
 
       <v-col

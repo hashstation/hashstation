@@ -14,7 +14,8 @@
     item-key="id"
     show-select
     :single-select="!selectAll"
-    @input="updateSelected"
+    @item-selected="itemSelected"
+    @toggle-select-all="onSelectAll"
   >
     <template v-slot:item.name="{ item }">
       <router-link :to="{name: 'dictionaryDetail', params: { id: item.id}}">
@@ -63,7 +64,7 @@
           this.items = response.data.items
           this.loading = false
         })
-      }
+      },
     }
   }
 </script>

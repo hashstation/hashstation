@@ -37,6 +37,12 @@
           select-all
           @input="checkValid"
         />
+        <v-alert
+          v-if="rightDicts.length > 0"
+          type="info"
+        >
+          <b>Order:</b> {{ rightDicts.map(d => d.name).join(', ') }}
+        </v-alert>
         <v-card-title>
           <span>Type rule</span>
         </v-card-title>

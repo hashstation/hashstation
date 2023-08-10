@@ -14,6 +14,13 @@
       @input="checkValid"
     />
   
+    <v-alert
+      v-if="leftDicts.length > 0"
+      type="info"
+    >
+      <b>Order:</b> {{ leftDicts.map(d => d.name).join(', ') }}
+    </v-alert>
+
     <v-divider />
     <v-checkbox
        v-model="checkDuplicates"

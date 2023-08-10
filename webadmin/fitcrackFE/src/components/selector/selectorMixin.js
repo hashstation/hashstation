@@ -38,6 +38,14 @@ export default {
     },
     updateSelected() {
       this.$emit('input', this.selected)
+    },
+    onSelectAll(item) {
+      if (item.value)
+        this.selected = this.items
+      else
+        this.selected = []
+
+      this.updateSelected()
     }
   },
   watch: {
