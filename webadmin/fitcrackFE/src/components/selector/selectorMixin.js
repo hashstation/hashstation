@@ -39,6 +39,18 @@ export default {
     updateSelected() {
       this.$emit('input', this.selected)
     },
+    onItemSelected(item) {
+      if (item.value) {
+        this.selected.push(item.item);
+      } else {
+        const index = this.selected.indexOf(item.item);
+        if (index !== -1) {
+            this.selected.splice(index, 1);
+        }
+      }
+
+      this.updateSelected()
+    },
     onSelectAll(item) {
       if (item.value)
         this.selected = this.items

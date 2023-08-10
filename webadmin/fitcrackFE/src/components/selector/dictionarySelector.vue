@@ -65,18 +65,6 @@
           this.loading = false
         })
       },
-      onItemSelected(item) {
-        if (item.value) {
-          this.selected.push(item.item);
-        } else {
-          const index = this.selected.indexOf(item.item);
-          if (index !== -1) {
-              this.selected.splice(index, 1);
-          }
-        }
-
-        this.updateSelected()
-      },
     }
   }
 </script>
