@@ -14,7 +14,7 @@
     item-key="id"
     show-select
     :single-select="!selectAll"
-    @item-selected="itemSelected"
+    @item-selected="onItemSelected"
     @toggle-select-all="onSelectAll"
   >
     <template v-slot:item.name="{ item }">
@@ -64,6 +64,18 @@
           this.items = response.data.items
           this.loading = false
         })
+      },
+      onItemSelected(item) {
+        if (item.value) {
+          this.selected.push(item.item);
+        } else {
+          const index = this.selected.indexOf(item.item);
+          if (index !== -1) {
+              this.selected.splice(index, 1);
+          }
+        }
+
+        this.updateSelected()
       },
     }
   }
