@@ -20,10 +20,14 @@ void AttackCrackingBase::addSpecificArguments() {
   addRequiredFile("data");
 
   std::string value;
-  if (config_.find(ConfigTask::START_INDEX, value) && value != "0")
-    addArgument("--skip=" + value);
-  if (config_.find(ConfigTask::HC_KEYSPACE, value) && value != "0")
-    addArgument("--limit=" + value);
+  if (config_.find(ConfigTask::START_INDEX, value) && value != "0") {
+    addArgument("-s");
+    addArgument(value);
+  }
+  if (config_.find(ConfigTask::HC_KEYSPACE, value) && value != "0") {
+    addArgument("-l");
+    addArgument(value);
+  }
 
   findAndAddOptional(ConfigTask::HWMON_TEMP_ABORT, "--hwmon-temp-abort");
 
@@ -32,7 +36,7 @@ void AttackCrackingBase::addSpecificArguments() {
 
   addArgument("--status-timer="+RunnerUtils::toString(HashcatConstant::ProgressPeriod));
 
-  addArgument("--outfile");
+  addArgument("-o");
   addArgument(output_file_);
 
   addArgument("--outfile-format=" + HashcatConstant::OutputFormat);
@@ -44,19 +48,22 @@ void AttackCrackingBase::addSpecificArguments() {
   addArgument("--logfile-disable");
 
   if (config_.find(ConfigTask::OPTIMIZED, value) && value == "1")
-    addArgument("--optimized-kernel-enable");
+    addArgument("-O");
 
   if (config_.find(ConfigTask::SLOW_CANDIDATES, value) && value == "1")
-    addArgument("--slow-candidates");
+    addArgument("-S");
 
   if (config_.find(ConfigTask::DEVICE_TYPES, value) && value != "0") {
     if (value == "3")
       value = "1,2";
-    addArgument("--opencl-device-types=" + value);
+    addArgument("-D");
+    addArgument(value);
   }
 
-  if (config_.find(ConfigTask::WORKLOAD_PROFILE, value) && value != "0")
-    addArgument("--workload-profile=" + value);
+  if (config_.find(ConfigTask::WORKLOAD_PROFILE, value) && value != "0") {
+    addArgument("-w");
+    addArgument(value);
+  }
 
   // Add as last.
   if (config_.find(ConfigTask::EXTRA_HC_ARGS, value)) {
