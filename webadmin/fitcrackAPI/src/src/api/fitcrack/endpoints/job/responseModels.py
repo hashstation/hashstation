@@ -182,7 +182,7 @@ job_big_model = api.model('Job', {
     'max_elem_in_chain': fields.Integer(),
     'optimized': fields.Boolean(),
     'dict_deployment_mode': fields.Integer(),
-    'device_types': fields.String(),
+    'device_types': fields.Integer(),
     'workload_profile': fields.Integer(),
     'priority': fields.Integer(),
     'priority_str': fields.String(),

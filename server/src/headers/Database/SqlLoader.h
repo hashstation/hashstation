@@ -297,8 +297,6 @@ class CSqlLoader {
         */
         void killJob(Config::Ptr<CJob> &job);
 
-private:
-
         /**
          * @brief Updates SQL database with supplied query
          * @param query [in] SQL query to execute
@@ -344,6 +342,8 @@ private:
 
         ///Returns a floating point number from a database query
         double getSqlDouble(const std::string & query);
+
+private:
 
         /**
          * @brief This is template function for loading different objects from database

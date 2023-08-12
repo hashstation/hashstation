@@ -46,6 +46,7 @@ namespace Config {
     extern std::string tableNameJob;
     extern std::string tableNameHost;
     extern std::string tableNameHostActivity;
+    extern std::string tableNameHostStatus;
     extern std::string tableNameMask;
     extern std::string tableNameSettings;
     extern std::string tableNameDictionary;

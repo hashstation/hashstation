@@ -24,3 +24,12 @@ ADD `slow_candidates` tinyint(1) NOT NULL DEFAULT '0';
 
 ALTER TABLE `fc_job`
 ADD `extra_hc_args` varchar(4096) COLLATE utf8_bin DEFAULT NULL;
+
+ALTER TABLE `fc_host_status`
+ADD `device_types` tinyint(3) NOT NULL DEFAULT '2';
+
+ALTER TABLE `fc_host_status`
+ADD `workload_profile` tinyint(3) NOT NULL DEFAULT '2';
+
+ALTER TABLE `fc_host_status`
+ADD `extra_hc_args` varchar(4096) COLLATE utf8_bin DEFAULT NULL;

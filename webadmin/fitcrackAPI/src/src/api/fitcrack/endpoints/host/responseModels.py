@@ -35,3 +35,9 @@ boincHostBenchmark_model = api.model('Boinc host benchmarks', {
 boincHostBenchmarks_model = api.inherit('Benchmarks for Boinc hosts', {
     'items': fields.List(fields.Nested(boincHostBenchmark_model))
 })
+
+hostSettings_model = api.model('Host settings', {
+    'device_types': fields.Integer(),
+    'workload_profile': fields.Integer(),
+    'extra_hc_args': fields.String(),
+})

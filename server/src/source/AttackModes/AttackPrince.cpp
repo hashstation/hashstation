@@ -65,13 +65,21 @@ bool CAttackPrince::makeWorkunit()
 
     Tools::printDebug("CONFIG for new workunit:\n");
 
+    std::string hostExtraHcArgs = m_host->getExtraHcArgs();
+    std::string jobExtraHcArgs = m_job->getExtraHcArgs();
+    if (!hostExtraHcArgs.empty())
+        jobExtraHcArgs = hostExtraHcArgs + " " + jobExtraHcArgs;
+
     /** Output original config from DB */
     configFile << generateBasicConfig(
         m_job->getAttackMode(), m_job->getAttackSubmode(),
         m_job->getDistributionMode(), m_job->getName(), m_job->getHashType(),
         m_job->getHWTempAbort(), m_job->getOptimizedFlag(),
-        m_job->getDeviceTypes(), m_job->getWorkloadProfile(),
-        m_job->getSlowCandidatesFlag(), m_job->getExtraHcArgs());
+        (m_job->getDeviceTypes() == 0) ? m_host->getDeviceTypes()
+                                       : m_job->getDeviceTypes(),
+        (m_job->getWorkloadProfile() == 0) ? m_host->getWorkloadProfile()
+                                           : m_job->getWorkloadProfile(),
+        m_job->getSlowCandidatesFlag(), jobExtraHcArgs);
 
     /** Output mode */
     uint64_t startIndex = m_workunit->getStartIndex();

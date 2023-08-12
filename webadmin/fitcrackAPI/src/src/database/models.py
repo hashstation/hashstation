@@ -885,6 +885,9 @@ class FcHostStatus(Base):
     id = Column(BigInteger, primary_key=True)
     boinc_host_id = Column(Integer, ForeignKey(Host.id), nullable=False)
     last_seen = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
+    device_types = Column(Integer, nullable=False, server_default=text("'0'"))
+    workload_profile = Column(Integer, nullable=False, server_default=text("'0'"))
+    extra_hc_args = Column(String(4096, 'utf8_bin'))
     deleted = Column(Integer, nullable=False, server_default=text("'0'"))
 
     @hybrid_property

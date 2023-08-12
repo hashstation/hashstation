@@ -97,3 +97,20 @@ uint64_t CHost::getSecondsSinceLastSeen() const
 {
     return m_secondsSinceLastSeen;
 }
+
+const std::string CHost::getExtraHcArgs() const
+{
+    return this->m_sqlLoader->getSqlString(this->m_sqlLoader->formatQuery("SELECT `extra_hc_args` FROM `%s` WHERE boinc_host_id = %" PRIu64 " LIMIT 1",
+                                               Config::tableNameHostStatus.c_str(), getBoincHostId()));
+}
+
+uint32_t CHost::getDeviceTypes() const {
+    return (uint32_t)(this->m_sqlLoader->getSqlNumber(this->m_sqlLoader->formatQuery("SELECT `device_types` FROM `%s` WHERE boinc_host_id = %" PRIu64 " LIMIT 1",
+                                               Config::tableNameHostStatus.c_str(), getBoincHostId())));
+}
+
+uint32_t CHost::getWorkloadProfile() const
+{
+    return (uint32_t)(this->m_sqlLoader->getSqlNumber(this->m_sqlLoader->formatQuery("SELECT `workload_profile` FROM `%s` WHERE boinc_host_id = %" PRIu64 " LIMIT 1",
+                                               Config::tableNameHostStatus.c_str(), getBoincHostId())));
+}

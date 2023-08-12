@@ -55,11 +55,22 @@ bool CAttackMarkov::makeWorkunit()
         return false;
     }
 
-    f << generateBasicConfig(m_job->getAttackMode(), m_job->getAttackSubmode(), m_job->getDistributionMode(),
-                             m_job->getName(), m_job->getHashType(),
-                             m_job->getHWTempAbort(), m_job->getOptimizedFlag(), m_job->getDeviceTypes(), m_job->getWorkloadProfile(),
-                             m_job->getSlowCandidatesFlag(), m_job->getExtraHcArgs(), "", "", m_job->getCharset1(), m_job->getCharset2(),
-                             m_job->getCharset3(), m_job->getCharset4());
+    std::string hostExtraHcArgs = m_host->getExtraHcArgs();
+    std::string jobExtraHcArgs = m_job->getExtraHcArgs();
+    if (!hostExtraHcArgs.empty())
+        jobExtraHcArgs = hostExtraHcArgs + " " + jobExtraHcArgs;
+
+    f << generateBasicConfig(
+        m_job->getAttackMode(), m_job->getAttackSubmode(),
+        m_job->getDistributionMode(), m_job->getName(), m_job->getHashType(),
+        m_job->getHWTempAbort(), m_job->getOptimizedFlag(),
+        (m_job->getDeviceTypes() == 0) ? m_host->getDeviceTypes()
+                                       : m_job->getDeviceTypes(),
+        (m_job->getWorkloadProfile() == 0) ? m_host->getWorkloadProfile()
+                                           : m_job->getWorkloadProfile(),
+        m_job->getSlowCandidatesFlag(), jobExtraHcArgs, "", "",
+        m_job->getCharset1(), m_job->getCharset2(), m_job->getCharset3(),
+        m_job->getCharset4());
 
     /** Output mask */
     f << "|||mask|String|" << workunitMask->getMask().length() << "|" << workunitMask->getMask() << "|||\n";

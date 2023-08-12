@@ -17,5 +17,5 @@ void AttackHybridDictMask::addSpecificArguments() {
 
   createMaskAndCharsets();
 
-  findAndAddOptional("rule_left", "--rule-left");
+  findAndAddOptional("rule_left", "-j");
 }

@@ -9,8 +9,8 @@ from flask import request
 from flask_restx import Resource
 
 from src.api.apiConfig import api
-from src.api.fitcrack.endpoints.host.argumentsParser import jobHost_parser
-from src.api.fitcrack.endpoints.host.responseModels import page_of_hosts_model, boincHostDetail_model, boincHostBenchmarks_model
+from src.api.fitcrack.endpoints.host.argumentsParser import jobHost_parser, hostSettings_arguments
+from src.api.fitcrack.endpoints.host.responseModels import page_of_hosts_model, boincHostDetail_model, boincHostBenchmarks_model, hostSettings_model
 from src.api.fitcrack.responseModels import simpleResponse
 from src.api.fitcrack.endpoints.job.functions import stop_job
 from src.database import db
@@ -126,6 +126,41 @@ class BenchmarksByID(Resource):
                     db.session.commit()
                 except exc.SQLAlchemyError:
                     pass
+
+
+@ns.route('/<int:id>/settings')
+@api.response(404, 'Host not found.')
+class settings(Resource):
+
+    @api.marshal_with(hostSettings_model)
+    def get(self, id):
+        """
+        Returns exact host settings.
+        """
+        host = FcHostStatus.query.filter(FcHostStatus.boinc_host_id == id).one()
+        return host
+
+    @api.expect(hostSettings_arguments)
+    @api.marshal_with(simpleResponse)
+    def post(self, id):
+        """
+        Sets host settings.
+        """
+        args = hostSettings_arguments.parse_args(request)
+        workload_profile = args['workload_profile'] 
+        device_types = args['device_types']
+        extra_hc_args = args['extra_hc_args']
+
+        host = FcHostStatus.query.filter(FcHostStatus.boinc_host_id == id).one()
+        if (workload_profile is not None): host.workload_profile = workload_profile
+        if (device_types is not None): host.device_types = device_types
+        if (extra_hc_args is not None): host.extra_hc_args = extra_hc_args
+        db.session.commit()
+
+        return {
+            'status': True,
+            'message': 'Host settings saved.'
+        }
 
 
 @ns.route('/<id>/unassignAllJobs')

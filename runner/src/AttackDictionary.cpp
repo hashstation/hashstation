@@ -18,7 +18,7 @@ void AttackDictionary::addSpecificArguments() {
 
   } else if (attack_submode_ == "1") {
 
-    addArgument("--rules-file");
+    addArgument("-r");
     addRequiredFile("rules");
 
   } else {

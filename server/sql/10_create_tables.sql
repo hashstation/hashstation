@@ -522,6 +522,9 @@ CREATE TABLE IF NOT EXISTS `fc_host_status` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `boinc_host_id` bigint(20) unsigned NOT NULL,
   `last_seen` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `device_types` tinyint(3) NOT NULL DEFAULT '2',
+  `workload_profile` tinyint(3) NOT NULL DEFAULT '2',
+  `extra_hc_args` varchar(4096) COLLATE utf8_bin DEFAULT NULL,
   `deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;

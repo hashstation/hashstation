@@ -59,19 +59,19 @@
       </template>
       <template v-slot:item.actions="{ item }">
           <v-tooltip top>
-            <template v-slot:activator="{ on }">
-              <v-btn
-                icon
-                class="mx-0"
-                v-on="on"
-                @click="unassignAllJobs(item.id)"
-              >
-                <v-icon>
-                  {{ 'mdi-lan-disconnect' }}
-                </v-icon>
-              </v-btn>
-            </template>
-          <span>Unassign from all jobs</span>
+              <template v-slot:activator="{ on }">
+                  <v-btn 
+                      icon 
+                      class="mx-0" 
+                      v-on="on" 
+                      :to="{ name: 'hostDetail', params: {id: item.id} }"
+                  >
+                      <v-icon>
+                          {{ 'mdi-settings' }}
+                      </v-icon>
+                  </v-btn>
+              </template>
+              <span>Manage</span>
           </v-tooltip>
           <v-tooltip top>
             <template v-slot:activator="{ on }">
@@ -174,12 +174,6 @@
             this.loadHosts()
           })
       },
-      unassignAllJobs: function (id) {
-        this.axios.put(this.$serverAddr + '/hosts/' + id + "/unassignAllJobs")
-        .then((response) => {
-            this.loadHosts()
-          })
-      }
     }
   }
 </script>

@@ -12,7 +12,7 @@ AttackPrince::AttackPrince(const ConfigTask &config, Directory &directory)
 void AttackPrince::addSpecificArguments() {
   AttackCrackingBase::addSpecificArguments();
   if (attack_submode_ == "1") {
-    addArgument("--rules-file");
+    addArgument("-r");
     addRequiredFile("rules");
   } else if(attack_submode_ != "0") {
     RunnerUtils::runtimeException(

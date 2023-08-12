@@ -76,6 +76,9 @@ class CHost {
         uint64_t getPower() const;
         uint64_t getJobId() const;
         uint32_t getStatus() const;
+        const std::string getExtraHcArgs() const;
+        uint32_t getDeviceTypes() const;
+        uint32_t getWorkloadProfile() const;
         ///Get the seconds since the host was seen last
         uint64_t getSecondsSinceLastSeen() const;
 };

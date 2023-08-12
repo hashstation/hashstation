@@ -58,13 +58,78 @@
         </v-list>
       </fc-tile>
 
+      <fc-tile
+        title="Settings"
+        :loading="settings === null"
+        class="mb-5"
+      >
+        <v-container v-if="settings != null">
+          <v-row>
+            <v-col>
+              <v-card-title>
+                  <span>Device types</span>
+              </v-card-title>
+              <v-radio-group
+                v-model="settings.device_types"
+              >
+                <v-radio
+                  label="CPU only"
+                  :value="1"
+                ></v-radio>
+                <v-radio
+                  label="GPU only"
+                  :value="2"
+                ></v-radio>
+                <v-radio
+                  label="CPU + GPU"
+                  :value="3"
+                ></v-radio>
+              </v-radio-group>
+            </v-col>
+            <v-col>
+              <v-card-title>
+                <span>Workload profile</span>
+              </v-card-title>
+              <v-radio-group
+                v-model="settings.workload_profile"
+              >
+                <v-radio
+                  label="Low"
+                  :value="1"
+                ></v-radio>
+                <v-radio
+                  label="Normal"
+                  :value="2"
+                ></v-radio>
+                <v-radio
+                  label="High"
+                  :value="3"
+                ></v-radio>
+                <v-radio
+                  label="Nightmare"
+                  :value="4"
+                ></v-radio>
+              </v-radio-group>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-textarea
+              v-model="settings.extra_hc_args"
+              label="Extra hashcat arguments"
+              outlined
+              auto-grow
+              :rows="1"
+            />
+          </v-row>
+        </v-container>
+      </fc-tile>
       
       <fc-tile
         title="Devices"
         :loading="data === null"
         class="mb-5"
       >
-        <v-list v-if="data != null">
+        <v-list v-if="data != null && data.devices != null">
           <v-list-item v-for="device in data.devices" :key="device.id">
             <v-list-item-icon>
               <v-icon v-if="device.device_info[0].temperature > 100">mdi-fire</v-icon>
@@ -209,6 +274,17 @@
             </div>
           </template>
         </v-data-table>
+        <v-row v-if="data != null && data.jobs.length != 0">
+          <v-btn
+            @click="unassignAllJobs(data.id)"
+            color="primary"
+          >
+            <span>Unassign from all jobs</span>
+            <v-icon>
+              {{ 'mdi-lan-disconnect' }}
+            </v-icon>
+          </v-btn>
+        <v-row>
       </fc-tile>
     </v-container>
   </div>
@@ -228,6 +304,7 @@
     data: function () {
       return {
         data: null,
+        settings: {},
         jobHeaders: [
           {
             text: 'Name',
@@ -272,6 +349,17 @@
         ],
       }
     },
+    watch: {
+      settings: {
+        deep: true,
+        immediate: false,
+        handler (val, old) {
+          if (!this.loading && Object.keys(old).length > 0) {
+            this.saveSettings()
+          }
+        }
+      }
+    },
     mounted: function () {
       this.loadData()
     },
@@ -280,6 +368,9 @@
       loadData: function () {
         this.axios.get(this.$serverAddr + '/hosts/' + this.$route.params.id).then((response) => {
           this.data = response.data;
+        })
+        this.settings = this.axios.get(this.$serverAddr + '/hosts/' + this.$route.params.id + '/settings').then((response) => {
+          this.settings = response.data;
         })
       },
       getOsIcon (os) {
@@ -296,16 +387,25 @@
       progressToPercentage: function (progress) {
         return progress.toFixed() + '%'
       },
+      unassignAllJobs: function (id) {
+        this.axios.put(this.$serverAddr + '/hosts/' + id + "/unassignAllJobs").then((response) => {
+          this.loadData()
+        })
+      },
       operateJob: function (id, operation) {
         this.axios.get(this.$serverAddr + '/job/' + id + '/action', {
           params: {
             'operation': operation
           }
         }).then((response) => {
-          console.log(response.data);
-          this.loadJobs()
+          this.loadData()
         })
-      }
+      },
+      saveSettings () {
+          this.axios.post(this.$serverAddr + '/hosts/' + this.$route.params.id + '/settings', {
+            ...this.settings
+          })
+        }
     }
 
   }

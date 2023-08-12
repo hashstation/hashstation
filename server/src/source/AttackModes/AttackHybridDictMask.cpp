@@ -61,222 +61,258 @@ bool CAttackHybridDictMask::makeWorkunit()
 		return false;
 	}
 
+    std::string hostExtraHcArgs = m_host->getExtraHcArgs();
+    std::string jobExtraHcArgs = m_job->getExtraHcArgs();
+    if (!hostExtraHcArgs.empty())
+        jobExtraHcArgs = hostExtraHcArgs + " " + jobExtraHcArgs;
+
     f << generateBasicConfig(
         m_job->getAttackMode(), m_job->getAttackSubmode(),
-        m_job->getDistributionMode(), m_job->getName(),
-        m_job->getHashType(), m_job->getHWTempAbort(),
-        m_job->getOptimizedFlag(), m_job->getDeviceTypes(),
-        m_job->getWorkloadProfile(), m_job->getSlowCandidatesFlag(),
-		m_job->getExtraHcArgs(), m_job->getRuleLeft());
+        m_job->getDistributionMode(), m_job->getName(), m_job->getHashType(),
+        m_job->getHWTempAbort(), m_job->getOptimizedFlag(),
+        (m_job->getDeviceTypes() == 0) ? m_host->getDeviceTypes()
+                                       : m_job->getDeviceTypes(),
+        (m_job->getWorkloadProfile() == 0) ? m_host->getWorkloadProfile()
+                                           : m_job->getWorkloadProfile(),
+        m_job->getSlowCandidatesFlag(), jobExtraHcArgs, m_job->getRuleLeft());
 
     auto dictVec = m_job->getDictionaries();
-	bool hexDicts = std::all_of(dictVec.begin(), dictVec.end(), [](auto dict){ return dict->isHexDict(); });
-	f << "|||hex_dict|UInt|1|" << std::to_string(hexDicts) << "|||\n";
+    bool hexDicts = std::all_of(dictVec.begin(), dictVec.end(),
+                                [](auto dict) { return dict->isHexDict(); });
+    f << "|||hex_dict|UInt|1|" << std::to_string(hexDicts) << "|||\n";
 
-	/** Load the workunit mask to object */
-	PtrMask workunitMask = GetWorkunitMask();
+    /** Load the workunit mask to object */
+    PtrMask workunitMask = GetWorkunitMask();
 
-	// Debug
-	Tools::printDebugHost(Config::DebugType::Log, m_job->getId(), m_host->getBoincHostId(),
-		"In the dictionary, there are %" PRIu64 " passwords\n", m_job->getHcKeyspace());
-	Tools::printDebugHost(Config::DebugType::Log, m_job->getId(), m_host->getBoincHostId(),
-		"The mask can generate %" PRIu64 " passwords\n", workunitMask->getKeyspace());
-	Tools::printDebugHost(Config::DebugType::Log, m_job->getId(), m_host->getBoincHostId(),
-		"Workunit can compute %" PRIu64 " passwords\n", m_workunit->getHcKeyspace());
+    // Debug
+    Tools::printDebugHost(
+        Config::DebugType::Log, m_job->getId(), m_host->getBoincHostId(),
+        "In the dictionary, there are %" PRIu64 " passwords\n",
+        m_job->getHcKeyspace());
+    Tools::printDebugHost(Config::DebugType::Log, m_job->getId(),
+                          m_host->getBoincHostId(),
+                          "The mask can generate %" PRIu64 " passwords\n",
+                          workunitMask->getKeyspace());
+    Tools::printDebugHost(Config::DebugType::Log, m_job->getId(),
+                          m_host->getBoincHostId(),
+                          "Workunit can compute %" PRIu64 " passwords\n",
+                          m_workunit->getHcKeyspace());
 
-	auto MakeConfigLinesFromSplitMask = [this](const MaskSplitter::MaskSettings &settings) {
-		std::ostringstream cfg;
-		cfg<<makeConfigLine("mask", "String", settings.mask);
-		for(size_t i = 0; i < settings.customCharsets.size(); ++i)
-		{
-			std::ostringstream hexCharset;
-			hexCharset<<std::hex<<std::setfill('0');
-			for(char c: settings.customCharsets[i])
-			{
-				hexCharset<<std::setw(2)<<+c;
-			}
-			cfg<<makeConfigLine("charset"+std::to_string(i+1), "String", hexCharset.str());
-		}
-		return cfg.str();
-	};
+    auto MakeConfigLinesFromSplitMask =
+        [this](const MaskSplitter::MaskSettings &settings) {
+          std::ostringstream cfg;
+          cfg << makeConfigLine("mask", "String", settings.mask);
+          for (size_t i = 0; i < settings.customCharsets.size(); ++i) {
+            std::ostringstream hexCharset;
+            hexCharset << std::hex << std::setfill('0');
+            for (char c : settings.customCharsets[i]) {
+              hexCharset << std::setw(2) << +c;
+            }
+            cfg << makeConfigLine("charset" + std::to_string(i + 1), "String",
+                                  hexCharset.str());
+          }
+          return cfg.str();
+        };
 
-	try
-	{
+    try {
 
-		/** Check combinator workunit type */
-		/** Dictionary is already fragmented, continue fragmenting */
-		if (m_workunit->getStartIndex2() != 0)
-		{
-			Tools::printDebugHost(Config::DebugType::Log, m_job->getId(), m_host->getBoincHostId(),
-				"Dictionary is already fragmented, we need to continue\n");
+        /** Check combinator workunit type */
+        /** Dictionary is already fragmented, continue fragmenting */
+        if (m_workunit->getStartIndex2() != 0) {
+          Tools::printDebugHost(
+              Config::DebugType::Log, m_job->getId(), m_host->getBoincHostId(),
+              "Dictionary is already fragmented, we need to continue\n");
 
-			/** Will ignore 'start_index' passwords */
-			Tools::printDebugHost(Config::DebugType::Log, m_job->getId(), m_host->getBoincHostId(),
-				"Skipping %" PRIu64 " passwords\n", m_workunit->getStartIndex());
+          /** Will ignore 'start_index' passwords */
+          Tools::printDebugHost(
+              Config::DebugType::Log, m_job->getId(), m_host->getBoincHostId(),
+              "Skipping %" PRIu64 " passwords\n", m_workunit->getStartIndex());
 
-			Tools::printDebugHost(Config::DebugType::Log, m_job->getId(), m_host->getBoincHostId(),
-				"Mask for this WU is going to be just a single password");
+          Tools::printDebugHost(
+              Config::DebugType::Log, m_job->getId(), m_host->getBoincHostId(),
+              "Mask for this WU is going to be just a single password");
 
-			/** Append skip and limit to config */
-			Tools::printDebug("Adding additional info to CONFIG:\n");
+          /** Append skip and limit to config */
+          Tools::printDebug("Adding additional info to CONFIG:\n");
 
-			{
-				auto maskSplitter = makeMaskSplitter();
-				auto mask = maskSplitter->GetMaskSlice(workunitMask->getMask(), m_workunit->getStartIndex(), 1);
-				auto maskConfig = MakeConfigLinesFromSplitMask(mask);
-				f<<maskConfig;
-				Tools::printDebug(maskConfig.c_str());
-			}
+          {
+            auto maskSplitter = makeMaskSplitter();
+            auto mask = maskSplitter->GetMaskSlice(
+                workunitMask->getMask(), m_workunit->getStartIndex(), 1);
+            auto maskConfig = MakeConfigLinesFromSplitMask(mask);
+            f << maskConfig;
+            Tools::printDebug(maskConfig.c_str());
+          }
 
-			uint64_t workunitStartIndex2 = m_workunit->getStartIndex2();
-			auto skipLine = makeLimitingConfigLine("start_index", "BigUInt", std::to_string(workunitStartIndex2));
-			f << skipLine;
-			Tools::printDebug(skipLine.c_str());
+          uint64_t workunitStartIndex2 = m_workunit->getStartIndex2();
+          auto skipLine = makeLimitingConfigLine(
+              "start_index", "BigUInt", std::to_string(workunitStartIndex2));
+          f << skipLine;
+          Tools::printDebug(skipLine.c_str());
 
-			/** Check if we reach the end of password keyspace in 1st dict */
-			if (m_workunit->getHcKeyspace() + workunitStartIndex2 >= m_job->getHcKeyspace())
-			{
-				m_workunit->setHcKeyspace(m_job->getHcKeyspace() - workunitStartIndex2);
+          /** Check if we reach the end of password keyspace in 1st dict */
+          if (m_workunit->getHcKeyspace() + workunitStartIndex2 >=
+              m_job->getHcKeyspace()) {
+            m_workunit->setHcKeyspace(m_job->getHcKeyspace() -
+                                      workunitStartIndex2);
 
-				if (!m_workunit->isDuplicated())
-				{
-					workunitMask->updateIndex(workunitMask->getCurrentIndex() + 1);
-					m_job->updateIndex(m_job->getCurrentIndex() + 1);
-					m_job->updateIndex2(0);
-				}
-			}
-			else
-			{
-				uint64_t workunitHcKeyspace = m_workunit->getHcKeyspace();
-				if (!m_workunit->isDuplicated())
-					m_job->updateIndex2(workunitStartIndex2 + workunitHcKeyspace);
+            if (!m_workunit->isDuplicated()) {
+              workunitMask->updateIndex(workunitMask->getCurrentIndex() + 1);
+              m_job->updateIndex(m_job->getCurrentIndex() + 1);
+              m_job->updateIndex2(0);
+            }
+          } else {
+            uint64_t workunitHcKeyspace = m_workunit->getHcKeyspace();
+            if (!m_workunit->isDuplicated())
+              m_job->updateIndex2(workunitStartIndex2 + workunitHcKeyspace);
 
-				auto limitLine = makeLimitingConfigLine("hc_keyspace", "BigUInt", std::to_string(workunitHcKeyspace));
-				f << limitLine;
-				Tools::printDebug(limitLine.c_str());
-			}
-		}
-		/** Host has enough power, no fragments */
-		else if (m_workunit->getHcKeyspace() > (0.5f * m_job->getHcKeyspace()))
-		{
-			Tools::printDebugHost(Config::DebugType::Log, m_job->getId(), m_host->getBoincHostId(),
-				"Host has enough power, no fragments\n");
+            auto limitLine = makeLimitingConfigLine(
+                "hc_keyspace", "BigUInt", std::to_string(workunitHcKeyspace));
+            f << limitLine;
+            Tools::printDebug(limitLine.c_str());
+          }
+        }
+        /** Host has enough power, no fragments */
+        else if (m_workunit->getHcKeyspace() >
+                 (0.5f * m_job->getHcKeyspace())) {
+          Tools::printDebugHost(Config::DebugType::Log, m_job->getId(),
+                                m_host->getBoincHostId(),
+                                "Host has enough power, no fragments\n");
 
-			/** # of real passwords / # of passwords in first dictionaries = # of passwords to check from dict2*/
-			uint64_t maskKeyspace = (uint64_t)(std::round(m_workunit->getHcKeyspace() / (float)(m_job->getHcKeyspace())));
+          /** # of real passwords / # of passwords in first dictionaries = # of
+           * passwords to check from dict2*/
+          uint64_t maskKeyspace = (uint64_t)(std::round(
+              m_workunit->getHcKeyspace() / (float)(m_job->getHcKeyspace())));
 
-			Tools::printDebugHost(Config::DebugType::Log, m_job->getId(), m_host->getBoincHostId(),
-				"Rounded desired # of passwords from mask: %" PRIu64 " passwords\n", maskKeyspace);
+          Tools::printDebugHost(
+              Config::DebugType::Log, m_job->getId(), m_host->getBoincHostId(),
+              "Rounded desired # of passwords from mask: %" PRIu64
+              " passwords\n",
+              maskKeyspace);
 
-			Tools::printDebug("Adding additional info to CONFIG: \n");
+          Tools::printDebug("Adding additional info to CONFIG: \n");
 
-			{
-				auto maskSplitter = makeMaskSplitter();
-				auto mask = maskSplitter->GetMaskSlice(workunitMask->getMask(), m_workunit->getStartIndex(), maskKeyspace);
-				auto maskConfig = MakeConfigLinesFromSplitMask(mask);
-				f<<maskConfig;
-				Tools::printDebug(maskConfig.c_str());
-				maskKeyspace = mask.keyspace;
-			}
+          {
+            auto maskSplitter = makeMaskSplitter();
+            auto mask = maskSplitter->GetMaskSlice(workunitMask->getMask(),
+                                                   m_workunit->getStartIndex(),
+                                                   maskKeyspace);
+            auto maskConfig = MakeConfigLinesFromSplitMask(mask);
+            f << maskConfig;
+            Tools::printDebug(maskConfig.c_str());
+            maskKeyspace = mask.keyspace;
+          }
 
-			Tools::printDebugHost(Config::DebugType::Log, m_job->getId(), m_host->getBoincHostId(),
-				"actual # of passwords we can get from mask: %" PRIu64 " passwords\n", maskKeyspace);
+          Tools::printDebugHost(
+              Config::DebugType::Log, m_job->getId(), m_host->getBoincHostId(),
+              "actual # of passwords we can get from mask: %" PRIu64
+              " passwords\n",
+              maskKeyspace);
 
-			uint64_t newCurrentIndex = m_workunit->getStartIndex() + maskKeyspace;
-			Tools::printDebugHost(Config::DebugType::Log, m_job->getId(), m_host->getBoincHostId(),
-				"New current index of current mask: %" PRIu64 "\n", newCurrentIndex);
+          uint64_t newCurrentIndex = m_workunit->getStartIndex() + maskKeyspace;
+          Tools::printDebugHost(
+              Config::DebugType::Log, m_job->getId(), m_host->getBoincHostId(),
+              "New current index of current mask: %" PRIu64 "\n",
+              newCurrentIndex);
 
-			if (!m_workunit->isDuplicated())
-			{
-				workunitMask->updateIndex(newCurrentIndex);
-				m_job->updateIndex(m_job->getCurrentIndex() + maskKeyspace);
-			}
+          if (!m_workunit->isDuplicated()) {
+            workunitMask->updateIndex(newCurrentIndex);
+            m_job->updateIndex(m_job->getCurrentIndex() + maskKeyspace);
+          }
 
-			/** Exact number of passwords in workunit
-			* @warning Combinator sets real keyspace to hc_keyspace, as there is no such thing as hc_keyspace here
-			**/
-			m_workunit->setHcKeyspace(maskKeyspace * m_job->getHcKeyspace());
-		}
-		/** Host doesn't have enough power, start fragmenting */
-		else
-		{
-			Tools::printDebugHost(Config::DebugType::Log, m_job->getId(), m_host->getBoincHostId(),
-				"Host doesn't have the power, start fragmenting\n");
+          /** Exact number of passwords in workunit
+           * @warning Combinator sets real keyspace to hc_keyspace, as there is
+           *no such thing as hc_keyspace here
+           **/
+          m_workunit->setHcKeyspace(maskKeyspace * m_job->getHcKeyspace());
+        }
+        /** Host doesn't have enough power, start fragmenting */
+        else {
+          Tools::printDebugHost(
+              Config::DebugType::Log, m_job->getId(), m_host->getBoincHostId(),
+              "Host doesn't have the power, start fragmenting\n");
 
-			/** Append skip and limit to config */
-			Tools::printDebug("Adding additional info to CONFIG:\n");
+          /** Append skip and limit to config */
+          Tools::printDebug("Adding additional info to CONFIG:\n");
 
-			{
-				auto maskSplitter = makeMaskSplitter();
-				auto mask = maskSplitter->GetMaskSlice(workunitMask->getMask(), m_workunit->getStartIndex(), 1);
-				auto maskConfig = MakeConfigLinesFromSplitMask(mask);
-				f<<maskConfig;
-				Tools::printDebug(maskConfig.c_str());
-			}
+          {
+            auto maskSplitter = makeMaskSplitter();
+            auto mask = maskSplitter->GetMaskSlice(
+                workunitMask->getMask(), m_workunit->getStartIndex(), 1);
+            auto maskConfig = MakeConfigLinesFromSplitMask(mask);
+            f << maskConfig;
+            Tools::printDebug(maskConfig.c_str());
+          }
 
-			auto skipLine = makeLimitingConfigLine("start_index", "BigUInt", std::to_string(0));
-			f << skipLine;
-			Tools::printDebug(skipLine.c_str());
+          auto skipLine = makeLimitingConfigLine("start_index", "BigUInt",
+                                                 std::to_string(0));
+          f << skipLine;
+          Tools::printDebug(skipLine.c_str());
 
-			auto workunitHcKeyspace = m_workunit->getHcKeyspace();
-			auto limitLine = makeLimitingConfigLine("hc_keyspace", "BigUInt", std::to_string(workunitHcKeyspace));
-			f << limitLine;
-			Tools::printDebug(limitLine.c_str());
+          auto workunitHcKeyspace = m_workunit->getHcKeyspace();
+          auto limitLine = makeLimitingConfigLine(
+              "hc_keyspace", "BigUInt", std::to_string(workunitHcKeyspace));
+          f << limitLine;
+          Tools::printDebug(limitLine.c_str());
 
-			/** Update current_index_2 of the first fragmented dict */
-			if (!m_workunit->isDuplicated())
-				m_job->updateIndex2(workunitHcKeyspace);
-		}
+          /** Update current_index_2 of the first fragmented dict */
+          if (!m_workunit->isDuplicated())
+            m_job->updateIndex2(workunitHcKeyspace);
+        }
 
-		Tools::printDebugHost(Config::DebugType::Log, m_job->getId(), m_host->getBoincHostId(),
-			"Done. Closing files\n");
+        Tools::printDebugHost(Config::DebugType::Log, m_job->getId(),
+                              m_host->getBoincHostId(),
+                              "Done. Closing files\n");
 
-		f.close();
+        f.close();
 
+        /** Create data file */
+        retval = config.download_path(name2, path);
+        if (retval) {
+          Tools::printDebugHost(Config::DebugType::Error, m_job->getId(),
+                                m_host->getBoincHostId(),
+                                "Failed to receive BOINC filename - data. "
+                                "Setting job to malformed.\n");
+          m_sqlLoader->updateRunningJobStatus(m_job->getId(),
+                                              Config::JobState::JobMalformed);
+          return false;
+        }
 
-		/** Create data file */
-		retval = config.download_path(name2, path);
-		if (retval)
-		{
-			Tools::printDebugHost(Config::DebugType::Error, m_job->getId(), m_host->getBoincHostId(),
-				"Failed to receive BOINC filename - data. Setting job to malformed.\n");
-			m_sqlLoader->updateRunningJobStatus(m_job->getId(), Config::JobState::JobMalformed);
-			return false;
-		}
+        f.open(path);
+        if (!f) {
+          Tools::printDebugHost(Config::DebugType::Error, m_job->getId(),
+                                m_host->getBoincHostId(),
+                                "Failed to open data BOINC input file! Setting "
+                                "job to malformed.\n");
+          m_sqlLoader->updateRunningJobStatus(m_job->getId(),
+                                              Config::JobState::JobMalformed);
+          return false;
+        }
 
-		f.open(path);
-		if (!f)
-		{
-			Tools::printDebugHost(Config::DebugType::Error, m_job->getId(), m_host->getBoincHostId(),
-				"Failed to open data BOINC input file! Setting job to malformed.\n");
-			m_sqlLoader->updateRunningJobStatus(m_job->getId(), Config::JobState::JobMalformed);
-			return false;
-		}
+        f << m_job->getHashes();
+        f.close();
 
-		f << m_job->getHashes();
-		f.close();
+        /** Create dict file */
+        retval = config.download_path(name3, path);
+        if (retval) {
+          Tools::printDebugHost(Config::DebugType::Error, m_job->getId(),
+                                m_host->getBoincHostId(),
+                                "Failed to receive BOINC filename - dict. "
+                                "Setting job to malformed.\n");
+          m_sqlLoader->updateRunningJobStatus(m_job->getId(),
+                                              Config::JobState::JobMalformed);
+          return false;
+        }
 
-		/** Create dict file */
-		retval = config.download_path(name3, path);
-		if (retval)
-		{
-			Tools::printDebugHost(Config::DebugType::Error, m_job->getId(), m_host->getBoincHostId(),
-				"Failed to receive BOINC filename - dict. Setting job to malformed.\n");
-			m_sqlLoader->updateRunningJobStatus(m_job->getId(), Config::JobState::JobMalformed);
-			return false;
-		}
+        if (!std::ifstream(path)) {
+          for (auto &dict : dictVec) {
+            if (!dict->isLeft())
+              continue;
 
-		if(!std::ifstream(path))
-		{
-			for (auto & dict : dictVec)
-			{
-				if (!dict->isLeft())
-					continue;
-
-				auto dictFile = makeInputDict(dict, true);
-				dictFile->CopyTo(path);
-			}
-		}
+            auto dictFile = makeInputDict(dict, true);
+            dictFile->CopyTo(path);
+          }
+        }
 	}
 	catch(const InputDict::Exception &e)
 	{

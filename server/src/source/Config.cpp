@@ -27,6 +27,7 @@ namespace Config {
     std::string tableNameJob =          "fc_job";
     std::string tableNameHost =         "fc_host";
     std::string tableNameHostActivity = "fc_host_activity";
+    std::string tableNameHostStatus =   "fc_host_status";
     std::string tableNameMask =         "fc_mask";
     std::string tableNameSettings =     "fc_settings";
     std::string tableNameDictionary =   "fc_dictionary";

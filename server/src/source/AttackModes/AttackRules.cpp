@@ -69,12 +69,19 @@ bool CAttackRules::makeWorkunit() {
         return false;
     }
 
+    std::string hostExtraHcArgs = m_host->getExtraHcArgs();
+    std::string jobExtraHcArgs = m_job->getExtraHcArgs();
+    if (!hostExtraHcArgs.empty())
+        jobExtraHcArgs = hostExtraHcArgs + " " + jobExtraHcArgs;
+
     configFile << generateBasicConfig(
         m_job->getAttackMode(), m_job->getAttackSubmode(),
         m_job->getDistributionMode(), m_job->getName(), m_job->getHashType(),
         m_job->getHWTempAbort(), m_job->getOptimizedFlag(),
-        m_job->getDeviceTypes(), m_job->getWorkloadProfile(),
-        m_job->getSlowCandidatesFlag(), m_job->getExtraHcArgs());
+        m_job->getDeviceTypes(),
+        (m_job->getWorkloadProfile() == 0) ? m_host->getWorkloadProfile()
+                                           : m_job->getWorkloadProfile(),
+        m_job->getSlowCandidatesFlag(), jobExtraHcArgs);
 
     if (m_job->getDistributionMode() == 0) {
       // Number of passwords in the sent dictionary (the dictionary fragment).

@@ -238,8 +238,10 @@
       methods: {
         async loadSettings () {
           this.loading = true
-          this.settings = await this.axios.get(this.$serverAddr + '/settings').then(r => r.data)
-          this.loading = false
+          this.axios.get(this.$serverAddr + '/settings').then((response) => {
+            this.settings = response.data
+            this.loading = false
+          })
         },
         saveSettings () {
           if (this.settings.workunit_timeout_factor < 5) { // see minTimeoutFactor in generator's Config.h

@@ -17,5 +17,5 @@ void AttackHybridMaskDict::addSpecificArguments() {
 
   addRequiredFile("dict2");
 
-  findAndAddOptional("rule_right", "--rule-right");
+  findAndAddOptional("rule_right", "-k");
 }

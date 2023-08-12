@@ -4,10 +4,11 @@ New features:
 * New option 'Use local (prestored) dictionaries on hosts' when 'Fragmentation of dictionaries' is set to 'On hosts'. Check README for more details.
 * New option in the job detail view to export non-cracked hashes to file.
 * New column 'Est. remaining time' in the job workunits view, which is based on estimated end time computed by hashcat.
-* Added possibility to select device types (CPU or GPU) to be used for cracking in 'Host settings'.
-* Added possibility to change hashcat's workload profile in 'Host settings'.
+* Added possibility to select device types (CPU or GPU) to be used for cracking in Job's Host settings and also in host's 'Settings'.
+* Added possibility to change hashcat's workload profile in job's 'Host settings' and also in host's 'Settings'.
 * Added possibility to enable hashcat's slow candidates mode for dictionary, combinator and brute force attacks in 'Attack settings'.
 * Added possibility to enter job specific extra hashcat args in 'Attack settings'.
+* Added possibility to enter host specific extra hashcat args in host's 'Settings'.
 * Added support to automatically extract hashes from Bitcoin/Litecoin/Ethereum/Exodus/MetaMask/Electrum wallets.
 * Added possibility to set priority (low/normal/high) of a new job in 'Advanced settings'.
 * Added possibility to resume timeouted jobs.
@@ -17,6 +18,7 @@ General improvements:
 * Improved benchmarking logic.
 * It is now possible to upload dictionaries from any folders on the server.
 * It is now possible to upgrade standard (non-dockerized) Fitcrack to newer versions. Please see UPGRADE.md file.
+* Settings per hosts.
 * Updated to BOINC v7.23.
 
 Fixes:
