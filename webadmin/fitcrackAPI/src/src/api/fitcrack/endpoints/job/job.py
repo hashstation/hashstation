@@ -38,7 +38,7 @@ from src.api.fitcrack.lang import status_to_code, job_status_text_to_code_dict, 
 from src.api.fitcrack.responseModels import simpleResponse
 from src.database import db
 from src.database.models import FcJob, Host, FcHost, FcWorkunit, FcHostActivity, FcMask, FcJobGraph, \
-    FcJobDictionary, FcPcfg, FcJobStatus, FcRule, FcUserPermission, FcUser, FcSetting
+    FcJobDictionary, FcPcfg, FcJobStatus, FcRule, FcUserPermission, FcUser
 
 log = logging.getLogger(__name__)
 
@@ -297,9 +297,6 @@ class JobByID(Resource):
         job.name = args['name']
         job.comment = args['comment']
         job.seconds_per_workunit = args['seconds_per_job']
-        settings = FcSetting.query.first()
-        if job.seconds_per_workunit < settings.t_pmin:
-            abort(400, 'Value for \"Time for workunit\" is smaller than absolute minimum seconds per workunit ({}).'.format(settings.t_pmin))
         job.time_start = None if not args['time_start'] else datetime.datetime.strptime(args['time_start'], '%Y-%m-%dT%H:%M'),
         job.time_end = None if not args['time_end'] else datetime.datetime.strptime(args['time_end'], '%Y-%m-%dT%H:%M')
 
