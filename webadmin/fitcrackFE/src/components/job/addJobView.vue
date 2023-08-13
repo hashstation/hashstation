@@ -546,22 +546,9 @@
                 />
               </v-row>
               <v-row>
-                <v-col>
-                  <div class="title mb-2">Planned start</div>
-                  <dt-picker
-                    v-model="startDate"
-                    outlined
-                    hide-details
-                    :disabled="startNow"
-                    single-line
-                    label=""
-                  />
-                  <v-checkbox
-                    v-model="startNow"
-                    label="Immediately"
-                  />
-                </v-col>
-                <v-col>
+                <v-col
+                  v-if="!maximizeWorkunits"
+                  >
                   <div class="title mb-2">
                     Desired time per workunit
                   </div>
@@ -575,6 +562,21 @@
                     type="number"
                     suffix="seconds"
                     :min="60"
+                  />
+                </v-col>
+                <v-col>
+                  <div class="title mb-2">Planned start</div>
+                  <dt-picker
+                    v-model="startDate"
+                    outlined
+                    hide-details
+                    :disabled="startNow"
+                    single-line
+                    label=""
+                  />
+                  <v-checkbox
+                    v-model="startNow"
+                    label="Immediately"
                   />
                 </v-col>
                 <v-col>
@@ -613,9 +615,17 @@
               </v-row>
               <v-row>
                 <v-checkbox
+                  v-model="maximizeWorkunits"
+                  label="Maximize workunits"
+                  hint="Generate the largest possible workunits."
+                />
+              </v-row>
+              <v-row>
+                <v-checkbox
                   v-if="!$optimizedOnly"
                   v-model="optimized"
-                  label="Use optimized computing kernels (limits maximal length of passwords)"
+                  label="Use optimized computing kernels"
+                  hint="Faster computation, limits maximal length of passwords."
                 />
               </v-row>
               <v-row>
@@ -746,7 +756,7 @@
       ...mapTwoWayState('jobForm', twoWayMap([
         'step', 'attackSettingsTab', 'validatedHashes', 'name', 'inputMethod', 'hashList', 'hashType', 'ignoreHashes', 'startDate', 
         'endDate', 'template', 'comment', 'hosts', 'startNow', 'endNever', 'timeForJob', 'deviceTypes', 'workloadProfile', 'priority',
-        'optimized', 'extraHcArgs',
+        'optimized', 'extraHcArgs', 'maximizeWorkunits',
       ])),
       ...mapGetters('jobForm', ['jobSettings', 'valid', 'validAttackSpecificSettings', 'keyspaceKnown']),
       templateItems () {

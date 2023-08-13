@@ -33,3 +33,6 @@ ADD `workload_profile` tinyint(3) NOT NULL DEFAULT '2';
 
 ALTER TABLE `fc_host_status`
 ADD `extra_hc_args` varchar(4096) COLLATE utf8_bin DEFAULT NULL;
+
+ALTER TABLE `fc_job`
+ADD `maximize_workunits` tinyint(1) NOT NULL DEFAULT '0';

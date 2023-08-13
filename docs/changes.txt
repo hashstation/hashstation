@@ -9,6 +9,7 @@ New features:
 * Added possibility to enable hashcat's slow candidates mode for dictionary, combinator and brute force attacks in 'Attack settings'.
 * Added possibility to enter job specific extra hashcat args in 'Attack settings'.
 * Added possibility to enter host specific extra hashcat args in host's 'Settings'.
+* Added possibility to maximize workunits (generate largest possible workunits) in 'Advanced settings'.
 * Added support to automatically extract hashes from Bitcoin/Litecoin/Ethereum/Exodus/MetaMask/Electrum wallets.
 * Added possibility to set priority (low/normal/high) of a new job in 'Advanced settings'.
 * Added possibility to resume timeouted jobs.

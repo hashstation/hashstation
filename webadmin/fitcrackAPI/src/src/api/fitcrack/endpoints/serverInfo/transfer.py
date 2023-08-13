@@ -19,7 +19,7 @@ JOB_EXPORTABLE_COLUMNS = (
   'min_password_len', 'max_password_len', 'min_elem_in_chain', 
   'max_elem_in_chain', 'optimized', 'dict_deployment_mode',
   'device_types', 'workload_profile', 'slow_candidates', 'extra_hc_args',
-  'deleted', 'masks'
+  'maximize_workunits', 'deleted', 'masks'
 )
 # relationship fields that get stored as dependencies
 JOB_EXPORTABLE_DEPENDENCIES = {
