@@ -42,7 +42,7 @@ if [[ $1 == "-s" ]]; then
         source installer/migrate_db.sh
         source installer/update_daemons.sh
         source installer/update_webadmin.sh
-        (cd runner ; python3 update_binaries.py)
+        (cd agent ; python3 update_binaries.py)
         exit
     elif [[ $2 == "-5" ]]; then
         source installer/uninstall.sh
@@ -83,7 +83,7 @@ while ! $finished; do
       source installer/migrate_db.sh
       source installer/update_daemons.sh
       source installer/update_webadmin.sh
-      (cd runner ; python3 update_binaries.py)
+      (cd agent ; python3 update_binaries.py)
       exit
     elif [ $OPERATION -eq 5 ]; then
       source installer/uninstall.sh

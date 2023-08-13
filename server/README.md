@@ -14,7 +14,7 @@ This readme describes the process process of manual Fitcrack server installation
 * **measureUsage.py** (Fitcrack-specific BOINC daemon)
 * **pcfg_monitor.py** (Fitcrack-specific BOINC daemon)
 
-(Note: For **Runner** and **Webadmin**, there are separate READMEs)
+(Note: For **Agent** and **Webadmin**, there are separate READMEs)
 
 
 ## Dependencies
@@ -208,7 +208,7 @@ cp project.xml /home/boincadm/projects/<your_project_name>/
 
 
 ## See the binary-creation info
-Copy binaries of your host applications (Runner, Fitcrack, hashcat) to
+Copy binaries of your host applications (Agent, Fitcrack, hashcat) to
 `/home/boincadm/project/<your_project_name>/app/fitcrack/<version_number>/`
 
 The `<version_number>` directory has to contain subfolder named as the targeted
@@ -248,7 +248,7 @@ What is needed inside?
   * `hashcat.hcstat2` - Markov hcstat2 file
   * `hashcat.hctune` - hashcat's hctune settings
   * `hash_info.json` - info about the supported hash algorithms
-* `runner1.bin` or `runner1.exe` - Fitcrack runner comppiled for the platform's architecture (See `runner/README.md`)
+* `agent1.bin` or `agent1.exe` - Fitcrack agent comppiled for the platform's architecture (See `agent/README.md`)
 * `princeprocessor1.bin` or `princeprocessor1.exe` - the [princeprocessor](https://github.com/hashcat/princeprocessor) app for PRINCE attacks compile for the platform's architecture.
 * `pcfg-manager1.bin` or `pcfg-manager1.exe` - NESatFIT [PCFG Manager](https://github.com/nesfit/pcfg-manager) compiled for the platform's architecture.
 * `version.xml` - version file with the definition of all the above-shown files that should be transferred to the host cracking stations. See example below:
@@ -258,7 +258,7 @@ What is needed inside?
 	<file><physical_name>hashcat_files1.zip</physical_name><copy_file/></file>
 	<file><physical_name>pcfg-manager1.bin</physical_name><copy_file/></file>
 	<file><physical_name>princeprocessor1.bin</physical_name><copy_file/></file>
-	<file><physical_name>runner1.bin</physical_name>
+	<file><physical_name>agent1.bin</physical_name>
 	    <copy_file/>
 	    <main_program/>
 	</file>

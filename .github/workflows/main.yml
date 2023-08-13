@@ -1,10 +1,10 @@
-name: Build webadmin FE and Runner
+name: Build webadmin FE and Agent
 
 on:
   push:
     paths:
       - 'webadmin/fitcrackFE/**'
-      - 'runner/**'
+      - 'agent/**'
 
 jobs:
   build:
@@ -31,7 +31,7 @@ jobs:
       shell: bash
       run: |
         echo "::set-env name=FE_CHANGES::$(git diff --name-only HEAD HEAD~1 | grep webadmin/fitcrackFE/ | wc -l)"
-        echo "::set-env name=RN_CHANGES::$(git diff --name-only HEAD HEAD~1 | grep runner/ | wc -l)"
+        echo "::set-env name=RN_CHANGES::$(git diff --name-only HEAD HEAD~1 | grep agent/ | wc -l)"
     # Node FE build
     - name: Set up Node ${{ matrix.node-version }}
       if: env.FE_CHANGES > 0
@@ -51,13 +51,13 @@ jobs:
       run: |
         npm ci
         npm run build --if-present
-    # Runner build
+    # Agent build
     - name: Install mingw g++
       if: env.RN_CHANGES > 0
       run: sudo apt-get install g++-mingw-w64-x86-64
-    - name: Build Runner
+    - name: Build Agent
       if: env.RN_CHANGES > 0
-      working-directory: runner
+      working-directory: agent
       run: |
         bash update_client_bins.sh
         make clean
@@ -67,11 +67,11 @@ jobs:
         git config --local user.email "david.bolvansky@gmail.com"
         git config --local user.name "Assets Builder"
         git add webadmin/fitcrackFE/public/static/configuration.js
-        git add server/client_bin/windows_x86_64/runner1.exe -f
-        git add server/client_bin/x86_64-pc-linux-gnu/runner1.bin -f
-        git add runner/bin/*.debug -f
+        git add server/client_bin/windows_x86_64/agent1.exe -f
+        git add server/client_bin/x86_64-pc-linux-gnu/agent1.bin -f
+        git add agent/bin/*.debug -f
         git add .
-        git commit -m "Build webadmin frontend and Runner"
+        git commit -m "Build webadmin frontend and agent"
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:

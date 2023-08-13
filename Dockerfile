@@ -117,8 +117,8 @@ RUN make -j$COMPILER_THREADS
 # Prepare project creation script
 WORKDIR /srv/fitcrack/
 
-# Build runner
-WORKDIR /srv/fitcrack/runner
+# Build agent
+WORKDIR /srv/fitcrack/agent
 RUN apt-get install -y g++-mingw-w64-x86-64
 RUN chmod +x ./update_client_bins.sh
 RUN bash ./update_client_bins.sh
