@@ -20,15 +20,15 @@ Fitcrack runner
 
 Fitcrack webadmin
 =================
-- license: MIT license - see webadmin/LICENSE
-- authors: Fitcrack team, see webadmin/AUTHORS
-- sources: webadmin/fitcrackFE (frontend) and webadmin/fitcrackAPI/src (backend)
+- license: MIT license - see fitcrack/LICENSE
+- authors: Fitcrack team, see fitcrack/AUTHORS
+- sources: fitcrack/frontend (frontend) and fitcrack/backend/src (backend)
 
 hashcat binaries
 ================
 - license: MIT
-- location: server/client_bin and webadmin/fitcrackAPI/hashcat-*
-- authors: see webadmin/fitcrackAPI/hashcat-*/docs/credits.txt
+- location: server/client_bin and fitcrack/backend/hashcat-*
+- authors: see fitcrack/backend/hashcat-*/docs/credits.txt
 - homepage: hashcat.net
 
 BOINC server
@@ -40,7 +40,7 @@ BOINC server
 
 Third-party utilities used by webadmin backend
 ==============================================
-- location: webadmin/fitcrackAPI/*
+- location: fitcrack/backend/*
 - hashcat-utils - by Jens "atom" Steube under MIT license
 - princeprocessor - by Jens "atom" Steube under MIT license
 - pcfg_trainer - by Matt "lakiw" Weir

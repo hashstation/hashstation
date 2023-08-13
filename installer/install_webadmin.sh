@@ -9,7 +9,7 @@
 ##################################
 
 echo "Installing back-end requirements..."
-pip3 install -r webadmin/fitcrackAPI/src/requirements.txt
+pip3 install -r fitcrack/backend/src/requirements.txt
 echo "Done."
 
 ####################################
@@ -255,7 +255,7 @@ fi
 # Install front-end
 if [ $INSTALL_BACKEND = "y" ]; then
   echo "Building hashcat-utils"
-  cd webadmin/fitcrackAPI/hashcat-utils/src
+  cd fitcrack/backend/hashcat-utils/src
   make -j$COMPILER_THREADS
   cd ..
   mkdir -p bin
@@ -263,12 +263,12 @@ if [ $INSTALL_BACKEND = "y" ]; then
   cd $INSTALLER_ROOT
 
   echo "Building xtohashcat tools"
-  cd webadmin/fitcrackAPI/xtohashcat/scripts/
+  cd fitcrack/backend/xtohashcat/scripts/
   make -j$COMPILER_THREADS
   cd $INSTALLER_ROOT
 
   echo "Building pwd-dist tool"
-  cd webadmin/fitcrackAPI/pwd_dist
+  cd fitcrack/backend/pwd_dist
   make -j$COMPILER_THREADS
   cd $INSTALLER_ROOT
 
@@ -276,10 +276,10 @@ if [ $INSTALL_BACKEND = "y" ]; then
 
 
   mkdir $APACHE_DOCUMENT_ROOT/fitcrackAPI
-  cp -Rf webadmin/fitcrackAPI/* $APACHE_DOCUMENT_ROOT/fitcrackAPI/
+  cp -Rf fitcrack/backend/* $APACHE_DOCUMENT_ROOT/fitcrackAPI/
 
-  rm -f webadmin/fitcrackAPI/xtohashcat/scripts/zip2john
-  rm -f webadmin/fitcrackAPI/xtohashcat/scripts/rar2john
+  rm -f fitcrack/backend/xtohashcat/scripts/zip2john
+  rm -f fitcrack/backend/xtohashcat/scripts/rar2john
 
   # Set permissions and ownership to Apache user and group
   chmod -R 775 $APACHE_DOCUMENT_ROOT/fitcrackAPI

@@ -236,14 +236,14 @@ else # Create Fitcrack project
   sed -i "s|<log_dir>.*<\/log_dir>|<log_fitcrack_dir>/var/log/fitcrack</log_fitcrack_dir>|g" $BOINC_PROJECT_DIR/config.xml
 
   # Fix backend URI
-  sed -i "s|PROJECT_USER = '.*|PROJECT_USER = '$BOINC_USER'|g" /srv/fitcrack/webadmin/fitcrackAPI/src/settings.py
-  sed -i "s|PROJECT_NAME = '.*|PROJECT_NAME = '$BOINC_PROJECT'|g" /srv/fitcrack/webadmin/fitcrackAPI/src/settings.py
-  sed -i "s|FLASK_SERVER_NAME = '.*|FLASK_SERVER_NAME = 'localhost:$BACKEND_PORT'|g" /srv/fitcrack/webadmin/fitcrackAPI/src/settings.py
-  sed -i "s|SQLALCHEMY_DATABASE_URI = '.*|SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://$DB_USER:$DB_PW@localhost/$DB_NAME'|g" /srv/fitcrack/webadmin/fitcrackAPI/src/settings.py
-  sed -i "s|BOINC_SERVER_URI = '.*|BOINC_SERVER_URI = '$BOINC_URL'|g" /srv/fitcrack/webadmin/fitcrackAPI/src/settings.py
+  sed -i "s|PROJECT_USER = '.*|PROJECT_USER = '$BOINC_USER'|g" /srv/fitcrack/fitcrack/backend/src/settings.py
+  sed -i "s|PROJECT_NAME = '.*|PROJECT_NAME = '$BOINC_PROJECT'|g" /srv/fitcrack/fitcrack/backend/src/settings.py
+  sed -i "s|FLASK_SERVER_NAME = '.*|FLASK_SERVER_NAME = 'localhost:$BACKEND_PORT'|g" /srv/fitcrack/fitcrack/backend/src/settings.py
+  sed -i "s|SQLALCHEMY_DATABASE_URI = '.*|SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://$DB_USER:$DB_PW@localhost/$DB_NAME'|g" /srv/fitcrack/fitcrack/backend/src/settings.py
+  sed -i "s|BOINC_SERVER_URI = '.*|BOINC_SERVER_URI = '$BOINC_URL'|g" /srv/fitcrack/fitcrack/backend/src/settings.py
 
   # Copy it to the /var/www/html/
-  cp -R /srv/fitcrack/webadmin/fitcrackAPI/* $APACHE_DOCUMENT_ROOT/fitcrackAPI/
+  cp -R /srv/fitcrack/fitcrack/backend/* $APACHE_DOCUMENT_ROOT/fitcrackAPI/
   chown -R $APACHE_USER:$APACHE_USER $APACHE_DOCUMENT_ROOT/fitcrackAPI
 
   # Set WSGI path

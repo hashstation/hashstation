@@ -128,11 +128,11 @@ WORKDIR /srv/fitcrack/
 ######################################################################################
 ################################# Webadmin backend ###################################
 
-RUN pip3 install -r webadmin/fitcrackAPI/src/requirements.txt
+RUN pip3 install -r fitcrack/backend/src/requirements.txt
 
-RUN cd webadmin/fitcrackAPI/hashcat-utils/src && make
-RUN cd webadmin/fitcrackAPI/xtohashcat/scripts && make
-RUN cd webadmin/fitcrackAPI/pwd_dist && make
+RUN cd fitcrack/backend/hashcat-utils/src && make
+RUN cd fitcrack/backend/xtohashcat/scripts && make
+RUN cd fitcrack/backend/pwd_dist && make
 
 ######################################################################################
 ################################# Webadmin frontend ###################################

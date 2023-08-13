@@ -1,6 +1,6 @@
 import json, requests, argparse, time, threading, base64, datetime
 
-HASH_INFO_PATH = '../webadmin/fitcrackAPI/hashcat/hash_info.json'
+HASH_INFO_PATH = '../fitcrack/backend/hashcat/hash_info.json'
 
 # python3 superbench.py --debug --delay 150 --host-id 1 --api-url http://192.168.101.5:5001 --user root --password xxxx --attack-modes 1
 
