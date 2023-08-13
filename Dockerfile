@@ -137,7 +137,7 @@ RUN cd webadmin/fitcrackAPI/pwd_dist && make
 ######################################################################################
 ################################# Webadmin frontend ###################################
 
-WORKDIR /srv/fitcrack/webadmin/fitcrackFE
+WORKDIR /srv/fitcrack/fitcrack/frontend
 RUN export PATH=/usr/local/lib/nodejs/node-v16.15.0-linux-x64/bin:$PATH \
 && npm ci && npm run build
 

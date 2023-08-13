@@ -35,7 +35,7 @@ fi
 if [ $INSTALL_FRONTEND = "y" ]; then
   echo "Updating Fitcrack WebAdmin front-end..."
   mkdir $APACHE_DOCUMENT_ROOT/fitcrackFE
-  cp -Rf webadmin/fitcrackFE/dist/* $APACHE_DOCUMENT_ROOT/fitcrackFE/
+  cp -Rf fitcrack/frontend/dist/* $APACHE_DOCUMENT_ROOT/fitcrackFE/
 
   # Set permissions and ownership to Apache user and group
   chmod -R 775 $APACHE_DOCUMENT_ROOT/fitcrackFE

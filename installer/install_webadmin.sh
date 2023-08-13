@@ -222,7 +222,7 @@ fi
 if [ $INSTALL_FRONTEND = "y" ]; then
   echo "Installing Fitcrack WebAdmin front-end..."
   mkdir $APACHE_DOCUMENT_ROOT/fitcrackFE
-  cp -Rf webadmin/fitcrackFE/dist/* $APACHE_DOCUMENT_ROOT/fitcrackFE/
+  cp -Rf fitcrack/frontend/dist/* $APACHE_DOCUMENT_ROOT/fitcrackFE/
 
   # Set BACKEND_URI for window.serverAddress
   sed -i "s|http://localhost:5000|$BACKEND_URI:$BACKEND_PORT|g" $APACHE_DOCUMENT_ROOT/fitcrackFE/static/configuration.js
