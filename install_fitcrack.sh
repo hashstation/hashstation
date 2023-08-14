@@ -112,7 +112,7 @@ echo "=============================================================="
 # Configure and build server
 ########################################
 
-if [ -f "tmp/built" ]; then
+if [ -f "installer/.server_built" ]; then
   read -e -p "1) Server seems to be built already. Rebuild? [y/N] (default: N): " BUILD_SERVER
   BUILD_SERVER=${BUILD_SERVER:-N}
 else
@@ -127,7 +127,7 @@ fi
 ########################################
 # Install libs
 ########################################
-if [ -f "tmp/libs" ]; then
+if [ -f "tmp/.boinc_libs_built" ]; then
   read -e -p "2) BOINC libraries seem to be installed. Reinstall? [y/N] (default: N): " INSTALL_LIBS
   INSTALL_LIBS=${INSTALL_LIBS:-N}
 else

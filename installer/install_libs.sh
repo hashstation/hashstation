@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Install BOINC libraries
-rm -f tmp/libs 2>/dev/null
+rm -f tmp/.boinc_libs_built 2>/dev/null
 cd boinc
 make install
 
@@ -11,5 +11,5 @@ if [[ $? != 0 ]]; then
 fi
 
 cd ..
-touch tmp/libs
+touch tmp/.boinc_libs_built
 echo "BOINC libraries installed."

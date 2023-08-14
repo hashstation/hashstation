@@ -25,7 +25,7 @@ cp -f server/src/headers/protocol/*.cc    boinc/sched/
 cp -f server/src/headers/protocol/*.h     boinc/sched/
 cp -rf server/src/include/*               boinc/sched/
 
-rm -f tmp/built 2>/dev/null
+rm -f installer/.server_built 2>/dev/null
 
 cd boinc
 chmod +x _autosetup
@@ -55,5 +55,5 @@ if [[ $? != 0 ]]; then
 fi
 
 cd ..
-touch tmp/built
+touch installer/.server_built
 echo "Build successful."

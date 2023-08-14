@@ -106,7 +106,7 @@ RUN cp -f server/src/source/Utils/*.cpp    boinc/sched/
 RUN cp -f server/src/headers/protocol/*.cc    boinc/sched/
 RUN cp -f server/src/headers/protocol/*.h     boinc/sched/
 RUN cp -rf server/src/include/*               boinc/sched/
-RUN rm -f tmp/built 2>/dev/null
+RUN rm -f installer/.server_built 2>/dev/null
 
 # Build Fitcrack server
 WORKDIR /srv/fitcrack/boinc
