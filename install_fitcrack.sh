@@ -127,7 +127,7 @@ fi
 ########################################
 # Install libs
 ########################################
-if [ -f "tmp/.boinc_libs_built" ]; then
+if [ -f "installer/.boinc_libs_built" ]; then
   read -e -p "2) BOINC libraries seem to be installed. Reinstall? [y/N] (default: N): " INSTALL_LIBS
   INSTALL_LIBS=${INSTALL_LIBS:-N}
 else

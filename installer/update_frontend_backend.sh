@@ -58,7 +58,7 @@ fi
 
 INSTALL_BACKEND="N"
 if [ -d "$APACHE_DOCUMENT_ROOT/fitcrackAPI" ]; then
-  echo "Fitcrack backend-end is installed in $APACHE_DOCUMENT_ROOT/fitcrackAPI."
+  echo "Fitcrack backend is installed in $APACHE_DOCUMENT_ROOT/fitcrackAPI."
   read -e -p "Update backend? [y/N] (default: y): " UPDATE_BACKEND
   UPDATE_BACKEND=${UPDATE_BACKEND:-y}
   if [ $UPDATE_BACKEND = "y" ]; then
@@ -70,7 +70,7 @@ else
   exit
 fi
 
-# Install backend-end
+# Install backend
 if [ $INSTALL_BACKEND = "y" ]; then
   echo "Building hashcat-utils"
   cd fitcrack/backend/hashcat-utils/src

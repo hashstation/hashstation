@@ -1,2 +1,2 @@
-tmp/.server_built
-tmp/.boinc_libs_built
+.server_built
+.boinc_libs_built
