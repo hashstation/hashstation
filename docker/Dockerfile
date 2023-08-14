@@ -32,7 +32,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN apt install -yq sudo
 
 # noninteractive keyboard configuration
-COPY ./tools/keyboard /etc/default/keyboard
+COPY ./keyboard /etc/default/keyboard
 RUN export DEBIAN_FRONTEND=noninteractive
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 RUN apt-get install -y -q
@@ -86,7 +86,7 @@ RUN service apache2 restart
 ######################################################################################
 ################################# BOINC Server build #################################
 
-COPY . /srv/fitcrack/
+COPY ../ /srv/fitcrack/
 WORKDIR /srv/fitcrack
 
 # Apply fitcrack specific changes to boinc
@@ -144,7 +144,7 @@ RUN export PATH=/usr/local/lib/nodejs/node-v16.15.0-linux-x64/bin:$PATH \
 ######################################################################################
 
 WORKDIR /srv/fitcrack/
-COPY tools/entrypoint-fitcrack.sh /srv/fitcrack/
+COPY entrypoint-fitcrack.sh /srv/fitcrack/
 
 # Copy database init-script
 RUN mkdir /srv/db_init
