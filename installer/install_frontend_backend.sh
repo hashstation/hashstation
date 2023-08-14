@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# WebAdmin installer
+# Frontend and backend installer
 # This file is part of Fitcrack installer
 # Author: Radek Hranicky (ihranicky@fit.vutbr.cz)
 
@@ -8,7 +8,7 @@
 # Install backend prerequisities #
 ##################################
 
-echo "Installing back-end requirements..."
+echo "Installing backend requirements..."
 pip3 install -r fitcrack/backend/src/requirements.txt
 echo "Done."
 
@@ -39,12 +39,12 @@ echo "Apache is prepared for configuration."
 # Configure ports #
 ###################
 
-read -e -p "Enter a port for front-end to listen on (default: 80): " FRONTEND_PORT
+read -e -p "Enter a port for frontend to listen on (default: 80): " FRONTEND_PORT
 FRONTEND_PORT=${FRONTEND_PORT:-80}
 
 
 #########################
-# Get front-end TCP port #
+# Get frontend TCP port #
 #########################
 
 if lsof -Pi :$FRONTEND_PORT -sTCP:LISTEN -t >/dev/null ; then
@@ -77,14 +77,14 @@ if [ $FRONTEND_PORT_FREE = "N" ]; then
 fi
 
 ###########################
-# Front-end Apache config #
+# Frontend Apache config #
 ###########################
 
 if [ $FRONTEND_PORT_FREE = "N" ]; then
   echo "Resolve the problem or try again with another port number!"
   exit
 else
-  echo "Creating front-end config: $APACHE_CONFIG_DIR/sites-available/fitcrackFE.conf"
+  echo "Creating frontend config: $APACHE_CONFIG_DIR/sites-available/fitcrackFE.conf"
 
   ADD_LISTEN_DIRECTIVE="y"
   cat $APACHE_CONFIG_FILE | grep "^Listen $FRONTEND_PORT" >/dev/null
@@ -99,7 +99,7 @@ else
   fi
 
   FE_CONFIG_FILE=$APACHE_CONFIG_DIR/sites-available/fitcrackFE.conf
-  echo "# Fitcrack WebAdmin front-end config" > $FE_CONFIG_FILE
+  echo "# Fitcrack frontend config" > $FE_CONFIG_FILE
 
   if [ $ADD_LISTEN_DIRECTIVE = "y" ]; then
     echo "Listen $FRONTEND_PORT" >> $FE_CONFIG_FILE
@@ -119,7 +119,7 @@ else
 
   echo "Creating a symlink: $APACHE_CONFIG_DIR/sites-enabled/fitcrackFE.conf"
   ln -sf $APACHE_CONFIG_DIR/sites-available/fitcrackFE.conf $APACHE_CONFIG_DIR/sites-enabled/fitcrackFE.conf
-  echo "Front-end Apache configuration done"
+  echo "Frontend Apache configuration done"
 fi
 
 
@@ -127,15 +127,15 @@ fi
 # Get BACKEND_URI #
 ###################
 
-read -e -p "Enter WebAdmin backend URI (default: ${BOINC_URL}): " BACKEND_URI
+read -e -p "Enter Fitcrack backend URI (default: ${BOINC_URL}): " BACKEND_URI
 BACKEND_URI=${BACKEND_URI:-${BOINC_URL}}
 BACKEND_URI=${BACKEND_URI%/}
 
 #########################
-# Get back-end TCP port #
+# Get backend TCP port #
 #########################
 
-read -e -p "Enter a port for back-end to listen on (default: 5000): " BACKEND_PORT
+read -e -p "Enter a port for backend to listen on (default: 5000): " BACKEND_PORT
 BACKEND_PORT=${BACKEND_PORT:-5000}
 
 if lsof -Pi :$BACKEND_PORT -sTCP:LISTEN -t >/dev/null ; then
@@ -155,14 +155,14 @@ if [ $BACKEND_PORT_FREE = "N" ]; then
 fi
 
 ###########################
-# Back-end Apache config #
+# Backend Apache config #
 ###########################
 
 if [ $BACKEND_PORT_FREE = "N" ]; then
   echo "Resolve the problem or try again with another port number!"
   exit
 else
-  echo "Creating back-end config: $APACHE_CONFIG_DIR/sites-available/fitcrackAPI.conf"
+  echo "Creating backend config: $APACHE_CONFIG_DIR/sites-available/fitcrackAPI.conf"
 
   ADD_LISTEN_DIRECTIVE="y"
   cat $APACHE_CONFIG_FILE | grep "^Listen $BACKEND_PORT" >/dev/null
@@ -177,7 +177,7 @@ else
   fi
 
   BE_CONFIG_FILE=$APACHE_CONFIG_DIR/sites-available/fitcrackAPI.conf
-  echo "# Fitcrack WebAdmin back-end config" > $BE_CONFIG_FILE
+  echo "# Fitcrack backend config" > $BE_CONFIG_FILE
 
   if [ $ADD_LISTEN_DIRECTIVE = "y" ]; then
     echo "Listen $BACKEND_PORT" >> $BE_CONFIG_FILE
@@ -197,16 +197,16 @@ else
 
   echo "Creating a symlink: $APACHE_CONFIG_DIR/sites-enabled/fitcrackAPI.conf"
   ln -sf $APACHE_CONFIG_DIR/sites-available/fitcrackAPI.conf $APACHE_CONFIG_DIR/sites-enabled/fitcrackAPI.conf
-  echo "Front-end Apache configuration done"
+  echo "Frontend Apache configuration done"
 fi
 
 ##########################################################
-# Install Fitcrack WebAdmin front-end (fitcrackFE) files #
+# Install Fitcrack frontend (fitcrackFE) files #
 ##########################################################
 
 if [ -d "$APACHE_DOCUMENT_ROOT/fitcrackFE" ]; then
-  echo "Front-end already seems to be installed in $APACHE_DOCUMENT_ROOT/fitcrackFE."
-  read -e -p "Reinstall front-end? [y/N] (default: N): " REINSTALL_FRONTEND
+  echo "Frontend already seems to be installed in $APACHE_DOCUMENT_ROOT/fitcrackFE."
+  read -e -p "Reinstall frontend? [y/N] (default: N): " REINSTALL_FRONTEND
   REINSTALL_FRONTEND=${REINSTALL_FRONTEND:-N}
   if [ $REINSTALL_FRONTEND = "y" ]; then
     rm -Rf $APACHE_DOCUMENT_ROOT/fitcrackFE
@@ -218,9 +218,9 @@ else
   INSTALL_FRONTEND="y"
 fi
 
-# Install front-end
+# Install frontend
 if [ $INSTALL_FRONTEND = "y" ]; then
-  echo "Installing Fitcrack WebAdmin front-end..."
+  echo "Installing Fitcrack frontend..."
   mkdir $APACHE_DOCUMENT_ROOT/fitcrackFE
   cp -Rf fitcrack/frontend/dist/* $APACHE_DOCUMENT_ROOT/fitcrackFE/
 
@@ -235,12 +235,12 @@ if [ $INSTALL_FRONTEND = "y" ]; then
 fi
 
 #########################################################
-# Install Fitcrack WebAdmin back-end (fitcrackAPI) file #
+# Install Fitcrack backend (fitcrackAPI) file #
 #########################################################
 
 if [ -d "$APACHE_DOCUMENT_ROOT/fitcrackAPI" ]; then
-  echo "Back-end already seems to be installed in $APACHE_DOCUMENT_ROOT/fitcrackAPI."
-  read -e -p "Reinstall back-end? [y/N] (default: N): " REINSTALL_BACKEND
+  echo "Backend already seems to be installed in $APACHE_DOCUMENT_ROOT/fitcrackAPI."
+  read -e -p "Reinstall backend? [y/N] (default: N): " REINSTALL_BACKEND
   REINSTALL_BACKEND=${REINSTALL_BACKEND:-N}
   if [ $REINSTALL_BACKEND = "y" ]; then
     rm -Rf $APACHE_DOCUMENT_ROOT/fitcrackAPI
@@ -252,7 +252,7 @@ else
   INSTALL_BACKEND="y"
 fi
 
-# Install front-end
+# Install frontend
 if [ $INSTALL_BACKEND = "y" ]; then
   echo "Building hashcat-utils"
   cd fitcrack/backend/hashcat-utils/src
@@ -272,7 +272,7 @@ if [ $INSTALL_BACKEND = "y" ]; then
   make -j$COMPILER_THREADS
   cd $INSTALLER_ROOT
 
-  echo "Installing Fitcrack WebAdmin back-end..."
+  echo "Installing Fitcrack backend..."
 
 
   mkdir $APACHE_DOCUMENT_ROOT/fitcrackAPI
@@ -291,7 +291,7 @@ fi
 sed -i "s|http://localhost:5000|$BACKEND_URI:$BACKEND_PORT|g" $BOINC_PROJECT_DIR/bin/measureUsage.py
 
 #######################
-# Configure front-end #
+# Configure frontend #
 #######################
 
 echo "Configuring frontend..."
@@ -300,7 +300,7 @@ sed -i "s|http://localhost:5000|$BACKEND_URI:$BACKEND_PORT|g" $APACHE_DOCUMENT_R
 echo "Done."
 
 #######################
-# Configure back-end #
+# Configure backend #
 #######################
 
 echo "Configuring backend..."
@@ -326,6 +326,6 @@ echo "Done."
 # Restart Apache #
 ##################
 
-echo "WebAdmin installed. Restarting Apache..."
+echo "Fitcrack frontend and backend installed. Restarting Apache..."
 service_restart $APACHE_SERVICE
 echo "Done."

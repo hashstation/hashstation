@@ -7,9 +7,9 @@ services:
       command: ./entrypoint-fitcrack.sh
       restart: always
       ports:
-          - ${BACKEND_PORT}:${BACKEND_PORT}         # Mapping of WebAdmin backend
-          - ${FRONTEND_PORT}:${FRONTEND_PORT}       # Mapping of WebAdmin frontend
-          #- ${BOINC_PORT}:${BOINC_PORT} # BOINC port (uncomment if different from webadmin)
+          - ${BACKEND_PORT}:${BACKEND_PORT}         # Mapping of Fitcrack backend
+          - ${FRONTEND_PORT}:${FRONTEND_PORT}       # Mapping of Fitcrack frontend
+          #- ${BOINC_PORT}:${BOINC_PORT} # BOINC port (uncomment if different from Fitcrack)
       environment:
         - USER=root                      # root should be used for installation
 
@@ -19,21 +19,21 @@ services:
         - DB_USER=${FITCRACK_DB_USER}    # Database username
         - DB_PW=${FITCRACK_DB_PW}        # Database password
 
-        # Fitcrack WebAdmin environment variables
-        - WEBADMIN_HOST=${WEBADMIN_HOST}    # WebAdmin hostname
-        - WEBADMIN_PROTO=${WEBADMIN_PROTO}  # WebAdmin protocol ('http' or 'https')
-        - BACKEND_PORT=${BACKEND_PORT}      # WebAdmin backend port
-        - FRONTEND_PORT=${FRONTEND_PORT}    # WebAdmin frontend port
-        - SSL_WEBADMIN=${SSL_WEBADMIN}      # SSL engine state for WebAdmin ('y' or 'n')
-        - WEBADMIN_USER=${WEBADMIN_LOGIN}   # Login for the default WebAdmin account
-        - WEBADMIN_EMAIL=${WEBADMIN_EMAIL}  # Email for the default WebAdmin account
-        - WEBADMIN_PW=${WEBADMIN_PW}        # Password for dthe efault WebAdmin account
+        # Fitcrack environment variables
+        - FITCRACK_HOST=${FITCRACK_HOST}    # Fitcrack hostname
+        - FITCRACK_PROTO=${FITCRACK_PROTO}  # Fitcrack protocol ('http' or 'https')
+        - BACKEND_PORT=${BACKEND_PORT}      # Fitcrack backend port
+        - FRONTEND_PORT=${FRONTEND_PORT}    # Fitcrack frontend port
+        - SSL_FITCRACK=${SSL_FITCRACK}      # SSL engine state for Fitcrack ('y' or 'n')
+        - FITCRACK_USER=${FITCRACK_LOGIN}   # Login for the default Fitcrack account
+        - FITCRACK_EMAIL=${FITCRACK_EMAIL}  # Email for the default Fitcrack account
+        - FITCRACK_PW=${FITCRACK_PW}        # Password for the default Fitcrack account
 
         - DYNAMIC_BACKEND_URL=${DYNAMIC_BACKEND_URL}
 
         # BOINC server environment variables
         - BOINC_HOST=${BOINC_HOST}          # BOINC server hostname
-        - BOINC_PROTO=${BOINC_PROTO}        # WebAdmin protocol ('http' or 'https')
+        - BOINC_PROTO=${BOINC_PROTO}        # BOINC protocol ('http' or 'https')
         - BOINC_PORT=${BOINC_PORT}          # BOINC public port - needed to set up URLs
         - SSL_BOINC=${SSL_BOINC}            # SSL engine state for BOINC ('y' or 'n')
         - BOINC_URL=${BOINC_PROTO}://${BOINC_HOST}:${BOINC_PORT}
@@ -42,12 +42,12 @@ services:
         - BOINC_HOME=/home/boincadm         # Home directory of the BOINC server user
         - BOINC_PROJECT=fitcrack            # Name of the BOINC project
         - BOINC_PROJECT_DIR=/home/boincadm/projects/fitcrack
-        - OPS_LOGIN=${WEBADMIN_LOGIN}       # Login for http(s):/HOST/fitcrack_ops
-        - OPS_PW=${WEBADMIN_PW}             # Password for http(s):/HOST/fitcrack_ops
+        - OPS_LOGIN=${FITCRACK_LOGIN}       # Login for http(s):/HOST/fitcrack_ops
+        - OPS_PW=${FITCRACK_PW}             # Password for http(s):/HOST/fitcrack_ops
         - SERVICE_INSTALL=y                 # Install Fitcrack as a service (needed)
         - PROJECT_HTTPD_CONF=/home/boincadm/projects/fitcrack/fitcrack.httpd.conf
 
-        # SSL certificate file names (used if SSL_WEBADMIN='y' or SSL_BOINC='y')
+        # SSL certificate file names (used if SSL_FITCRACK='y' or SSL_BOINC='y')
         - SSL_CERTIFICATE_FILE=${SSL_CERTIFICATE_FILE}
         - SSL_CERTIFICATE_KEYFILE=${SSL_CERTIFICATE_KEYFILE}
 
@@ -68,12 +68,12 @@ services:
         - "boincadm:/home/boincadm"                        # BOINC server user home directory
         - "apache:/etc/apache2"                            # Apache config directory
         - "apache-conf:/etc/init.d"                        # Directory with service init scripts
-        - "webadmin-be:/var/www/html/fitcrackAPI"          # Fitcrack backend installation
-        - "webadmin-fe:/var/www/html/fitcrackFE"           # Fitcrack frontend installation
+        - "fitcrack-be:/var/www/html/fitcrackAPI"          # Fitcrack backend installation
+        - "fitcrack-fe:/var/www/html/fitcrackFE"           # Fitcrack frontend installation
         - "./fitcrack-data/logs:/var/log/fitcrack"         # Log directory (host-mapped!)
         - "./fitcrack-data/certificates:/srv/certificates" # Certificate directory (host-mapped!)
 
-        # NOTE: WebAdmin backend copy, frontend Node.JS build, and server + runner binaries are
+        # NOTE: Fitcrack backend copy, frontend Node.JS build, and server + runner binaries are
         #       built using Dockerfile when the image is created. The entrypoint started with
         #       'docker-compose up' only installs the Fitcrack server from pre-built binaries.
         #       Modifying the sources when a pre-built image is used will have no effect.
@@ -86,7 +86,7 @@ volumes:
   collections:
   apache:
   apache-conf:
-  webadmin-be:
-  webadmin-fe:
+  fitcrack-be:
+  fitcrack-fe:
   logs:
   certificates:

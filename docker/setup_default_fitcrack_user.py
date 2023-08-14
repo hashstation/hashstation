@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# Updates the WebAdmin's default user from environment values
+# Updates the Fitcrack's default user from environment values
 # Author: Radek Hranicky (ihranicky@fit.vutbr.cz)
 
 import os
@@ -13,9 +13,9 @@ mysql_database = os.environ['DB_NAME']
 mysql_user = os.environ['DB_USER']
 mysql_pw = os.environ['DB_PW']
 
-wa_user = os.environ['WEBADMIN_USER']
-wa_pw = os.environ['WEBADMIN_PW']
-wa_email = os.environ['WEBADMIN_EMAIL']
+wa_user = os.environ['FITCRACK_USER']
+wa_pw = os.environ['FITCRACK_PW']
+wa_email = os.environ['FITCRACK_EMAIL']
 
 pw_hash = generate_password_hash(wa_pw)
 

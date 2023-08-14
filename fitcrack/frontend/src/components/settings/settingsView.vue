@@ -189,11 +189,11 @@
         appearanceHint () {
           switch (this.appearance) {
             case 'auto':
-              return 'Webadmin will change appearance dynamically based on your system theme'
+              return 'Fitcrack will change appearance dynamically based on your system theme'
             case 'light':
-              return 'Webadmin will retain light appearance regardless of your system theme'
+              return 'Fitcrack will retain light appearance regardless of your system theme'
             case 'dark':
-              return 'Webadmin will retain dark appearance regardless of your system theme'
+              return 'Fitcrack will retain dark appearance regardless of your system theme'
             default:
               return undefined
           }

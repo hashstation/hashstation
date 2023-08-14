@@ -36,19 +36,19 @@ if [[ $1 == "-s" ]]; then
         source installer/update_daemons.sh
         exit
     elif [[ $2 == "-3" ]]; then
-        source installer/update_webadmin.sh
+        source installer/update_frontend_backend.sh
         exit
     elif [[ $2 == "-4" ]]; then
         source installer/migrate_db.sh
         source installer/update_daemons.sh
-        source installer/update_webadmin.sh
+        source installer/update_frontend_backend.sh
         (cd agent ; python3 update_binaries.py)
         exit
     elif [[ $2 == "-5" ]]; then
         source installer/uninstall.sh
         cleanup_project
         cleanup_db
-        cleanup_webadmin
+        cleant_frontend_backend
         cleanup_collections
         exit
     fi
@@ -64,8 +64,8 @@ while ! $finished; do
   echo "Choose what to do:"
   echo "[1] Install Fitcrack (default)"
   echo "[2] Update Fitcrack server daemons (requires project restart)"
-  echo "[3] Update Fitcrack WebAdmin (requires Apache restart)"
-  echo "[4] Update Fitcrack system"
+  echo "[3] Update Fitcrack frontend and backend (requires Apache restart)"
+  echo "[4] Update Fitcrack system (server, frontend, backend, agents)"
   echo "[5] Remove previous installation"
   echo "[6] Exit"
   echo "=============================================================="
@@ -77,19 +77,19 @@ while ! $finished; do
       source installer/update_daemons.sh
       exit
     elif [ $OPERATION -eq 3 ]; then
-      source installer/update_webadmin.sh
+      source installer/update_frontend_backend.sh
       exit
     elif [ $OPERATION -eq 4 ]; then
       source installer/migrate_db.sh
       source installer/update_daemons.sh
-      source installer/update_webadmin.sh
+      source installer/update_frontend_backend.sh
       (cd agent ; python3 update_binaries.py)
       exit
     elif [ $OPERATION -eq 5 ]; then
       source installer/uninstall.sh
       cleanup_project
       cleanup_db
-      cleanup_webadmin
+      cleant_frontend_backend
       cleanup_collections
       exit
     elif [  $OPERATION -eq 6 ]; then
@@ -104,7 +104,7 @@ echo "The installation proceeds as follows (all steps are optional):"
 echo "1) Configure and build Fitcrack server"
 echo "2) Install BOINC libraries"
 echo "3) Install Fitcrack project"
-echo "4) Install WebAdmin"
+echo "4) Install Fitcrack frontend and backend"
 echo "5) Create directories for common collections (eg. dictionaries)"
 echo "=============================================================="
 
@@ -160,22 +160,22 @@ if [ $INSTALL_PROJECT = "y" ]; then
 fi
 
 ########################################
-# Install WebAdmin
+# Install Fitcrack
 ########################################
 if [ -d "$APACHE_DOCUMENT_ROOT/fitcrackFE" ]; then
-  read -e -p "3) WebAdmin seems to be installed already. Reinstall? [y/N] (default: N): " INSTALL_WEBADMIN
-  INSTALL_WEBADMIN=${INSTALL_WEBADMIN:-N}
-  if [ $INSTALL_WEBADMIN = "y" ]; then
+  read -e -p "3) Fitcrack frontend and backend seems to be installed already. Reinstall? [y/N] (default: N): " INSTALL_FITCRACK
+  INSTALL_FITCRACK=${INSTALL_FITCRACK:-N}
+  if [ $INSTALL_FITCRACK = "y" ]; then
     source installer/uninstall.sh
-    cleanup_webadmin
+    cleant_frontend_backend
   fi
 else
-  read -e -p "3) Install WebAdmin? [y/N] (default: y): " INSTALL_WEBADMIN
-  INSTALL_WEBADMIN=${INSTALL_WEBADMIN:-y}
+  read -e -p "3) Install Fitcrack frontend and backend? [y/N] (default: y): " INSTALL_FITCRACK
+  INSTALL_FITCRACK=${INSTALL_FITCRACK:-y}
 fi
 
-if [ $INSTALL_WEBADMIN = "y" ]; then
-  source installer/install_webadmin.sh
+if [ $INSTALL_FITCRACK = "y" ]; then
+  source installer/install_frontend_backend.sh
 fi
 
 
@@ -210,7 +210,7 @@ echo "+----------------------------------------------------------+"
 echo "|                  INSTALLATION COMPLETED                  |"
 echo "|          Have fun and a lot of cracked hashes...         |"
 echo "+----------------------------------------------------------+"
-echo "| The default WebAdmin credentials are:                    |"
+echo "| The default Fitcrack credentials are:                    |"
 echo "|  * user: fitcrack                                        |"
 echo "|  * password: FITCRACK                                    |"
 echo "+----------------------------------------------------------+"

@@ -126,14 +126,14 @@ fi
 }
 
 ####################
-# WebAdmin cleanup #
+# Fitcrack frontend and backend cleanup #
 ####################
 
-function cleanup_webadmin {
-read -e -p "Uninstall WebAdmin ? [y/N] (default: N): " UNINSTALL_WEBADMIN
-UNINSTALL_WEBADMIN=${UNINSTALL_WEBADMIN:-N}
+function cleant_frontend_backend {
+read -e -p "Uninstall Fitcrack frontend and backend ? [y/N] (default: N): " UNINSTALL_FITCRACK
+UNINSTALL_FITCRACK=${UNINSTALL_FITCRACK:-N}
 
-if [ $UNINSTALL_WEBADMIN = "y" ]; then
+if [ $UNINSTALL_FITCRACK = "y" ]; then
   rm -Rf $APACHE_DOCUMENT_ROOT/fitcrackFE
   rm -Rf $APACHE_DOCUMENT_ROOT/fitcrackAPI
 
@@ -153,7 +153,7 @@ if [ $UNINSTALL_WEBADMIN = "y" ]; then
     rm -Rf $APACHE_CONFIG_DIR/sites-available/fitcrackAPI.conf
   fi
 
-  echo "WebAdmin Uninstalled. Restarting Apache..."
+  echo "Fitcrack frontend and backend uninstalled. Restarting Apache..."
   service_restart $APACHE_SERVICE
 fi
 }

@@ -306,7 +306,7 @@ def computeCrackingTime(data):
     data['boinc_host_ids'] = [x.strip() for x in data['boinc_host_ids'].split(',')]
 
     # Check if we have valid hash type code and if we have any host
-    # -1 is indicator that no hash type was selected in webadmin
+    # -1 is indicator that no hash type was selected. TODO: autodetect?
     if data['hash_type_code'] != -1 and len(data['boinc_host_ids']) > 0:
         hosts = FcBenchmark.query.filter(FcBenchmark.hash_type == data['hash_type_code']). \
             filter(FcBenchmark.attack_mode == attackSettings['attack_mode']). \

@@ -156,9 +156,9 @@ else # Create Fitcrack project
   # Add runlevel symlinks
   update-rc.d fitcrack defaults
 
-  # Setup the default webadmin user
-  chmod +x ./tools/setup_webadmin_user.py
-  ./tools/setup_webadmin_user.py
+  # Setup the default Fitcrack user
+  chmod +x ./tools/./setup_default_fitcrack_user.py
+  ./tools/./setup_default_fitcrack_user.py
 
   ##############################################
   # Install collections
@@ -225,9 +225,9 @@ else # Create Fitcrack project
 
 
   ##############################################
-  # Configure webadmin backend
+  # Configure Fitcrack backend
 
-  if [ $SSL_WEBADMIN = "y" ]; then
+  if [ $SSL_FITCRACK = "y" ]; then
     a2enmod ssl
     chown -R www-data:www-data /srv/certificates
   fi
@@ -251,7 +251,7 @@ else # Create Fitcrack project
 
   # Configure Apache WSGI
   BE_CONFIG_FILE=$APACHE_CONFIG_DIR/sites-available/00-fitcrackAPI.conf
-  echo "# Fitcrack WebAdmin back-end config" > $BE_CONFIG_FILE
+  echo "# Fitcrack back-end config" > $BE_CONFIG_FILE
   echo "<VirtualHost *:$BACKEND_PORT>" >> $BE_CONFIG_FILE
   echo "  WSGIDaemonProcess fitcrack user=$APACHE_USER group=$APACHE_USER threads=5" >> $BE_CONFIG_FILE
   echo "  WSGIScriptAlias / $APACHE_DOCUMENT_ROOT/fitcrackAPI/src/wsgi.py" >> $BE_CONFIG_FILE
@@ -261,7 +261,7 @@ else # Create Fitcrack project
   echo "    WSGIScriptReloading On" >> $BE_CONFIG_FILE
   echo "    Require all granted" >> $BE_CONFIG_FILE
   echo "  </Directory>" >> $BE_CONFIG_FILE
-  if [ $SSL_WEBADMIN = "y" ]; then
+  if [ $SSL_FITCRACK = "y" ]; then
     echo "  SSLEngine on" >> $BE_CONFIG_FILE
     echo "  SSLCertificateFile /srv/certificates/$SSL_CERTIFICATE_FILE" >> $BE_CONFIG_FILE
     echo "  SSLCertificateKeyFile /srv/certificates/$SSL_CERTIFICATE_KEYFILE" >> $BE_CONFIG_FILE
@@ -276,10 +276,10 @@ else # Create Fitcrack project
 
 
   ##############################################
-  # Configure webadmin frontend
+  # Configure Fitcrack frontend
 
   # Copy frontend files
-  echo "Installing Fitcrack WebAdmin front-end..."
+  echo "Installing Fitcrack frontend..."
   mkdir $APACHE_DOCUMENT_ROOT/fitcrackFE
   cp -Rf /srv/fitcrack/fitcrack/frontend/dist/* $APACHE_DOCUMENT_ROOT/fitcrackFE/
 
@@ -296,7 +296,7 @@ else # Create Fitcrack project
 
   # Create frontend Apache config
   FE_CONFIG_FILE=$APACHE_CONFIG_DIR/sites-available/01-fitcrackFE.conf
-  echo "# Fitcrack WebAdmin front-end config" > $FE_CONFIG_FILE
+  echo "# Fitcrack frontend config" > $FE_CONFIG_FILE
   echo "<VirtualHost *:$FRONTEND_PORT>" >> $FE_CONFIG_FILE
   #echo "ServerName localhost" >> $FE_CONFIG_FILE
   echo "  DocumentRoot $APACHE_DOCUMENT_ROOT/fitcrackFE" >> $FE_CONFIG_FILE
@@ -314,7 +314,7 @@ else # Create Fitcrack project
     echo "  IncludeOptional $PROJECT_HTTPD_CONF" >> $FE_CONFIG_FILE
   fi
 
-  if [ $SSL_WEBADMIN = "y" ]; then
+  if [ $SSL_FITCRACK = "y" ]; then
     echo "  SSLEngine on" >> $FE_CONFIG_FILE
     echo "  SSLCertificateFile /srv/certificates/$SSL_CERTIFICATE_FILE" >> $FE_CONFIG_FILE
     echo "  SSLCertificateKeyFile /srv/certificates/$SSL_CERTIFICATE_KEYFILE" >> $FE_CONFIG_FILE
@@ -357,8 +357,8 @@ else # Create Fitcrack project
   # Reconfigure apache ports
   echo "Configuring ports..."
   echo "BOINC port: $BOINC_PORT"
-  echo "WebAdmin backend port: $BACKEND_PORT"
-  echo "WebAdmin frontend port: $FRONTEND_PORT"
+  echo "Fitcrack backend port: $BACKEND_PORT"
+  echo "Fitcrack frontend port: $FRONTEND_PORT"
 
   echo "Listen $BOINC_PORT" > $APACHE_CONFIG_DIR/ports.conf
   cat $APACHE_CONFIG_DIR/ports.conf | grep "Listen $BACKEND_PORT" >/dev/null
@@ -372,9 +372,9 @@ else # Create Fitcrack project
   echo "Done"
 
   if [ $DYNAMIC_BACKEND_URL = "y" ]; then
-    sed -i "s@serverAddress.*@serverAddress = \"$WEBADMIN_PROTO://\"+window.location.hostname+\":${BACKEND_PORT}\"@g" /var/www/html/fitcrackFE/static/configuration.js
+    sed -i "s@serverAddress.*@serverAddress = \"$FITCRACK_PROTO://\"+window.location.hostname+\":${BACKEND_PORT}\"@g" /var/www/html/fitcrackFE/static/configuration.js
   else
-    BACKEND_URL="${WEBADMIN_PROTO}://${WEBADMIN_HOST}:${BACKEND_PORT}"
+    BACKEND_URL="${FITCRACK_PROTO}://${FITCRACK_HOST}:${BACKEND_PORT}"
     sed -i "s@serverAddress.*@serverAddress = \"$BACKEND_URL\"@g" /var/www/html/fitcrackFE/static/configuration.js
   fi
 

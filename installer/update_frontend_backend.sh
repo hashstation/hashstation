@@ -1,21 +1,21 @@
 #!/bin/bash
 
-# Update WebAdmin
+# Update Fitcrack frontend and backend 
 # This file is part of Fitcrack installer
 # Author: Radek Hranicky (ihranicky@fit.vutbr.cz)
 
 echo "                                                          "
-echo "=============== Fitcrack WebAdmin update ================="
+echo "=============== Update Fitcrack frontend and backend ================="
 echo "                                                          "
 
 ###################################################
-# Update Fitcrack WebAdmin front-end (fitcrackFE) #
+# Update Fitcrack frontend (fitcrackFE) #
 ###################################################
 
 INSTALL_FRONTEND="N"
 if [ -d "$APACHE_DOCUMENT_ROOT/fitcrackFE" ]; then
-  echo "WebAdmin front-end is installed in $APACHE_DOCUMENT_ROOT/fitcrackFE."
-  read -e -p "Update front-end? [y/N] (default: y): " UPDATE_FRONTEND
+  echo "Fitcrack frontend is installed in $APACHE_DOCUMENT_ROOT/fitcrackFE."
+  read -e -p "Update frontend? [y/N] (default: y): " UPDATE_FRONTEND
   UPDATE_FRONTEND=${UPDATE_FRONTEND:-y}
 
   if [ $UPDATE_FRONTEND = "y" ]; then
@@ -27,13 +27,13 @@ if [ -d "$APACHE_DOCUMENT_ROOT/fitcrackFE" ]; then
     INSTALL_FRONTEND="y"
   fi
 else
-  echo "Unable to find WebAdmin front-end installation."
+  echo "Unable to find Fitcrack frontend installation."
   exit
 fi
 
-# Install front-end
+# Install frontend
 if [ $INSTALL_FRONTEND = "y" ]; then
-  echo "Updating Fitcrack WebAdmin front-end..."
+  echo "Updating Fitcrack frontend..."
   mkdir $APACHE_DOCUMENT_ROOT/fitcrackFE
   cp -Rf fitcrack/frontend/dist/* $APACHE_DOCUMENT_ROOT/fitcrackFE/
 
@@ -41,32 +41,32 @@ if [ $INSTALL_FRONTEND = "y" ]; then
   chmod -R 775 $APACHE_DOCUMENT_ROOT/fitcrackFE
   chown -R $APACHE_USER:$APACHE_GROUP $APACHE_DOCUMENT_ROOT/fitcrackFE
 
-  echo "Front-end files updated."
-  echo "Configuring updated front-end..."
+  echo "frontend files updated."
+  echo "Configuring updated frontend..."
 
   # Set port to backend
   sed -i "s|http://localhost:5000|$BACKEND_URI|g" $APACHE_DOCUMENT_ROOT/fitcrackFE/static/configuration.js
   echo "Done."
 
-  echo "Updated front-end in $APACHE_DOCUMENT_ROOT/fitcrackFE."
+  echo "Updated frontend in $APACHE_DOCUMENT_ROOT/fitcrackFE."
 fi
 
 
 ###################################################
-# Update Fitcrack WebAdmin back-end (fitcrackAPI) #
+# Update Fitcrack backend (fitcrackAPI) #
 ###################################################
 
 INSTALL_BACKEND="N"
 if [ -d "$APACHE_DOCUMENT_ROOT/fitcrackAPI" ]; then
-  echo "WebAdmin backend-end is installed in $APACHE_DOCUMENT_ROOT/fitcrackAPI."
-  read -e -p "Update back-end? [y/N] (default: y): " UPDATE_BACKEND
+  echo "Fitcrack backend-end is installed in $APACHE_DOCUMENT_ROOT/fitcrackAPI."
+  read -e -p "Update backend? [y/N] (default: y): " UPDATE_BACKEND
   UPDATE_BACKEND=${UPDATE_BACKEND:-y}
   if [ $UPDATE_BACKEND = "y" ]; then
     rm -Rf $APACHE_DOCUMENT_ROOT/fitcrackAPI
     INSTALL_BACKEND="y"
   fi
 else
-  echo "Unable to find WebAdmin back-end installation."
+  echo "Unable to find Fitcrack backend installation."
   exit
 fi
 
@@ -90,10 +90,10 @@ if [ $INSTALL_BACKEND = "y" ]; then
   make -j$COMPILER_THREADS
   cd $INSTALLER_ROOT
 
-  echo "Installing back-end requirements..."
+  echo "Installing backend requirements..."
   pip3 install -r fitcrack/backend/src/requirements.txt
 
-  echo "Updating Fitcrack WebAdmin back-end..."
+  echo "Updating Fitcrack backend..."
   mkdir $APACHE_DOCUMENT_ROOT/fitcrackAPI
   cp -Rf fitcrack/backend/* $APACHE_DOCUMENT_ROOT/fitcrackAPI/
 
@@ -104,9 +104,9 @@ if [ $INSTALL_BACKEND = "y" ]; then
   chmod -R 775 $APACHE_DOCUMENT_ROOT/fitcrackAPI
   chown -R $APACHE_USER:$APACHE_GROUP $APACHE_DOCUMENT_ROOT/fitcrackAPI
 
-  echo "Back-end files updated in $APACHE_DOCUMENT_ROOT/fitcrackAPI."
+  echo "Backend files updated in $APACHE_DOCUMENT_ROOT/fitcrackAPI."
 
-  echo "Configuring updated backend-end..."
+  echo "Configuring updated backend..."
   # Set credentials
   sed -i "s|PROJECT_USER = '.*|PROJECT_USER = '$BOINC_USER'|g" $APACHE_DOCUMENT_ROOT/fitcrackAPI/src/settings.py
   sed -i "s|PROJECT_NAME = '.*|PROJECT_NAME = '$BOINC_PROJECT'|g" $APACHE_DOCUMENT_ROOT/fitcrackAPI/src/settings.py
@@ -123,6 +123,6 @@ fi
 # Restart Apache #
 ##################
 
-echo "WebAdmin update done. Restarting Apache..."
+echo "Fitcrack update of frontend and backend done. Restarting Apache..."
 service_restart $APACHE_SERVICE
 echo "Done."

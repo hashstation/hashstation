@@ -11,7 +11,7 @@ various application passwords, as well as raw or salted cryptographic hashes.
 You can use our system to crack more than [350 different algorithms](https://hashcat.net/hashcat/#features-algos) supported by hashcat.
 Fitcrack allows you to distribute your tasks over dozens of different GPU-equipped computing nodes with Linux, Windows OS or macOS.
 For controlling your cracking network and management of jobs, you can use our friendly
-[WebAdmin](https://nesfit.github.io/fitcrack/#/) interface, or communicate directly with our REST API.
+[Web](https://nesfit.github.io/fitcrack/#/) interface, or communicate directly with our REST API.
 
 A detailed documentation and other information can be found at [https://fitcrack.fit.vutbr.cz](https://fitcrack.fit.vutbr.cz).
 
@@ -19,7 +19,7 @@ Any issue or feature request? Join Fitcrack community [on Discord](https://disco
 
 **Table of Contents**
 * [Installation](#inst)
-* [Fitcrack WebAdmin user guide](https://nesfit.github.io/fitcrack/#/)
+* [Fitcrack user guide](https://nesfit.github.io/fitcrack/#/)
 * [Operating the server](#oper)
 * [How to connect new hosts](https://nesfit.github.io/fitcrack/#/guide/hosts)
 * [Advanced: Host-specific configuration](#hostconf)
@@ -47,15 +47,15 @@ See instructions the desired type of deployment:
 <a name="oper"></a>
 ## Operating the server
 
-### WebAdmin
-The **default** login credentials to the WebAdmin are:
+### Fitcrack
+The **default** login credentials to the Fitcrack are:
 * login: ``fitcrack``
 * password: ``FITCRACK``
 
 In the Docker-based version, those defaults can be changed by modifying the
-`WEBADMIN_LOGIN` and `WEBADMIN_PW` variables in your `.env` file.
+`FITCRACK_LOGIN` and `FITCRACK_PW` variables in your `.env` file.
 
-To learn how to use WebAdmin, check our [Fitcrack WebAdmin user guide](https://nesfit.github.io/fitcrack/#/).
+To learn how to use Fitcrack, check our [Fitcrack user guide](https://nesfit.github.io/fitcrack/#/).
 
 ### Server daemons
 Fitcrack provides an init script can automatically starts all the server
