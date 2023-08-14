@@ -77,9 +77,8 @@ void CSimpleGenerator::run()
             /** Generate workunit for each host */
             std::vector<PtrHost> activeHosts = m_sqlLoader->loadActiveHosts(jobId);
 
-            /** We can skip benchmarking if generated workunits will have known
-             * maximum possible sizes */
-            if (job->getMaximizeWorkunitsFlag()) {
+            /** We can skip benchmarking if generated workunits will have known fixed size */
+            if (job->getFixedWorkunitSize() > 0) {
                 for (PtrHost &host : activeHosts)
                   if (host->getStatus() == Config::HostState::HostBench)
                     host->updateStatus(Config::HostState::HostNormal);

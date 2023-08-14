@@ -240,7 +240,7 @@ class FcJob(Base):
     priority = Column(Integer, nullable=False, server_default=text("'1'"))
     slow_candidates = Column(Integer, nullable=False, server_default=text("'0'"))
     extra_hc_args = Column(String(4096, 'utf8_bin'))
-    maximize_workunits = Column(Integer, nullable=False, server_default=text("'0'"))
+    fixed_workunit_size = Column(BigInteger, nullable=False, server_default=text("'0'"))
     deleted = Column(Integer, nullable=False, server_default=text("'0'"))
     kill = Column(Integer, nullable=False, server_default=text("'0'"))
     batch_id = Column(ForeignKey('fc_batch.id', ondelete='SET NULL'), index=True)

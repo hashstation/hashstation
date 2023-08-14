@@ -325,7 +325,7 @@ CREATE TABLE IF NOT EXISTS `fc_job` (
   `priority` tinyint(3) NOT NULL DEFAULT '1',
   `slow_candidates` tinyint(1) NOT NULL DEFAULT '0',
   `extra_hc_args` varchar(4096) COLLATE utf8_bin DEFAULT NULL,
-  `maximize_workunits` tinyint(1) NOT NULL DEFAULT '0',
+  `fixed_workunit_size` bigint(20) unsigned NOT NULL DEFAULT '0',
   `deleted` tinyint(1) NOT NULL DEFAULT '0',
   `kill` int(11) NOT NULL DEFAULT '0',
   `batch_id` int(11),

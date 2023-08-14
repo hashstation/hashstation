@@ -178,7 +178,7 @@ def create_job(data):
         dict_deployment_mode=job['attack_settings'].get('dict_deployment_mode', 0),
         slow_candidates=job['attack_settings'].get('slow_candidates', 0),
         extra_hc_args=job.get('extra_hc_args', ''),
-        maximize_workunits=job.get('maximize_workunits', 0),
+        fixed_workunit_size=job.get('fixed_workunit_size', 0),
         deleted=False
         )
 

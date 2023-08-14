@@ -238,7 +238,8 @@ export default {
         {title: 'Priority', icon: 'mdi-priority-high', value: d.priority_str},
         {title: 'Efficiency', hide: () => !this.testmode, icon: 'mdi-chart-timeline-variant', value: d.efficiency, format: v => `${v} %`},
         {title: 'Cracked Hashes', icon: 'mdi-textbox-password', value: d.cracked_hashes_str},
-        {title: 'Time per workunit', icon: 'mdi-timeline-clock', value: d.seconds_per_job, format: v => `${v} seconds`},
+        {title: 'Time per workunit', hide: () => d.fixed_workunit_size > 0, icon: 'mdi-timeline-clock', value: d.seconds_per_job, format: v => `${v} seconds`},
+        {title: 'Fixed workunit size', hide: () => d.fixed_workunit_size == 0, icon: 'mdi-grid', value: d.fixed_workunit_size, format: v => `~ ${v} passwords`},
       ]
       // Leave out missing stuff and format fields
       return items

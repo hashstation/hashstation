@@ -143,7 +143,7 @@ class CJob {
         DictDeploymentMode m_dictDeploymentMode;
         bool m_slowCandidates;
         std::string m_extraHcArgs;
-        bool m_maximizeWorkunits;
+        uint64_t m_fixedWorkunitSize;
         bool m_killFlag;
 
         /**
@@ -199,13 +199,13 @@ class CJob {
         uint32_t getMaxElemInChain() const;
         bool getOptimizedFlag() const;
         bool getSlowCandidatesFlag() const;
-        bool getMaximizeWorkunitsFlag() const;
+        uint32_t getDeviceTypes() const;
+        uint32_t getWorkloadProfile() const;
+        uint64_t getFixedWorkunitSize() const;
         const std::string & getExtraHcArgs() const;
         DictDeploymentMode getDictDeploymentMode() const;
         bool getKillFlag() const;
 
-        uint32_t getDeviceTypes() const;
-        uint32_t getWorkloadProfile() const;
 
         void setGrammar(const std::string & grammar);
 

@@ -536,21 +536,23 @@
           <v-stepper-content step="4">
             <v-container>
               <v-row>
-                <v-textarea
-                  id="comment-input"
-                  v-model="comment"
-                  label="Comment"
-                  outlined
-                  auto-grow
-                  :rows="1"
-                />
+                <v-col>
+                  <v-textarea
+                    id="comment-input"
+                    v-model="comment"
+                    label="Comment"
+                    outlined
+                    auto-grow
+                    :rows="1"
+                  />
+                </v-col>
               </v-row>
               <v-row>
                 <v-col
-                  v-if="!maximizeWorkunits"
+                  v-if="!forceFixedWorkunitSize"
                   >
                   <div class="title mb-2">
-                    Desired time per workunit
+                    Time per workunit
                   </div>
                   <v-text-field
                     v-model="timeForJob"
@@ -614,29 +616,48 @@
                 </v-col>
               </v-row>
               <v-row>
-                <v-checkbox
-                  v-model="maximizeWorkunits"
-                  label="Maximize workunits"
-                  hint="Generate the largest possible workunits."
-                />
+                <v-col>
+                  <v-checkbox
+                    v-model="forceFixedWorkunitSize"
+                    label="Force fixed workunit size"
+                  />
+                  <div class="sublabel-text">System may produce workunits that are slightly smaller or larger due to operational constraints; exact sizing cannot be guaranteed.</div>
+                </v-col>
+                <v-col>
+                  <v-text-field
+                    v-if="forceFixedWorkunitSize"
+                    v-model="fixedWorkunitSize"
+                    outlined
+                    hide-details
+                    single-line
+                    required
+                    type="number"
+                    suffix="passwords"
+                    min="0"
+                  />
+                </v-col>
               </v-row>
               <v-row>
-                <v-checkbox
-                  v-if="!$optimizedOnly"
-                  v-model="optimized"
-                  label="Use optimized computing kernels"
-                  hint="Faster computation, limits maximal length of passwords."
-                />
+                <v-col>
+                  <v-checkbox
+                    v-if="!$optimizedOnly"
+                    v-model="optimized"
+                    label="Use optimized computing kernels"
+                    hint="Faster computation, limits maximal length of passwords."
+                  />
+                </v-col>
               </v-row>
               <v-row>
-                <v-textarea
-                  id="extra-hc-args-input"
-                  v-model="extraHcArgs"
-                  label="Extra hashcat arguments"
-                  outlined
-                  auto-grow
-                  :rows="1"
-                />
+                <v-col>
+                  <v-textarea
+                    id="extra-hc-args-input"
+                    v-model="extraHcArgs"
+                    label="Extra hashcat arguments"
+                    outlined
+                    auto-grow
+                    :rows="1"
+                  />
+                </v-col>
               </v-row>
             </v-container>
           </v-stepper-content>
@@ -737,6 +758,7 @@
         helpDismissedMessage: false,
         hashTypes: [],
         showEstimatedTime: false,
+        forceFixedWorkunitSize: false,
         estimatedTime: null,
         keyspace: null,
         gotBinaryHash: false,
@@ -756,7 +778,7 @@
       ...mapTwoWayState('jobForm', twoWayMap([
         'step', 'attackSettingsTab', 'validatedHashes', 'name', 'inputMethod', 'hashList', 'hashType', 'ignoreHashes', 'startDate', 
         'endDate', 'template', 'comment', 'hosts', 'startNow', 'endNever', 'timeForJob', 'deviceTypes', 'workloadProfile', 'priority',
-        'optimized', 'extraHcArgs', 'maximizeWorkunits',
+        'optimized', 'extraHcArgs', 'fixedWorkunitSize',
       ])),
       ...mapGetters('jobForm', ['jobSettings', 'valid', 'validAttackSpecificSettings', 'keyspaceKnown']),
       templateItems () {

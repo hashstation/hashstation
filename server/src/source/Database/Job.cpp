@@ -51,7 +51,7 @@ CJob::CJob(DbMap &jobMap, CSqlLoader * sqlLoader)
         this->m_deviceTypes = std::stoul(jobMap["device_types"]);
         this->m_workloadProfile = std::stoul(jobMap["workload_profile"]);
         this->m_slowCandidates = std::stoul(jobMap["slow_candidates"]);
-        this->m_maximizeWorkunits = std::stoul(jobMap["maximize_workunits"]);
+        this->m_fixedWorkunitSize = std::stoul(jobMap["fixed_workunit_size"]);
         this->m_extraHcArgs = jobMap["extra_hc_args"];
         this->m_killFlag = std::stoul(jobMap["kill"]) != 0;
 
@@ -352,9 +352,9 @@ bool CJob::getSlowCandidatesFlag() const
     return m_slowCandidates;
 }
 
-bool CJob::getMaximizeWorkunitsFlag() const
+uint64_t CJob::getFixedWorkunitSize() const
 {
-    return m_maximizeWorkunits;
+    return m_fixedWorkunitSize;
 }
 
 

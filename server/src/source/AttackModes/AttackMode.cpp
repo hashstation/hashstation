@@ -149,10 +149,11 @@ PtrMask AttackMode::FindCurrentMask(std::vector<PtrMask> &masks, bool useRealKey
 }
 
 uint64_t AttackMode::getPasswordCountToProcess() const {
-    if (m_job->getMaximizeWorkunitsFlag())
-        return m_job->getHcKeyspace();
-
     uint64_t amplifier = getAmplifier();
+    if (m_job->getFixedWorkunitSize() > 0)
+        // Convert from real keyspace to hashcat's internal keyspace by dividing it by amplifier
+        return m_job->getFixedWorkunitSize() / amplifier;
+
     double host_power = m_host->getPower();
     host_power /= amplifier;
     uint64_t pass_count = host_power * m_seconds;
