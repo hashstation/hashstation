@@ -17,7 +17,7 @@ DB_NAME = 'fitcrack'
 DB_USER = 'fitcrack'
 DB_PW = 'mypassword'
 
-PCFG_DIR = '/usr/share/collections/pcfg/'
+PCFG_DIR = '/usr/share/assets/pcfg/'
 
 def connect_db():
     """Accesses the Fitcrack DB.

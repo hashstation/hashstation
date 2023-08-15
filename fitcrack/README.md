@@ -134,27 +134,27 @@ mysql+pymysql://[user]:[password]@[server]/[database]
 ```
 
 
-## Install collections
+## Install assets
 Fitcrack server works with various resources (dictionaries, mask files, etc.).
-Those are by default stored under the `/usr/share/collections` directory.
+Those are by default stored under the `/usr/share/assets` directory.
 You should thus create it populate it:
 ```
-mkdir /usr/share/collections
-mkdir /usr/share/collections/import
-cp -R collections/charsets /usr/share/collections/
-cp -R collections/dictionaries /usr/share/collections/
-cp -R collections/markov /usr/share/collections/
-cp -R collections/encrypted-files /usr/share/collections/
-cp -R collections/masks /usr/share/collections/
-cp -R collections/rules /usr/share/collections/
-cp collections/pcfg.tar.gz /usr/share/collections/
+mkdir /usr/share/assets
+mkdir /usr/share/assets/import
+cp -R assets/charsets /usr/share/assets/
+cp -R assets/dictionaries /usr/share/assets/
+cp -R assets/markov /usr/share/assets/
+cp -R assets/encrypted-files /usr/share/assets/
+cp -R assets/masks /usr/share/assets/
+cp -R assets/rules /usr/share/assets/
+cp assets/pcfg.tar.gz /usr/share/assets/
 
-cd /usr/share/collections/
+cd /usr/share/assets/
 tar xzvf pcfg.tar.gz
 rm pcfg.tar.gz
 
-chown -R www-data:www-data /usr/share/collections
-chmod -R 777 /usr/share/collections
+chown -R www-data:www-data /usr/share/assets
+chmod -R 777 /usr/share/assets
 ```
 (You can also set stricter permissions if both BOINC server user
 and Apache server user have access to it.)

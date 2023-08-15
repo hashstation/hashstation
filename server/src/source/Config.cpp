@@ -36,11 +36,11 @@ namespace Config {
     std::string tableNamePcfgGrammar =  "fc_pcfg_grammar";
 
     /** Path to dictionaries */
-    std::string dictDir = "/usr/share/collections/dictionaries/";
-    std::string markovDir = "/usr/share/collections/markov/";
-    std::string rulesDir = "/usr/share/collections/rules/";
-    std::string pcfgDir = "/usr/share/collections/pcfg/";
-    std::string charsetDir = "/usr/share/collections/charsets/";
+    std::string dictDir = "/usr/share/assets/dictionaries/";
+    std::string markovDir = "/usr/share/assets/markov/";
+    std::string rulesDir = "/usr/share/assets/rules/";
+    std::string pcfgDir = "/usr/share/assets/pcfg/";
+    std::string charsetDir = "/usr/share/assets/charsets/";
 
     /** Template names*/
     std::string inTemplateFileBench =          "bench_in";

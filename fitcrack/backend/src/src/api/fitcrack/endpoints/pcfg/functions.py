@@ -22,12 +22,12 @@ def readingFromFolderPostProcces(PcfgModel):
 
 def unzipGrammarToPcfgFolder(pcfgFilename):
 
-    pathToZipFile = '/usr/share/collections/pcfg/%s' % (pcfgFilename,)
+    pathToZipFile = '/usr/share/assets/pcfg/%s' % (pcfgFilename,)
 
     if(pathlib.Path(pathToZipFile).exists()):
 
         zipObj = zipfile.ZipFile(pathToZipFile, 'r')
-        path = "/usr/share/collections/pcfg/%s" % (Path(pathToZipFile).stem,)
+        path = "/usr/share/assets/pcfg/%s" % (Path(pathToZipFile).stem,)
         zipObj.extractall(path)
 
         if os.path.exists(pathToZipFile):
@@ -36,7 +36,7 @@ def unzipGrammarToPcfgFolder(pcfgFilename):
 
 def deleteUnzipedFolderDirectory(pcfgZipFilePath):
 
-    pcfgUnzipFolderPath = '/usr/share/collections/pcfg/%s' % (Path(pcfgZipFilePath).stem,)
+    pcfgUnzipFolderPath = '/usr/share/assets/pcfg/%s' % (Path(pcfgZipFilePath).stem,)
 
     if(pathlib.Path(pcfgUnzipFolderPath).exists()):
 

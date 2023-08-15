@@ -73,7 +73,7 @@ services:
         # When deleted, the entrypoint installs a new Fitcrack project
 
         - "mysql:/var/lib/mysql"                           # MySQL server data directory
-        - "collections:/usr/share/collections"             # Collections of dictionaries, masks, etc.
+        - "assets:/usr/share/assets"                       # Assets of dictionaries, masks, etc.
         - "boincadm:/home/boincadm"                        # BOINC server user home directory
         - "apache:/etc/apache2"                            # Apache config directory
         - "apache-conf:/etc/init.d"                        # Directory with service init scripts
@@ -92,7 +92,7 @@ services:
 volumes:
   mysql:
   boincadm:
-  collections:
+  assets:
   apache:
   apache-conf:
   fitcrack-be:

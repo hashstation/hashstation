@@ -49,7 +49,7 @@ if [[ $1 == "-s" ]]; then
         cleanup_project
         cleanup_db
         cleant_frontend_backend
-        cleanup_collections
+        cleanup_assets
         exit
     fi
 else
@@ -90,7 +90,7 @@ while ! $finished; do
       cleanup_project
       cleanup_db
       cleant_frontend_backend
-      cleanup_collections
+      cleanup_assets
       exit
     elif [  $OPERATION -eq 6 ]; then
       echo "Bye."
@@ -105,7 +105,7 @@ echo "1) Configure and build Fitcrack server"
 echo "2) Install BOINC libraries"
 echo "3) Install Fitcrack project"
 echo "4) Install Fitcrack frontend and backend"
-echo "5) Create directories for common collections (eg. dictionaries)"
+echo "5) Create directories for common assets (eg. dictionaries)"
 echo "=============================================================="
 
 ########################################
@@ -180,22 +180,22 @@ fi
 
 
 ########################################
-# Install common collections
+# Install common assets
 ########################################
-if [ -d "/usr/share/collections/dictionaries" ]; then
-  read -e -p "3) Common collections directories seem to exist already. Reinstall? [y/N] (default: N): " INSTALL_COLLECTIONS
+if [ -d "/usr/share/assets/dictionaries" ]; then
+  read -e -p "3) Common assets directories seem to exist already. Reinstall? [y/N] (default: N): " INSTALL_COLLECTIONS
   INSTALL_COLLECTIONS=${INSTALL_COLLECTIONS:-N}
   if [ $INSTALL_COLLECTIONS = "y" ]; then
     source installer/uninstall.sh
-    cleanup_collections
+    cleanup_assets
   fi
 else
-  read -e -p "3) Create directories for common collections? [y/N] (default: y): " INSTALL_COLLECTIONS
+  read -e -p "3) Create directories for common assets? [y/N] (default: y): " INSTALL_COLLECTIONS
   INSTALL_COLLECTIONS=${INSTALL_COLLECTIONS:-y}
 fi
 
 if [ $INSTALL_COLLECTIONS = "y" ]; then
-  source installer/install_collections.sh
+  source installer/install_assets.sh
 fi
 
 ########################################

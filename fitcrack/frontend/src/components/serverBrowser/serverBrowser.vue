@@ -125,7 +125,7 @@
       }
     },
     mounted: function () {
-      this.loadDirectory('/usr/share/collections/dictionaries/')
+      this.loadDirectory('/usr/share/assets/dictionaries/')
     },
     methods: {
       uploadChange(progressEvent) {

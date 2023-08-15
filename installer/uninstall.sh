@@ -159,20 +159,20 @@ fi
 }
 
 #######################
-# Collections cleanup #
+# assets cleanup #
 #######################
 
-function cleanup_collections {
-read -e -p "Remove common collections (dictionaries, etc.) ? [y/N] (default: N): " REMOVE_COLLECTIONS
-REMOVE_COLLECTIONS=${REMOVE_COLLECTIONS:-N}
+function cleanup_assets {
+read -e -p "Remove common assets (dictionaries, etc.) ? [y/N] (default: N): " REMOVE_assets
+REMOVE_assets=${REMOVE_assets:-N}
 
-if [ $REMOVE_COLLECTIONS = "y" ]; then
-  rm -rf /usr/share/collections/charsets
-  rm -rf /usr/share/collections/dictionaries
-  rm -rf /usr/share/collections/markov
-  rm -rf /usr/share/collections/encrypted-files
-  rm -rf /usr/share/collections/masks
-  rm -rf /usr/share/collections/rules
-  rm -rf /usr/share/collections/pcfg
+if [ $REMOVE_assets = "y" ]; then
+  rm -rf /usr/share/assets/charsets
+  rm -rf /usr/share/assets/dictionaries
+  rm -rf /usr/share/assets/markov
+  rm -rf /usr/share/assets/encrypted-files
+  rm -rf /usr/share/assets/masks
+  rm -rf /usr/share/assets/rules
+  rm -rf /usr/share/assets/pcfg
 fi
 }

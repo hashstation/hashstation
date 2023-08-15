@@ -107,13 +107,13 @@ service_restart $APACHE_SERVICE
 
 
 #######################
-# Collections cleanup #
+# assets cleanup #
 #######################
 
-rm -rf /usr/share/collections/charsets
-rm -rf /usr/share/collections/dictionaries
-rm -rf /usr/share/collections/markov
-rm -rf /usr/share/collections/encrypted-files
-rm -rf /usr/share/collections/masks
-rm -rf /usr/share/collections/rules
-rm -rf /usr/share/collections/pcfg
+rm -rf /usr/share/assets/charsets
+rm -rf /usr/share/assets/dictionaries
+rm -rf /usr/share/assets/markov
+rm -rf /usr/share/assets/encrypted-files
+rm -rf /usr/share/assets/masks
+rm -rf /usr/share/assets/rules
+rm -rf /usr/share/assets/pcfg
