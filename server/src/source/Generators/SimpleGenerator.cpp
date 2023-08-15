@@ -19,7 +19,6 @@
 #include <AttackMarkov.h>
 #include <AttackRules.h>
 #include <AttackPcfg.h>
-#include <AttackPcfgRules.h>
 #include <AttackPrince.h>
 #include <AttackBenchAll.h>
 
@@ -133,11 +132,7 @@ AttackMode *CreateAttack(PtrJob &job, PtrHost &host, uint64_t duration, CSqlLoad
             break;
 
         case Config::AttackMode::AttackPcfg:
-            if (job->getAttackSubmode() == 0)
-                return AttackTypeMaker<CAttackPcfg>::CreateAttack(job, host, duration, sqlLoader);
-            else
-                return AttackTypeMaker<CAttackPcfgRules>::CreateAttack(job, host, duration, sqlLoader);
-            break;
+            return AttackTypeMaker<CAttackPcfg>::CreateAttack(job, host, duration, sqlLoader);
 
         case Config::AttackMode::AttackPrince:
             return AttackTypeMaker<CAttackPrince>::CreateAttack(job, host, duration, sqlLoader);

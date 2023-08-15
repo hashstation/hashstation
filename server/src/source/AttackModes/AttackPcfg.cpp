@@ -23,9 +23,10 @@ bool CAttackPcfg::makeWorkunit()
     if (!m_workunit && !generateWorkunit())
         return false;
 
+    bool with_rules = m_job->getAttackSubmode() == 1;
     DB_WORKUNIT wu;
-    char name1[Config::SQL_BUF_SIZE],name2[Config::SQL_BUF_SIZE],name3[Config::SQL_BUF_SIZE],name4[Config::SQL_BUF_SIZE],path[Config::SQL_BUF_SIZE];
-    const char* infiles[4];
+    char name1[Config::SQL_BUF_SIZE],name2[Config::SQL_BUF_SIZE],name3[Config::SQL_BUF_SIZE],name4[Config::SQL_BUF_SIZE],name5[Config::SQL_BUF_SIZE],path[Config::SQL_BUF_SIZE];
+    const char* infiles[with_rules ? 5 : 4];
     int retval;
 
     /** Make a unique name for the workunit and its input file */
@@ -33,7 +34,10 @@ bool CAttackPcfg::makeWorkunit()
     std::snprintf(name2, Config::SQL_BUF_SIZE, "%s_%d_%d", Config::appName, Config::startTime, Config::seqNo++);
     std::snprintf(name3, Config::SQL_BUF_SIZE, "%s_%d_%d.dict", Config::appName, Config::startTime, Config::seqNo++);
     std::snprintf(name4, Config::SQL_BUF_SIZE, "%s_grammar_%" PRIu64 "", Config::appName, m_job->getId());
-
+    if (with_rules) {
+      /** Same name of rules file - for sticky flag to work */
+      std::snprintf(name5, Config::SQL_BUF_SIZE, "%s_rules_%" PRIu64 "", Config::appName, m_job->getId());
+    }
 
     /** Create data file */
     std::ofstream f;
@@ -179,6 +183,52 @@ bool CAttackPcfg::makeWorkunit()
         f.close();
     }
 
+    if (with_rules) {
+        std::ofstream rulesFile;
+        /** Create rules file */
+        retval = config.download_path(name5, path);
+        if (retval)
+        {
+            Tools::printDebugHost(Config::DebugType::Error, m_job->getId(), m_host->getBoincHostId(),
+                                "Failed to receive BOINC filename - rules. Setting job to malformed.\n");
+            m_sqlLoader->updateRunningJobStatus(m_job->getId(), Config::JobState::JobMalformed);
+            return false;
+        }
+
+        if(!std::ifstream(path))
+        {
+
+            rulesFile.open(path);
+            if (!rulesFile.is_open())
+            {
+                Tools::printDebugHost(Config::DebugType::Error, m_job->getId(), m_host->getBoincHostId(),
+                                    "Failed to open rules BOINC input file! Setting job to malformed.\n");
+                m_sqlLoader->updateRunningJobStatus(m_job->getId(), Config::JobState::JobMalformed);
+                return false;
+            }
+
+            if(m_job->getRules().empty())
+            {
+                Tools::printDebugHost(Config::DebugType::Error, m_job->getId(), m_host->getBoincHostId(),
+                                    "Rules is not set in database! Setting job to malformed.\n");
+                m_sqlLoader->updateRunningJobStatus(m_job->getId(), Config::JobState::JobMalformed);
+                return false;
+            }
+
+            std::ifstream rules;
+            rules.open((Config::rulesDir + m_job->getRules()).c_str());
+            if (!rulesFile)
+            {
+                Tools::printDebugHost(Config::DebugType::Error, m_job->getId(), m_host->getBoincHostId(),
+                                    "Failed to open rules file! Setting job to malformed.\n");
+                m_sqlLoader->updateRunningJobStatus(m_job->getId(), Config::JobState::JobMalformed);
+                return false;
+            }
+
+            rulesFile << rules.rdbuf();
+            rules.close();
+        }
+    }
 
     /** Fill in the workunit parameters */
     wu.clear();
@@ -189,6 +239,8 @@ bool CAttackPcfg::makeWorkunit()
     infiles[1] = name2;
     infiles[2] = name3;
     infiles[3] = name4;
+    if (with_rules)
+      infiles[4] = name5;
 
     setDefaultWorkunitParams(&wu);
 
@@ -196,11 +248,11 @@ bool CAttackPcfg::makeWorkunit()
     std::snprintf(path, Config::SQL_BUF_SIZE, "templates/%s", Config::outTemplateFile.c_str());
     retval = create_work(
             wu,
-            Config::inTemplatePathPcfg,
+            with_rules ? Config::inTemplatePathPcfgRules : Config::inTemplatePathPcfg,
             path,
             config.project_path(path),
             infiles,
-            4,
+            with_rules ? 5 : 4,
             config
     );
 
