@@ -159,14 +159,14 @@ fi
 }
 
 #######################
-# assets cleanup #
+# Assets cleanup #
 #######################
 
 function cleanup_assets {
-read -e -p "Remove common assets (dictionaries, etc.) ? [y/N] (default: N): " REMOVE_assets
-REMOVE_assets=${REMOVE_assets:-N}
+read -e -p "Remove common assets (dictionaries, etc.) ? [y/N] (default: N): " REMOVE_ASSETS
+REMOVE_ASSETS=${REMOVE_ASSETS:-N}
 
-if [ $REMOVE_assets = "y" ]; then
+if [ $REMOVE_ASSETS = "y" ]; then
   rm -rf /usr/share/assets/charsets
   rm -rf /usr/share/assets/dictionaries
   rm -rf /usr/share/assets/markov
