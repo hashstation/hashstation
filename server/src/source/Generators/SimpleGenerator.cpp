@@ -17,7 +17,6 @@
 #include <AttackDict.h>
 #include <AttackMask.h>
 #include <AttackMarkov.h>
-#include <AttackRules.h>
 #include <AttackPcfg.h>
 #include <AttackPrince.h>
 #include <AttackBenchAll.h>
@@ -114,15 +113,10 @@ AttackMode *CreateAttack(PtrJob &job, PtrHost &host, uint64_t duration, CSqlLoad
     switch (job->getAttackMode())
     {
         case Config::AttackMode::AttackDict:
-            if (job->getAttackSubmode() == 0)
-                return AttackTypeMaker<CAttackDict>::CreateAttack(job, host, duration, sqlLoader);
-            else
-                return AttackTypeMaker<CAttackRules>::CreateAttack(job, host, duration, sqlLoader);
-            break;
+            return AttackTypeMaker<CAttackDict>::CreateAttack(job, host, duration, sqlLoader);
 
         case Config::AttackMode::AttackCombinator:
             return AttackTypeMaker<CAttackCombinator>::CreateAttack(job, host, duration, sqlLoader);
-            break;
 
         case Config::AttackMode::AttackMask:
             if (job->getAttackSubmode() == 0)

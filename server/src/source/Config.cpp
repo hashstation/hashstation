@@ -51,8 +51,8 @@ namespace Config {
     std::string inTemplateFileCombinator =     "combinator_in";
     std::string inTemplateFileHybridDictMask = "hybrid_dict_mask_in";
     std::string inTemplateFileHybridMaskDict = "hybrid_mask_dict_in";
-    std::string inTemplateFileRule =           "rule_in";
-    std::string inTemplateFileRuleAlt =        "rule_alt_in";
+    std::string inTemplateFileDictRules =      "dict_rules_in";
+    std::string inTemplateFileDictRulesAlt =   "dict_rules_alt_in";
     std::string inTemplateFilePrince =         "prince_in";
     std::string inTemplateFilePrinceRules =    "prince_rules_in";
     std::string inTemplateFilePcfg =           "pcfg_in";
@@ -72,8 +72,8 @@ namespace Config {
     char * inTemplatePathCombinator = nullptr;
     char * inTemplatePathHybridDictMask = nullptr;
     char * inTemplatePathHybridMaskDict = nullptr;
-    char * inTemplatePathRule = nullptr;
-    char * inTemplatePathRuleAlt = nullptr;
+    char * inTemplatePathDictRules = nullptr;
+    char * inTemplatePathDictRulesAlt = nullptr;
     DB_APP * app = nullptr;
     int startTime = 0;
     int seqNo = 0;

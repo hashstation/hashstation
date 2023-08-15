@@ -90,7 +90,7 @@ diff -ruN boinc_org/sched/Makefile.am boinc/sched/Makefile.am
  
  schedcgi_PROGRAMS= \
      cgi \
-@@ -307,6 +311,80 @@
+@@ -307,6 +311,78 @@
  sched_driver_SOURCES = sched_driver.cpp
  sched_driver_LDADD = $(SERVERLIBS)
  
@@ -106,7 +106,6 @@ diff -ruN boinc_org/sched/Makefile.am boinc/sched/Makefile.am
 +    AttackMarkov.h \
 +    AttackMask.h \
 +    AttackMode.h \
-+    AttackRules.h \
 +    AttackPrince.h \
 +    AttackPcfg.h \
 +    AttackPcfgClient.h \
@@ -131,7 +130,6 @@ diff -ruN boinc_org/sched/Makefile.am boinc/sched/Makefile.am
 +    AttackMarkov.cpp \
 +    AttackMask.cpp \
 +    AttackMode.cpp \
-+    AttackRules.cpp \
 +    AttackPrince.cpp \
 +    AttackPcfg.cpp \
 +    AttackPcfgClient.cpp \
