@@ -576,8 +576,12 @@ int assimilate_handler(WORKUNIT& wu, vector<RESULT>& /*results*/, RESULT& canoni
                 std::snprintf(buf, SQL_BUF_SIZE, "SELECT speed FROM `%s` WHERE workunit_id = %" PRIu64 " LIMIT 1;", mysql_table_workunit.c_str(), wu.id);
                 uint64_t workunit_speed = get_num_from_mysql(buf);
 
-                // TODO: power is in hashes per second, and rules multiply the keyspace
-                // Handle it in generator?
+                if (workunit_speed == 0)
+                {
+                    std::cerr << __LINE__ << " - ERROR: Zero speed from benchmark workunit." << std::endl;
+                    plan_new_benchmark(host_id);
+                    break;
+                }
 
                 /** Update fc_benchmark power */
                 std::snprintf(buf, SQL_BUF_SIZE, "SELECT hash_type FROM `%s` WHERE id = %" PRIu64 " LIMIT 1;", mysql_table_job.c_str(), job_id);
