@@ -10,7 +10,7 @@ const char *ConfigTask::MASK_HC_KEYSPACE = "mask_hc_keyspace";
 const char *ConfigTask::DICT_HC_KEYSPACE = "dict_hc_keyspace";
 const char *ConfigTask::START_INDEX = "start_index";
 const char *ConfigTask::START_HASH_INDEX = "start_hash_index";
-const char *ConfigTask::SKIP_FROM_START = "skip_from_start";
+const char *ConfigTask::GENERATOR_SKIP_INDEX = "generator_skip_index";
 const char *ConfigTask::CASE_PERMUTE = "case_permute";
 const char *ConfigTask::CHECK_DUPLICATES = "check_duplicates";
 const char *ConfigTask::MIN_PASSWORD_LEN = "min_password_len";
@@ -76,7 +76,7 @@ void ConfigTask::initSupported() {
   supported_.push_back(ConfigTask::MAX_PASSWORD_LEN);
   supported_.push_back(ConfigTask::MIN_ELEM_IN_CHAIN);
   supported_.push_back(ConfigTask::MAX_ELEM_IN_CHAIN);
-  supported_.push_back(ConfigTask::SKIP_FROM_START);
+  supported_.push_back(ConfigTask::GENERATOR_SKIP_INDEX);
   supported_.push_back(ConfigTask::HWMON_TEMP_ABORT);
   supported_.push_back(ConfigTask::OPTIMIZED);
   supported_.push_back(ConfigTask::DISTRIBUTION_MODE);

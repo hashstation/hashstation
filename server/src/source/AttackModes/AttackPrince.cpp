@@ -84,8 +84,8 @@ bool CAttackPrince::makeWorkunit()
     /** Output mode */
     uint64_t startIndex = m_workunit->getStartIndex();
     configFile << "|||mode|String|1|n|||\n";
-    std::string skipFromStart = std::to_string(startIndex);
-    configFile << "|||skip_from_start|BigUInt|" << skipFromStart.size() << "|" << skipFromStart << "|||\n";
+    std::string generatorSkipIndex = std::to_string(startIndex);
+    configFile << "|||generator_skip_index|BigUInt|" << generatorSkipIndex.size() << "|" << generatorSkipIndex << "|||\n";
     std::string dictHcKeyspace = std::to_string(m_workunit->getHcKeyspace());
     configFile << "|||dict_hc_keyspace|BigUInt|" << dictHcKeyspace.size() << "|" << dictHcKeyspace << "|||\n";
     std::string casePermute = std::to_string(m_job->getCasePermuteFlag());

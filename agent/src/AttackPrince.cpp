@@ -28,7 +28,7 @@ void AttackPrince::addSpecificArguments() {
     addGeneratorArgument("--case-permute");
   if (config_.find(ConfigTask::CHECK_DUPLICATES, value) && value == "0")
     addGeneratorArgument("--dupe-check-disable");
-  if (config_.find(ConfigTask::SKIP_FROM_START, value))
+  if (config_.find(ConfigTask::GENERATOR_SKIP_INDEX, value))
     addGeneratorLimitingArgument("--skip=" + value);
   if (config_.find(ConfigTask::DICT_HC_KEYSPACE, value))
     addGeneratorLimitingArgument("--limit=" + value);
