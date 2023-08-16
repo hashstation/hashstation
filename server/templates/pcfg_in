@@ -13,6 +13,11 @@
         <no_delete/>
         <number>3</number>
     </file_info>
+    <file_info>
+        <sticky/>
+        <no_delete/>
+        <number>4</number>
+    </file_info>
     <workunit>
         <file_ref>
             <file_number>0</file_number>
@@ -29,6 +34,10 @@
         <file_ref>
             <file_number>3</file_number>
             <open_name>grammar</open_name>
+        </file_ref>
+        <file_ref>
+            <file_number>4</file_number>
+            <open_name>rules</open_name>
         </file_ref>
     </workunit>
 </input_template>

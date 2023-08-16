@@ -157,23 +157,8 @@ void parseArguments(int argc, char * argv[])
       exit(1);
     }
 
-    std::snprintf(buf, sizeof(buf), "templates/%s",
-                  Config::inTemplateFilePrinceRules.c_str());
-    if (read_file_malloc(config.project_path(buf),
-                         Config::inTemplatePathPrinceRules)) {
-      log_messages.printf(MSG_CRITICAL, "can't read input template %s\n", buf);
-      exit(1);
-    }
-
     std::snprintf(buf, sizeof(buf), "templates/%s", Config::inTemplateFilePcfg.c_str());
     if (read_file_malloc(config.project_path(buf), Config::inTemplatePathPcfg))
-    {
-        log_messages.printf(MSG_CRITICAL, "can't read input template %s\n", buf);
-        exit(1);
-    }
-
-    std::snprintf(buf, sizeof(buf), "templates/%s", Config::inTemplateFilePcfgRules.c_str());
-    if (read_file_malloc(config.project_path(buf), Config::inTemplatePathPcfgRules))
     {
         log_messages.printf(MSG_CRITICAL, "can't read input template %s\n", buf);
         exit(1);
@@ -195,20 +180,6 @@ void parseArguments(int argc, char * argv[])
 
     std::snprintf(buf, sizeof(buf), "templates/%s", Config::inTemplateFileHybridMaskDict.c_str());
     if (read_file_malloc(config.project_path(buf), Config::inTemplatePathHybridMaskDict))
-    {
-        log_messages.printf(MSG_CRITICAL, "can't read input template %s\n", buf);
-        exit(1);
-    }
-
-    std::snprintf(buf, sizeof(buf), "templates/%s", Config::inTemplateFileDictRules.c_str());
-    if (read_file_malloc(config.project_path(buf), Config::inTemplatePathDictRules))
-    {
-        log_messages.printf(MSG_CRITICAL, "can't read input template %s\n", buf);
-        exit(1);
-    }
-
-    std::snprintf(buf, sizeof(buf), "templates/%s", Config::inTemplateFileDictRulesAlt.c_str());
-    if (read_file_malloc(config.project_path(buf), Config::inTemplatePathDictRulesAlt))
     {
         log_messages.printf(MSG_CRITICAL, "can't read input template %s\n", buf);
         exit(1);

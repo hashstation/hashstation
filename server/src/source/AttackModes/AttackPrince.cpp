@@ -25,12 +25,11 @@ bool CAttackPrince::makeWorkunit()
       return false;
     }
 
-    bool with_rules = m_job->getAttackSubmode() == 1;
     DB_WORKUNIT wu;
     char name1[Config::SQL_BUF_SIZE], name2[Config::SQL_BUF_SIZE],
         name3[Config::SQL_BUF_SIZE], name4[Config::SQL_BUF_SIZE],
         path[Config::SQL_BUF_SIZE];
-    const char *infiles[with_rules ? 4 : 3];
+    const char *infiles[4];
     int retval;
 
     /** Make a unique name for the workunit and its input file */
@@ -38,10 +37,7 @@ bool CAttackPrince::makeWorkunit()
     std::snprintf(name2, Config::SQL_BUF_SIZE, "%s_%d_%d", Config::appName, Config::startTime, Config::seqNo++);
     /** Same name of dict file - for sticky flag to work */
     std::snprintf(name3, Config::SQL_BUF_SIZE, "%s_dict_%" PRIu64 "", Config::appName, m_job->getId());
-    if (with_rules) {
-      /** Same name of rules file - for sticky flag to work */
-      std::snprintf(name4, Config::SQL_BUF_SIZE, "%s_rules_%" PRIu64 "", Config::appName, m_job->getId());
-    }
+    std::snprintf(name4, Config::SQL_BUF_SIZE, "%s_rules_%" PRIu64 "", Config::appName, m_job->getId());
 
     /** Append mode to config */
     retval = config.download_path(name1, path);
@@ -200,58 +196,42 @@ bool CAttackPrince::makeWorkunit()
       Tools::printDebug("Copied PRINCE dictionary to data file.\n");
     }
 
-    if (with_rules) {
-      std::ofstream rulesFile;
-      /** Create rules file */
-      retval = config.download_path(name4, path);
-      if (retval) {
-        Tools::printDebugHost(Config::DebugType::Error, m_job->getId(),
-                              m_host->getBoincHostId(),
-                              "Failed to receive BOINC filename - rules. "
-                              "Setting job to malformed.\n");
-        m_sqlLoader->updateRunningJobStatus(m_job->getId(),
-                                            Config::JobState::JobMalformed);
+    std::ofstream rulesFile;
+    /** Create rules file */
+    retval = config.download_path(name4, path);
+    if (retval)
+    {
+        Tools::printDebugHost(Config::DebugType::Error, m_job->getId(), m_host->getBoincHostId(),
+                            "Failed to receive BOINC filename - rules. Setting job to malformed.\n");
+        m_sqlLoader->updateRunningJobStatus(m_job->getId(), Config::JobState::JobMalformed);
         return false;
-      }
+    }
 
-      if(!std::ifstream(path))
-      {
+    if (!std::ifstream(path)) {
 
         rulesFile.open(path);
         if (!rulesFile.is_open()) {
-          Tools::printDebugHost(Config::DebugType::Error, m_job->getId(),
-                                m_host->getBoincHostId(),
-                                "Failed to open rules BOINC input file! Setting "
-                                "job to malformed.\n");
-          m_sqlLoader->updateRunningJobStatus(m_job->getId(),
-                                              Config::JobState::JobMalformed);
-          return false;
+            Tools::printDebugHost(Config::DebugType::Error, m_job->getId(), m_host->getBoincHostId(),
+                                  "Failed to open rules BOINC input file! Setting job to malformed.\n");
+            m_sqlLoader->updateRunningJobStatus(m_job->getId(), Config::JobState::JobMalformed);
+            return false;
         }
 
-        if (m_job->getRules().empty()) {
-          Tools::printDebugHost(
-              Config::DebugType::Error, m_job->getId(), m_host->getBoincHostId(),
-              "Rules is not set in database! Setting job to malformed.\n");
-          m_sqlLoader->updateRunningJobStatus(m_job->getId(),
-                                              Config::JobState::JobMalformed);
-          return false;
+        if (m_job->getAttackSubmode() == 1) {
+            std::ifstream rules;
+            rules.open(Config::rulesDir + m_job->getRules());
+            if (!rulesFile) {
+                Tools::printDebugHost(Config::DebugType::Error, m_job->getId(), m_host->getBoincHostId(),
+                                      "Failed to open rules file! Setting job to malformed.\n");
+                m_sqlLoader->updateRunningJobStatus(m_job->getId(), Config::JobState::JobMalformed);
+                return false;
+            }
+
+            rulesFile << rules.rdbuf();
+            rules.close();
         }
 
-        std::ifstream rules;
-        rules.open((Config::rulesDir + m_job->getRules()).c_str());
-        if (!rules) {
-          Tools::printDebugHost(
-              Config::DebugType::Error, m_job->getId(), m_host->getBoincHostId(),
-              "Failed to open rules file! Setting job to malformed.\n");
-          m_sqlLoader->updateRunningJobStatus(m_job->getId(),
-                                              Config::JobState::JobMalformed);
-          return false;
-        }
-
-        rulesFile << rules.rdbuf();
         rulesFile.close();
-        rules.close();
-      }
     }
 
     /** Fill in the workunit parameters */
@@ -262,8 +242,7 @@ bool CAttackPrince::makeWorkunit()
     infiles[0] = name1;
     infiles[1] = name2;
     infiles[2] = name3;
-    if (with_rules)
-      infiles[3] = name4;
+    infiles[3] = name4;
 
     setDefaultWorkunitParams(&wu);
 
@@ -271,11 +250,11 @@ bool CAttackPrince::makeWorkunit()
     std::snprintf(path, Config::SQL_BUF_SIZE, "templates/%s", Config::outTemplateFile.c_str());
     retval = create_work(
             wu,
-            with_rules ? Config::inTemplatePathPrinceRules : Config::inTemplatePathPrince,
+            Config::inTemplatePathPrince,
             path,
             config.project_path(path),
             infiles,
-            with_rules ? 4 : 3,
+            4,
             config
     );
 

@@ -20,13 +20,15 @@ CAttackPcfg::CAttackPcfg(PtrJob job, PtrHost &host, uint64_t seconds, CSqlLoader
 bool CAttackPcfg::makeWorkunit()
 {
     /** Create the workunit instance first */
-    if (!m_workunit && !generateWorkunit())
+    if (!generateWorkunit()) {
+        m_client.Disconnect();
+        m_client.Kill();
         return false;
+    }
 
-    bool with_rules = m_job->getAttackSubmode() == 1;
     DB_WORKUNIT wu;
     char name1[Config::SQL_BUF_SIZE],name2[Config::SQL_BUF_SIZE],name3[Config::SQL_BUF_SIZE],name4[Config::SQL_BUF_SIZE],name5[Config::SQL_BUF_SIZE],path[Config::SQL_BUF_SIZE];
-    const char* infiles[with_rules ? 5 : 4];
+    const char* infiles[5];
     int retval;
 
     /** Make a unique name for the workunit and its input file */
@@ -34,10 +36,7 @@ bool CAttackPcfg::makeWorkunit()
     std::snprintf(name2, Config::SQL_BUF_SIZE, "%s_%d_%d", Config::appName, Config::startTime, Config::seqNo++);
     std::snprintf(name3, Config::SQL_BUF_SIZE, "%s_%d_%d.dict", Config::appName, Config::startTime, Config::seqNo++);
     std::snprintf(name4, Config::SQL_BUF_SIZE, "%s_grammar_%" PRIu64 "", Config::appName, m_job->getId());
-    if (with_rules) {
-      /** Same name of rules file - for sticky flag to work */
-      std::snprintf(name5, Config::SQL_BUF_SIZE, "%s_rules_%" PRIu64 "", Config::appName, m_job->getId());
-    }
+    std::snprintf(name5, Config::SQL_BUF_SIZE, "%s_rules_%" PRIu64 "", Config::appName, m_job->getId());
 
     /** Create data file */
     std::ofstream f;
@@ -183,44 +182,33 @@ bool CAttackPcfg::makeWorkunit()
         f.close();
     }
 
-    if (with_rules) {
-        std::ofstream rulesFile;
-        /** Create rules file */
-        retval = config.download_path(name5, path);
-        if (retval)
-        {
+    std::ofstream rulesFile;
+    /** Create rules file */
+    retval = config.download_path(name5, path);
+    if (retval)
+    {
+        Tools::printDebugHost(Config::DebugType::Error, m_job->getId(), m_host->getBoincHostId(),
+                            "Failed to receive BOINC filename - rules. Setting job to malformed.\n");
+        m_sqlLoader->updateRunningJobStatus(m_job->getId(), Config::JobState::JobMalformed);
+        return false;
+    }
+
+    if (!std::ifstream(path)) {
+
+        rulesFile.open(path);
+        if (!rulesFile.is_open()) {
             Tools::printDebugHost(Config::DebugType::Error, m_job->getId(), m_host->getBoincHostId(),
-                                "Failed to receive BOINC filename - rules. Setting job to malformed.\n");
+                                  "Failed to open rules BOINC input file! Setting job to malformed.\n");
             m_sqlLoader->updateRunningJobStatus(m_job->getId(), Config::JobState::JobMalformed);
             return false;
         }
 
-        if(!std::ifstream(path))
-        {
-
-            rulesFile.open(path);
-            if (!rulesFile.is_open())
-            {
-                Tools::printDebugHost(Config::DebugType::Error, m_job->getId(), m_host->getBoincHostId(),
-                                    "Failed to open rules BOINC input file! Setting job to malformed.\n");
-                m_sqlLoader->updateRunningJobStatus(m_job->getId(), Config::JobState::JobMalformed);
-                return false;
-            }
-
-            if(m_job->getRules().empty())
-            {
-                Tools::printDebugHost(Config::DebugType::Error, m_job->getId(), m_host->getBoincHostId(),
-                                    "Rules is not set in database! Setting job to malformed.\n");
-                m_sqlLoader->updateRunningJobStatus(m_job->getId(), Config::JobState::JobMalformed);
-                return false;
-            }
-
+        if (m_job->getAttackSubmode() == 1) {
             std::ifstream rules;
-            rules.open((Config::rulesDir + m_job->getRules()).c_str());
-            if (!rulesFile)
-            {
+            rules.open(Config::rulesDir + m_job->getRules());
+            if (!rulesFile) {
                 Tools::printDebugHost(Config::DebugType::Error, m_job->getId(), m_host->getBoincHostId(),
-                                    "Failed to open rules file! Setting job to malformed.\n");
+                                      "Failed to open rules file! Setting job to malformed.\n");
                 m_sqlLoader->updateRunningJobStatus(m_job->getId(), Config::JobState::JobMalformed);
                 return false;
             }
@@ -228,6 +216,8 @@ bool CAttackPcfg::makeWorkunit()
             rulesFile << rules.rdbuf();
             rules.close();
         }
+
+        rulesFile.close();
     }
 
     /** Fill in the workunit parameters */
@@ -239,8 +229,7 @@ bool CAttackPcfg::makeWorkunit()
     infiles[1] = name2;
     infiles[2] = name3;
     infiles[3] = name4;
-    if (with_rules)
-      infiles[4] = name5;
+    infiles[4] = name5;
 
     setDefaultWorkunitParams(&wu);
 
@@ -248,11 +237,11 @@ bool CAttackPcfg::makeWorkunit()
     std::snprintf(path, Config::SQL_BUF_SIZE, "templates/%s", Config::outTemplateFile.c_str());
     retval = create_work(
             wu,
-            with_rules ? Config::inTemplatePathPcfgRules : Config::inTemplatePathPcfg,
+            Config::inTemplatePathPcfg,
             path,
             config.project_path(path),
             infiles,
-            with_rules ? 5 : 4,
+            5,
             config
     );
 
@@ -274,23 +263,18 @@ bool CAttackPcfg::makeWorkunit()
 
     Tools::printDebugHost(Config::DebugType::Log, m_job->getId(), m_host->getBoincHostId(),
                           "Workunit succesfully created\n");
-
-    /** Check if we reached end of PCFG keyspace */
-    if (m_job->getCurrentIndex() >= m_job->getKeyspace())
-    {
-        Tools::printDebugHost(Config::DebugType::Log, m_job->getId(), m_host->getBoincHostId(),
-                              "Reached end of keyspace. Setting job to finishing!\n");
-        m_sqlLoader->updateRunningJobStatus(m_job->getId(), Config::JobState::JobFinishing);
-        m_client.Disconnect();
-        m_client.Kill();
-    }
-
     return true;
 }
 
 
 bool CAttackPcfg::generateWorkunit()
 {
+    uint64_t currentIndex = m_job->getCurrentIndex();
+    uint64_t jobHcKeyspace = m_job->getHcKeyspace();
+    /** Check if the job isn't finished */
+    if (currentIndex >= jobHcKeyspace)
+    return false;
+
     Tools::printDebugHost(Config::DebugType::Log, m_job->getId(), m_host->getBoincHostId(),
                           "Generating PCFG workunit ...\n");
 
@@ -304,12 +288,15 @@ bool CAttackPcfg::generateWorkunit()
         passCount = getMinPassCount();
     }
 
-    if (passCount + m_job->getCurrentIndex() > m_job->getHcKeyspace())
-        passCount = m_job->getHcKeyspace() - m_job->getCurrentIndex();
+    if (passCount + currentIndex > jobHcKeyspace)
+        passCount = jobHcKeyspace - currentIndex;
 
     /** Create the workunit */
-    m_workunit = CWorkunit::create(m_job->getId(), m_host->getId(), m_host->getBoincHostId(), m_job->getCurrentIndex(), 0, passCount, 0, 0,
+    m_workunit = CWorkunit::create(m_job->getId(), m_host->getId(), m_host->getBoincHostId(), currentIndex, 0, passCount, 0, 0,
                          false, 0, false);
+
+    if (!m_workunit)
+        return false;
 
     /**
      * @warning Index and WU-Keyspace updating must be done later, after the response from PCFG Manager
