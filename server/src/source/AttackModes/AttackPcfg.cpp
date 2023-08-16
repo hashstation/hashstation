@@ -165,12 +165,12 @@ bool CAttackPcfg::makeWorkunit()
         }
 
         Tools::printDebugHost(Config::DebugType::Log, m_job->getId(), m_host->getBoincHostId(),
-                            "Creating grammar file %s\n", (Config::pcfgDir + m_job->getGrammar() + "/grammar.bin").c_str());
+                            "Creating grammar file\n");
 
 
         /** Load grammar path from DB and dump it to BOINC input file  */
         std::ifstream grammarFile;
-        grammarFile.open((Config::pcfgDir + m_job->getGrammar() + "/grammar.bin").c_str());
+        grammarFile.open(Config::pcfgDir + m_job->getGrammar() + "/grammar.bin");
         if (!grammarFile) {
             Tools::printDebugHost(Config::DebugType::Error, m_job->getId(), m_host->getBoincHostId(),
                                 "Failed to open grammar file! Setting job to malformed.\n");
