@@ -4,7 +4,7 @@
 -->
 
 <template>
-  <v-container class="max500">
+  <v-container>
     <fc-tile
       title="Dictionaries"
       :icon="$route.meta.icon"
@@ -75,10 +75,11 @@
           hint="Sort by password length"
           persistent-hint
         />
+        <v-spacer />
         <v-checkbox
           v-model="hexDict"
           label="HEX dictionary"
-          hint="Assume words in the dictionary are given in hex"
+          hint="Words in the dictionary to be uploaded are given in hex"
           persistent-hint
         />
         <v-spacer />
@@ -195,10 +196,6 @@
   .dz-message {
     cursor: pointer;
     text-align: right;
-  }
-
-  .max500 {
-    max-width: 770px;
   }
 
 </style>
