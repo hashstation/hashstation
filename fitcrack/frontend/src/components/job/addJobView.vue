@@ -66,45 +66,13 @@
 
     <v-row>
       <v-col>
-        <v-alert
-          v-if="!helpAlreadyDismissed"
-          text
-          type="success"
-          icon="mdi-help-box"
-          dismissible
-        >
-          If you need help with creating a job, you can <a target="_blank" :href="$docsLink + '/#/jobs/creating/overview'">read the user manual here</a>.
-          <template #close="{ toggle }">
-            <v-btn
-              text
-              small
-              @click="dismissHelp(toggle)"
-            >
-              Don't show anymore
-              <v-icon right>mdi-close</v-icon>
-            </v-btn>
-          </template>
-        </v-alert>
-        <v-alert
-          v-if="helpDismissedMessage"
-          text
-          type="info"
-          dismissible
-        >
-          Sure. If you need help at any time in the future, use the link in the top right corner.
-        </v-alert>
-      </v-col>
-    </v-row>
-
-    <v-row>
-      <v-col>
         <v-text-field
           v-model="name"
           outlined
           autofocus
           required
           label="Name"
-          hint="Give this job a descriptive name"
+          hint="Give this job a name"
           persistent-hint
         />
       </v-col>
@@ -120,6 +88,18 @@
           hint="Prefill the form with a saved template (use empty to quickly reset)"
           persistent-hint
           @input="fetchAndApplyTemplate"
+        />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <v-textarea
+          id="comment-input"
+          v-model="comment"
+          label="Comment"
+          outlined
+          auto-grow
+          :rows="1"
         />
       </v-col>
     </v-row>
@@ -442,111 +422,10 @@
             editable
             step="3"
           >
-            Host settings
+            Scheduling settings
           </v-stepper-step>
           <v-stepper-content step="3">
             <v-container>
-              <v-card-title>
-                  <span>Distribute workunits to hosts</span>
-              </v-card-title>
-              <div class="scroller">
-                <host-selector
-                  v-model="hosts"
-                  select-all
-                  auto-refresh
-                />
-              </div>
-              <v-subheader><b>({{ hosts.length }} selected)</b></v-subheader>
-              <v-divider />
-              <v-row>
-                <v-col>
-                  <v-card-title>
-                      <span>Device types</span>
-                  </v-card-title>
-                  <v-radio-group
-                    v-model="deviceTypes"
-                  >
-                    <v-radio
-                      label="Host default"
-                      :value="0"
-                    ></v-radio>
-                    <v-radio
-                      label="CPU only"
-                      :value="1"
-                    ></v-radio>
-                    <v-radio
-                      label="GPU only"
-                      :value="2"
-                    ></v-radio>
-                    <v-radio
-                      label="CPU + GPU"
-                      :value="3"
-                    ></v-radio>
-                  </v-radio-group>
-                </v-col>
-                <v-col>
-                  <v-card-title>
-                    <span>Workload profile</span>
-                  </v-card-title>
-                  <v-radio-group
-                    v-model="workloadProfile"
-                  >
-                    <v-radio
-                      label="Host default"
-                      :value="0"
-                    ></v-radio>
-                    <v-radio
-                      label="Low"
-                      :value="1"
-                    ></v-radio>
-                    <v-radio
-                      label="Normal"
-                      :value="2"
-                    ></v-radio>
-                    <v-radio
-                      label="High"
-                      :value="3"
-                    ></v-radio>
-                    <v-radio
-                      label="Nightmare"
-                      :value="4"
-                    ></v-radio>
-                  </v-radio-group>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-spacer />
-                <v-btn
-                  class="mr-6 mt-4"
-                  color="primary"
-                  @click="step = 4"
-                >
-                  Next
-                </v-btn>
-              </v-row>
-            </v-container>
-          </v-stepper-content>
-          <v-stepper-step
-            id="job-step-4"
-            editable
-            step="4"
-          >
-            Advanced settings
-          </v-stepper-step>
-          <v-stepper-content step="4">
-            <v-container>
-              <v-row>
-                <v-col>
-                  <v-textarea
-                    id="comment-input"
-                    v-model="comment"
-                    label="Comment"
-                    outlined
-                    auto-grow
-                    :rows="1"
-                  />
-                </v-col>
-              </v-row>
               <v-row>
                 <v-col
                   v-if="!forceFixedWorkunitSize"
@@ -638,6 +517,27 @@
                 </v-col>
               </v-row>
               <v-row>
+                <v-spacer />
+                <v-btn
+                  class="mr-6 mt-4"
+                  color="primary"
+                  @click="step = 4"
+                >
+                  Next
+                </v-btn>
+              </v-row>
+            </v-container>
+          </v-stepper-content>
+          <v-stepper-step
+            id="job-step-4"
+            editable
+            step="4"
+          >
+            Advanced settings
+          </v-stepper-step>
+          <v-stepper-content step="4">
+            <v-container>
+              <v-row>
                 <v-col>
                   <v-checkbox
                     v-if="!$optimizedOnly"
@@ -657,6 +557,95 @@
                     auto-grow
                     :rows="1"
                   />
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-spacer />
+                <v-btn
+                  class="mr-6 mt-4"
+                  color="primary"
+                  @click="step = 5"
+                >
+                  Next
+                </v-btn>
+              </v-row>
+            </v-container>
+          </v-stepper-content>
+          <v-stepper-step
+            id="job-step-5"
+            editable
+            step="5"
+          >
+            Host settings
+          </v-stepper-step>
+          <v-stepper-content step="5">
+            <v-container>
+              <v-card-title>
+                  <span>Distribute workunits to hosts</span>
+              </v-card-title>
+              <div class="scroller">
+                <host-selector
+                  v-model="hosts"
+                  select-all
+                  auto-refresh
+                />
+              </div>
+              <v-subheader><b>({{ hosts.length }} selected)</b></v-subheader>
+              <v-divider />
+              <v-row>
+                <v-col>
+                  <v-card-title>
+                      <span>Device types</span>
+                  </v-card-title>
+                  <v-radio-group
+                    v-model="deviceTypes"
+                  >
+                    <v-radio
+                      label="Host default"
+                      :value="0"
+                    ></v-radio>
+                    <v-radio
+                      label="CPU only"
+                      :value="1"
+                    ></v-radio>
+                    <v-radio
+                      label="GPU only"
+                      :value="2"
+                    ></v-radio>
+                    <v-radio
+                      label="CPU + GPU"
+                      :value="3"
+                    ></v-radio>
+                  </v-radio-group>
+                </v-col>
+                <v-col>
+                  <v-card-title>
+                    <span>Workload profile</span>
+                  </v-card-title>
+                  <v-radio-group
+                    v-model="workloadProfile"
+                  >
+                    <v-radio
+                      label="Host default"
+                      :value="0"
+                    ></v-radio>
+                    <v-radio
+                      label="Low"
+                      :value="1"
+                    ></v-radio>
+                    <v-radio
+                      label="Normal"
+                      :value="2"
+                    ></v-radio>
+                    <v-radio
+                      label="High"
+                      :value="3"
+                    ></v-radio>
+                    <v-radio
+                      label="Nightmare"
+                      :value="4"
+                    ></v-radio>
+                  </v-radio-group>
                 </v-col>
               </v-row>
             </v-container>
@@ -1037,13 +1026,13 @@
 
         if (this.deviceTypes.length == 0) {
           this.$error('No device types selected.')
-          this.step = 3
+          this.step = 4
           return
         }
 
         if (this.timeForJob < 10) {
           this.$error('Time per workunit must be higher or equal to 10 seconds.')
-          this.step = 4
+          this.step = 3
           return
         }
 
