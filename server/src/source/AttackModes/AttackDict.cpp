@@ -32,14 +32,12 @@ bool CAttackDict::makeWorkunit()
 
     /** Make a unique name for the workunit and its input file */
     std::snprintf(name1, Config::SQL_BUF_SIZE, "%s_%d_%d", Config::appName, Config::startTime, Config::seqNo++);
-    std::snprintf(name2, Config::SQL_BUF_SIZE, "%s_%d_%d", Config::appName, Config::startTime, Config::seqNo++);
+    std::snprintf(name2, Config::SQL_BUF_SIZE, "%s_hashes_%" PRIu64 "", Config::appName, m_job->getId());
 
     if (m_job->getDistributionMode() == 0)
-      std::snprintf(name3, Config::SQL_BUF_SIZE, "%s_%d_%d.dict",
-                    Config::appName, Config::startTime, Config::seqNo++);
+      std::snprintf(name3, Config::SQL_BUF_SIZE, "%s_%d_%d.dict", Config::appName, Config::startTime, Config::seqNo++);
     else if (m_job->getDistributionMode() == 1)
-      std::snprintf(name3, Config::SQL_BUF_SIZE, "%s_dict_%" PRIu64 "",
-                    Config::appName, m_job->getId());
+      std::snprintf(name3, Config::SQL_BUF_SIZE, "%s_dict_%" PRIu64 "", Config::appName, m_job->getId());
 
     std::snprintf(name4, Config::SQL_BUF_SIZE, "%s_rules_%" PRIu64 "", Config::appName, m_job->getId());
 
@@ -107,18 +105,19 @@ bool CAttackDict::makeWorkunit()
         return false;
     }
 
-    std::ofstream hashesFile;
-    hashesFile.open(path);
-    if (!hashesFile.is_open())
-    {
-        Tools::printDebugHost(Config::DebugType::Error, m_job->getId(), m_host->getBoincHostId(),
-                "Failed to open data BOINC input file! Setting job to malformed.\n");
-        m_sqlLoader->updateRunningJobStatus(m_job->getId(), Config::JobState::JobMalformed);
-        return false;
-    }
+    if (!std::ifstream(path)) {
+        std::ofstream hashesFile;
+        hashesFile.open(path);
+        if (!hashesFile.is_open()) {
+            Tools::printDebugHost(Config::DebugType::Error, m_job->getId(), m_host->getBoincHostId(),
+                                  "Failed to open data BOINC input file! Setting job to malformed.\n");
+            m_sqlLoader->updateRunningJobStatus(m_job->getId(), Config::JobState::JobMalformed);
+            return false;
+        }
 
-    hashesFile << m_job->getHashes();
-    hashesFile.close();
+        hashesFile << m_job->getHashes();
+        hashesFile.close();
+    }
 
     /** Create dictionary file. */
     retval = config.download_path(name3, path);
@@ -231,7 +230,7 @@ bool CAttackDict::makeWorkunit()
       if (m_job->getDictDeploymentMode() == DictDeploymentMode::use_prestored) {
         std::vector<PtrDictionary> dictVec = m_job->getDictionaries();
         // TODO: unsupported for more dictionaries (not possible with merging,
-        // could be possible with other approach) Frontend ensures than this
+        // could be possible with other approach). Frontend ensures than this
         // option cannot be enabled with more than 1 dictionary.
         const std::string &dictName = dictVec[0]->getDictName();
         configFile << "|||dict1_name|String|" << std::to_string(dictName.length())

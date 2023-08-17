@@ -51,6 +51,8 @@ void CAbstractGenerator::activateJobs()
 
 std::vector<std::string> CAbstractGenerator::getStickyFiles(PtrJob &job) {
     std::vector<std::string> stickyFiles;
+    stickyFiles.push_back(std::string(Config::appName) + "_hashes_" + std::to_string(job->getId()));
+
     /** Get sticky file names according to attack */
     switch (job->getAttackMode())
     {

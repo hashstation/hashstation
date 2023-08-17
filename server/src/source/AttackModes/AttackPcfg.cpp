@@ -33,7 +33,7 @@ bool CAttackPcfg::makeWorkunit()
 
     /** Make a unique name for the workunit and its input file */
     std::snprintf(name1, Config::SQL_BUF_SIZE, "%s_%d_%d", Config::appName, Config::startTime, Config::seqNo++);
-    std::snprintf(name2, Config::SQL_BUF_SIZE, "%s_%d_%d", Config::appName, Config::startTime, Config::seqNo++);
+    std::snprintf(name2, Config::SQL_BUF_SIZE, "%s_hashes_%" PRIu64 "", Config::appName, m_job->getId());
     std::snprintf(name3, Config::SQL_BUF_SIZE, "%s_%d_%d.dict", Config::appName, Config::startTime, Config::seqNo++);
     std::snprintf(name4, Config::SQL_BUF_SIZE, "%s_grammar_%" PRIu64 "", Config::appName, m_job->getId());
     std::snprintf(name5, Config::SQL_BUF_SIZE, "%s_rules_%" PRIu64 "", Config::appName, m_job->getId());
@@ -49,17 +49,19 @@ bool CAttackPcfg::makeWorkunit()
         return false;
     }
 
-    f.open(path);
-    if (!f.is_open())
-    {
-        Tools::printDebugHost(Config::DebugType::Error, m_job->getId(), m_host->getBoincHostId(),
-                              "Failed to open data BOINC input file! Setting job to malformed.\n");
-        m_sqlLoader->updateRunningJobStatus(m_job->getId(), Config::JobState::JobMalformed);
-        return false;
-    }
+    if (!std::ifstream(path)) {
+        std::ofstream hashesFile;
+        hashesFile.open(path);
+        if (!hashesFile.is_open()) {
+            Tools::printDebugHost(Config::DebugType::Error, m_job->getId(), m_host->getBoincHostId(),
+                                  "Failed to open data BOINC input file! Setting job to malformed.\n");
+            m_sqlLoader->updateRunningJobStatus(m_job->getId(), Config::JobState::JobMalformed);
+            return false;
+        }
 
-    f << m_job->getHashes();
-    f.close();
+        hashesFile << m_job->getHashes();
+        hashesFile.close();
+    }
 
     /** Create preterminals file. */
     retval = config.download_path(name3, path);

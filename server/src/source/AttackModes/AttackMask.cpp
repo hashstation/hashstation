@@ -29,7 +29,7 @@ bool CAttackMask::makeWorkunit()
 
     /** Make a unique name for the workunit and its input file */
     std::snprintf(name1, Config::SQL_BUF_SIZE, "%s_%d_%d", Config::appName, Config::startTime, Config::seqNo++);
-    std::snprintf(name2, Config::SQL_BUF_SIZE, "%s_%d_%d", Config::appName, Config::startTime, Config::seqNo++);
+    std::snprintf(name2, Config::SQL_BUF_SIZE, "%s_hashes_%" PRIu64 "", Config::appName, m_job->getId());
 
     /** Load the workunit mask to object */
     PtrMask workunitMask = m_sqlLoader->loadMask(m_workunit->getMaskId());
@@ -112,17 +112,19 @@ bool CAttackMask::makeWorkunit()
         return false;
     }
 
-    f.open(path);
-    if (!f.is_open())
-    {
-        Tools::printDebugHost(Config::DebugType::Error, m_job->getId(), m_host->getBoincHostId(),
-                "Failed to open data BOINC input file! Setting job to malformed.\n");
-        m_sqlLoader->updateRunningJobStatus(m_job->getId(), Config::JobState::JobMalformed);
-        return false;
-    }
+    if (!std::ifstream(path)) {
+        std::ofstream hashesFile;
+        hashesFile.open(path);
+        if (!hashesFile.is_open()) {
+            Tools::printDebugHost(Config::DebugType::Error, m_job->getId(), m_host->getBoincHostId(),
+                                  "Failed to open data BOINC input file! Setting job to malformed.\n");
+            m_sqlLoader->updateRunningJobStatus(m_job->getId(), Config::JobState::JobMalformed);
+            return false;
+        }
 
-    f << m_job->getHashes();
-    f.close();
+        hashesFile << m_job->getHashes();
+        hashesFile.close();
+    }
 
 
     /** Fill in the workunit parameters */
