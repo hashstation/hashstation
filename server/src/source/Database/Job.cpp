@@ -85,6 +85,7 @@ CJob::CJob(DbMap &jobMap, CSqlLoader * sqlLoader)
         m_hwTempAbort = m_sqlLoader->getHWTempAbort();
 
         m_benchRuntimeLimit = m_sqlLoader->getBenchRuntimeLimit();
+        m_workunitStatusUpdate = m_sqlLoader->getWorkunitStatusUpdate();
     }
     catch(std::logic_error & error)
     {
@@ -362,6 +363,11 @@ uint64_t CJob::getFixedWorkunitSize() const
 uint64_t CJob::getBenchRuntimeLimit() const
 {
     return m_benchRuntimeLimit;
+}
+
+uint64_t CJob::getWorkunitStatusUpdate() const
+{
+    return m_workunitStatusUpdate;
 }
 
 const std::string & CJob::getExtraHcArgs() const

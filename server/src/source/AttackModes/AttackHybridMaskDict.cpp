@@ -67,7 +67,7 @@ bool CAttackHybridMaskDict::makeWorkunit()
 		m_job->getAttackMode(), m_job->getAttackSubmode(),
 		m_job->getDistributionMode(), m_job->getName(),
 		m_job->getHashType(), m_job->getHWTempAbort(),
-		m_job->getOptimizedFlag(),
+		m_job->getWorkunitStatusUpdate(), m_job->getOptimizedFlag(),
 		(m_job->getDeviceTypes() == 0) ? m_host->getDeviceTypes()
 										: m_job->getDeviceTypes(),
 		(m_job->getWorkloadProfile() == 0) ? m_host->getWorkloadProfile()

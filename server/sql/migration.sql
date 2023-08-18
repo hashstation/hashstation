@@ -39,3 +39,6 @@ ADD `fixed_workunit_size` bigint(20) unsigned NOT NULL DEFAULT '0';
 
 ALTER TABLE `fc_settings`
 ADD `bench_runtime_limit` int(10) unsigned NOT NULL DEFAULT '30';
+
+ALTER TABLE `fc_settings`
+ADD `workunit_status_update` int(10) unsigned NOT NULL DEFAULT '5';

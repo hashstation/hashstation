@@ -117,6 +117,34 @@
                 class="mb-4"
               />
             </v-row>
+            <v-row>
+              <v-text-field
+                v-model="settings.default_seconds_per_workunit"
+                :loading="loading"
+                outlined
+                type="number"
+                label="Default time per workunit"
+                :min="10"
+                :hint="wuTimeHint"
+                :color="settings.default_seconds_per_workunit < wutthresh ? 'warning' : ''"
+                persistent-hint
+                suffix="seconds"
+                class="mb-4"
+              />
+            </v-row>
+            <v-row>
+              <v-text-field
+                v-model="settings.workunit_status_update"
+                :loading="loading"
+                outlined
+                type="number"
+                label="Workunit status update frequency"
+                hint="Specifies how often the agent reports the status of a workunit to the server."
+                persistent-hint
+                suffix="seconds"
+                class="mb-4"
+              />
+            </v-row>
            </v-card-text>
         </v-card>
         <v-expansion-panels flat class="mt-6">
@@ -133,19 +161,6 @@
             </v-expansion-panel-header>
             <v-expansion-panel-content>
               <v-card-text>
-            <v-text-field
-              v-model="settings.default_seconds_per_workunit"
-              :loading="loading"
-              outlined
-              type="number"
-              label="Default time per workunit"
-              :min="10"
-              :hint="wuTimeHint"
-              :color="settings.default_seconds_per_workunit < wutthresh ? 'warning' : ''"
-              persistent-hint
-              suffix="seconds"
-              class="mb-4"
-            />
             <v-text-field
               v-model="settings.workunit_timeout_factor"
               :loading="loading"

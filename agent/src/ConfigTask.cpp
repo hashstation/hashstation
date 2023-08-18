@@ -28,6 +28,8 @@ const char *ConfigTask::WORKLOAD_PROFILE = "workload_profile";
 const char *ConfigTask::SLOW_CANDIDATES = "slow_candidates";
 const char *ConfigTask::EXTRA_HC_ARGS = "extra_hc_args";
 const char *ConfigTask::BENCH_RUNTIME_LIMIT = "bench_runtime_limit";
+const char *ConfigTask::WORKUNIT_STATUS_UPDATE = "workunit_status_update";
+
 /* Private */
 
 void ConfigTask::convertLineToOption(std::string& line) {
@@ -89,6 +91,7 @@ void ConfigTask::initSupported() {
   supported_.push_back(ConfigTask::SLOW_CANDIDATES);
   supported_.push_back(ConfigTask::EXTRA_HC_ARGS);
   supported_.push_back(ConfigTask::BENCH_RUNTIME_LIMIT);
+  supported_.push_back(ConfigTask::WORKUNIT_STATUS_UPDATE);
 }
 
 bool ConfigTask::isSupported(const std::string& key) {

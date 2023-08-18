@@ -194,6 +194,12 @@ class CSqlLoader {
         uint64_t getBenchRuntimeLimit();
 
         /**
+         * @brief Reads workunit_status_update from fc_settings
+         * @return Status update frequency in seconds
+         */
+        uint64_t getWorkunitStatusUpdate();
+
+        /**
          * Returns fresh host status from DB
          * @param host_id ID of the host
          * @return status column form fc_host

@@ -4,7 +4,7 @@
 -->
 
 <template>
-  <v-container class="max1000">
+  <v-container>
     <fc-tile
       title="Encrypted files"
       class="ma-2"
@@ -104,10 +104,6 @@
   .dz-message {
     cursor: pointer;
     text-align: center;
-  }
-
-  .max1000 {
-    max-width: 1000px;
   }
 
 </style>

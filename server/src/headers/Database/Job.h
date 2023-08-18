@@ -150,19 +150,19 @@ class CJob {
          * @section Other member variables
          */
 
-        uint64_t m_combSecDictSize;     /**< Size of second dictionary in Combinator attack */
+        uint64_t m_combSecDictSize;      /**< Size of second dictionary in Combinator attack */
     protected:
         std::vector<Config::Ptr<CMask>> m_masks;    /**< Vector of non-exhausted masks for mask attack */
         std::vector<Config::Ptr<CDictionary>> m_dictionaries;  /**< Vector of non-exhausted dictionaries */
     private:
-        std::string m_hashes;           /**< job hash(es) denoted by newlines */
+        std::string m_hashes;            /**< job hash(es) denoted by newlines */
 
-        uint64_t m_totalPower;          /**< Sum of host power for this job */
-        uint64_t m_secondsPassed;       /**< Seconds from time_start to now() */
-        unsigned int m_timeoutFactor;   /**< Timeout for workunits, factor of time for a single workunit */
-        unsigned int m_hwTempAbort;     /**< Temperature threshold to stop cracking */
-        uint64_t m_benchRuntimeLimit;   /**< Runtime limit for benchmarking */
-
+        uint64_t m_totalPower;           /**< Sum of host power for this job */
+        uint64_t m_secondsPassed;        /**< Seconds from time_start to now() */
+        unsigned int m_timeoutFactor;    /**< Timeout for workunits, factor of time for a single workunit */
+        unsigned int m_hwTempAbort;      /**< Temperature threshold to stop cracking */
+        uint64_t m_benchRuntimeLimit;    /**< Runtime limit for benchmarking */
+        uint64_t m_workunitStatusUpdate; /**< Workunit status update frequency */
     public:
 
         /**
@@ -209,6 +209,7 @@ class CJob {
 
 
         uint64_t getBenchRuntimeLimit() const;
+        uint64_t getWorkunitStatusUpdate() const;
         void setGrammar(const std::string & grammar);
 
     /**

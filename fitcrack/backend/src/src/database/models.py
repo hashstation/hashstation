@@ -521,6 +521,7 @@ class FcSetting(Base):
     verify_hash_format = Column(Integer, nullable=False, server_default=text("'1'"))
     auto_add_hosts_to_running_jobs = Column(Integer, nullable=False, server_default=text("'0'"))
     bench_runtime_limit = Column(Integer, nullable=False, server_default=text("'30'"))
+    workunit_status_update = Column(Integer, nullable=False, server_default=text("'5'"))
 
 class FcJobGraph(Base):
     __tablename__ = 'fc_job_graph'

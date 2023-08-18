@@ -231,6 +231,11 @@ uint64_t CSqlLoader::getBenchRuntimeLimit()
                                                   Config::tableNameSettings.c_str()));
 }
 
+uint64_t CSqlLoader::getWorkunitStatusUpdate()
+{
+    return getSqlNumber(formatQuery("SELECT `workunit_status_update` FROM `%s` LIMIT 1",
+                                                  Config::tableNameSettings.c_str()));
+}
 
 uint32_t CSqlLoader::getHostStatus(uint64_t host_id)
 {

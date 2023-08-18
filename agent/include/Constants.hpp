@@ -11,8 +11,6 @@
 /** Namespace representing constants for hashcat arguments */
 namespace HashcatConstant {
     const std::string OutputFormat	= "1,3";		    /**< Hashcat's output format (HASH:SALT:HEX_PASSWORD) */
-    const int ProgressPeriod	= 5;		    /**< Period of Hashcat's --status-timer */
-
     const std::string MaskFileName  = "mask.hcmask";	/**< Name of the file with charsets and mask passed to hashcat */
     const std::string OutputFile    = "passwords.txt";	/**< Name of the Hashcat's file with the found passwords */
 

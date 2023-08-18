@@ -11,6 +11,7 @@ New features:
 * Added possibility to enter host specific extra hashcat args in host's 'Settings'.
 * Added possibility to set fixed workunit size in 'Advanced settings'.
 * Added possibility to change runtime limit for benchmarks (default 30 seconds) in 'System settings'.
+* Added possibility to change workunit status update frequency (default 5 seconds) in 'System settings'.
 * Added support to automatically extract hashes from Bitcoin/Litecoin/Ethereum/Exodus/MetaMask/Electrum wallets.
 * Added possibility to set priority (low/normal/high) of a new job in 'Scheduling settings'.
 * Added possibility to resume timeouted jobs.

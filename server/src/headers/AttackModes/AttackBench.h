@@ -36,7 +36,7 @@ class CAttackBench : public BaseAttack {
         virtual std::string generateBasicConfig(
             unsigned attackMode, unsigned attackSubmode,
             unsigned distributionMode, std::string name, unsigned hashType,
-            unsigned hwTempAbort = 90,
+            unsigned hwTempAbort = 90, unsigned workunitStatusUpdate = 5,
             bool optimized = true, unsigned deviceTypes = 0,
             unsigned workloadProfile = 0, bool slowCandidates = true,
             std::string extraHcArgs = "",
@@ -77,14 +77,15 @@ char CAttackBench<BaseAttack>::getModeLetter()
 
 template <typename BaseAttack>
 std::string CAttackBench<BaseAttack>::generateBasicConfig(unsigned attackMode, unsigned attackSubmode, unsigned distributionMode, std::string name,
-    unsigned hashType, unsigned hwTempAbort, bool optimized, unsigned deviceTypes, unsigned workloadProfile, bool slowCandidates, std::string extraHcArgs,
+    unsigned hashType, unsigned hwTempAbort, unsigned workunitStatusUpdate, bool optimized, unsigned deviceTypes, unsigned workloadProfile, bool slowCandidates, std::string extraHcArgs,
     std::string ruleLeft, std::string ruleRight, std::string charset1, std::string charset2, std::string charset3, std::string charset4)
 {
     std::ostringstream configBuilder;
     configBuilder << AttackMode::generateBasicConfig(
         attackMode, attackSubmode, distributionMode, name, hashType,
-        hwTempAbort, optimized, deviceTypes, workloadProfile, slowCandidates,
+        hwTempAbort, workunitStatusUpdate, optimized, deviceTypes, workloadProfile, slowCandidates,
         extraHcArgs, ruleLeft, ruleRight, charset1, charset2, charset3, charset4);
+
     auto dicts = this->m_job->getDictionaries();
     bool hasRightDicts = false;
     if (!this->hasStickyLeftDict()) {

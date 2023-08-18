@@ -4,7 +4,7 @@
 -->
 
 <template>
-  <v-container class="max500">
+  <v-container>
     <fc-tile
       title="Markov chains"
       class="ma-2"
@@ -155,10 +155,6 @@
   .dz-message {
     cursor: pointer;
     text-align: center;
-  }
-
-  .max500 {
-    max-width: 600px;
   }
 
 </style>

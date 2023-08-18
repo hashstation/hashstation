@@ -96,7 +96,7 @@ protected:
         virtual std::string generateBasicConfig(
             unsigned attackMode, unsigned attackSubmode,
             unsigned distributionMode, std::string name, unsigned hashType,
-            unsigned hwTempAbort = 90,
+            unsigned hwTempAbort = 90, unsigned workunitStatusUpdate = 5,
             bool optimized = true, unsigned deviceTypes = 0,
             unsigned workloadProfile = 0, bool slowCandidates = true,
             std::string extraHcArgs = "",

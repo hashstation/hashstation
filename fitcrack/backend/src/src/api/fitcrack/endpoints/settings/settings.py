@@ -44,6 +44,7 @@ class settings(Resource):
         verify_hash_format = args['verify_hash_format']
         auto_add_hosts_to_running_jobs = args['auto_add_hosts_to_running_jobs']
         bench_runtime_limit = args['bench_runtime_limit']
+        workunit_status_update = args['workunit_status_update']
 
         settings = FcSetting.query.first()
         if (default_seconds_per_workunit is not None): settings.default_seconds_per_workunit = default_seconds_per_workunit
@@ -53,6 +54,7 @@ class settings(Resource):
         if (verify_hash_format is not None): settings.verify_hash_format = verify_hash_format
         if (auto_add_hosts_to_running_jobs is not None): settings.auto_add_hosts_to_running_jobs = auto_add_hosts_to_running_jobs
         if (bench_runtime_limit is not None): settings.bench_runtime_limit = bench_runtime_limit
+        if (workunit_status_update is not None): settings.workunit_status_update = workunit_status_update
         db.session.commit()
 
         return {

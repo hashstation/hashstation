@@ -34,7 +34,9 @@ void AttackCrackingBase::addSpecificArguments() {
   if (config_.find(ConfigTask::HEX_DICT, value) && value == "1")
     addArgument("--hex-wordlist");
 
-  addArgument("--status-timer="+AgentUtils::toString(HashcatConstant::ProgressPeriod));
+  if (config_.find(ConfigTask::WORKUNIT_STATUS_UPDATE, value) && value != "0") {
+    addArgument("--status-timer=" + value);
+  }
 
   addArgument("-o");
   addArgument(output_file_);
