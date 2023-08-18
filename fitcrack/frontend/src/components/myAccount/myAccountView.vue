@@ -5,7 +5,6 @@
 
 <template>
   <v-container>
-    <h2> My account </h2>
     <v-row justify="center">
       <v-card
         class="mb-4"

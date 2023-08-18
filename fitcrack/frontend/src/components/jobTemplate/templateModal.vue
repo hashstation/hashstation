@@ -18,7 +18,7 @@
       >
         <v-icon left>
           mdi-file-plus
-        </v-icon>Manage Template
+        </v-icon>Save as job template
       </v-btn>
     </template>
 

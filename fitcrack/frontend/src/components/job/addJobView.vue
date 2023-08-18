@@ -691,9 +691,9 @@
             @click="submit"
           >
             <v-icon left>
-              {{ canCreateJob() ? 'mdi-check' : 'mdi-content-save' }}
+              {{ 'mdi-check' }}
             </v-icon>
-            {{ canCreateJob() ? 'Create' : 'Save for later' }}
+            {{ 'Create' }}
           </v-btn>
         </v-row>
       </v-col>
@@ -1072,11 +1072,8 @@
         this.validateHashes()
       },
       generateJobName () {
-        this.name = this.$store.state.project + ' Job – ' + this.$moment().format('DD.MM.YYYY HH:mm')
+        this.name = 'Job – ' + this.$moment().format('DD.MM.YYYY HH:mm')
       },
-      canCreateJob() {
-        return this.hosts.some((host) => host.last_active.online);
-      }
     }
   }
 </script>
@@ -1084,28 +1081,13 @@
 <style scoped>
   .containerAddJob {
     padding: 2em;
-    padding-top: 54px;
     position: relative;
-    max-width: 1300px;
   }
 
   .addJobContent {
     width: 100%;
   }
 
-  .max500 {
-    max-width: 500px;
-    width: 100%;
-  }
-
-  .max800 {
-    max-width: 800px;
-    width: 100%;
-  }
-
-  .max1000 {
-    max-width: 1000px;
-  }
 
   .infobar {
     position: fixed;
