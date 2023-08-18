@@ -132,7 +132,6 @@
         <v-list v-if="data != null && data.devices != null">
           <v-list-item v-for="device in data.devices" :key="device.id">
             <v-list-item-icon>
-              <v-icon v-if="device.device_info[0].temperature > 100">mdi-fire</v-icon>
               <v-icon v-else>{{ device.type === 'GPU' ? 'mdi-expansion-card' : 'mdi-expansion-card-variant' }}</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
@@ -142,24 +141,19 @@
               <v-list-item-subtitle v-if="$moment.utc(device.device_info[0].time).isBefore($moment.utc().subtract(10, 'minutes'))">
                 Inactive – no current data.
               </v-list-item-subtitle>
-              <v-list-item-subtitle v-else>
-                Hashrate: {{ device.device_info[0].hashrate}} H/s<span v-show="device.device_info[0].temperature >= 0">, Temp: {{ device.device_info[0].temperature}} °C, Util: {{ device.device_info[0].utilization}} %</span>
-              </v-list-item-subtitle>
               <div class="device-charts">
                 <res-mon
                   class="chart"
                   :usage-data="device.device_info.slice(0,30)"
-                  :metrics="['hashrate']"
-                  :unit-callback="x => `${x} H/s`"
+                  :metrics="['utilization']"
+                  :max="100"
                 />
                 <res-mon
                   v-show="device.device_info[0].temperature >= 0"
                   class="chart"
                   :usage-data="device.device_info.slice(0,30)"
-                  :metrics="['utilization', 'temperature']"
+                  :metrics="['temperature']"
                   :max="100"
-                  :right-scale="true"
-                  :max-right="100"
                 />
               </div>
             </v-list-item-content>

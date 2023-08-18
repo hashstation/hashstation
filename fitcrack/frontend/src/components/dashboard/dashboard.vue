@@ -31,50 +31,7 @@
         :key="j.id"
         :data="j"
       />
-      <div class="pr-6">
-        <v-btn
-          to="/jobs"
-          large
-          color="primary"
-        >
-          See all
-          <v-icon right>
-            mdi-briefcase-search
-          </v-icon>
-        </v-btn>
-      </div>
     </div>
-    <v-divider />
-    <v-sheet class="dash-row px-4">
-      <div class="half">
-        <v-card-title>Progress of all jobs</v-card-title>
-        <jobProgress
-          :from="chartsFrom"
-          :to="chartsTo"
-        />
-      </div>
-      <div class="half">
-        <v-card-title>Global workunits distribution</v-card-title>
-        <jobWorkunits
-          logarithmic
-          :from="chartsFrom"
-          :to="chartsTo"
-        />
-      </div>
-    </v-sheet>
-    <v-sheet class="dash-row px-8 justify-end">
-      <div class="d-flex">
-        <dt-picker
-          v-model="chartsFrom"
-          class="mr-4"
-          label="From"
-        />
-        <dt-picker
-          v-model="chartsTo"
-          label="To"
-        />
-      </div>
-    </v-sheet>
   </div>
 </template>
 
@@ -101,8 +58,6 @@
     },
     data () {
       return {
-        chartsFrom: this.$moment().subtract(24, 'hours').format('YYYY-MM-DDTHH:mm'),
-        chartsTo: this.$moment().format('YYYY-MM-DDTHH:mm'),
         hostsInfo: null,
         jobsInfo: [],
         serverInfo: [],
