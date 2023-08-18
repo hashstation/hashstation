@@ -12,3 +12,4 @@ settings_arguments.add_argument('hwmon_temp_abort', type=int, help='', required=
 settings_arguments.add_argument('bench_all', type=bool, help='', required=False, location='json')
 settings_arguments.add_argument('verify_hash_format', type=bool, help='', required=False, location='json')
 settings_arguments.add_argument('auto_add_hosts_to_running_jobs', type=bool, help='', required=False, location='json')
+settings_arguments.add_argument('bench_runtime_limit', type=int, help='', required=False, location='json')

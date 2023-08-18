@@ -10,13 +10,15 @@ New features:
 * Added possibility to enter job specific extra hashcat args in 'Attack settings'.
 * Added possibility to enter host specific extra hashcat args in host's 'Settings'.
 * Added possibility to set fixed workunit size in 'Advanced settings'.
+* Added possibility to change runtime limit for benchmarks (default 30 seconds) in 'System settings'.
 * Added support to automatically extract hashes from Bitcoin/Litecoin/Ethereum/Exodus/MetaMask/Electrum wallets.
-* Added possibility to set priority (low/normal/high) of a new job in 'Advanced settings'.
+* Added possibility to set priority (low/normal/high) of a new job in 'Scheduling settings'.
 * Added possibility to resume timeouted jobs.
 
 General improvements:
 * Improved/reimplemeted generator and scheduling logic. Better precision, more predictable workunit sizes. Default desired seconds per workunit changed to 600 seconds.
 * Improved benchmarking logic.
+* Improved 'Add New Job' UI, small redesign.
 * It is now possible to upload dictionaries from any folders on the server.
 * It is now possible to upgrade standard (non-dockerized) Fitcrack to newer versions. Please see UPGRADE.md file.
 * Settings per hosts.

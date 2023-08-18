@@ -50,9 +50,7 @@ AttackBenchmark<BaseAttack>::AttackBenchmark(const ConfigTask& config, Directory
 template <typename BaseAttack>
 void AttackBenchmark<BaseAttack>::addSpecificArguments() {
 	BaseAttack::addSpecificArguments();
-  	this->addArgument("--runtime");
-	// Slow hashes or attacks with generators may need more time to stabilize and report correct speed.
-	this->addArgument("30");
+  BaseAttack::findAndAddRequired(ConfigTask::BENCH_RUNTIME_LIMIT, "--runtime");
 }
 
 struct PasswordLenCount

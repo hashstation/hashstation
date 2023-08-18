@@ -161,6 +161,7 @@ class CJob {
         uint64_t m_secondsPassed;       /**< Seconds from time_start to now() */
         unsigned int m_timeoutFactor;   /**< Timeout for workunits, factor of time for a single workunit */
         unsigned int m_hwTempAbort;     /**< Temperature threshold to stop cracking */
+        uint64_t m_benchRuntimeLimit;   /**< Runtime limit for benchmarking */
 
     public:
 
@@ -207,6 +208,7 @@ class CJob {
         bool getKillFlag() const;
 
 
+        uint64_t getBenchRuntimeLimit() const;
         void setGrammar(const std::string & grammar);
 
     /**

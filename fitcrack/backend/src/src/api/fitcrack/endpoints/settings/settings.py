@@ -37,20 +37,22 @@ class settings(Resource):
         Sets all system settings.
         """
         args = settings_arguments.parse_args(request)
-        spw = args['default_seconds_per_workunit'] 
-        wtf = args['workunit_timeout_factor']
-        hta = args['hwmon_temp_abort']
-        dba = args['bench_all']
-        vhf = args['verify_hash_format']
-        aahtrj = args['auto_add_hosts_to_running_jobs']
+        default_seconds_per_workunit = args['default_seconds_per_workunit'] 
+        workunit_timeout_factor = args['workunit_timeout_factor']
+        hwmon_temp_abort = args['hwmon_temp_abort']
+        bench_all = args['bench_all']
+        verify_hash_format = args['verify_hash_format']
+        auto_add_hosts_to_running_jobs = args['auto_add_hosts_to_running_jobs']
+        bench_runtime_limit = args['bench_runtime_limit']
 
         settings = FcSetting.query.first()
-        if (spw is not None): settings.default_seconds_per_workunit = spw
-        if (wtf is not None): settings.workunit_timeout_factor = wtf
-        if (hta is not None): settings.hwmon_temp_abort = hta
-        if (dba is not None): settings.bench_all = dba
-        if (vhf is not None): settings.verify_hash_format = vhf
-        if (aahtrj is not None): settings.auto_add_hosts_to_running_jobs = aahtrj
+        if (default_seconds_per_workunit is not None): settings.default_seconds_per_workunit = default_seconds_per_workunit
+        if (workunit_timeout_factor is not None): settings.workunit_timeout_factor = workunit_timeout_factor
+        if (hwmon_temp_abort is not None): settings.hwmon_temp_abort = hwmon_temp_abort
+        if (bench_all is not None): settings.bench_all = bench_all
+        if (verify_hash_format is not None): settings.verify_hash_format = verify_hash_format
+        if (auto_add_hosts_to_running_jobs is not None): settings.auto_add_hosts_to_running_jobs = auto_add_hosts_to_running_jobs
+        if (bench_runtime_limit is not None): settings.bench_runtime_limit = bench_runtime_limit
         db.session.commit()
 
         return {

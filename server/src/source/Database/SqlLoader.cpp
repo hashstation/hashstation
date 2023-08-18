@@ -225,6 +225,13 @@ unsigned int CSqlLoader::getHWTempAbort()
                                                   Config::tableNameSettings.c_str()));
 }
 
+uint64_t CSqlLoader::getBenchRuntimeLimit()
+{
+    return getSqlNumber(formatQuery("SELECT `bench_runtime_limit` FROM `%s` LIMIT 1",
+                                                  Config::tableNameSettings.c_str()));
+}
+
+
 uint32_t CSqlLoader::getHostStatus(uint64_t host_id)
 {
     return (uint32_t)(getSqlNumber(formatQuery("SELECT `status` FROM `%s` WHERE id = %" PRIu64 " LIMIT 1",

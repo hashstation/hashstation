@@ -120,6 +120,10 @@ std::string CAttackBench<BaseAttack>::generateBasicConfig(unsigned attackMode, u
       }
     }
 
+    uint64_t benchRuntimeLimit = this->m_job->getBenchRuntimeLimit();
+    configBuilder << "|||bench_runtime_limit|UInt|" << std::to_string(std::to_string(benchRuntimeLimit).length()) << '|'
+                  << std::to_string(benchRuntimeLimit) << "|||\n";
+
     return configBuilder.str();
 }
 

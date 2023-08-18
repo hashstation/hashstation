@@ -188,6 +188,12 @@ class CSqlLoader {
         unsigned int getHWTempAbort();
 
         /**
+         * @brief Reads bench_runtime_limit from fc_settings
+         * @return Runtime in seconds
+         */
+        uint64_t getBenchRuntimeLimit();
+
+        /**
          * Returns fresh host status from DB
          * @param host_id ID of the host
          * @return status column form fc_host

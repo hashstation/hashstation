@@ -104,6 +104,19 @@
                 />
               </v-col>
             </v-row>
+            <v-row>
+              <v-text-field
+                v-model="settings.bench_runtime_limit"
+                :loading="loading"
+                outlined
+                type="number"
+                label="Benchmark runtime limit"
+                hint="Maximum duration for the benchmark to run. A shorter duration may result in quicker but less precise speed results."
+                persistent-hint
+                suffix="seconds"
+                class="mb-4"
+              />
+            </v-row>
            </v-card-text>
         </v-card>
         <v-expansion-panels flat class="mt-6">

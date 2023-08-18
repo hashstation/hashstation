@@ -150,6 +150,7 @@ class ConfigTask {
         static const char *WORKLOAD_PROFILE;
         static const char *SLOW_CANDIDATES;
         static const char *EXTRA_HC_ARGS;
+        static const char *BENCH_RUNTIME_LIMIT;
 };
 
 #endif // CONFIGTASK_HPP

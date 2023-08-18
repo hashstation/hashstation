@@ -36,3 +36,6 @@ ADD `extra_hc_args` varchar(4096) COLLATE utf8_bin DEFAULT NULL;
 
 ALTER TABLE `fc_job`
 ADD `fixed_workunit_size` bigint(20) unsigned NOT NULL DEFAULT '0';
+
+ALTER TABLE `fc_settings`
+ADD `bench_runtime_limit` int(10) unsigned NOT NULL DEFAULT '30';
