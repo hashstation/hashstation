@@ -4,7 +4,7 @@
 -->
 
 <template>
-  <v-container class="max600">
+  <v-container>
     <fc-tile
       title="Job Templates"
       class="ma-2"
@@ -81,9 +81,3 @@
     }
   }
 </script>
-
-<style scoped>
-  .max600 {
-    max-width: 600px;
-  }
-</style>

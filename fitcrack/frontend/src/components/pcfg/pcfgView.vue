@@ -4,7 +4,7 @@
 -->
 
 <template>
-  <v-container class="max700">
+  <v-container>
     <fc-tile
       title="PCFGs"
       class="ma-2"
@@ -167,10 +167,6 @@
   .dz-message {
     cursor: pointer;
     text-align: center;
-  }
-
-  .max700 {
-    max-width: 700px;
   }
 
 </style>

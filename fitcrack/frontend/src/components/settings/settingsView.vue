@@ -4,7 +4,7 @@
 -->
 
 <template>
-  <v-container class="rmw mt-4">
+  <v-container class="mt-4">
     <v-row>
       <v-col>
         <v-card flat>
@@ -65,7 +65,7 @@
           </v-card-title>
           <v-card-text>
             <v-row>
-              <v-col class="mw">
+              <v-col>
                 <v-switch
                     v-model="confirmpurge"
                     label="Job purge confirmation"
@@ -83,7 +83,7 @@
                   class="mb-4 mt-0"
                 />
               </v-col>
-              <v-col class="mw">
+              <v-col>
                 <v-switch
                   v-model="settings.auto_add_hosts_to_running_jobs"
                   :loading="loading"
@@ -281,10 +281,4 @@
   color: unset !important
 }
 
-.mw {
-  min-width: 300px;
-}
-.rmw {
-  max-width: 900px;
-}
 </style>

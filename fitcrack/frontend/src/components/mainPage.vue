@@ -11,25 +11,8 @@
       persistent
       class="navigationDrawer"
       enable-resize-watcher
-      fixed
       app
-      width="290"
     >
-      <router-link :to="{ name: 'home'}">
-        <div class="logo">
-          <img
-            v-if="$vuetify.theme.dark"
-            :src="require('@/assets/logo-dark.svg')"
-            alt="logo"
-          >
-          <img
-            v-else
-            :src="require('@/assets/logo-light.svg')"
-            alt="logo"
-          >
-        </div>
-      </router-link>
-
       <div class="dash-link">
         <v-btn
           id="dash-link"
@@ -42,7 +25,6 @@
           Dashboard
         </v-btn>
       </div>
-        
 
       <v-divider />
 
@@ -50,14 +32,15 @@
         v-model="navtab"
         icons-and-text
         grow
+        vertical
         class="notrans"
       >
         <v-tab id="nav-jobs-tab">
           Jobs
           <v-icon>mdi-briefcase-outline</v-icon>
         </v-tab>
-        <v-tab id="nav-library-tab">
-          Library
+        <v-tab id="nav-assets-tab">
+          Assets
           <v-icon>mdi-folder-outline</v-icon>
         </v-tab>
         <v-tab id="nav-system-tab">
