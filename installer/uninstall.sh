@@ -135,22 +135,22 @@ UNINSTALL_FITCRACK=${UNINSTALL_FITCRACK:-N}
 
 if [ $UNINSTALL_FITCRACK = "y" ]; then
   rm -Rf $APACHE_DOCUMENT_ROOT/fitcrackFE
-  rm -Rf $APACHE_DOCUMENT_ROOT/fitcrackAPI
+  rm -Rf $APACHE_DOCUMENT_ROOT/fitcrackBE
 
   if [ -f $APACHE_CONFIG_DIR/sites-enabled/fitcrackFE.conf ]; then
     rm -Rf $APACHE_CONFIG_DIR/sites-enabled/fitcrackFE.conf
   fi
 
-  if [ -f $APACHE_CONFIG_DIR/sites-enabled/fitcrackAPI.conf ]; then
-    rm -Rf $APACHE_CONFIG_DIR/sites-enabled/fitcrackAPI.conf
+  if [ -f $APACHE_CONFIG_DIR/sites-enabled/fitcrackBE.conf ]; then
+    rm -Rf $APACHE_CONFIG_DIR/sites-enabled/fitcrackBE.conf
   fi
 
   if [ -f $APACHE_CONFIG_DIR/sites-available/fitcrackFE.conf ]; then
     rm -Rf $APACHE_CONFIG_DIR/sites-available/fitcrackFE.conf
   fi
 
-  if [ -f $APACHE_CONFIG_DIR/sites-available/fitcrackAPI.conf ]; then
-    rm -Rf $APACHE_CONFIG_DIR/sites-available/fitcrackAPI.conf
+  if [ -f $APACHE_CONFIG_DIR/sites-available/fitcrackBE.conf ]; then
+    rm -Rf $APACHE_CONFIG_DIR/sites-available/fitcrackBE.conf
   fi
 
   echo "Fitcrack frontend and backend uninstalled. Restarting Apache..."

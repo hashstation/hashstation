@@ -128,16 +128,16 @@ WORKDIR /srv/fitcrack/
 ######################################################################################
 ################################# Webadmin backend ###################################
 
-RUN pip3 install -r fitcrack/backend/src/requirements.txt
+RUN pip3 install -r backend/src/requirements.txt
 
-RUN cd fitcrack/backend/hashcat-utils/src && make
-RUN cd fitcrack/backend/xtohashcat/scripts && make
-RUN cd fitcrack/backend/pwd_dist && make
+RUN cd backend/hashcat-utils/src && make
+RUN cd backend/xtohashcat/scripts && make
+RUN cd backend/pwd_dist && make
 
 ######################################################################################
 ################################# Webadmin frontend ###################################
 
-WORKDIR /srv/fitcrack/fitcrack/frontend
+WORKDIR /srv/frontend
 RUN export PATH=/usr/local/lib/nodejs/node-v16.15.0-linux-x64/bin:$PATH \
 && npm ci && npm run build
 

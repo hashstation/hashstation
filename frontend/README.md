@@ -28,9 +28,9 @@ sudo pip3 install -r requirements.txt
 
 ## Build tools used by WebAdmin
 ```
-cd webadmin/fitcrackAPI/hashcat-utils/src && make
-cd webadmin/fitcrackAPI/xtohashcat/scripts && make
-cd webadmin/fitcrackAPI/pwd_dist && make
+cd backend/hashcat-utils/src && make
+cd backend/xtohashcat/scripts && make
+cd backend/pwd_dist && make
 ```
 
 

@@ -236,26 +236,26 @@ else # Create Fitcrack project
   sed -i "s|<log_dir>.*<\/log_dir>|<log_fitcrack_dir>/var/log/fitcrack</log_fitcrack_dir>|g" $BOINC_PROJECT_DIR/config.xml
 
   # Fix backend URI
-  sed -i "s|PROJECT_USER = '.*|PROJECT_USER = '$BOINC_USER'|g" /srv/fitcrack/fitcrack/backend/src/settings.py
-  sed -i "s|PROJECT_NAME = '.*|PROJECT_NAME = '$BOINC_PROJECT'|g" /srv/fitcrack/fitcrack/backend/src/settings.py
-  sed -i "s|FLASK_SERVER_NAME = '.*|FLASK_SERVER_NAME = 'localhost:$BACKEND_PORT'|g" /srv/fitcrack/fitcrack/backend/src/settings.py
-  sed -i "s|SQLALCHEMY_DATABASE_URI = '.*|SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://$DB_USER:$DB_PW@localhost/$DB_NAME'|g" /srv/fitcrack/fitcrack/backend/src/settings.py
-  sed -i "s|BOINC_SERVER_URI = '.*|BOINC_SERVER_URI = '$BOINC_URL'|g" /srv/fitcrack/fitcrack/backend/src/settings.py
+  sed -i "s|PROJECT_USER = '.*|PROJECT_USER = '$BOINC_USER'|g" /srv/backend/src/settings.py
+  sed -i "s|PROJECT_NAME = '.*|PROJECT_NAME = '$BOINC_PROJECT'|g" /srv/backend/src/settings.py
+  sed -i "s|FLASK_SERVER_NAME = '.*|FLASK_SERVER_NAME = 'localhost:$BACKEND_PORT'|g" /srv/backend/src/settings.py
+  sed -i "s|SQLALCHEMY_DATABASE_URI = '.*|SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://$DB_USER:$DB_PW@localhost/$DB_NAME'|g" /srv/backend/src/settings.py
+  sed -i "s|BOINC_SERVER_URI = '.*|BOINC_SERVER_URI = '$BOINC_URL'|g" /srv/backend/src/settings.py
 
   # Copy it to the /var/www/html/
-  cp -R /srv/fitcrack/fitcrack/backend/* $APACHE_DOCUMENT_ROOT/fitcrackAPI/
-  chown -R $APACHE_USER:$APACHE_USER $APACHE_DOCUMENT_ROOT/fitcrackAPI
+  cp -R /srv/backend/* $APACHE_DOCUMENT_ROOT/fitcrackBE/
+  chown -R $APACHE_USER:$APACHE_USER $APACHE_DOCUMENT_ROOT/fitcrackBE
 
   # Set WSGI path
-  sed -i "s|sys.path.insert(0.*|sys.path.insert(0,\"$APACHE_DOCUMENT_ROOT/fitcrackAPI/src/\")|g" $APACHE_DOCUMENT_ROOT/fitcrackAPI/src/wsgi.py
+  sed -i "s|sys.path.insert(0.*|sys.path.insert(0,\"$APACHE_DOCUMENT_ROOT/fitcrackBE/src/\")|g" $APACHE_DOCUMENT_ROOT/fitcrackBE/src/wsgi.py
 
   # Configure Apache WSGI
-  BE_CONFIG_FILE=$APACHE_CONFIG_DIR/sites-available/00-fitcrackAPI.conf
+  BE_CONFIG_FILE=$APACHE_CONFIG_DIR/sites-available/00-fitcrackBE.conf
   echo "# Fitcrack back-end config" > $BE_CONFIG_FILE
   echo "<VirtualHost *:$BACKEND_PORT>" >> $BE_CONFIG_FILE
   echo "  WSGIDaemonProcess fitcrack user=$APACHE_USER group=$APACHE_USER threads=5" >> $BE_CONFIG_FILE
-  echo "  WSGIScriptAlias / $APACHE_DOCUMENT_ROOT/fitcrackAPI/src/wsgi.py" >> $BE_CONFIG_FILE
-  echo "  <Directory $APACHE_DOCUMENT_ROOT/fitcrackAPI/src/>" >> $BE_CONFIG_FILE
+  echo "  WSGIScriptAlias / $APACHE_DOCUMENT_ROOT/fitcrackBE/src/wsgi.py" >> $BE_CONFIG_FILE
+  echo "  <Directory $APACHE_DOCUMENT_ROOT/fitcrackBE/src/>" >> $BE_CONFIG_FILE
   echo "    WSGIProcessGroup fitcrack" >> $BE_CONFIG_FILE
   echo "    WSGIApplicationGroup %{GLOBAL}" >> $BE_CONFIG_FILE
   echo "    WSGIScriptReloading On" >> $BE_CONFIG_FILE
@@ -270,8 +270,8 @@ else # Create Fitcrack project
   echo "  CustomLog /var/log/fitcrack/backend-access.log combined" >> $BE_CONFIG_FILE
   echo "</VirtualHost>" >> $BE_CONFIG_FILE
 
-  echo "Creating a symlink: $APACHE_CONFIG_DIR/sites-enabled/fitcrackAPI.conf"
-  ln -sf $BE_CONFIG_FILE $APACHE_CONFIG_DIR/sites-enabled/00-fitcrackAPI.conf
+  echo "Creating a symlink: $APACHE_CONFIG_DIR/sites-enabled/fitcrackBE.conf"
+  ln -sf $BE_CONFIG_FILE $APACHE_CONFIG_DIR/sites-enabled/00-fitcrackBE.conf
   echo "Backend-end Apache configuration done"
 
 
@@ -281,7 +281,7 @@ else # Create Fitcrack project
   # Copy frontend files
   echo "Installing Fitcrack frontend..."
   mkdir $APACHE_DOCUMENT_ROOT/fitcrackFE
-  cp -Rf /srv/fitcrack/fitcrack/frontend/dist/* $APACHE_DOCUMENT_ROOT/fitcrackFE/
+  cp -Rf /srv/frontend/dist/* $APACHE_DOCUMENT_ROOT/fitcrackFE/
 
   # Set BACKEND_URI for window.serverAddress
   sed -i "s|http://localhost:5000|$BACKEND_URI:$BACKEND_PORT|g" $APACHE_DOCUMENT_ROOT/fitcrackFE/static/configuration.js

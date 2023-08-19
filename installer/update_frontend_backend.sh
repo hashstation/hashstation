@@ -35,7 +35,7 @@ fi
 if [ $INSTALL_FRONTEND = "y" ]; then
   echo "Updating Fitcrack frontend..."
   mkdir $APACHE_DOCUMENT_ROOT/fitcrackFE
-  cp -Rf fitcrack/frontend/dist/* $APACHE_DOCUMENT_ROOT/fitcrackFE/
+  cp -Rf frontend/dist/* $APACHE_DOCUMENT_ROOT/fitcrackFE/
 
   # Set permissions and ownership to Apache user and group
   chmod -R 775 $APACHE_DOCUMENT_ROOT/fitcrackFE
@@ -53,16 +53,16 @@ fi
 
 
 ###################################################
-# Update Fitcrack backend (fitcrackAPI) #
+# Update Fitcrack backend (fitcrackBE) #
 ###################################################
 
 INSTALL_BACKEND="N"
-if [ -d "$APACHE_DOCUMENT_ROOT/fitcrackAPI" ]; then
-  echo "Fitcrack backend is installed in $APACHE_DOCUMENT_ROOT/fitcrackAPI."
+if [ -d "$APACHE_DOCUMENT_ROOT/fitcrackBE" ]; then
+  echo "Fitcrack backend is installed in $APACHE_DOCUMENT_ROOT/fitcrackBE."
   read -e -p "Update backend? [y/N] (default: y): " UPDATE_BACKEND
   UPDATE_BACKEND=${UPDATE_BACKEND:-y}
   if [ $UPDATE_BACKEND = "y" ]; then
-    rm -Rf $APACHE_DOCUMENT_ROOT/fitcrackAPI
+    rm -Rf $APACHE_DOCUMENT_ROOT/fitcrackBE
     INSTALL_BACKEND="y"
   fi
 else
@@ -73,7 +73,7 @@ fi
 # Install backend
 if [ $INSTALL_BACKEND = "y" ]; then
   echo "Building hashcat-utils"
-  cd fitcrack/backend/hashcat-utils/src
+  cd backend/hashcat-utils/src
   make
   cd ..
   mkdir -p bin
@@ -81,41 +81,41 @@ if [ $INSTALL_BACKEND = "y" ]; then
   cd $INSTALLER_ROOT
 
   echo "Building xtohashcat tools"
-  cd fitcrack/backend/xtohashcat/scripts/
+  cd backend/xtohashcat/scripts/
   make -j$COMPILER_THREADS
   cd $INSTALLER_ROOT
 
   echo "Building pwd-dist tool"
-  cd fitcrack/backend/pwd_dist
+  cd backend/pwd_dist
   make -j$COMPILER_THREADS
   cd $INSTALLER_ROOT
 
   echo "Installing backend requirements..."
-  pip3 install -r fitcrack/backend/src/requirements.txt
+  pip3 install -r backend/src/requirements.txt
 
   echo "Updating Fitcrack backend..."
-  mkdir $APACHE_DOCUMENT_ROOT/fitcrackAPI
-  cp -Rf fitcrack/backend/* $APACHE_DOCUMENT_ROOT/fitcrackAPI/
+  mkdir $APACHE_DOCUMENT_ROOT/fitcrackBE
+  cp -Rf backend/* $APACHE_DOCUMENT_ROOT/fitcrackBE/
 
-  rm -f fitcrack/backend/xtohashcat/scripts/zip2john
-  rm -f fitcrack/backend/xtohashcat/scripts/rar2john
+  rm -f backend/xtohashcat/scripts/zip2john
+  rm -f backend/xtohashcat/scripts/rar2john
 
   # Set permissions and ownership to Apache user and group
-  chmod -R 775 $APACHE_DOCUMENT_ROOT/fitcrackAPI
-  chown -R $APACHE_USER:$APACHE_GROUP $APACHE_DOCUMENT_ROOT/fitcrackAPI
+  chmod -R 775 $APACHE_DOCUMENT_ROOT/fitcrackBE
+  chown -R $APACHE_USER:$APACHE_GROUP $APACHE_DOCUMENT_ROOT/fitcrackBE
 
-  echo "Backend files updated in $APACHE_DOCUMENT_ROOT/fitcrackAPI."
+  echo "Backend files updated in $APACHE_DOCUMENT_ROOT/fitcrackBE."
 
   echo "Configuring updated backend..."
   # Set credentials
-  sed -i "s|PROJECT_USER = '.*|PROJECT_USER = '$BOINC_USER'|g" $APACHE_DOCUMENT_ROOT/fitcrackAPI/src/settings.py
-  sed -i "s|PROJECT_NAME = '.*|PROJECT_NAME = '$BOINC_PROJECT'|g" $APACHE_DOCUMENT_ROOT/fitcrackAPI/src/settings.py
-  sed -i "s|FLASK_SERVER_NAME = '.*|FLASK_SERVER_NAME = 'localhost:$BACKEND_PORT'|g" $APACHE_DOCUMENT_ROOT/fitcrackAPI/src/settings.py
-  sed -i "s|SQLALCHEMY_DATABASE_URI = '.*|SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://$DB_USER:$DB_PW@$DB_HOST/$DB_NAME'|g" $APACHE_DOCUMENT_ROOT/fitcrackAPI/src/settings.py
-  sed -i "s|BOINC_SERVER_URI = '.*|BOINC_SERVER_URI = '$BOINC_URL'|g" $APACHE_DOCUMENT_ROOT/fitcrackAPI/src/settings.py
+  sed -i "s|PROJECT_USER = '.*|PROJECT_USER = '$BOINC_USER'|g" $APACHE_DOCUMENT_ROOT/fitcrackBE/src/settings.py
+  sed -i "s|PROJECT_NAME = '.*|PROJECT_NAME = '$BOINC_PROJECT'|g" $APACHE_DOCUMENT_ROOT/fitcrackBE/src/settings.py
+  sed -i "s|FLASK_SERVER_NAME = '.*|FLASK_SERVER_NAME = 'localhost:$BACKEND_PORT'|g" $APACHE_DOCUMENT_ROOT/fitcrackBE/src/settings.py
+  sed -i "s|SQLALCHEMY_DATABASE_URI = '.*|SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://$DB_USER:$DB_PW@$DB_HOST/$DB_NAME'|g" $APACHE_DOCUMENT_ROOT/fitcrackBE/src/settings.py
+  sed -i "s|BOINC_SERVER_URI = '.*|BOINC_SERVER_URI = '$BOINC_URL'|g" $APACHE_DOCUMENT_ROOT/fitcrackBE/src/settings.py
 
   # Set port to backend
-  sed -i "s|sys.path.insert(0.*|sys.path.insert(0,\"$APACHE_DOCUMENT_ROOT/fitcrackAPI/src/\")|g" $APACHE_DOCUMENT_ROOT/fitcrackAPI/src/wsgi.py
+  sed -i "s|sys.path.insert(0.*|sys.path.insert(0,\"$APACHE_DOCUMENT_ROOT/fitcrackBE/src/\")|g" $APACHE_DOCUMENT_ROOT/fitcrackBE/src/wsgi.py
   echo "Done."
 fi
 

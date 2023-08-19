@@ -186,7 +186,7 @@ to enter the shell. Check if the daemons are running using `service fitcrack sta
 Check if Apache is running using `service apache2 status`. The BOINC project installation
 is located at `/home/boincadm/projects/fitcrack`. Apache configs are found at
 `/etc/apache2`. WebAdmin frontend is located in `/var/www/html/fitcrackFE` and backend
-in `/var/www/html/fitcrackAPI`. Good luck!
+in `/var/www/html/fitcrackBE`. Good luck!
 
 
 ### Removing existing installation
