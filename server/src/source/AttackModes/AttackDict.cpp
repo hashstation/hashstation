@@ -18,10 +18,7 @@ CAttackDict::CAttackDict(PtrJob job, PtrHost &host, uint64_t seconds, CSqlLoader
 bool CAttackDict::makeWorkunit()
 {
     /** Create the workunit instance first */
-    std::string mergedDictsPath =
-        Config::dictDir + ".dict_" + std::to_string(m_job->getId()) + ".txt";
     if (!generateWorkunit()) {
-      remove(mergedDictsPath.c_str());
       return false;
     }
 
@@ -89,7 +86,7 @@ bool CAttackDict::makeWorkunit()
       std::string limit = std::to_string(m_workunit->getHcKeyspace());
       configFile << "|||hc_keyspace|BigUInt|" << limit.size() << "|" << limit
                  << "|||\n";
-      // Number of passwords in the sent dictionary (the whole dictionary).
+      // Number of passwords in the sent dictionary (the big  - concatenated - dictionary).
       std::string dict1Keyspace = std::to_string(m_job->getHcKeyspace());
       configFile << "|||dict1_keyspace|BigUInt|" << dict1Keyspace.size()
                  << "|" << dict1Keyspace << "|||\n";
@@ -186,52 +183,40 @@ bool CAttackDict::makeWorkunit()
         workunitDict->updatePos(inputDict->GetCurrentDictPos());
       } else if (m_job->getDistributionMode() == 1 &&
                  m_job->getDictDeploymentMode() == DictDeploymentMode::send) {
-        uint64_t startIndex = m_workunit->getStartIndex();
-
-        /** Merge dictionaries to one. */
-        if (startIndex == 0) {
-          std::ofstream mergedDictsFile;
-          mergedDictsFile.open(mergedDictsPath);
-          if (!mergedDictsFile.is_open()) {
-            Tools::printDebugHost(Config::DebugType::Error, m_job->getId(),
-                                  m_host->getBoincHostId(),
-                                  "Failed to open merged dictionary! "
-                                  "Setting job to malformed.\n");
+        if (!std::ifstream(path)) {
+          std::ofstream dictFile;
+          dictFile.open(path);
+          if (!dictFile.is_open()) {
+            Tools::printDebugHost(Config::DebugType::Error, m_job->getId(), m_host->getBoincHostId(),
+                                  "Failed to open dict1 BOINC input file! Setting job to malformed.\n");
+            m_sqlLoader->updateRunningJobStatus(m_job->getId(), Config::JobState::JobMalformed);
+            return false;
           }
-          Tools::printDebugHost(Config::DebugType::Log, m_job->getId(),
-                                m_host->getBoincHostId(),
-                                "Merging dictionaries\n");
+
           std::vector<PtrDictionary> dictVec = m_job->getDictionaries();
           for (PtrDictionary &dict : dictVec) {
-
-            std::ifstream dictFile;
-            std::string dictPath = Config::dictDir + dict->getDictFileName();
-            dictFile.open(dictPath);
-            if (!dictFile.is_open()) {
-              Tools::printDebugHost(
-                  Config::DebugType::Error, m_job->getId(),
-                  m_host->getBoincHostId(),
-                  "Cannot find dictionary file! Setting job to malformed.\n");
-              m_sqlLoader->updateRunningJobStatus(
-                  m_job->getId(), Config::JobState::JobMalformed);
-              return false;
+            std::ifstream inputDictFile;
+            std::string inputDictPath = Config::dictDir + dict->getDictFileName();
+            inputDictFile.open(inputDictPath);
+            if (!inputDictFile.is_open()) {
+                Tools::printDebugHost(Config::DebugType::Error, m_job->getId(), m_host->getBoincHostId(),
+                                      "Cannot find dictionary file! Setting job to malformed.\n");
+                m_sqlLoader->updateRunningJobStatus(m_job->getId(), Config::JobState::JobMalformed);
+                return false;
             }
 
-            mergedDictsFile << dictFile.rdbuf();
+            dictFile << inputDictFile.rdbuf();
           }
 
-          mergedDictsFile.close();
-          Tools::printDebugHost(Config::DebugType::Log, m_job->getId(),
-                                m_host->getBoincHostId(),
-                                "Dictionaries merged.\n");
+          dictFile.close();
         }
-      }
-
-      if (m_job->getDictDeploymentMode() == DictDeploymentMode::use_prestored) {
+      } else if (m_job->getDistributionMode() == 1 &&
+                 m_job->getDictDeploymentMode() == DictDeploymentMode::use_prestored) {
         std::vector<PtrDictionary> dictVec = m_job->getDictionaries();
         // TODO: unsupported for more dictionaries (not possible with merging,
         // could be possible with other approach). Frontend ensures than this
         // option cannot be enabled with more than 1 dictionary.
+        // TODO: use use_prestored? See line 90.
         const std::string &dictName = dictVec[0]->getDictName();
         configFile << "|||dict1_name|String|" << std::to_string(dictName.length())
                    << "|" << dictName << "|||\n";
@@ -240,37 +225,7 @@ bool CAttackDict::makeWorkunit()
           // Just create empty file to make boinc happy.
           std::ofstream dictFile;
           dictFile.open(path);
-        }
-      } else if (m_job->getDictDeploymentMode() == DictDeploymentMode::send) {
-        if (!std::ifstream(path)) {
-          std::ofstream dictFile;
-          dictFile.open(path);
-          if (!dictFile.is_open()) {
-            Tools::printDebugHost(Config::DebugType::Error, m_job->getId(),
-                                  m_host->getBoincHostId(),
-                                  "Failed to open dict1 BOINC input file! "
-                                  "Setting job to malformed.\n");
-            m_sqlLoader->updateRunningJobStatus(m_job->getId(),
-                                                Config::JobState::JobMalformed);
-            return false;
-          }
-
-          std::ifstream mergedDictsFile;
-          mergedDictsFile.open(mergedDictsPath);
-          if (!mergedDictsFile.is_open()) {
-            Tools::printDebugHost(Config::DebugType::Error, m_job->getId(),
-                                  m_host->getBoincHostId(),
-                                  "Failed to open merged dictionary! "
-                                  "Setting job to malformed.\n");
-          }
-
-          dictFile << mergedDictsFile.rdbuf();
-          dictFile.close();
-          mergedDictsFile.close();
-          Tools::printDebugHost(Config::DebugType::Log, m_job->getId(),
-                                m_host->getBoincHostId(),
-                                "Workunit dictionary prepared.\n");
-        }
+        }    
       }
     }
     catch(const std::exception &e)

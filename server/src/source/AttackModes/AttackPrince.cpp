@@ -18,10 +18,7 @@ CAttackPrince::CAttackPrince(PtrJob job, PtrHost &host, uint64_t seconds, CSqlLo
 bool CAttackPrince::makeWorkunit()
 {
     /** Create the workunit instance first */
-    std::string princeDictPath =
-        Config::dictDir + ".prince_" + std::to_string(m_job->getId()) + ".txt";
     if (!generateWorkunit()) {
-      remove(princeDictPath.c_str());
       return false;
     }
 
@@ -123,40 +120,6 @@ bool CAttackPrince::makeWorkunit()
         hashesFile.close();
     }
 
-    /** Merge dictionaries to one. */
-    if (startIndex == 0) {
-      Tools::printDebug("Creating PRINCE dictionary.\n");
-      std::ofstream princeDictFile;
-      princeDictFile.open(princeDictPath);
-      if (!princeDictFile.is_open()) {
-        Tools::printDebugHost(Config::DebugType::Error, m_job->getId(),
-                              m_host->getBoincHostId(),
-                              "Failed to open PRINCE attack dictionary! "
-                              "Setting job to malformed.\n");
-      }
-
-      std::vector<PtrDictionary> dictVec = m_job->getDictionaries();
-      for (PtrDictionary &dict : dictVec) {
-
-          std::ifstream dictFile;
-          std::string dictPath = Config::dictDir + dict->getDictFileName();
-          dictFile.open(dictPath);
-          if (!dictFile.is_open()) {
-            Tools::printDebugHost(
-                Config::DebugType::Error, m_job->getId(),
-                m_host->getBoincHostId(),
-                "Cannot find dictionary file! Setting job to malformed.\n");
-            m_sqlLoader->updateRunningJobStatus(m_job->getId(),
-                                                Config::JobState::JobMalformed);
-            return false;
-          }
-
-          princeDictFile << dictFile.rdbuf();
-      }
-
-      princeDictFile.close();
-    }
-
     /** Create dictionary file. */
     retval = config.download_path(name3, path);
     if (retval) {
@@ -169,32 +132,32 @@ bool CAttackPrince::makeWorkunit()
       return false;
     }
 
-    if(!std::ifstream(path))
-    {
+    if (!std::ifstream(path)) {
       std::ofstream dictFile;
       dictFile.open(path);
       if (!dictFile.is_open()) {
-        Tools::printDebugHost(
-            Config::DebugType::Error, m_job->getId(), m_host->getBoincHostId(),
-            "Failed to open dict1 BOINC input file! Setting job to malformed.\n");
-        m_sqlLoader->updateRunningJobStatus(m_job->getId(),
-                                            Config::JobState::JobMalformed);
-        return false;
+            Tools::printDebugHost(Config::DebugType::Error, m_job->getId(), m_host->getBoincHostId(),
+                                  "Failed to open dict1 BOINC input file! Setting job to malformed.\n");
+            m_sqlLoader->updateRunningJobStatus(m_job->getId(), Config::JobState::JobMalformed);
+            return false;
       }
 
-      std::ifstream princeDictFile;
-      princeDictFile.open(princeDictPath);
-      if (!princeDictFile.is_open()) {
-        Tools::printDebugHost(Config::DebugType::Error, m_job->getId(),
-                              m_host->getBoincHostId(),
-                              "Failed to open PRINCE attack dictionary! "
-                              "Setting job to malformed.\n");
+      std::vector<PtrDictionary> dictVec = m_job->getDictionaries();
+      for (PtrDictionary &dict : dictVec) {
+          std::ifstream inputDictFile;
+          std::string inputDictPath = Config::dictDir + dict->getDictFileName();
+          inputDictFile.open(inputDictPath);
+          if (!inputDictFile.is_open()) {
+              Tools::printDebugHost(Config::DebugType::Error, m_job->getId(), m_host->getBoincHostId(),
+                                    "Cannot find dictionary file! Setting job to malformed.\n");
+              m_sqlLoader->updateRunningJobStatus(m_job->getId(), Config::JobState::JobMalformed);
+              return false;
+          }
+
+          dictFile << inputDictFile.rdbuf();
       }
 
-      dictFile << princeDictFile.rdbuf();
       dictFile.close();
-      princeDictFile.close();
-      Tools::printDebug("Copied PRINCE dictionary to data file.\n");
     }
 
     std::ofstream rulesFile;
