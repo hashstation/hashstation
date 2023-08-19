@@ -21,7 +21,7 @@ from flask_login import current_user
 from sqlalchemy import exc
 from settings import DICTIONARY_DIR, HASHCAT_PATH, RULE_DIR, PCFG_DIR, ROOT_DIR
 from src.api.fitcrack.attacks import processJob as attacks
-from src.api.fitcrack.attacks.functions import compute_keyspace_from_mask, compute_prince_keyspace
+from src.api.fitcrack.attacks.functions import compute_keyspace_from_mask, compute_prince_keyspace, compute_rules_keyspace
 from src.api.fitcrack.lang import status_to_code, attack_modes
 from src.api.fitcrack.functions import shellExec, lenStr
 from src.database import db
@@ -63,7 +63,7 @@ def kill_job(job, db):
         masks = FcMask.query.filter(FcMask.job_id == id).all()
         for mask in masks:
             mask.current_index = 0
-    elif job.attack_mode in [attack_modes[modeStr] for modeStr in ['dictionary', 'combinator', 'hybrid (mask + wordlist)']]:
+    elif job.attack_mode in [attack_modes[modeStr] for modeStr in ['dictionary', 'combinator', 'hybrid (mask + wordlist)', 'prince']]:
         dictionaries = FcJobDictionary.query.filter(FcJobDictionary.job_id == id).all()
         for dictionary in dictionaries:
             dictionary.current_index = 0
@@ -159,7 +159,6 @@ def create_job(data):
         charset2=job['charset2'] if job.get('charset2') else '',
         charset3=job['charset3'] if job.get('charset3') else '',
         charset4=job['charset4'] if job.get('charset4') else '',
-        rules=(job['attack_settings']['rules']['name'] if job.get('rules') else None),
         rule_left=(job['attack_settings']['rule_left'] if job['attack_settings'].get('rule_left') else ''),
         rule_right=(job['attack_settings']['rule_right'] if job['attack_settings'].get('rule_right') else ''),
         markov_hcstat=job['markov_hcstat'] if job.get('markov_hcstat') else '',
@@ -304,7 +303,6 @@ def verifyHashFormat(hash, hash_type, abortOnFail=False, binaryHash=False):
                 'error': hasError
             }
 
-
 def computeCrackingTime(data):
     total_power = 0
     keyspace = 0
@@ -341,8 +339,7 @@ def computeCrackingTime(data):
             dictsKeyspace += dict['keyspace']
         rulesKeyspace = 1
         if attackSettings['rules']:
-            rules = FcRule.query.filter(FcRule.id == attackSettings['rules']['id']).first()
-            rulesKeyspace = rules.count
+            rulesKeyspace = compute_rules_keyspace(attackSettings['rules'])
 
         keyspace = dictsKeyspace * rulesKeyspace
 
@@ -382,15 +379,11 @@ def computeCrackingTime(data):
         dictsKeyspace = compute_prince_keyspace(attackSettings)
         if dictsKeyspace == -1:
              abort(400, 'Unable to compute job keyspace.')
-        rulesKeyspace = 0
+        rulesKeyspace = 1
         if attackSettings['rules']:
-            rules = FcRule.query.filter(FcRule.id == attackSettings['rules']['id']).first()
-            rulesKeyspace = rules.count
+            rulesKeyspace = compute_rules_keyspace(attackSettings['rules'])
 
-        if rulesKeyspace == 0:
-            keyspace = dictsKeyspace
-        else:
-            keyspace = dictsKeyspace * rulesKeyspace
+        keyspace = dictsKeyspace * rulesKeyspace
 
     elif attackSettings['attack_mode'] == 9:
         if(attackSettings['keyspace_limit']):
@@ -404,8 +397,7 @@ def computeCrackingTime(data):
 
         rulesKeyspace = 1
         if attackSettings['rules']:
-            rules = FcRule.query.filter(FcRule.id == attackSettings['rules']['id']).first()
-            rulesKeyspace = rules.count
+            rulesKeyspace = compute_rules_keyspace(attackSettings['rules'])
         keyspace = keyspace * rulesKeyspace
 
         # Keyspace control

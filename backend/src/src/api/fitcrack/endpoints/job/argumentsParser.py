@@ -143,23 +143,23 @@ addJob_model = api.schema_model('addJob', {
                     }
                 },
                 'rules': {
-                    "oneOf": [
-                        {"type": "null"},
-                        {'type': 'object',
+                    'description': 'Array of rules',
+                    'type': 'array',
+                    'items': {
+                        "type": "object",
                         'properties': {
-                                'id': {
-                                    'type': 'integer'
-                                },
-                                'name': {
-                                    'type': 'string'
-                                },
-                                'time': {
-                                    "format": "date-time",
-                                    "type": "string"
-                                },
-                            }
+                            'id': {
+                                'type': 'integer'
+                            },
+                            'name': {
+                                'type': 'string'
+                            },
+                            'time': {
+                                "format": "date-time",
+                                "type": "string"
+                            },
                         }
-                    ]
+                    }
                 },
                 'rule_left': {
                     'type': 'string'

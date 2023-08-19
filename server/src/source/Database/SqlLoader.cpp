@@ -12,7 +12,7 @@
 #include <Mask.h>
 #include <Job.h>
 #include <Dictionary.h>
-
+#include <Rule.h>
 #include <cstdarg>
 
 
@@ -287,6 +287,23 @@ CSqlLoader::loadJobDictionaries(uint64_t jobId) {
       Config::tableNameJobDictionary.c_str()));
 }
 
+
+std::vector<Config::Ptr<CRule>>
+CSqlLoader::loadJobRules(uint64_t jobId) {
+  return customLoad<CRule>(formatQuery(
+      "SELECT `%s`.*, `%s`.`name`, `%s`.`path` "
+      "FROM `%s` INNER JOIN `%s` ON `%s`.`rule_id` = "
+      "`%s`.`id` WHERE `job_id` = %" PRIu64 " "
+      "ORDER BY `%s`.`id` ASC ;",
+      Config::tableNameJobRule.c_str(), Config::tableNameRule.c_str(),
+      Config::tableNameRule.c_str(),
+      Config::tableNameJobRule.c_str(),
+      Config::tableNameRule.c_str(),
+      Config::tableNameJobRule.c_str(),
+      Config::tableNameRule.c_str(), jobId,
+      Config::tableNameJobRule.c_str()));
+}
+
 std::vector<std::string> CSqlLoader::loadJobHashes(uint64_t jobId)
 {
     std::vector<std::string> result;
@@ -327,7 +344,7 @@ Config::Ptr<CMask> CSqlLoader::loadMask(uint64_t maskId)
     return load<CMask>(formatQuery("WHERE `id` = %" PRIu64 " LIMIT 1", maskId)).front();
 }
 
-Config::Ptr<CDictionary> CSqlLoader::loadDictionary(uint64_t dictId) {
+Config::Ptr<CDictionary> CSqlLoader::loadDictionary(uint64_t ruleId) {
   return customLoad<CDictionary>(
              formatQuery(
                  "SELECT `%s`.*, `%s`.`name`, `%s`.`path`, `%s`.`password_distribution`, `%s`.`hex_dict`, "
@@ -344,7 +361,25 @@ Config::Ptr<CDictionary> CSqlLoader::loadDictionary(uint64_t dictId) {
                  Config::tableNameDictionary.c_str(),
                  Config::tableNameJobDictionary.c_str(),
                  Config::tableNameDictionary.c_str(),
-                 Config::tableNameJobDictionary.c_str(), dictId))
+                 Config::tableNameJobDictionary.c_str(), ruleId))
+      .front();
+}
+
+Config::Ptr<CRule> CSqlLoader::loadRule(uint64_t ruleId) {
+  return customLoad<CRule>(
+             formatQuery(
+                 "SELECT `%s`.*, `%s`.`name`, `%s`.`path`, "
+                 "FROM `%s` INNER JOIN `%s` ON "
+                 "`%s`.`rule_id` = `%s`.`id` WHERE `%s`.`id` = %" PRIu64
+                 " LIMIT 1 ;",
+                 Config::tableNameJobRule.c_str(),
+                 Config::tableNameRule.c_str(),
+                 Config::tableNameRule.c_str(),
+                 Config::tableNameJobRule.c_str(),
+                 Config::tableNameRule.c_str(),
+                 Config::tableNameJobRule.c_str(),
+                 Config::tableNameRule.c_str(),
+                 Config::tableNameJobRule.c_str(), ruleId))
       .front();
 }
 

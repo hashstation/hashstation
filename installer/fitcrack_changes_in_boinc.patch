@@ -90,7 +90,7 @@ diff -ruN boinc_org/sched/Makefile.am boinc/sched/Makefile.am
  
  schedcgi_PROGRAMS= \
      cgi \
-@@ -307,6 +311,78 @@
+@@ -307,6 +311,80 @@
  sched_driver_SOURCES = sched_driver.cpp
  sched_driver_LDADD = $(SERVERLIBS)
  
@@ -113,6 +113,7 @@ diff -ruN boinc_org/sched/Makefile.am boinc/sched/Makefile.am
 +    BenchmarkClasses.h \
 +    Config.h \
 +    Dictionary.h \
++    Rule.h \
 +    Host.h \
 +    InputDict.h \
 +    MaskSplitter.h \
@@ -136,6 +137,7 @@ diff -ruN boinc_org/sched/Makefile.am boinc/sched/Makefile.am
 +    BenchmarkClasses.cpp \
 +    Config.cpp \
 +    Dictionary.cpp \
++    Rule.cpp \
 +    Host.cpp \
 +    InputDict.cpp \
 +    MaskSplitter.cpp \

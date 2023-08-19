@@ -14,12 +14,19 @@ from werkzeug.utils import secure_filename
 from settings import DICTIONARY_DIR, HASHCAT_EXECUTABLE, PRINCE_PROCESSOR_PATH
 from src.api.fitcrack.functions import shellExec
 from src.database import db
-from src.database.models import FcDictionary
+from src.database.models import FcRule
 
 def check_mask_syntax(mask):
     if not re.fullmatch("^(\?[ludhHsab1234?]|[^\?])+$", mask):
         abort(400, 'Wrong mask ' + mask)
 
+def compute_rules_keyspace(rules):
+    rulesKeyspace = 0
+    for rule in rules:
+        r = FcRule.query.filter(FcRule.id == rule['id']).first()
+        rulesKeyspace += r.count
+
+    return rulesKeyspace
 
 def compute_keyspace_from_mask(mask, charsetsSize=dict(), thresh=None):
     keyspace = 1

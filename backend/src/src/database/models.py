@@ -196,6 +196,14 @@ bin_job_junction = Table('fc_bin_job', Base.metadata,
     Column('bin_id', Integer, ForeignKey('fc_bin.id'))
 )
 
+class FcJobRule(Base):
+    __tablename__ = 'fc_job_rule'
+
+    id = Column(BigInteger, primary_key=True)
+    job_id = Column(BigInteger, ForeignKey('fc_job.id'), nullable=False)
+    rule_id = Column(BigInteger, ForeignKey('fc_rule.id'), nullable=False)
+    rule = relationship("FcRule")
+
 class FcJob(Base):
     __tablename__ = 'fc_job'
 
@@ -221,7 +229,6 @@ class FcJob(Base):
     charset2 = Column(String(4096, 'utf8_bin'))
     charset3 = Column(String(4096, 'utf8_bin'))
     charset4 = Column(String(4096, 'utf8_bin'))
-    rules = Column(String(100, 'utf8_bin'), ForeignKey('fc_rule.name'))
     rule_left = Column(String(255, 'utf8_bin'))
     rule_right = Column(String(255, 'utf8_bin'))
     markov_hcstat = Column(String(100, 'utf8_bin'), ForeignKey('fc_hcstats.name'))
@@ -255,9 +262,6 @@ class FcJob(Base):
     masks = relationship('FcMask')
     status_history = relationship('FcJobStatus')
 
-    rulesFile = relationship("FcRule",
-                             primaryjoin="FcJob.rules==FcRule.name")
-
     markov = relationship("FcHcstat",
                           primaryjoin="FcJob.markov_hcstat==FcHcstat.name")
 
@@ -271,6 +275,7 @@ class FcJob(Base):
 
     left_dictionaries = relationship("FcJobDictionary", primaryjoin=and_(FcJobDictionary.job_id == id, FcJobDictionary.is_left == True))
     right_dictionaries = relationship("FcJobDictionary", primaryjoin=and_(FcJobDictionary.job_id == id, FcJobDictionary.is_left == False), overlaps="left_dictionaries")
+    rules = relationship('FcJobRule')
 
     @hybrid_property
     def cracked_hashes_str(self):
@@ -348,6 +353,13 @@ class FcJob(Base):
     @hybrid_property
     def hash_type_name(self):
         return getHashNameById(self.hash_type)
+    
+    @hybrid_property
+    def rules_multiplifier(self):
+        rulesMultiplier = 0
+        for job_rule in self.rules:
+            rulesMultiplier += job_rule.rule.count
+        return rulesMultiplier
 
     @hybrid_property
     def workunit_sum_time_str(self):
@@ -685,8 +697,8 @@ class FcWorkunit(Base):
     def keyspace(self):
         if self.job.attack_mode == 3:
             return self.hc_keyspace * (self.mask.keyspace / self.mask.hc_keyspace)
-        if self.job.rulesFile:
-            return self.hc_keyspace * self.job.rulesFile.count
+        if self.job.rules:
+            return self.hc_keyspace * self.job.rules_multiplifier
         return self.hc_keyspace
 
     @hybrid_property
@@ -695,8 +707,8 @@ class FcWorkunit(Base):
             return self.start_index * self.job.hc_keyspace + self.start_index_2
         if self.job.attack_mode == 3:
             return self.start_index * (self.mask.keyspace / self.mask.hc_keyspace)
-        if self.job.rulesFile:
-            return self.start_index * self.job.rulesFile.count
+        if self.job.rules:
+            return self.start_index * self.job.rules_multiplifier
         return self.start_index
 
     def as_graph(self):

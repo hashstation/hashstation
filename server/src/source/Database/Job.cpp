@@ -29,7 +29,6 @@ CJob::CJob(DbMap &jobMap, CSqlLoader * sqlLoader)
         this->m_currentIndex2 = std::stoull(jobMap["current_index_2"]);
         this->m_name = jobMap["name"];
         this->m_secondsPerWorkunit = std::stoull(jobMap["seconds_per_workunit"]);
-        this->m_rules = jobMap["rules"];
         this->m_ruleLeft = jobMap["rule_left"];
         this->m_ruleRight = jobMap["rule_right"];
         this->m_charset1 = jobMap["charset1"];
@@ -173,6 +172,13 @@ void CJob::loadDictionaries()
         this->addDictionary(dict);
 }
 
+void CJob::loadRules()
+{
+    m_rules.clear();
+    auto ruleVec = m_sqlLoader->loadJobRules(this->m_id);
+    for (auto & rule : ruleVec)
+        this->addRule(rule);
+}
 
 bool CJob::loadHashes()
 {
@@ -299,10 +305,18 @@ uint64_t CJob::getSecondsPerWorkunit() const
 }
 
 
-const std::string & CJob::getRules() const
+std::vector<Config::Ptr<CRule>> CJob::getRules() const
 {
-    return m_rules;
+    std::vector<Config::Ptr<CRule>> result;
+
+    for (auto & rule : m_rules)
+    {
+        result.push_back(rule);
+    }
+
+    return result;
 }
+
 
 const std::string & CJob::getRuleLeft() const
 {
@@ -425,6 +439,10 @@ void CJob::addDictionary(Config::Ptr<CDictionary> dictionary)
     m_dictionaries.push_back(dictionary);
 }
 
+void CJob::addRule(Config::Ptr<CRule> rule)
+{
+    m_rules.push_back(rule);
+}
 
 std::string CJob::getHashes() const
 {

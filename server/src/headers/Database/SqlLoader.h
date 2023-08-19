@@ -17,7 +17,7 @@ class CWorkunit;
 class CJob;
 class CMask;
 class CDictionary;
-
+class CRule;
 
 class CSqlLoader {
     public:
@@ -241,6 +241,13 @@ class CSqlLoader {
         std::vector<Config::Ptr<CDictionary>> loadJobDictionaries(uint64_t jobId);
 
         /**
+         * @brief Returns vector of rules which belongs to supplied job
+         * @param jobId Job ID which rules we search for
+         * @return Vector of smart pointers to found rules
+         */
+        std::vector<Config::Ptr<CRule>> loadJobRules(uint64_t jobId);
+
+        /**
          * @brief Returns vector of hashes as strings, possibly even binary ones
          * @param jobId Job ID which hashes we search for
          * @return Vector of strings=hashes
@@ -260,6 +267,13 @@ class CSqlLoader {
          * @return Loaded dictionary object
          */
         Config::Ptr<CDictionary> loadDictionary(uint64_t dictId);
+
+        /**
+         * @brief Loads rule object from database with supplied ID
+         * @param ruleId ID of the rule in fc_job_rule table
+         * @return Loaded rule object
+         */
+        Config::Ptr<CRule> loadRule(uint64_t ruleId);
 
         /**
          * @brief Loads job object from database with supplied ID

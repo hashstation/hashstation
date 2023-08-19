@@ -50,7 +50,9 @@ namespace Config {
     extern std::string tableNameMask;
     extern std::string tableNameSettings;
     extern std::string tableNameDictionary;
+    extern std::string tableNameRule;
     extern std::string tableNameJobDictionary;
+    extern std::string tableNameJobRule;
     extern std::string tableNameHash;
     extern std::string tableNamePcfgGrammar;
 

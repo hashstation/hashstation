@@ -10,6 +10,7 @@ from src.api.apiConfig import api
 rule_model = api.model('rule', {
     'id': fields.Integer(readOnly=True, required=False),
     'name': fields.String(readOnly=True, required=False),
+    'path': fields.String(readOnly=True, required=False),
     'count': fields.Integer(readOnly=True),
     'time': fields.DateTime(readOnly=True, required=False)
 })

@@ -9,10 +9,10 @@ import os
 from pathlib import Path
 from flask_restx import abort
 from settings import HASHCAT_DIR, HASHCAT_PATH, EXE_OR_BIN, DICTIONARY_DIR, RULE_DIR, HCSTATS_DIR, CHARSET_DIR
-from src.api.fitcrack.attacks.functions import check_mask_syntax, compute_keyspace_from_mask, compute_prince_keyspace
+from src.api.fitcrack.attacks.functions import check_mask_syntax, compute_keyspace_from_mask, compute_prince_keyspace, compute_rules_keyspace
 from src.api.fitcrack.functions import shellExec, lenStr
 from src.database import db
-from src.database.models import FcMask, FcDictionary, FcRule, FcHcstat, FcCharset, FcJobDictionary
+from src.database.models import FcMask, FcDictionary, FcRule, FcHcstat, FcCharset, FcJobDictionary, FcJobRule
 
 
 # dictionary attack
@@ -33,20 +33,16 @@ def process_job_0(job):
     ruleFileMultiplier = 1
 
     if job['attack_settings']['rules']:
-        rules = FcRule.query.filter(FcRule.id == job['attack_settings']['rules']['id']).first()
-        ruleFileMultiplier = rules.count
+        ruleFileMultiplier = compute_rules_keyspace(job['attack_settings']['rules'])
 
-        if ruleFileMultiplier == 0:
-            ruleFileMultiplier = 1
+        for rule in job['attack_settings']['rules']:
+            if not rule:
+                abort(500, 'Wrong rules file selected.')
 
-        if not rules:
-            abort(500, 'Wrong rules file selected.')
-
-        if not os.path.exists(os.path.join(RULE_DIR, rules.path)):
-            abort(500, 'Rules file does not exist.')
+            if not os.path.exists(os.path.join(RULE_DIR, rule['path'])):
+                abort(500, 'Rules file does not exist.')
 
         job['attack_settings']['attack_submode'] = 1
-        job['rules'] = rules.name
 
     job['attack_name'] = 'dictionary'
     job['keyspace'] = job['hc_keyspace'] * ruleFileMultiplier
@@ -57,6 +53,10 @@ def post_process_job_0(data, db_job):
     for dict in data['attack_settings']['left_dictionaries']:
         jobDict = FcJobDictionary(job_id=db_job.id, dictionary_id=dict['id'])
         db.session.add(jobDict)
+
+    for rule in data['attack_settings']['rules']:
+        jobRule = FcJobRule(job_id=db_job.id, rule_id=rule['id'])
+        db.session.add(jobRule)
 
 
 def process_job_1(job):
@@ -309,17 +309,16 @@ def process_job_8(job):
     
     ruleFileMultiplier = 0
     if job['attack_settings']['rules']:
-        rules = FcRule.query.filter(FcRule.id == job['attack_settings']['rules']['id']).first()
-        ruleFileMultiplier = rules.count
+        ruleFileMultiplier = compute_rules_keyspace(job['attack_settings']['rules'])
 
-        if not rules:
-            abort(500, 'Wrong rules file selected.')
+        for rule in job['attack_settings']['rules']:
+            if not rule:
+                abort(500, 'Wrong rules file selected.')
 
-        if not os.path.exists(os.path.join(RULE_DIR, rules.path)):
-            abort(500, 'Rules file does not exist.')
+            if not os.path.exists(os.path.join(RULE_DIR, rule['path'])):
+                abort(500, 'Rules file does not exist.')
 
         job['attack_settings']['attack_submode'] = 1
-        job['rules'] = rules.name
 
     prince_settings = ["case_permute", "check_duplicates", "min_password_len", "max_password_len", "min_elem_in_chain", "max_elem_in_chain"]
     for setting in prince_settings:
@@ -343,6 +342,10 @@ def post_process_job_8(data, db_job):
         jobDict = FcJobDictionary(job_id=db_job.id, dictionary_id=dict['id'])
         db.session.add(jobDict)
 
+    for rule in data['attack_settings']['rules']:
+        jobRule = FcJobRule(job_id=db_job.id, rule_id=rule['id'])
+        db.session.add(jobRule)
+
 # pcfg attack
 def process_job_9(job):
     job['attack_settings']['attack_submode'] = 0
@@ -352,24 +355,17 @@ def process_job_9(job):
     INT_MAX = sys.maxsize - 1
 
     ruleFileMultiplier = 1
-
     if job['attack_settings']['rules']:
-        rules = FcRule.query.filter(FcRule.id == job['attack_settings']['rules']['id']).first()
-        ruleFileMultiplier = rules.count
+        ruleFileMultiplier = compute_rules_keyspace(job['attack_settings']['rules'])
 
-        if ruleFileMultiplier == 0:
-            ruleFileMultiplier = 1
+        for rule in job['attack_settings']['rules']:
+            if not rule:
+                abort(500, 'Wrong rules file selected.')
 
-        if not rules:
-            abort(500, 'Wrong rules file selected.')
-
-        if not os.path.exists(os.path.join(RULE_DIR, rules.path)):
-            abort(500, 'Rules file does not exist.')
+            if not os.path.exists(os.path.join(RULE_DIR, rule['path'])):
+                abort(500, 'Rules file does not exist.')
 
         job['attack_settings']['attack_submode'] = 1
-        job['rules'] = rules.name
-        print("\nRules:")
-        print(str(ruleFileMultiplier) + "\n")
 
     if (int(job['attack_settings']['pcfg_grammar']['keyspace']) * int(ruleFileMultiplier)) >= INT_MAX:
         job['keyspace'] = INT_MAX
@@ -398,5 +394,7 @@ def process_job_9(job):
 
 
 def post_process_job_9(data, db_job):
-    print("\n PCFG attack post_process\n")
+    for rule in data['attack_settings']['rules']:
+        jobRule = FcJobRule(job_id=db_job.id, rule_id=rule['id'])
+        db.session.add(jobRule)
 

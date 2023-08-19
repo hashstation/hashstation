@@ -16,6 +16,7 @@ class CSqlLoader;
 class CJob;
 class CMask;
 class CDictionary;
+class CRule;
 using PtrJob = Config::Ptr<CJob>;
 
 enum DictDeploymentMode { send, use_prestored };
@@ -88,6 +89,8 @@ class CJob {
          */
         void loadDictionaries();
 
+        void loadRules();
+
         /**
          * @brief Loads all non-cracked hash database entries fot his job to job string m_hashes
          * @return True if any hashes were loaded, False otherwise
@@ -120,7 +123,6 @@ class CJob {
         uint64_t    m_currentIndex2;
         std::string m_name;
         uint64_t    m_secondsPerWorkunit;
-        std::string m_rules;
         std::string m_ruleLeft;
         std::string m_ruleRight;
         std::string m_charset1;
@@ -154,6 +156,7 @@ class CJob {
     protected:
         std::vector<Config::Ptr<CMask>> m_masks;    /**< Vector of non-exhausted masks for mask attack */
         std::vector<Config::Ptr<CDictionary>> m_dictionaries;  /**< Vector of non-exhausted dictionaries */
+        std::vector<Config::Ptr<CRule>> m_rules; /**< Vector of rules */
     private:
         std::string m_hashes;            /**< job hash(es) denoted by newlines */
 
@@ -182,7 +185,6 @@ class CJob {
         uint64_t getCurrentIndex2() const;
         const std::string & getName() const;
         uint64_t getSecondsPerWorkunit() const;
-        const std::string & getRules() const;
         const std::string & getRuleLeft() const;
         const std::string & getRuleRight() const;
         const std::string & getCharset1() const;
@@ -221,7 +223,9 @@ class CJob {
 
         virtual std::vector<Config::Ptr<CDictionary>> getDictionaries() const;
         virtual std::vector<Config::Ptr<CDictionary>> getRightDictionaries() const;
+        virtual std::vector<Config::Ptr<CRule>> getRules() const;
         void addDictionary(Config::Ptr<CDictionary> dictionary);
+        void addRule(Config::Ptr<CRule> rule);
 
         std::string getHashes() const;
 

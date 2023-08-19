@@ -32,7 +32,16 @@
     </v-card-title>
     <rules-selector
       v-model="rules"
+      select-all
+      @input="checkValid"
     />
+
+    <v-alert
+      v-if="rules.length > 0"
+      type="info"
+    >
+      <b>Order:</b> {{ rules.map(d => d.name).join(', ') }}
+    </v-alert>
   </div>
 </template>
 

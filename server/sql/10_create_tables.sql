@@ -369,6 +369,19 @@ CREATE TABLE IF NOT EXISTS `fc_job_dictionary` (
 -- --------------------------------------------------------
 
 --
+-- Table definition for `fc_job_rule`
+--
+
+CREATE TABLE IF NOT EXISTS `fc_job_rule` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `job_id` bigint(20) unsigned NOT NULL,
+  `rule_id` bigint(20) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Table definition for `fc_job_graph`
 --
 

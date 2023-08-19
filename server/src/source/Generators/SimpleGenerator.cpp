@@ -222,6 +222,8 @@ void CSimpleGenerator::createWorkunit(PtrJob job, PtrHost &host, bool isBenchmar
             job->loadMasks(attack->masksUseRealKeyspace());
         if(attack->requiresDicts())
             job->loadDictionaries();
+        if(attack->requiresRules())
+            job->loadRules();
     }
     /** Try to set a workunit from retry */
     bool retryFlag = false;

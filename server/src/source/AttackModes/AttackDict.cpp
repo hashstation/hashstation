@@ -263,17 +263,19 @@ bool CAttackDict::makeWorkunit()
         }
 
         if (m_job->getAttackSubmode() == 1) {
-            std::ifstream rules;
-            rules.open(Config::rulesDir + m_job->getRules());
-            if (!rulesFile) {
-                Tools::printDebugHost(Config::DebugType::Error, m_job->getId(), m_host->getBoincHostId(),
-                                      "Failed to open rules file! Setting job to malformed.\n");
-                m_sqlLoader->updateRunningJobStatus(m_job->getId(), Config::JobState::JobMalformed);
-                return false;
-            }
+            std::vector<PtrRule> ruleVec = m_job->getRules();
+            for (PtrRule &rule : ruleVec) {
+              std::ifstream rules;
+              rules.open(Config::rulesDir + rule->getPath());
+              if (!rules.is_open()) {
+                  Tools::printDebugHost(Config::DebugType::Error, m_job->getId(), m_host->getBoincHostId(),
+                                        "Failed to open rules file! Setting job to malformed.\n");
+                  m_sqlLoader->updateRunningJobStatus(m_job->getId(), Config::JobState::JobMalformed);
+                  return false;
+              }
 
-            rulesFile << rules.rdbuf();
-            rules.close();
+              rulesFile << rules.rdbuf();
+            }
         }
 
         rulesFile.close();

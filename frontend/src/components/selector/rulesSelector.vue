@@ -14,7 +14,8 @@
     item-key="id"
     show-select
     :single-select="!selectAll"
-    @input="updateSelected"
+    @item-selected="onItemSelected"
+    @toggle-select-all="onSelectAll"
   >
     <template v-slot:item.name="{ item }">
       <router-link :to="{name: 'ruleDetail', params: { id: item.id}}">

@@ -78,7 +78,7 @@ export default {
       return {
         'attack_mode': current.id,
         'attack_name': current.serverName,
-        'rules': state.rules.length > 0 ? state.rules[0] : null,
+        'rules': state.rules,
         'left_dictionaries': state.leftDicts,
         'right_dictionaries': state.rightDicts,
         'rule_left': state.ruleLeft,

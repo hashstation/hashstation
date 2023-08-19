@@ -15,6 +15,7 @@
 #include <Mask.h>
 #include <Job.h>
 #include <Dictionary.h>
+#include <Rule.h>
 #include <SqlLoader.h>
 #include <Config.h>
 #include <InputDict.h>
@@ -59,6 +60,7 @@ class AttackMode {
 
         virtual bool requiresMasks() const {return false;}
         virtual bool requiresDicts() const {return false;}
+        virtual bool requiresRules() const {return m_job->getAttackSubmode() == 1;}
         virtual bool masksUseRealKeyspace() const {return false;}
 
 protected:

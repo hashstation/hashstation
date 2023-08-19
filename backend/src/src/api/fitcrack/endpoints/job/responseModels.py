@@ -117,6 +117,11 @@ dictionary_job_model = api.model('Dictionary job', {
     'is_left': fields.Boolean(),
     'dictionary': fields.Nested(dictionary_model)
 })
+
+rule_job_model = api.model('Rule job', {
+    'rule': fields.Nested(rule_model)
+})
+
 '''
 pcfgGrammar_model = api.model('PCFG job', {
     'pcfg': fields.String(pcfg_model)
@@ -160,7 +165,7 @@ job_big_model = api.model('Job', {
     'charset2': fields.String(),
     'charset3': fields.String(),
     'charset4': fields.String(),
-    'rulesFile': fields.Nested(rule_model),
+    'rules': fields.List(fields.Nested(rule_job_model)),
     'rule_left': fields.String(),
     'rule_right': fields.String(),
     'markov': fields.Nested(hcStat_model),
