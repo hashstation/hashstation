@@ -86,10 +86,17 @@ bool CAttackDict::makeWorkunit()
       std::string limit = std::to_string(m_workunit->getHcKeyspace());
       configFile << "|||hc_keyspace|BigUInt|" << limit.size() << "|" << limit
                  << "|||\n";
-      // Number of passwords in the sent dictionary (the big  - concatenated - dictionary).
-      std::string dict1Keyspace = std::to_string(m_job->getHcKeyspace());
-      configFile << "|||dict1_keyspace|BigUInt|" << dict1Keyspace.size()
-                 << "|" << dict1Keyspace << "|||\n";
+
+      if (m_job->getDictDeploymentMode() == DictDeploymentMode::send) {
+          // Number of passwords in the sent dictionary (the merged dictionary).
+          std::string dict1Keyspace = std::to_string(m_job->getHcKeyspace());
+          configFile << "|||dict1_keyspace|BigUInt|" << dict1Keyspace.size() << "|" << dict1Keyspace << "|||\n";
+      } else if (m_job->getDictDeploymentMode() == DictDeploymentMode::use_prestored) {
+          // Number of passwords in the dictionary frament.
+          PtrDictionary workunitDict = GetWorkunitDict();
+          std::string dict1Keyspace = std::to_string(workunitDict->getHcKeyspace());
+          configFile << "|||dict1_keyspace|BigUInt|" << dict1Keyspace.size() << "|" << dict1Keyspace << "|||\n";
+      }
     }
 
     /** Create data file */
@@ -212,12 +219,8 @@ bool CAttackDict::makeWorkunit()
         }
       } else if (m_job->getDistributionMode() == 1 &&
                  m_job->getDictDeploymentMode() == DictDeploymentMode::use_prestored) {
-        std::vector<PtrDictionary> dictVec = m_job->getDictionaries();
-        // TODO: unsupported for more dictionaries (not possible with merging,
-        // could be possible with other approach). Frontend ensures than this
-        // option cannot be enabled with more than 1 dictionary.
-        // TODO: use use_prestored? See line 90.
-        const std::string &dictName = dictVec[0]->getDictName();
+        PtrDictionary workunitDict = GetWorkunitDict();
+        const std::string &dictName = workunitDict->getDictName();
         configFile << "|||dict1_name|String|" << std::to_string(dictName.length())
                    << "|" << dictName << "|||\n";
 
@@ -381,19 +384,56 @@ bool CAttackDict::generateWorkunit()
       /** Update the job/dictionary index */
       m_job->updateIndex(currentIndex + passCount);
       currentDict->updateIndex(dictIndex + passCount);
-    } else if (m_job->getDistributionMode() == 1) {
+    } else if (m_job->getDistributionMode() == 1 && m_job->getDictDeploymentMode() == DictDeploymentMode::send) {
       /** Adjust password count */
       if (currentIndex + passCount > jobHcKeyspace)
         passCount = jobHcKeyspace - currentIndex;
 
       /** Create the workunit */
-      m_workunit = CWorkunit::create(m_job->getId(), m_host->getId(),
-                                     m_host->getBoincHostId(), currentIndex, 0,
+      m_workunit = CWorkunit::create(m_job->getId(), m_host->getId(), m_host->getBoincHostId(), currentIndex, 0,
                                      passCount, 0, 0, false, 0, false);
       if (!m_workunit)
         return false;
       /** Update the job index */
       m_job->updateIndex(currentIndex + passCount);
+    } else if (m_job->getDistributionMode() == 1 && m_job->getDictDeploymentMode() == DictDeploymentMode::use_prestored) {
+      /** Load job dictionaries */
+      std::vector<PtrDictionary> dictVec = m_job->getDictionaries();
+      Tools::printDebugHost(
+          Config::DebugType::Log, m_job->getId(), m_host->getBoincHostId(),
+          "Dictionaries left for this job: %" PRIu64 "\n", dictVec.size());
+
+      /** Find the following dictionary */
+      PtrDictionary currentDict = FindCurrentDict(dictVec);
+
+      if (!currentDict) {
+        /** No dictionaries found, no workunit could be generated */
+        Tools::printDebugHost(Config::DebugType::Log, m_job->getId(),
+                              m_host->getBoincHostId(),
+                              "No dictionaries found for this job\n");
+        return false;
+      }
+
+      uint64_t dictIndex = currentDict->getCurrentIndex();
+      uint64_t dictHcKeyspace = currentDict->getHcKeyspace();
+      if (dictIndex + passCount > dictHcKeyspace) {
+        /** Host is too powerful for this mask, it will finish it */
+        passCount = dictHcKeyspace - dictIndex;
+        Tools::printDebugHost(
+            Config::DebugType::Log, m_job->getId(), m_host->getBoincHostId(),
+            "Adjusting #passwords, dictionary too small, new #: %" PRIu64 "\n",
+            passCount);
+      }
+
+      /** Create the workunit */
+      m_workunit = CWorkunit::create(
+          m_job->getId(), m_host->getId(), m_host->getBoincHostId(), dictIndex,
+          0, passCount, 0, currentDict->getId(), false, 0, false);
+      if (!m_workunit)
+        return false;
+      /** Update the job/dictionary index */
+      m_job->updateIndex(currentIndex + passCount);
+      currentDict->updateIndex(dictIndex + passCount);
     }
 
     return true;

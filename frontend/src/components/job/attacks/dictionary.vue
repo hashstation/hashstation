@@ -53,7 +53,6 @@
           :value="0"
         ></v-radio>
         <v-radio
-          v-if="leftDicts.length == 1"
           label="Use local (prestored) dictionaries on hosts"
           :value="1"
         ></v-radio>

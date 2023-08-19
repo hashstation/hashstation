@@ -925,7 +925,7 @@ int assimilate_handler(WORKUNIT& wu, vector<RESULT>& /*results*/, RESULT& canoni
                 if (find_benchmark_results(benchmarked_attackmodes_per_types, boinc_host_id))
                 {
                     /** benchmark was already run in the past */
-                    double power;
+                    uint64_t power;
                     while (std::fscanf(f,"%u:%llu\n", &hash_type, &power) == 2)
                     {
                       auto it =
@@ -980,7 +980,7 @@ int assimilate_handler(WORKUNIT& wu, vector<RESULT>& /*results*/, RESULT& canoni
                 else
                 {
                     /** No results for this host yet */
-                    double power;
+                    uint64_t power;
                     while (std::fscanf(f,"%u:%llu\n", &hash_type, &power) == 2)
                     {
                       std::snprintf(
