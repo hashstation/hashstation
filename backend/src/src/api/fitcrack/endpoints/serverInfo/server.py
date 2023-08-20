@@ -140,7 +140,7 @@ class systemTransfer(Resource):
         args = export_options.parse_args(request)
         jobs = args.get('jobs')
 
-        return Response(stream_with_context(pack(jobs=jobs)), headers={"Content-disposition": "attachment; filename=fitcrack-export.fcp"})
+        return Response(stream_with_context(pack(jobs=jobs)))
 
     @api.marshal_with(simpleResponse)
     def post(self):

@@ -348,6 +348,7 @@ export default {
           link.setAttribute('download', this.data.name + "_cracked_hashes.txt"); 
           document.body.appendChild(link);
           link.click();
+          document.body.removeChild(link);
         })
         .catch((error) => {
           console.error('Error downloading file:', error);
@@ -364,6 +365,7 @@ export default {
           link.setAttribute('download', this.data.name + "_noncracked_hashes.txt"); 
           document.body.appendChild(link);
           link.click();
+          document.body.removeChild(link);
         })
         .catch((error) => {
           console.error('Error downloading file:', error);

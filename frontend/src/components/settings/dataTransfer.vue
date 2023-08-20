@@ -62,15 +62,12 @@
               Clear selection
             </v-btn>
             <v-spacer />
-            <v-btn
-              text
-              :href="`${$serverAddr}/serverInfo/transfer${count > 0 ? '?jobs=' + job_ids.join(',') : ''}`"
-            >
-              Export {{ count > 0 ? `${count} Job${count > 1 ? 's' : ''}` : 'Everything' }}
-              <v-icon right>
-                mdi-database-export
-              </v-icon>
-            </v-btn>
+          <v-btn text @click="exportJobs">
+            Export {{ count > 0 ? `${count} Job${count > 1 ? 's' : ''}` : 'Everything' }}
+            <v-icon right>
+              mdi-database-export
+            </v-icon>
+          </v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -363,6 +360,25 @@ export default {
     },
     uploadChange(progressEvent) {
       this.progress = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+    },
+    exportJobs() {
+      const url = `${this.$serverAddr}/serverInfo/transfer${this.count > 0 ? '?jobs=' + this.job_ids.join(',') : ''}`;
+
+      this.axios.get(url, {
+        responseType: 'blob'
+      })
+      .then((response) => {
+        const blobUrl = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        link.setAttribute('download', "fitcrack-export.fcp");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      })
+      .catch((error) => {
+        console.error('Error downloading file:', error);
+      });
     }
   }
 }

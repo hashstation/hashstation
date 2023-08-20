@@ -7,7 +7,7 @@ from sqlalchemy import exc
 
 from src.database.models import FcJob, FcUserPermission
 from src.database.models import FcHash, FcMask # for (un)packing directly
-from src.database.models import FcRule, FcHcstat, FcDictionary, FcJobDictionary, FcPcfg # for dependencies
+from src.database.models import FcRule, FcHcstat, FcDictionary, FcJobDictionary, FcJobRule, FcPcfg # for dependencies
 
 
 # scalar or relationship fields that get copied over
@@ -24,19 +24,19 @@ JOB_EXPORTABLE_COLUMNS = (
 # relationship fields that get stored as dependencies
 JOB_EXPORTABLE_DEPENDENCIES = {
   # as {type}: {value to store for identification}
-  'rulesFile': 'name',
   'markov': 'name',
   'pcfg': 'name',
   'left_dictionaries': 'dictionary.name',
-  'right_dictionaries': 'dictionary.name'
+  'right_dictionaries': 'dictionary.name',
+  'rules': 'rule.name',
 }
 # mapping of dependency names from db columns to tables
 DEP_MAP = {
-  'rulesFile': 'rule',
   'markov': 'markov',
   'pcfg': 'pcfg',
   'left_dictionaries': 'dictionary',
-  'right_dictionaries': 'dictionary'
+  'right_dictionaries': 'dictionary',
+  'rules': 'rule',
 }
 # maps dep type annotations to actual sqlalchemy model classes and columns
 ORM_MAP = {
@@ -193,9 +193,6 @@ def unpack (package):
     #
     # !!! If you added new DEPS to export, make sure to unpack them like these !!!
     #
-    dep_rule = job.get('rulesFile')
-    if dep_rule:
-      newjob.rulesFile = deps[dep_rule[0]]
     dep_markov = job.get('markov')
     if dep_markov:
       newjob.markov = deps[dep_markov[0]]
@@ -209,6 +206,11 @@ def unpack (package):
       for index in dep_right_dictionaries:
         jd = FcJobDictionary(is_left=0, dictionary=deps[index])
         newjob.right_dictionaries.append(jd)
+    dep_rules = job.get('rules')
+    if dep_rules:
+      for index in dep_rules:
+        jr = FcJobRule(rule=deps[index])
+        newjob.rules.append(jr)
     dep_pcfg = job.get('pcfg')
     if dep_pcfg:
       newjob.pcfg = deps[dep_pcfg[0]]
