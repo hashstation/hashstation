@@ -41,6 +41,7 @@ export const empty = {
   submode: 0,
   distributionMode: 0, // Default: create fragment on server
   dictDeploymentMode: 0, // Default: Send dictionaries to hosts
+  ruleApplicationMode: 0, // Default: concatenate multiple rules
   markov: [], // init!
   markovThresh: NaN,
   pcfg: [],
@@ -102,6 +103,7 @@ export default {
          // other
         'dict_deployment_mode': parseInt(state.dictDeploymentMode),
         'slow_candidates' : state.slowCandidates,
+        'rule_application_mode': parseInt(state.ruleApplicationMode),
       }
     },
     jobSettings (state, { attackSettings }) {

@@ -37,12 +37,35 @@
     />
 
     <v-alert
-      v-if="rules.length > 0"
+      v-if="rules.length > 1"
       type="info"
     >
       <b>Order:</b> {{ rules.map(d => d.name).join(', ') }}
     </v-alert>
+
+    <div
+      v-if="rules.length > 1"
+    >
+      <v-card-title>
+        <span>Rule application mode</span>
+      </v-card-title>
+      <v-radio-group
+        v-model="ruleApplicationMode"
+      >
+        <v-radio
+          label="Concatenated rules"
+          :value="0"
+        ></v-radio>
+        <v-radio
+          label="Dot product of rules"
+          :value="1"
+        ></v-radio>
+      </v-radio-group>
+      <v-divider />
+    </div>
+
   </div>
+
 </template>
 
 <script>
@@ -71,7 +94,7 @@
         }
       }
     },
-    computed: mapTwoWayState('jobForm', twoWayMap(['rules', 'pcfg', 'keyspaceLimit'])),
+    computed: mapTwoWayState('jobForm', twoWayMap(['rules', 'pcfg', 'keyspaceLimit', 'ruleApplicationMode'])),
     methods: {
       checkValid: function () {
         if(this.pcfg.length > 0 && this.keyspaceLimit > this.pcfg[0].keyspace) {

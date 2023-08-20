@@ -31,9 +31,9 @@ bool CAttackDict::makeWorkunit()
     std::snprintf(name1, Config::SQL_BUF_SIZE, "%s_%d_%d", Config::appName, Config::startTime, Config::seqNo++);
     std::snprintf(name2, Config::SQL_BUF_SIZE, "%s_hashes_%" PRIu64 "", Config::appName, m_job->getId());
 
-    if (m_job->getDistributionMode() == 0)
+    if (m_job->getDistributionMode() == DictDistributionMode::fragmentation_on_server)
       std::snprintf(name3, Config::SQL_BUF_SIZE, "%s_%d_%d.dict", Config::appName, Config::startTime, Config::seqNo++);
-    else if (m_job->getDistributionMode() == 1)
+    else if (m_job->getDistributionMode() == DictDistributionMode::fragmentation_on_client)
       std::snprintf(name3, Config::SQL_BUF_SIZE, "%s_dict_%" PRIu64 "", Config::appName, m_job->getId());
 
     std::snprintf(name4, Config::SQL_BUF_SIZE, "%s_rules_%" PRIu64 "", Config::appName, m_job->getId());
@@ -73,12 +73,12 @@ bool CAttackDict::makeWorkunit()
                                            : m_job->getWorkloadProfile(),
         m_job->getSlowCandidatesFlag(), jobExtraHcArgs);
 
-    if (m_job->getDistributionMode() == 0) {
+    if (m_job->getDistributionMode() == DictDistributionMode::fragmentation_on_server) {
       // Number of passwords in the sent dictionary (the dictionary fragment).
       std::string dict1Keyspace = std::to_string(m_workunit->getHcKeyspace());
       configFile << "|||dict1_keyspace|BigUInt|" << dict1Keyspace.size()
                  << "|" << dict1Keyspace << "|||\n";
-    } else if (m_job->getDistributionMode() == 1) {
+    } else if (m_job->getDistributionMode() == DictDistributionMode::fragmentation_on_client) {
       uint64_t startIndex = m_workunit->getStartIndex();
       std::string skipFromStart = std::to_string(startIndex);
       configFile << "|||start_index|BigUInt|" << skipFromStart.size() << "|"
@@ -135,7 +135,7 @@ bool CAttackDict::makeWorkunit()
 
     try
     {
-      if (m_job->getDistributionMode() == 0) {
+      if (m_job->getDistributionMode() == DictDistributionMode::fragmentation_on_server) {
         Tools::printDebugHost(Config::DebugType::Log, m_job->getId(),
                               m_host->getBoincHostId(),
                               "Creating dictionary fragment\n");
@@ -188,7 +188,7 @@ bool CAttackDict::makeWorkunit()
         }
 
         workunitDict->updatePos(inputDict->GetCurrentDictPos());
-      } else if (m_job->getDistributionMode() == 1 &&
+      } else if (m_job->getDistributionMode() == DictDistributionMode::fragmentation_on_client &&
                  m_job->getDictDeploymentMode() == DictDeploymentMode::send) {
         if (!std::ifstream(path)) {
           std::ofstream dictFile;
@@ -217,7 +217,7 @@ bool CAttackDict::makeWorkunit()
 
           dictFile.close();
         }
-      } else if (m_job->getDistributionMode() == 1 &&
+      } else if (m_job->getDistributionMode() == DictDistributionMode::fragmentation_on_client &&
                  m_job->getDictDeploymentMode() == DictDeploymentMode::use_prestored) {
         PtrDictionary workunitDict = GetWorkunitDict();
         const std::string &dictName = workunitDict->getDictName();
@@ -299,7 +299,7 @@ bool CAttackDict::makeWorkunit()
     std::snprintf(path, Config::SQL_BUF_SIZE, "templates/%s", Config::outTemplateFile.c_str());
     retval = create_work(
             wu,
-            m_job->getDistributionMode() == 0
+            m_job->getDistributionMode() == DictDistributionMode::fragmentation_on_server
                                      ? Config::inTemplatePathDict
                                      : Config::inTemplatePathDictAlt,
             path,
@@ -348,7 +348,7 @@ bool CAttackDict::generateWorkunit()
         passCount = getMinPassCount();
     }
 
-    if (m_job->getDistributionMode() == 0) {
+    if (m_job->getDistributionMode() == DictDistributionMode::fragmentation_on_server) {
       /** Load job dictionaries */
       std::vector<PtrDictionary> dictVec = m_job->getDictionaries();
       Tools::printDebugHost(
@@ -386,7 +386,7 @@ bool CAttackDict::generateWorkunit()
       /** Update the job/dictionary index */
       m_job->updateIndex(currentIndex + passCount);
       currentDict->updateIndex(dictIndex + passCount);
-    } else if (m_job->getDistributionMode() == 1 && m_job->getDictDeploymentMode() == DictDeploymentMode::send) {
+    } else if (m_job->getDistributionMode() == DictDistributionMode::fragmentation_on_client && m_job->getDictDeploymentMode() == DictDeploymentMode::send) {
       /** Adjust password count */
       if (currentIndex + passCount > jobHcKeyspace)
         passCount = jobHcKeyspace - currentIndex;
@@ -398,7 +398,7 @@ bool CAttackDict::generateWorkunit()
         return false;
       /** Update the job index */
       m_job->updateIndex(currentIndex + passCount);
-    } else if (m_job->getDistributionMode() == 1 && m_job->getDictDeploymentMode() == DictDeploymentMode::use_prestored) {
+    } else if (m_job->getDistributionMode() == DictDistributionMode::fragmentation_on_client && m_job->getDictDeploymentMode() == DictDeploymentMode::use_prestored) {
       /** Load job dictionaries */
       std::vector<PtrDictionary> dictVec = m_job->getDictionaries();
       Tools::printDebugHost(

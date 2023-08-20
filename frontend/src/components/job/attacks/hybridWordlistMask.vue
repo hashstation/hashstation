@@ -29,7 +29,7 @@
           @input="checkValid"
         />
         <v-alert
-          v-if="leftDicts.length > 0"
+          v-if="leftDicts.length > 1"
           type="info"
         >
           <b>Order:</b> {{ leftDicts.map(d => d.name).join(', ') }}

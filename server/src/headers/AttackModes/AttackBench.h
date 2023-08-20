@@ -35,7 +35,7 @@ class CAttackBench : public BaseAttack {
 
         virtual std::string generateBasicConfig(
             unsigned attackMode, unsigned attackSubmode,
-            unsigned distributionMode, std::string name, unsigned hashType,
+            DictDistributionMode distributionMode, std::string name, unsigned hashType,
             unsigned hwTempAbort = 90, unsigned workunitStatusUpdate = 5,
             bool optimized = true, unsigned deviceTypes = 0,
             unsigned workloadProfile = 0, bool slowCandidates = true,
@@ -76,7 +76,7 @@ char CAttackBench<BaseAttack>::getModeLetter()
 }
 
 template <typename BaseAttack>
-std::string CAttackBench<BaseAttack>::generateBasicConfig(unsigned attackMode, unsigned attackSubmode, unsigned distributionMode, std::string name,
+std::string CAttackBench<BaseAttack>::generateBasicConfig(unsigned attackMode, unsigned attackSubmode, DictDistributionMode distributionMode, std::string name,
     unsigned hashType, unsigned hwTempAbort, unsigned workunitStatusUpdate, bool optimized, unsigned deviceTypes, unsigned workloadProfile, bool slowCandidates, std::string extraHcArgs,
     std::string ruleLeft, std::string ruleRight, std::string charset1, std::string charset2, std::string charset3, std::string charset4)
 {

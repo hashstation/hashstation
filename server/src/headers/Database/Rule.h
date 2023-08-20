@@ -54,6 +54,7 @@ class CRule {
 
         std::string m_name;
         std::string m_path;
+        uint64_t m_count;
 
     public:
 
@@ -63,6 +64,7 @@ class CRule {
 
         const std::string & getName() const;
         const std::string & getPath() const;
+        uint64_t getCount() const;
 };
 
 #endif //WORKGENERATOR_RULE_H

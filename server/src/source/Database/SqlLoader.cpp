@@ -291,11 +291,13 @@ CSqlLoader::loadJobDictionaries(uint64_t jobId) {
 std::vector<Config::Ptr<CRule>>
 CSqlLoader::loadJobRules(uint64_t jobId) {
   return customLoad<CRule>(formatQuery(
-      "SELECT `%s`.*, `%s`.`name`, `%s`.`path` "
+      "SELECT `%s`.*, `%s`.`name`, `%s`.`path`, `%s`.`count` "
       "FROM `%s` INNER JOIN `%s` ON `%s`.`rule_id` = "
       "`%s`.`id` WHERE `job_id` = %" PRIu64 " "
       "ORDER BY `%s`.`id` ASC ;",
-      Config::tableNameJobRule.c_str(), Config::tableNameRule.c_str(),
+      Config::tableNameJobRule.c_str(),
+      Config::tableNameRule.c_str(),
+      Config::tableNameRule.c_str(),
       Config::tableNameRule.c_str(),
       Config::tableNameJobRule.c_str(),
       Config::tableNameRule.c_str(),
@@ -368,11 +370,12 @@ Config::Ptr<CDictionary> CSqlLoader::loadDictionary(uint64_t ruleId) {
 Config::Ptr<CRule> CSqlLoader::loadRule(uint64_t ruleId) {
   return customLoad<CRule>(
              formatQuery(
-                 "SELECT `%s`.*, `%s`.`name`, `%s`.`path`, "
+                 "SELECT `%s`.*, `%s`.`name`, `%s`.`path`, `%s`.`count` "
                  "FROM `%s` INNER JOIN `%s` ON "
                  "`%s`.`rule_id` = `%s`.`id` WHERE `%s`.`id` = %" PRIu64
                  " LIMIT 1 ;",
                  Config::tableNameJobRule.c_str(),
+                 Config::tableNameRule.c_str(),
                  Config::tableNameRule.c_str(),
                  Config::tableNameRule.c_str(),
                  Config::tableNameJobRule.c_str(),

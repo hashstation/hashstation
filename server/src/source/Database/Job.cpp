@@ -20,7 +20,7 @@ CJob::CJob(DbMap &jobMap, CSqlLoader * sqlLoader)
         this->m_attack = jobMap["attack"];
         this->m_attackMode = std::stoul(jobMap["attack_mode"]);
         this->m_attackSubmode = std::stoul(jobMap["attack_submode"]);
-        this->m_distributionMode = std::stoul(jobMap["distribution_mode"]);
+        this->m_distributionMode = static_cast<DictDistributionMode>(std::stoul(jobMap["distribution_mode"]));
         this->m_hashType = std::stoul(jobMap["hash_type"]);
         this->m_status = std::stoul(jobMap["status"]);
         this->m_keyspace = std::stoull(jobMap["keyspace"]);
@@ -247,9 +247,14 @@ uint32_t CJob::getAttackSubmode() const
     return m_attackSubmode;
 }
 
-uint32_t CJob::getDistributionMode() const
+DictDistributionMode CJob::getDistributionMode() const
 {
     return m_distributionMode;
+}
+
+RuleApplicationMode CJob::getRuleApplicationMode() const
+{
+    return m_ruleApplicationMode;
 }
 
 DictDeploymentMode CJob::getDictDeploymentMode() const

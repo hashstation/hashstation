@@ -16,6 +16,7 @@ CRule::CRule(DbMap &dictMap, CSqlLoader *sqlLoader)
     {
         this->m_name = dictMap["name"];
         this->m_path = dictMap["path"];
+        this->m_count = std::stoull(dictMap["count"]);
     }
     catch(std::logic_error & error)
     {
@@ -45,4 +46,10 @@ const std::string &CRule::getName() const
 const std::string &CRule::getPath() const
 {
     return m_path;
+}
+
+
+uint64_t CRule::getCount() const
+{
+    return m_count;
 }

@@ -194,6 +194,7 @@ job_big_model = api.model('Job', {
     'slow_candidates': fields.Boolean(),
     'extra_hc_args': fields.String(),
     'fixed_workunit_size': fields.String(),
+    'rule_application_mode': fields.Integer(),
 })
 
 job_nano_model = api.model('Job nano', {

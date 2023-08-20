@@ -34,7 +34,7 @@ void AttackMode::setDefaultWorkunitParams(DB_WORKUNIT * wu)
 }
 
 
-std::string AttackMode::generateBasicConfig(unsigned attackMode, unsigned attackSubmode, unsigned distributionMode, std::string name, unsigned hashType,
+std::string AttackMode::generateBasicConfig(unsigned attackMode, unsigned attackSubmode, DictDistributionMode distributionMode, std::string name, unsigned hashType,
                                             unsigned hwTempAbort, unsigned workunitStatusUpdate, bool optimized, unsigned deviceTypes, unsigned workloadProfile, bool slowCandidates, 
                                             std::string extraHcArgs, std::string ruleLeft, std::string ruleRight, std::string charset1,
                                             std::string charset2, std::string charset3, std::string charset4)

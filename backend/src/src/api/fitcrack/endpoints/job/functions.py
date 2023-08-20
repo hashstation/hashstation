@@ -178,6 +178,7 @@ def create_job(data):
         slow_candidates=job['attack_settings'].get('slow_candidates', 0),
         extra_hc_args=job.get('extra_hc_args', ''),
         fixed_workunit_size=job.get('fixed_workunit_size', 0),
+        rule_application_mode=job['attack_settings'].get('rule_application_mode', 0),
         deleted=False
         )
 

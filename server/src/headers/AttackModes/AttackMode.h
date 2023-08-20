@@ -84,7 +84,7 @@ protected:
          * @param wuMode Mode of the WU (b/n/a)
          * @param attackMode Attack number
          * @param attackSubmode Attack submode
-         * * @param distributionMode Distribution mode
+         * @param distributionMode Distribution mode
          * @param name Name of the Job
          * @param hashType Hashcat hash type
          * @param ruleLeft Left rule if present
@@ -97,7 +97,7 @@ protected:
          */
         virtual std::string generateBasicConfig(
             unsigned attackMode, unsigned attackSubmode,
-            unsigned distributionMode, std::string name, unsigned hashType,
+            DictDistributionMode distributionMode, std::string name, unsigned hashType,
             unsigned hwTempAbort = 90, unsigned workunitStatusUpdate = 5,
             bool optimized = true, unsigned deviceTypes = 0,
             unsigned workloadProfile = 0, bool slowCandidates = true,

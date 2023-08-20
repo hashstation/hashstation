@@ -20,7 +20,9 @@ class CRule;
 using PtrJob = Config::Ptr<CJob>;
 
 enum DictDeploymentMode { send, use_prestored };
-enum DeviceType { host_default, cpu , gpu };                 
+enum DeviceType { host_default, cpu , gpu };
+enum DictDistributionMode { fragmentation_on_server, fragmentation_on_client };
+enum RuleApplicationMode { in_series, dot_product };                
 
 class CJob {
     private:
@@ -114,7 +116,7 @@ class CJob {
         std::string m_attack;
         uint32_t    m_attackMode;
         uint32_t    m_attackSubmode;
-        uint32_t    m_distributionMode;
+        DictDistributionMode m_distributionMode;
         uint32_t    m_hashType;
         uint32_t    m_status;
         uint64_t    m_keyspace;
@@ -146,6 +148,7 @@ class CJob {
         bool m_slowCandidates;
         std::string m_extraHcArgs;
         uint64_t m_fixedWorkunitSize;
+        RuleApplicationMode m_ruleApplicationMode;
         bool m_killFlag;
 
         /**
@@ -176,7 +179,7 @@ class CJob {
         const std::string &getAttack() const;
         uint32_t getAttackMode() const;
         uint32_t getAttackSubmode() const;
-        uint32_t getDistributionMode() const;
+        DictDistributionMode getDistributionMode() const;
         uint32_t getHashType() const;
         uint32_t getStatus() const;
         uint64_t getKeyspace() const;
@@ -207,6 +210,7 @@ class CJob {
         uint64_t getFixedWorkunitSize() const;
         const std::string & getExtraHcArgs() const;
         DictDeploymentMode getDictDeploymentMode() const;
+        RuleApplicationMode getRuleApplicationMode() const;
         bool getKillFlag() const;
 
 
