@@ -330,11 +330,12 @@ Config::Ptr<CMask> CSqlLoader::loadMask(uint64_t maskId)
 Config::Ptr<CDictionary> CSqlLoader::loadDictionary(uint64_t dictId) {
   return customLoad<CDictionary>(
              formatQuery(
-                 "SELECT `%s`.*, `%s`.`path`, `%s`.`password_distribution`, `%s`.`hex_dict`, "
+                 "SELECT `%s`.*, `%s`.`name`, `%s`.`path`, `%s`.`password_distribution`, `%s`.`hex_dict`, "
                  "`%s`.`keyspace` FROM `%s` INNER JOIN `%s` ON "
                  "`%s`.`dictionary_id` = `%s`.`id` WHERE `%s`.`id` = %" PRIu64
                  " LIMIT 1 ;",
                  Config::tableNameJobDictionary.c_str(),
+                 Config::tableNameDictionary.c_str(),
                  Config::tableNameDictionary.c_str(),
                  Config::tableNameDictionary.c_str(),
                  Config::tableNameDictionary.c_str(),
