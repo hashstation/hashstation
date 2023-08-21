@@ -9,8 +9,8 @@ services:
         - SYS_NICE
       # Configuration of the build context
       build:
-        context: .
-        dockerfile: Dockerfile
+        context: ../
+        dockerfile: docker/Dockerfile
         args:
            - COMPILER_THREADS=1  # Higher values may cause linker race conditions
 

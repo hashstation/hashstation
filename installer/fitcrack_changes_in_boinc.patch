@@ -228,20 +228,6 @@ diff -ruN boinc_org/tools/make_project boinc/tools/make_project
  
  httpd_conf_template_filename = os.path.join(
      options.project_root,
-diff -ruN boinc_org/tools/project.xml boinc/tools/project.xml
---- boinc_org/tools/project.xml	2022-11-19 00:14:20.057529493 +0100
-+++ boinc/tools/project.xml	2022-11-19 00:16:39.929860132 +0100
-@@ -28,6 +28,10 @@
-         <user_friendly_name>Intel 64-bit Mac OS 10.5 or later</user_friendly_name>
-     </platform>
-     <platform>
-+        <name>arm64-apple-darwin</name>
-+        <user_friendly_name>Mac OS running on ARM</user_friendly_name>
-+    </platform>
-+    <platform>
-         <name>sparc-sun-solaris2.7</name>
-         <user_friendly_name>Solaris 2.7 running on a SPARC-compatible CPU</user_friendly_name>
-     </platform>
 diff -ruN boinc_org/tools/update_versions boinc/tools/update_versions
 --- boinc_org/tools/update_versions	2022-11-19 00:14:20.057529493 +0100
 +++ boinc/tools/update_versions	2022-11-19 01:20:18.482266394 +0100

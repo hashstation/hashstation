@@ -32,7 +32,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN apt install -yq sudo
 
 # noninteractive keyboard configuration
-COPY ./keyboard /etc/default/keyboard
+COPY ./docker/keyboard /etc/default/keyboard
 RUN export DEBIAN_FRONTEND=noninteractive
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 RUN apt-get install -y -q
@@ -137,14 +137,14 @@ RUN cd backend/pwd_dist && make
 ######################################################################################
 ################################# Webadmin frontend ###################################
 
-WORKDIR /srv/frontend
+WORKDIR /srv/fitcrack/frontend
 RUN export PATH=/usr/local/lib/nodejs/node-v16.15.0-linux-x64/bin:$PATH \
 && npm ci && npm run build
 
 ######################################################################################
 
 WORKDIR /srv/fitcrack/
-COPY entrypoint-fitcrack.sh /srv/fitcrack/
+COPY ./docker/entrypoint-fitcrack.sh /srv/fitcrack/
 
 # Copy database init-script
 RUN mkdir /srv/db_init
