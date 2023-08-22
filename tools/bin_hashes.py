@@ -1,6 +1,6 @@
 import os, json
 
-HASH_INFO_PATH = '../fitcrack/backend/hashcat/hash_info.json'
+HASH_INFO_PATH = '../backend/hashcat/hash_info.json'
 
 with open(HASH_INFO_PATH) as json_file:
     hash_info = json.load(json_file)
