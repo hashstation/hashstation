@@ -8,6 +8,8 @@
 #include <algorithm>
 #include <cctype>
 
+#include "boinc/str_util.h"
+
 /* Protected */
 
 std::string TaskNormal::getPasswords() {
@@ -94,19 +96,27 @@ void TaskNormal::setTotalHashesFromProgress(uint64_t current, uint64_t max,
       // well, if we don't have any info about password count, we're screwed
       return;
     }
-    File rule_file;
-    if (directory_.find("rules", rule_file)) {
-      std::ifstream rulesStream(rule_file.getRelativePath().c_str());
-      size_t rules_count = 0;
-      std::string line;
-      while (std::getline(rulesStream, line)) {
-        if (!line.empty()) {
-          ++rules_count;
+    std::string rule_application_mode;
+    if (task_config_.find(ConfigTask::RULE_APPLICATION_MODE, rule_application_mode)) {
+      std::string rule_counts;
+      if (task_config_.find(ConfigTask::RULE_COUNTS, rule_counts)) {
+        std::vector<std::string> rule_counts_vec = split(rule_counts, ';');
+        size_t rules_count = 0;
+        if (rule_application_mode == "0") {
+            for (std::string rule_count : rule_counts_vec) {
+                rules_count += AgentUtils::stoull(rule_count);
+            }
+        } else if (rule_application_mode == "1") {
+            rules_count = 1;
+            for (std::string rule_count : rule_counts_vec) {
+                rules_count *= AgentUtils::stoull(rule_count);
+            }
         }
+
+        // subtract invalid rule count, as those are not applied
+        rules_count -= invalid_rules_count;
+        total_hashes_ *= rules_count;
       }
-      // subtract invalid rule count, as those are not applied
-      rules_count -= invalid_rules_count;
-      total_hashes_ *= rules_count;
     }
     total_hashes_ *= salt_count;
   }

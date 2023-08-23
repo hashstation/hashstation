@@ -357,10 +357,15 @@ class FcJob(Base):
     
     @hybrid_property
     def rules_multiplifier(self):
-        rulesMultiplier = 0
-        for job_rule in self.rules:
-            rulesMultiplier += job_rule.rule.count
-        return rulesMultiplier
+        rules_multiplier = 0
+        if self.rule_application_mode == 0:
+            for job_rule in self.rules:
+                rules_multiplier += job_rule.rule.count
+        elif self.rule_application_mode == 1: # dot product
+            rules_multiplier = 1
+            for job_rule in self.rules:
+                rules_multiplier *= job_rule.rule.count
+        return rules_multiplier
 
     @hybrid_property
     def workunit_sum_time_str(self):

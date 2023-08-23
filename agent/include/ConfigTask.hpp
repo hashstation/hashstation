@@ -152,6 +152,8 @@ class ConfigTask {
         static const char *EXTRA_HC_ARGS;
         static const char *BENCH_RUNTIME_LIMIT;
         static const char *WORKUNIT_STATUS_UPDATE;
+        static const char *RULE_APPLICATION_MODE;
+        static const char *RULE_COUNTS;
 };
 
 #endif // CONFIGTASK_HPP

@@ -20,12 +20,17 @@ def check_mask_syntax(mask):
     if not re.fullmatch("^(\?[ludhHsab1234?]|[^\?])+$", mask):
         abort(400, 'Wrong mask ' + mask)
 
-def compute_rules_keyspace(rules):
+def compute_rules_keyspace(rules, rule_application_mode):
     rulesKeyspace = 0
-    for rule in rules:
-        r = FcRule.query.filter(FcRule.id == rule['id']).first()
-        rulesKeyspace += r.count
-
+    if rule_application_mode == 0:
+        for rule in rules:
+            r = FcRule.query.filter(FcRule.id == rule['id']).first()
+            rulesKeyspace += r.count
+    elif rule_application_mode == 1: # dot product
+        rulesKeyspace = 1
+        for rule in rules:
+            r = FcRule.query.filter(FcRule.id == rule['id']).first()
+            rulesKeyspace *= r.count
     return rulesKeyspace
 
 def compute_keyspace_from_mask(mask, charsetsSize=dict(), thresh=None):

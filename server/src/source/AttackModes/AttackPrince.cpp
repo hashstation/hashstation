@@ -94,8 +94,6 @@ bool CAttackPrince::makeWorkunit()
     std::string maxElemInChain = std::to_string(m_job->getMaxElemInChain());
     configFile << "|||max_elem_in_chain|UInt|" << maxElemInChain.size() << "|" << maxElemInChain << "|||\n";
 
-    configFile.close();
-
     /** Create data file with hashes */
     retval = config.download_path(name2, path);
     if (retval)
@@ -183,6 +181,7 @@ bool CAttackPrince::makeWorkunit()
 
         if (m_job->getAttackSubmode() == 1) {
             std::vector<PtrRule> ruleVec = m_job->getRules();
+            std::string ruleCounts;
             for (PtrRule &rule : ruleVec) {
               std::ifstream rules;
               rules.open(Config::rulesDir + rule->getPath());
@@ -194,11 +193,20 @@ bool CAttackPrince::makeWorkunit()
               }
 
               rulesFile << rules.rdbuf();
+
+              ruleCounts += (std::to_string(rule->getCount()) + ";");
             }
+
+            ruleCounts.pop_back(); // remove last ;
+            configFile << "|||rule_counts|String|" << ruleCounts.size() << "|" << ruleCounts << "|||\n";
+            configFile << "|||rule_application_mode|UInt|1|" << std::to_string(m_job->getRuleApplicationMode())
+                       << "|||\n";
         }
 
         rulesFile.close();
     }
+
+    configFile.close();
 
     /** Fill in the workunit parameters */
     wu.clear();

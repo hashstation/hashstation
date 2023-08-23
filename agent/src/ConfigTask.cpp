@@ -29,6 +29,8 @@ const char *ConfigTask::SLOW_CANDIDATES = "slow_candidates";
 const char *ConfigTask::EXTRA_HC_ARGS = "extra_hc_args";
 const char *ConfigTask::BENCH_RUNTIME_LIMIT = "bench_runtime_limit";
 const char *ConfigTask::WORKUNIT_STATUS_UPDATE = "workunit_status_update";
+const char *ConfigTask::RULE_APPLICATION_MODE = "rule_application_mode";
+const char *ConfigTask::RULE_COUNTS = "rule_counts";
 
 /* Private */
 
@@ -92,6 +94,8 @@ void ConfigTask::initSupported() {
   supported_.push_back(ConfigTask::EXTRA_HC_ARGS);
   supported_.push_back(ConfigTask::BENCH_RUNTIME_LIMIT);
   supported_.push_back(ConfigTask::WORKUNIT_STATUS_UPDATE);
+  supported_.push_back(ConfigTask::RULE_APPLICATION_MODE);
+  supported_.push_back(ConfigTask::RULE_COUNTS);
 }
 
 bool ConfigTask::isSupported(const std::string& key) {

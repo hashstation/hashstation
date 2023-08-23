@@ -33,7 +33,7 @@ def process_job_0(job):
     ruleFileMultiplier = 1
 
     if job['attack_settings']['rules']:
-        ruleFileMultiplier = compute_rules_keyspace(job['attack_settings']['rules'])
+        ruleFileMultiplier = compute_rules_keyspace(job['attack_settings']['rules'], job['attack_settings'].get('rule_application_mode', 0))
 
         for rule in job['attack_settings']['rules']:
             if not rule:
@@ -309,7 +309,7 @@ def process_job_8(job):
     
     ruleFileMultiplier = 0
     if job['attack_settings']['rules']:
-        ruleFileMultiplier = compute_rules_keyspace(job['attack_settings']['rules'])
+        ruleFileMultiplier = compute_rules_keyspace(job['attack_settings']['rules'], job['attack_settings'].get('rule_application_mode', 0))
 
         for rule in job['attack_settings']['rules']:
             if not rule:
@@ -356,7 +356,7 @@ def process_job_9(job):
 
     ruleFileMultiplier = 1
     if job['attack_settings']['rules']:
-        ruleFileMultiplier = compute_rules_keyspace(job['attack_settings']['rules'])
+        ruleFileMultiplier = compute_rules_keyspace(job['attack_settings']['rules'], job['attack_settings'].get('rule_application_mode', 0))
 
         for rule in job['attack_settings']['rules']:
             if not rule:

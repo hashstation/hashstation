@@ -340,7 +340,7 @@ def computeCrackingTime(data):
             dictsKeyspace += dict['keyspace']
         rulesKeyspace = 1
         if attackSettings['rules']:
-            rulesKeyspace = compute_rules_keyspace(attackSettings['rules'])
+            rulesKeyspace = compute_rules_keyspace(attackSettings['rules'], attackSettings.get('rule_application_mode', 0))
 
         keyspace = dictsKeyspace * rulesKeyspace
 
@@ -382,7 +382,7 @@ def computeCrackingTime(data):
              abort(400, 'Unable to compute job keyspace.')
         rulesKeyspace = 1
         if attackSettings['rules']:
-            rulesKeyspace = compute_rules_keyspace(attackSettings['rules'])
+            rulesKeyspace = compute_rules_keyspace(attackSettings['rules'], attackSettings.get('rule_application_mode', 0))
 
         keyspace = dictsKeyspace * rulesKeyspace
 
@@ -398,7 +398,7 @@ def computeCrackingTime(data):
 
         rulesKeyspace = 1
         if attackSettings['rules']:
-            rulesKeyspace = compute_rules_keyspace(attackSettings['rules'])
+            rulesKeyspace = compute_rules_keyspace(attackSettings['rules'], attackSettings.get('rule_application_mode', 0))
         keyspace = keyspace * rulesKeyspace
 
         # Keyspace control
