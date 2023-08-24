@@ -5,18 +5,33 @@
 
 <template>
   <div class="cont">
-    <v-card-title class="py-2">
-      <v-text-field
-        v-model="search"
-        clearable
-        flat
-        outlined
-        prepend-inner-icon="mdi-database-search"
-        label="Search by password or hash"
-        single-line
-        hide-details
-      />
-    </v-card-title>
+    <v-row class="align-center">
+      <v-col>
+        <v-card-title class="py-2">
+          <v-text-field
+            v-model="search"
+            clearable
+            flat
+            outlined
+            prepend-inner-icon="mdi-database-search"
+            label="Search by password or hash"
+            single-line
+            hide-details
+          />
+        </v-card-title>
+      </v-col>
+      <v-col>
+        <v-btn
+        @click="exportCrackedHashes"
+        color="primary"
+        >
+          <span>Export cracked hashes</span>
+          <v-icon right>
+            mdi-export
+          </v-icon>
+        </v-btn>
+      </v-col>
+    </v-row>
     <v-divider />
     <v-data-table
       ref="table"
@@ -141,7 +156,20 @@
       updateStatus: function (e) {
         this.status = e;
         this.$refs.table.updatePagination({page: 1, totalItems: this.totalItems})
-      }
+      },
+      exportCrackedHashes () {
+          this.axios.get(this.$serverAddr + '/hashes/exportCrackedHashes').then((response) => {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', "cracked_hashes.csv"); 
+          document.body.appendChild(link);
+          link.click();
+        })
+        .catch((error) => {
+          console.error('Error downloading file:', error);
+        });
+    },
     }
   }
 </script>

@@ -5,9 +5,10 @@
 
 import base64
 import logging
+import io
 from operator import or_
 
-from flask import request
+from flask import request, send_file
 from flask_restx import Resource
 
 from src.api.apiConfig import api
@@ -57,3 +58,25 @@ class hashCache(Resource):
 
 
         return hashes.paginate(page, per_page, error_out=True)
+
+@ns.route('/exportCrackedHashes')
+class exportCrackedHashes(Resource):
+    def get(self):
+        """
+        Exports cracked password hashes
+        """
+        crackedHashes = io.BytesIO()
+
+        hashes = FcHash.query.filter(FcHash.result != None).all()
+        crackedHashes.write(b'Hash,Hash type,Password\n')
+
+        for h in hashes:
+            crackedHashes.write(h.hashText.encode('utf-8'))
+            crackedHashes.write(b',')
+            crackedHashes.write(str(h.hash_type).encode('utf-8'))
+            crackedHashes.write(b',')
+            crackedHashes.write(h.password.encode('utf-8'))
+            crackedHashes.write(b'\n')
+
+        crackedHashes.seek(0)
+        return send_file(crackedHashes, mimetype="text/csv")
