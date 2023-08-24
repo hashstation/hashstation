@@ -42,7 +42,7 @@ if [ $BUILD_SERVER = "y" ]; then
   source installer/install_daemons.sh
 
   pkill -f pcfg_monitor.py
-  pkill -f measureUsage.py
+  pkill -f measure_usage.py
 
   echo "Starting Fitcrack server again..."
   MYDIR=$(pwd)

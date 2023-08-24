@@ -288,7 +288,7 @@ if [ $INSTALL_BACKEND = "y" ]; then
   echo "Installed to $APACHE_DOCUMENT_ROOT/fitcrackBE."
 fi
 
-sed -i "s|http://localhost:5000|$BACKEND_URI:$BACKEND_PORT|g" $BOINC_PROJECT_DIR/bin/measureUsage.py
+sed -i "s|http://localhost:5000|$BACKEND_URI:$BACKEND_PORT|g" $BOINC_PROJECT_DIR/bin/measure_usage.py
 
 #######################
 # Configure frontend #

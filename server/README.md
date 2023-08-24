@@ -11,7 +11,7 @@ This readme describes the process process of manual Fitcrack server installation
 * **bitwise_validator** (Fitcrack-specific BOINC daemon)
 * **assimilator** (Fitcrack-specific BOINC daemon)
 * **trickler** (Fitcrack-specific BOINC daemon)
-* **measureUsage.py** (Fitcrack-specific BOINC daemon)
+* **measure_usage.py** (Fitcrack-specific BOINC daemon)
 * **pcfg_monitor.py** (Fitcrack-specific BOINC daemon)
 
 (Note: For **Agent** and **Webadmin**, there are separate READMEs)
