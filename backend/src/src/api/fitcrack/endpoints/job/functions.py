@@ -206,8 +206,17 @@ def create_job(data):
         db_host_activity = FcHostActivity(job_id=db_job.id, boinc_host_id=db_host.id)
         db.session.add(db_host_activity)
 
+    lookupKnownHashes = job.get('lookup_known_hashes', 1)
+
     for hashObj in data['hash_settings']['hash_list']:
         hash = FcHash(job_id=db_job.id, hash_type=job['hash_settings']['hash_type'], hash=hashObj['hash'])
+
+        if lookupKnownHashes:
+            known_hash = FcHash.query.filter(FcHash.hash == hash.hash, FcHash.result != None).first()
+            if known_hash:
+                hash.result = known_hash.result
+                hash.time_cracked = datetime.datetime.utcnow()
+
         db.session.add(hash)
 
     perms = FcUserPermission(user_id=current_user.id, job_id=db_job.id, view=1, modify=1, operate=1, owner=1)

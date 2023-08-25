@@ -543,8 +543,17 @@
                     v-if="!$optimizedOnly"
                     v-model="optimized"
                     label="Use optimized computing kernels"
-                    hint="Faster computation, limits maximal length of passwords."
                   />
+                  <div class="sublabel-text">Much faster computation, but limits maximal length of passwords.</div>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col>
+                  <v-checkbox
+                    v-model="lookupKnownHashes"
+                    label="Internal hash lookup"
+                  />
+                  <div class="sublabel-text">Retrieve passwords from previously cracked hashes. This reduces the need to re-crack known hashes, saving time and resources.</div>
                 </v-col>
               </v-row>
               <v-row>
@@ -767,7 +776,7 @@
       ...mapTwoWayState('jobForm', twoWayMap([
         'step', 'attackSettingsTab', 'validatedHashes', 'name', 'inputMethod', 'hashList', 'hashType', 'ignoreHashes', 'startDate', 
         'endDate', 'template', 'comment', 'hosts', 'startNow', 'endNever', 'timeForJob', 'deviceTypes', 'workloadProfile', 'priority',
-        'optimized', 'extraHcArgs', 'fixedWorkunitSize',
+        'optimized', 'extraHcArgs', 'fixedWorkunitSize', 'lookupKnownHashes',
       ])),
       ...mapGetters('jobForm', ['jobSettings', 'valid', 'validAttackSpecificSettings', 'keyspaceKnown']),
       templateItems () {

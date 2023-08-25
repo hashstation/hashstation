@@ -3,8 +3,8 @@ v2.4.0 -> v?
 New features:
 * New option 'Use local (prestored) dictionaries on hosts' when 'Fragmentation of dictionaries' is set to 'On hosts'. Check README for more details.
 * New option in the job detail view to export cracked/non-cracked hashes to file.
-* New option in the 'Hashes' to export cracked hashes to CSV file.
-* New option in the 'Hashes' to delete selected hashes.
+* New option in 'Hashes' to export cracked hashes to CSV file.
+* New option in 'Hashes' to delete selected hashes.
 * New column 'Est. remaining time' in the job workunits view, which is based on estimated end time computed by hashcat.
 * Added possibility to select device types (CPU or GPU) to be used for cracking in Job's Host settings and also in host's 'Settings'.
 * Added possibility to change hashcat's workload profile in job's 'Host settings' and also in host's 'Settings'.
@@ -32,4 +32,5 @@ Fixes:
 * Hosts view: job is active if its status is running or finishing.
 * Fixed speed numbers in job detail page when cracking salted hashes.
 * Fixed issue when some workunits could not be fully computed.
+* Fixed broken sorting in 'Hashes'.
 

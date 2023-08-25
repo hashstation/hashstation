@@ -48,6 +48,13 @@ class hashCache(Resource):
                                        FcHash.hash.like(bytes('%' + args.search + '%', "utf-8"))))
 
         if args.order_by:
+            # Remap some hybrid properties to existing DB columns
+            if args.order_by == "password":
+                args.order_by = "result"
+
+            if args.order_by == "hash_type_name":
+                args.order_by = "hash_type"
+
             orderBy = getattr(FcHash, args.order_by)
             if args.descending:
                 orderBy = orderBy.desc()

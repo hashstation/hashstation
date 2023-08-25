@@ -159,8 +159,8 @@
           params: {
             'page': this.pagination.page,
             'per_page': this.pagination.rowsPerPage,
-            'order_by': this.pagination.sortBy,
-            'descending': this.pagination.descending,
+            'order_by': this.pagination.sortBy[0],
+            'descending': this.pagination.sortDesc[0],
             'search': this.search
           }
         }).then((response) => {

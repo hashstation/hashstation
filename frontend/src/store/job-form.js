@@ -62,6 +62,7 @@ export const empty = {
   slowCandidates: false,
   extraHcArgs: '',
   fixedWorkunitSize: 0,
+  lookupKnownHashes: true,
 }
 
 export default {
@@ -123,6 +124,7 @@ export default {
         'optimized': Vue.prototype.$optimizedOnly ? true : state.optimized,
         "extra_hc_args": state.extraHcArgs,
         'fixed_workunit_size': state.fixedWorkunitSize,
+        'lookup_known_hashes': state.lookupKnownHashes,
       }
     },
     validAttackSpecificSettings (state) {
