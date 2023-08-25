@@ -42,3 +42,6 @@ ADD `bench_runtime_limit` int(10) unsigned NOT NULL DEFAULT '30';
 
 ALTER TABLE `fc_settings`
 ADD `workunit_status_update` int(10) unsigned NOT NULL DEFAULT '5';
+
+ALTER TABLE `fc_hash`
+ADD `deleted` tinyint(1) NOT NULL DEFAULT '0';

@@ -22,19 +22,32 @@
       </v-col>
       <v-col>
         <v-btn
-        @click="exportCrackedHashes"
-        color="primary"
+        v-if="selectedHashes.length > 0"
+        @click="multiDelete"
+        text
+        class="mr-2"
         >
-          <span>Export cracked hashes</span>
-          <v-icon right>
+          <v-icon left>
+            mdi-delete
+          </v-icon>
+          Delete
+        </v-btn>
+        <v-btn
+        @click="exportAllCrackedHashes"
+        text
+        class="mr-2"
+        >
+          <v-icon left>
             mdi-export
           </v-icon>
+          Export all cracked hashes
         </v-btn>
       </v-col>
     </v-row>
     <v-divider />
     <v-data-table
       ref="table"
+      v-model="selectedHashes"
       :headers="headers"
       :items="hashes"
       :search="search"
@@ -42,6 +55,8 @@
       :server-items-length="totalItems"
       :loading="loading"
       :footer-props="{itemsPerPageOptions: [25,50,100], itemsPerPageText: 'Passwords per page'}"
+      show-select
+      fixed-header
     >
       <template v-slot:item.password="{ item }">
         {{ item.password || '–' }}
@@ -109,6 +124,7 @@
         totalItems: 0,
         pagination: {},
         loading: true,
+        selectedHashes: [],
         headers: [
           {text: 'Password', value: 'password', align: 'start', sortable: true},
           {text: 'Hash type', value: 'hash_type_name', align: 'start', sortable: true},
@@ -157,7 +173,7 @@
         this.status = e;
         this.$refs.table.updatePagination({page: 1, totalItems: this.totalItems})
       },
-      exportCrackedHashes () {
+      exportAllCrackedHashes () {
           this.axios.get(this.$serverAddr + '/hashes/exportCrackedHashes').then((response) => {
           const url = window.URL.createObjectURL(new Blob([response.data]));
           const link = document.createElement('a');
@@ -170,6 +186,17 @@
           console.error('Error downloading file:', error);
         });
     },
+    multiDelete () {
+        if (this.selectedHashes.length == 0) return
+        //
+        this.loading = true
+        this.axios.patch(this.$serverAddr + '/hashes', {
+          hash_ids: this.selectedHashes.map(h => h.id)
+        })
+        .then((response) => {
+          this.loadHashes()
+        })
+      },
     }
   }
 </script>

@@ -3,7 +3,7 @@
    * Licence: MIT, see LICENSE
 '''
 
-from flask_restx import inputs
+from flask_restx import reqparse, inputs
 
 from src.api.fitcrack.argumentsParser import pagination
 
@@ -13,3 +13,7 @@ hashes_parser.add_argument('search', type=str, required=False, help='Filter hash
 hashes_parser.add_argument('order_by', type=str, required=False, help='Ordering of results',
                                 choices=['result', 'hash_type', 'hash', 'added'])
 hashes_parser.add_argument('descending', type=inputs.boolean, required=False)
+
+
+hashList_argument = reqparse.RequestParser()
+hashList_argument.add_argument('hash_ids', type=list, required=True, location='json')

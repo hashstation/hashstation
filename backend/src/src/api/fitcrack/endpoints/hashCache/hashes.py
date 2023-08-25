@@ -10,13 +10,14 @@ from operator import or_
 
 from flask import request, send_file
 from flask_restx import Resource
-
+from flask_restx import abort
 from src.api.apiConfig import api
-from src.api.fitcrack.endpoints.hashCache.argumentsParser import hashes_parser
+from src.api.fitcrack.endpoints.hashCache.argumentsParser import hashes_parser, hashList_argument
 from src.api.fitcrack.endpoints.hashCache.responseModels import page_of_hashes_model
 from src.api.fitcrack.endpoints.host.responseModels import page_of_hosts_model
 
 from src.database.models import FcHash
+from src.database import db
 
 log = logging.getLogger(__name__)
 ns = api.namespace('hashes', description='Operations with hashes.')
@@ -38,7 +39,7 @@ class hashCache(Resource):
         page = args.get('page', 1)
         per_page = args.get('per_page', 10)
 
-        hashes = FcHash.query
+        hashes = FcHash.query.filter_by(deleted=False)
 
 
         if args.search:
@@ -55,9 +56,33 @@ class hashCache(Resource):
         else:
             hashes = hashes.order_by(FcHash.id.desc())
 
-
-
         return hashes.paginate(page, per_page, error_out=True)
+    
+    @api.expect(hashList_argument)
+    @api.response(200, 'Hashes successfully deleted.')
+    @api.response(500, 'Failed to delete selected hashes.')
+    def patch(self):
+        """
+        Delete selected hashes.
+        """
+
+        args = hashList_argument.parse_args(request)
+        ids = args['hash_ids']
+        query = FcHash.query.filter(FcHash.id.in_(ids))
+
+        hashes = query.all()
+        if not hashes:
+            abort(400, 'No hashes selected.')
+
+        for h in hashes:
+            h.deleted = not h.deleted
+
+        try:
+            db.session.commit()
+        except:
+            return 'Oops', 500
+
+        return 'Moved', 200
 
 @ns.route('/exportCrackedHashes')
 class exportCrackedHashes(Resource):
@@ -67,7 +92,10 @@ class exportCrackedHashes(Resource):
         """
         crackedHashes = io.BytesIO()
 
-        hashes = FcHash.query.filter(FcHash.result != None).all()
+        hashes = FcHash.query.filter_by(deleted=False)
+
+        hashes = hashes.filter(FcHash.result != None).all()
+
         crackedHashes.write(b'Hash,Hash type,Password\n')
 
         for h in hashes:

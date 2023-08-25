@@ -194,7 +194,7 @@
             <v-icon left>
               {{ isTrash ? 'mdi-delete-restore' : 'mdi-delete' }}
             </v-icon>
-            {{ isTrash ? 'Restore' : 'Discard' }}
+            {{ isTrash ? 'Restore' : 'Delete' }}
           </v-btn>
           <v-btn
             text
@@ -443,7 +443,7 @@
                 </v-icon>
               </v-btn>
             </template>
-            <span>{{ isTrash ? 'Restore' : 'Discard' }}</span>
+            <span>{{ isTrash ? 'Restore' : 'Delete' }}</span>
           </v-tooltip>
         </div>
       </template>
@@ -598,7 +598,7 @@
         if (this.bin) {
           return this.bin.name
         } else if (this.isTrash) {
-          return 'Discarded Jobs'
+          return 'Deleted Jobs'
         } else {
           return this.$userCan('VIEW_ALL_JOBS') ? 'All Jobs' : 'My Jobs'
         }
@@ -767,7 +767,7 @@
         }
       },
       deleteBinConfirm () {
-        this.$root.$confirm('Delete Bin', `This will remove ${this.bin.name}. Jobs will be unassigned from the deleted bin, but will not be discarded. Are you sure?`)
+        this.$root.$confirm('Delete Bin', `This will remove ${this.bin.name}. Jobs will be unassigned from the deleted bin, but will not be deleted. Are you sure?`)
           .then((confirm) => {
             this.deleteBin(this.binId)
           })
