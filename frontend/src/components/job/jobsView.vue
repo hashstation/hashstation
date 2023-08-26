@@ -263,7 +263,14 @@
       :search="search"
       :options.sync="pagination"
       :server-items-length="totalItems"
-      :footer-props="{itemsPerPageOptions: [25,10,50,100], itemsPerPageText:'Jobs per page'}"
+      :footer-props="{
+        itemsPerPageOptions: [15, 30, 50, {
+          value: totalItems,
+          text: 'All'
+        }],
+        itemsPerPageText: 'Jobs per page'
+      }"
+      :items-per-page="15"
       show-select
       fixed-header
     >

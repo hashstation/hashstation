@@ -54,7 +54,14 @@
       :options.sync="pagination"
       :server-items-length="totalItems"
       :loading="loading"
-      :footer-props="{itemsPerPageOptions: [25,50,100], itemsPerPageText: 'Passwords per page'}"
+      :footer-props="{
+        itemsPerPageOptions: [15, 30, 50, {
+          value: totalItems,
+          text: 'All'
+        }],
+        itemsPerPageText: 'Hashes per page'
+      }"
+      :items-per-page="15"
       show-select
       fixed-header
     >
@@ -158,7 +165,7 @@
         this.axios.get(this.$serverAddr + '/hashes', {
           params: {
             'page': this.pagination.page,
-            'per_page': this.pagination.rowsPerPage,
+            'per_page': this.pagination.itemsPerPage,
             'order_by': this.pagination.sortBy[0],
             'descending': this.pagination.sortDesc[0],
             'search': this.search

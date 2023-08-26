@@ -32,5 +32,5 @@ Fixes:
 * Hosts view: job is active if its status is running or finishing.
 * Fixed speed numbers in job detail page when cracking salted hashes.
 * Fixed issue when some workunits could not be fully computed.
-* Fixed broken sorting in 'Hashes'.
+* Fixed broken sorting and pagination in 'Hashes'.
 
