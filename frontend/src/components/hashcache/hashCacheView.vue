@@ -33,6 +33,16 @@
           Delete
         </v-btn>
         <v-btn
+        @click="uploadCrackedHashesDialog=true"
+        text
+        class="mr-2"
+        >
+          <v-icon left>
+            mdi-import
+          </v-icon>
+          Import cracked hashes
+        </v-btn>
+        <v-btn
         @click="exportAllCrackedHashes"
         text
         class="mr-2"
@@ -109,20 +119,67 @@
         {{ $moment.utc(item.added).local().format('D.M.YYYY H:mm:ss') }}
       </template>
       <template v-slot:item.job="{ item }">
-      <router-link
-        :to="{ name: 'jobDetail', params: { id: item.job.id } }"
-        class="middle"
-      >
-        {{ item.job.name }}
-      </router-link>
+        <div v-if="item.job">
+          <router-link
+            :to="{ name: 'jobDetail', params: { id: item.job.id } }"
+            class="middle"
+          >
+            {{ item.job.name }}
+          </router-link>
+        </div>
       </template>
     </v-data-table>
+
+    <v-dialog
+      v-model="uploadCrackedHashesDialog"
+      max-width="400px"
+    >
+      <v-card>
+        <v-card-title>
+          <h2>Upload cracked hashes</h2>
+        </v-card-title>
+        
+        <v-alert
+          tile
+          text
+          type="warning"
+          class="mb-0"
+        >
+          Imported files must have a .csv extension.
+          Expected CSV header: Hash,Hash type,Password
+        </v-alert>
+
+        <v-card-text>
+          <file-uploader
+            :url="this.$serverAddr + '/hashes/importCrackedHashes'"
+            @uploadComplete="uploadCrackedHashesDialog = false;loadHashes()"
+          />
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            color="primary"
+            text
+            @click.stop="uploadCrackedHashesDialog=false"
+          >
+            Cancel
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
 <script>
+  import tile from '@/components/tile/fc_tile.vue'
+  import FileUploader from "@/components/fileUploader/fileUploader.vue";
+
   export default {
     name: "HashesView",
+    components: {
+      FileUploader,
+      'fc-tile': tile,
+    },
     data: function () {
       return {
         interval: null,
@@ -131,6 +188,7 @@
         totalItems: 0,
         pagination: {},
         loading: true,
+        uploadCrackedHashesDialog: false,
         selectedHashes: [],
         headers: [
           {text: 'Password', value: 'password', align: 'start', sortable: true},

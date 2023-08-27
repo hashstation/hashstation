@@ -3,7 +3,7 @@ v2.4.0 -> v?
 New features:
 * New option 'Use local (prestored) dictionaries on hosts' when 'Fragmentation of dictionaries' is set to 'On hosts'. Check README for more details.
 * New option in the job detail view to export cracked/non-cracked hashes to file.
-* New option in 'Hashes' to export cracked hashes to CSV file.
+* New option in 'Hashes' to import/export cracked hashes from/to CSV file.
 * New option in 'Hashes' to delete selected hashes.
 * New column 'Est. remaining time' in the job workunits view, which is based on estimated end time computed by hashcat.
 * Added possibility to select device types (CPU or GPU) to be used for cracking in Job's Host settings and also in host's 'Settings'.

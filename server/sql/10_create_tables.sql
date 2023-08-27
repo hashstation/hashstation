@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `fc_dictionary` (
 
 CREATE TABLE IF NOT EXISTS`fc_hash` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `job_id` bigint(20) unsigned NOT NULL,
+  `job_id` bigint(20) unsigned DEFAULT NULL,
   `hash_type` int(11) unsigned NOT NULL,
   `hash` longblob NOT NULL,
   `result` longtext DEFAULT NULL,

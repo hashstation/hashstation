@@ -916,7 +916,7 @@ class FcHash(Base):
     __tablename__ = 'fc_hash'
 
     id = Column(BigInteger, primary_key=True)
-    job_id = Column(BigInteger, ForeignKey(FcJob.id), nullable=False)
+    job_id = Column(BigInteger, ForeignKey(FcJob.id), nullable=True)
     hash_type = Column(Integer, nullable=False)
     hash = Column(LargeBinary, nullable=False)
     result = Column(String(400, collation='utf8_bin'))

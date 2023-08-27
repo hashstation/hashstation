@@ -6,15 +6,19 @@
 import base64
 import logging
 import io
+import csv
+import datetime
 from operator import or_
 
-from flask import request, send_file
+from flask import request, redirect, send_file
 from flask_restx import Resource
 from flask_restx import abort
 from src.api.apiConfig import api
 from src.api.fitcrack.endpoints.hashCache.argumentsParser import hashes_parser, hashList_argument
 from src.api.fitcrack.endpoints.hashCache.responseModels import page_of_hashes_model
 from src.api.fitcrack.endpoints.host.responseModels import page_of_hosts_model
+
+from src.api.fitcrack.responseModels import simpleResponse
 
 from src.database.models import FcHash
 from src.database import db
@@ -115,3 +119,63 @@ class exportCrackedHashes(Resource):
 
         crackedHashes.seek(0)
         return send_file(crackedHashes, mimetype="text/csv")
+
+
+@ns.route('/importCrackedHashes')
+class importCrackedHashes(Resource):
+
+    @api.marshal_with(simpleResponse)
+    def post(self):
+        """
+        Uploads pre-cracked hashes on the server.
+        """
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            abort(500, 'No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit a empty part without filename
+        if file.filename == '':
+            abort(500, 'No selected file')
+
+        if not file.filename.endswith('.csv'):
+            abort(400, 'File is not a CSV')
+            return redirect(request.url)
+
+        # Read the content and wrap it in a StringIO object
+        file.seek(0)
+        file_content = file.read().decode('utf-8')
+        file_stream = io.StringIO(file_content)
+        csv_reader = csv.DictReader(file_stream)
+        headers = csv_reader.fieldnames
+
+        # Check for mandatory headers
+        mandatory_headers = {"Hash", "Hash type", "Password"}
+        if not mandatory_headers.issubset(set(headers)):
+            abort(400, 'CSV does not have the mandatory headers')
+            return redirect(request.url)
+        
+        # Iterate over rows in the CSV
+        for row in csv_reader:
+            hash_type = row["Hash type"]
+            hash_value = row["Hash"]
+            password = row["Password"]
+            hash_bytes = hash_value.encode('utf-8')
+            result = password.encode('utf-8').hex()
+            new_hash = FcHash(hash_type=hash_type, hash=hash_bytes, result=result, time_cracked=datetime.datetime.utcnow())
+            db.session.add(new_hash)
+
+        db.session.commit()
+
+        try:
+            # db.session.commit()
+            pass
+        except:
+            abort(400, 'Unable to process uploaded CSV with hashes.')
+            return redirect(request.url)
+
+        return {
+            'message': 'Cracked hashes successfully uploaded.',
+            'status': True
+        }
