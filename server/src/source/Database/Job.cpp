@@ -52,6 +52,7 @@ CJob::CJob(DbMap &jobMap, CSqlLoader * sqlLoader)
         this->m_slowCandidates = std::stoul(jobMap["slow_candidates"]);
         this->m_fixedWorkunitSize = std::stoul(jobMap["fixed_workunit_size"]);
         this->m_extraHcArgs = jobMap["extra_hc_args"];
+        this->m_ruleApplicationMode = static_cast<RuleApplicationMode>(std::stoul(jobMap["rule_application_mode"]));
         this->m_killFlag = std::stoul(jobMap["kill"]) != 0;
 
         if (this->m_keyspace == 0 && this->m_id != Config::benchAllId)

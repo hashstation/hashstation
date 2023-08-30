@@ -114,7 +114,6 @@ bool CAttackPcfg::makeWorkunit()
         return false;
     }
 
-
     f.open(path);
     if (!f.is_open())
     {
@@ -137,6 +136,18 @@ bool CAttackPcfg::makeWorkunit()
         (m_job->getWorkloadProfile() == 0) ? m_host->getWorkloadProfile()
                                            : m_job->getWorkloadProfile(),
         m_job->getSlowCandidatesFlag(), jobExtraHcArgs);
+
+    if (m_job->getAttackSubmode() == 1) {
+        std::vector<PtrRule> ruleVec = m_job->getRules();
+        std::string ruleCounts;
+        for (PtrRule &rule : ruleVec) {
+            ruleCounts += (std::to_string(rule->getCount()) + ";");
+        }
+
+        ruleCounts.pop_back(); // remove last ;
+        f << "|||rule_counts|String|" << ruleCounts.size() << "|" << ruleCounts << "|||\n";
+        f << "|||rule_application_mode|UInt|1|" << std::to_string(m_job->getRuleApplicationMode()) << "|||\n";
+    }
 
     /** Output hc_keyspace */
     auto limitLine = makeLimitingConfigLine("hc_keyspace", "BigUInt", std::to_string(newKeyspace));

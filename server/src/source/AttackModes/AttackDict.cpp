@@ -73,6 +73,18 @@ bool CAttackDict::makeWorkunit()
                                            : m_job->getWorkloadProfile(),
         m_job->getSlowCandidatesFlag(), jobExtraHcArgs);
 
+    if (m_job->getAttackSubmode() == 1) {
+        std::vector<PtrRule> ruleVec = m_job->getRules();
+        std::string ruleCounts;
+        for (PtrRule &rule : ruleVec) {
+            ruleCounts += (std::to_string(rule->getCount()) + ";");
+        }
+
+        ruleCounts.pop_back(); // remove last ;
+        configFile << "|||rule_counts|String|" << ruleCounts.size() << "|" << ruleCounts << "|||\n";
+        configFile << "|||rule_application_mode|UInt|1|" << std::to_string(m_job->getRuleApplicationMode()) << "|||\n";
+    }
+
     if (m_job->getDistributionMode() == DictDistributionMode::fragmentation_on_server) {
       // Number of passwords in the sent dictionary (the dictionary fragment).
       std::string dict1Keyspace = std::to_string(m_workunit->getHcKeyspace());

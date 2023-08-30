@@ -21,8 +21,7 @@ void AttackPCFG::addSpecificArguments() {
   }
   else if (attack_submode_ == "1"){
 
-    addArgument("-r");
-    addRequiredFile("rules");
+    addRules();
 
   }
   else {

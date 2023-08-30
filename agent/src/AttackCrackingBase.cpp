@@ -100,3 +100,60 @@ void AttackCrackingBase::addOptionalFile(const std::string& file_name, const std
     addArgument(file.getRelativePath());
   }
 }
+
+void AttackCrackingBase::addRules() {
+  std::string rule_application_mode;
+  if (config_.find(ConfigTask::RULE_APPLICATION_MODE, rule_application_mode)) {
+    if (rule_application_mode == "0") {
+      addArgument("-r");
+      addRequiredFile("rules");
+    } else if (rule_application_mode == "1") {
+      std::string rule_counts;
+      if (config_.find(ConfigTask::RULE_COUNTS, rule_counts)) {
+        File rulesFile;
+        if (!directory_.find("rules", rulesFile)) {
+            AgentUtils::runtimeException("Failed to find the rules file.");
+        }
+
+        std::ifstream rules(rulesFile.getRelativePath());
+        if (!rules.is_open()) {
+            AgentUtils::runtimeException("Failed to open the rules file.");
+        }
+
+        std::vector<std::string> rule_counts_vec = split(rule_counts, ';');
+        for (unsigned i = 0; i < rule_counts_vec.size(); i++) {
+          std::string temp_rule_name = "rule" + std::to_string(i + 1);
+          std::ofstream tmp_rule(temp_rule_name);
+          if (!tmp_rule.is_open()) {
+              AgentUtils::runtimeException("Failed to open rule file: " + temp_rule_name);
+          }
+
+          unsigned rule_count = std::stoull(rule_counts_vec[i]);
+          for (unsigned l = 0; l < rule_count; ++l) {
+              std::string rule;
+              if (!std::getline(rules, rule)) {
+                Logging::debugPrint(Logging::Detail::CustomOutput, "Unable to read line " + std::to_string(l + 1) + " from rules file");
+                break;
+              }
+              tmp_rule << rule << std::endl;
+          }
+
+          addArgument("-r");
+          addArgument(temp_rule_name);
+
+          files_to_delete_.push_back(temp_rule_name);
+        }
+      } else {
+        AgentUtils::runtimeException("No rule counts for attack with rules.");
+      }
+    }
+  } else {
+    AgentUtils::runtimeException("No rule application mode for attack with rules.");
+  }
+}
+
+AttackCrackingBase::~AttackCrackingBase() {
+  for (auto& file : files_to_delete_) {
+    ::remove(file.c_str());
+  }
+}

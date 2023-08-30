@@ -18,8 +18,7 @@ void AttackDictionary::addSpecificArguments() {
 
   } else if (attack_submode_ == "1") {
 
-    addArgument("-r");
-    addRequiredFile("rules");
+    addRules();
 
   } else {
     AgentUtils::runtimeException("Unsupported attack_submode = " + attack_submode_ + " attack_mode = " + attack_mode_ + " has no such attack_submode");

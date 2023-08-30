@@ -19,6 +19,8 @@ class AttackCrackingBase: public AttackBase {
 
         std::string attack_submode_;    /**< Submode from TLV */
 
+        std::vector<std::string> files_to_delete_; /**< Files to delete after attack is finished */
+
         /**
          * @brief   Adds all attack specific arguments
          */
@@ -38,6 +40,8 @@ class AttackCrackingBase: public AttackBase {
          */
         void addOptionalFile(const std::string& file_name, const std::string& argument);
 
+        void addRules();
+
 
     public:
 
@@ -49,6 +53,7 @@ class AttackCrackingBase: public AttackBase {
          */
         AttackCrackingBase(const ConfigTask& config, Directory& directory, const char* attack_mode = nullptr);
 
+        ~AttackCrackingBase();
 };
 
 #endif // ATTACKCRACKINGBASE_HPP

@@ -12,8 +12,7 @@ AttackPrince::AttackPrince(const ConfigTask &config, Directory &directory)
 void AttackPrince::addSpecificArguments() {
   AttackCrackingBase::addSpecificArguments();
   if (attack_submode_ == "1") {
-    addArgument("-r");
-    addRequiredFile("rules");
+    addRules();
   } else if(attack_submode_ != "0") {
     AgentUtils::runtimeException(
         "Unsupported attack_submode = " + attack_submode_ +

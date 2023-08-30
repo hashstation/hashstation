@@ -6,6 +6,8 @@ New features:
 * New option in 'Hashes' to import/export cracked hashes from/to CSV file.
 * New option in 'Hashes' to delete selected hashes.
 * New column 'Est. remaining time' in the job workunits view, which is based on estimated end time computed by hashcat.
+* Added support for using multiple rules.
+* Added possibility to select how multiple rules are applied - in serie (concatenated) or as a dot product.
 * Added possibility to select device types (CPU or GPU) to be used for cracking in Job's Host settings and also in host's 'Settings'.
 * Added possibility to change hashcat's workload profile in job's 'Host settings' and also in host's 'Settings'.
 * Added possibility to enable hashcat's slow candidates mode for dictionary, combinator and brute force attacks in 'Attack settings'.

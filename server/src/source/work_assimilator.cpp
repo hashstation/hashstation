@@ -360,28 +360,8 @@ void finish_workunits(vector<MysqlWorkunit *> workunits)
 void set_retry_workunit(uint64_t workunit_id)
 {
     char buf[SQL_BUF_SIZE];
+    // TODO: Check if already retried? Maybe fail when retry > 1?
     std::snprintf(buf, SQL_BUF_SIZE, "UPDATE `%s` SET retry = 1 WHERE workunit_id = %" PRIu64 " LIMIT 1;", mysql_table_workunit.c_str(), workunit_id);
-    update_mysql(buf);
-}
-
-
-/**
- *
- *
- */
-void plan_new_benchmark(uint64_t host_id)
-{
-    char buf[SQL_BUF_SIZE];
-
-    /** Plan another benchmark in future */
-    std::snprintf(buf, SQL_BUF_SIZE, "SELECT power FROM `%s` WHERE id = %" PRIu64 " LIMIT 1;", mysql_table_host.c_str(), host_id);
-    uint64_t power = get_num_from_mysql(buf);
-    uint64_t minutes = pow(2, power);
-    ++power;
-
-    std::cerr << __LINE__ << " - Planning next benchmark in " << minutes << " minutes" << std::endl;
-
-    std::snprintf(buf, SQL_BUF_SIZE, "UPDATE `%s` SET power = %" PRIu64 ", time = now() + INTERVAL %" PRIu64 " MINUTE WHERE id = %" PRIu64 ";", mysql_table_host.c_str(), power, minutes, host_id);
     update_mysql(buf);
 }
 
@@ -563,7 +543,7 @@ int assimilate_handler(WORKUNIT& wu, vector<RESULT>& /*results*/, RESULT& canoni
             if (retval != 1)
             {
                 std::cerr << __LINE__ << " - ERROR: Failed to read status code." << std::endl;
-                plan_new_benchmark(host_id);
+                set_retry_workunit(wu.id);
                 break;
             }
 
@@ -579,7 +559,7 @@ int assimilate_handler(WORKUNIT& wu, vector<RESULT>& /*results*/, RESULT& canoni
                 if (workunit_speed == 0)
                 {
                     std::cerr << __LINE__ << " - ERROR: Zero speed from benchmark workunit." << std::endl;
-                    plan_new_benchmark(host_id);
+                    set_retry_workunit(wu.id);
                     break;
                 }
 
@@ -655,7 +635,7 @@ int assimilate_handler(WORKUNIT& wu, vector<RESULT>& /*results*/, RESULT& canoni
                 std::cerr << __LINE__ << " - B_CODE: " << code <<" (bench ERROR)" << std::endl;
                 log_messages.printf(MSG_DEBUG, "code %d\n", code);
 
-                plan_new_benchmark(host_id);
+                set_retry_workunit(wu.id);
             }
         }
 
@@ -891,7 +871,7 @@ int assimilate_handler(WORKUNIT& wu, vector<RESULT>& /*results*/, RESULT& canoni
             if (retval != 1)
             {
                 std::cerr << __LINE__ << " - ERROR: Failed to read status code." << std::endl;
-                plan_new_benchmark(host_id);
+                set_retry_workunit(wu.id);
                 break;
             }
 
@@ -907,7 +887,7 @@ int assimilate_handler(WORKUNIT& wu, vector<RESULT>& /*results*/, RESULT& canoni
                 if (retval != 1)
                 {
                     std::cerr << __LINE__ << " - ERROR: Failed to read cracking_time." << std::endl;
-                    plan_new_benchmark(host_id);
+                    set_retry_workunit(wu.id);
                     break;
                 }
 
