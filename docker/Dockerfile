@@ -60,13 +60,15 @@ RUN usermod -a -G fitcrack boincadm
 RUN apt install -yq build-essential
 RUN apt install -yq m4 dh-autoreconf pkg-config git \
                     libmysqlclient-dev zlib1g zlib1g-dev \
-                    libcurl4-openssl-dev
+                    liblzma-dev libcurl4-openssl-dev
 
 # Install MySQL client
 RUN apt install -yq mysql-client
 
 # Perl
 RUN apt install -yq perl libcompress-raw-lzma-perl
+RUN yes | cpan -i Compress::Raw::Zlib
+RUN yes | cpan -i Compress::Raw::Lzma
 
 # PHP and modules
 RUN apt install -yq php php-xml php-mysql php-cli php-gd
