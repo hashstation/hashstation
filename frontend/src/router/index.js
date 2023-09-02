@@ -37,7 +37,8 @@ const testView = () => import('@/components/test/test.vue')
 const PageNotFound = () => import('@/components/pageNotFound.vue')
 const EncryptedFiles = () => import('@/components/encryptedFile/encryptedFilesView.vue')
 const Server = () => import('@/components/server/serverMonitor.vue')
-const Settings = () => import('@/components/settings/settingsView.vue')
+const SystemSettings = () => import('@/components/settings/systemSettingsView.vue')
+const NotificationSettings = () => import('@/components/settings/notificationSettingsView.vue')
 const Transfer = () => import('@/components/settings/dataTransfer.vue')
 const UnauthorizedError = () => import('@/components/errorPages/unauthorized.vue')
 
@@ -251,7 +252,7 @@ const appRoutes = [
     name: 'markovChains',
     component: markovChains,
     meta: {
-      title: 'Markov chains',
+      title: 'Markov Chains',
       icon: 'mdi-matrix',
       navtab: 1
     }
@@ -272,7 +273,7 @@ const appRoutes = [
     component: manageUsers,
     meta: {
       guard: 'MANAGE_USERS',
-      title: 'Manage users',
+      title: 'Manage Users',
       icon: 'mdi-folder-account',
       navtab: 2
     }
@@ -282,7 +283,7 @@ const appRoutes = [
     name: 'myAccount',
     component: myAccount,
     meta: {
-      title: 'My account',
+      title: 'My Account',
       icon: 'mdi-account'
     }
   },
@@ -291,17 +292,27 @@ const appRoutes = [
     name: 'server',
     component: Server,
     meta: {
-      title: 'Server monitor',
+      title: 'Server Monitor',
       icon: 'mdi-gauge',
       navtab: 2
     }
   },
   {
-    path: '/settings',
-    name: 'settings',
-    component: Settings,
+    path: '/notificationSettings',
+    name: 'notificationSettings',
+    component: NotificationSettings,
     meta: {
-      title: 'Settings',
+      title: 'Notification Settings',
+      icon: 'mdi-alert-circle',
+      navtab: 2
+    }
+  },
+  {
+    path: '/systemSettings',
+    name: 'systemSettings',
+    component: SystemSettings,
+    meta: {
+      title: 'System Settings',
       icon: 'mdi-cogs',
       navtab: 2
     }

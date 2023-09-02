@@ -221,9 +221,10 @@ CREATE TABLE IF NOT EXISTS `fc_masks_set` (
 
 CREATE TABLE IF NOT EXISTS `fc_notification_service` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `service` varchar(255) NOT NULL,
+  `service` varchar(20) NOT NULL,
   `target` varchar(255) DEFAULT NULL, -- email address or webhook URL
   `app_password` varchar(255) DEFAULT NULL,
+  `chat_id` varchar(255) DEFAULT NULL,
   `last_notification_id` bigint(20) unsigned DEFAULT NULL,
   `enabled` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)

@@ -69,7 +69,7 @@
 </template>
 
 <script>
-  import notification from '@/components/notification/fc_notification.vue'
+  import notification from '@/components/notifications/fc_notification.vue'
 
   export default {
     components: {

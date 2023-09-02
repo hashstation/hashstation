@@ -17,6 +17,7 @@ from src.api.fitcrack.endpoints.chart.chart import ns as chart_namespace
 from src.api.fitcrack.endpoints.hashcat.hashcat import ns as hashcat_namespace
 from src.api.fitcrack.endpoints.host.hosts import ns as hosts_namespace
 from src.api.fitcrack.endpoints.notifications.notifications import ns as notifications_namespace
+from src.api.fitcrack.endpoints.notificationServices.notificationServices import ns as notification_services_namespace
 from src.api.fitcrack.endpoints.job.job import ns as job_namespace
 from src.api.fitcrack.endpoints.bins.bins import ns as bins_namespace
 from src.api.fitcrack.endpoints.batches.batches import ns as batches_namespace
@@ -72,6 +73,7 @@ def initialize_app(flask_app):
     api.add_namespace(server_namespace)
     api.add_namespace(user_namespace)
     api.add_namespace(notifications_namespace)
+    api.add_namespace(notification_services_namespace)
     api.add_namespace(dictionary_namespace)
     api.add_namespace(pcfg_namespace)
     api.add_namespace(markov_namespace)

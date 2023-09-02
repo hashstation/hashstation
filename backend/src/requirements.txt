@@ -12,3 +12,4 @@ pyjwt
 Werkzeug==2.0.3
 Flask==2.0.2
 sqlalchemy==1.4.46
+apprise==1.5.0
