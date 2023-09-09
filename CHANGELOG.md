@@ -36,4 +36,4 @@ Fixes:
 * Fixed speed numbers in job detail page when cracking salted hashes.
 * Fixed issue when some workunits could not be fully computed.
 * Fixed broken sorting and pagination in 'Hashes'.
-
+* Fixed issue when it was not possible to Stop job in Finishing state.

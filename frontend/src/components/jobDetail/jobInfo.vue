@@ -70,7 +70,6 @@
               v-else-if="data.hosts.length > 0"
               key="operate"
               text
-              :disabled="data.status === '12'"
               @click="$emit('operate', operation.text)"
             >
               <v-icon left>

@@ -8,7 +8,7 @@ import os
 # HashCat settings
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 HASHCAT_EXECUTABLE = 'hashcat.bin'
-e  = 'hash_info.json'
+HASHCAT_HASH_INFO_JSON = 'hash_info.json'
 HASHCAT_DIR = ROOT_DIR + '/../hashcat/'
 HASHCAT_PATH = HASHCAT_DIR + HASHCAT_EXECUTABLE
 HASHCAT_HASH_INFO_PATH = HASHCAT_DIR + HASHCAT_HASH_INFO_JSON
