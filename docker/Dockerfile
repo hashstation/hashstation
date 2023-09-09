@@ -133,7 +133,6 @@ WORKDIR /srv/fitcrack/
 RUN pip3 install -r backend/src/requirements.txt
 
 RUN cd backend/hashcat-utils/src && make
-RUN cd backend/xtohashcat/scripts && make
 RUN cd backend/pwd_dist && make
 
 ######################################################################################

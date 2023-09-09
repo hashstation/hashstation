@@ -8,7 +8,7 @@ import os
 # HashCat settings
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 HASHCAT_EXECUTABLE = 'hashcat.bin'
-HASHCAT_HASH_INFO_JSON = 'hash_info.json'
+e  = 'hash_info.json'
 HASHCAT_DIR = ROOT_DIR + '/../hashcat/'
 HASHCAT_PATH = HASHCAT_DIR + HASHCAT_EXECUTABLE
 HASHCAT_HASH_INFO_PATH = HASHCAT_DIR + HASHCAT_HASH_INFO_JSON
@@ -34,9 +34,8 @@ RULE_DIR = '/usr/share/assets/rules'
 PROTECTEDFILES_DIR = '/usr/share/assets/encrypted-files'
 SERVER_BROWSER_ROOT = '/usr/share/assets/dictionaries'
 
-#XtoHashCat settings
-XTOHASHCAT_EXECUTABLE = ROOT_DIR + '/../xtohashcat/XtoHashcat.py'
-XTOHASHCAT_PATH = ROOT_DIR + '/../xtohashcat/'
+FILE2HASHCAT_PATH = ROOT_DIR + '/../file2hashcat/'
+FILE2HASHCAT_SCRIPT = FILE2HASHCAT_PATH + 'file2hashcat.py'
 
 # Fitcrack Settings
 SECONDS_PER_JOB = 600

@@ -6,3 +6,6 @@
 	path = hashcat
 	url = https://github.com/hashcat/hashcat
 	ignore = dirty
+[submodule "backend/file2hashcat"]
+	path = backend/file2hashcat
+	url = https://github.com/hashstation/file2hashcat

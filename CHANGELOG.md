@@ -26,7 +26,8 @@ General improvements:
 * Improved 'Add New Job' UI, small redesign.
 * It is now possible to upload dictionaries from any folders on the server.
 * It is now possible to upgrade standard (non-dockerized) Fitcrack to newer versions. Please see UPGRADE.md file.
-* Settings per hosts.
+* New settings per hosts.
+* Extract hashes from files using file2hashcat tool.
 * Updated to BOINC v7.23.
 
 Fixes:

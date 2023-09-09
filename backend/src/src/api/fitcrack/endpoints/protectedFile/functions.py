@@ -6,12 +6,12 @@
 import os
 from flask_restx import abort
 
-from settings import XTOHASHCAT_PATH, XTOHASHCAT_EXECUTABLE, PROTECTEDFILES_DIR
+from settings import FILE2HASHCAT_PATH, FILE2HASHCAT_SCRIPT, PROTECTEDFILES_DIR
 from src.api.fitcrack.functions import shellExec
 
 
 def getHashFromFile(filename, path):
-    res = shellExec('python3 ' + XTOHASHCAT_EXECUTABLE + ' ' + os.path.join(PROTECTEDFILES_DIR, path), cwd=XTOHASHCAT_PATH, getReturnCode=True)
+    res = shellExec('python3 ' + FILE2HASHCAT_SCRIPT + ' -t ' + os.path.join(PROTECTEDFILES_DIR, path), cwd=FILE2HASHCAT_PATH, getReturnCode=True)
     if res['returnCode'] == 2:
         abort(500, 'Hashcat doesn\'t support PKZIP.')
     if res['returnCode'] != 0:

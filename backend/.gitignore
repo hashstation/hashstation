@@ -4,6 +4,7 @@
 # Packages
 *.egg
 *.egg-info
+*.bin
 dist
 build
 eggs

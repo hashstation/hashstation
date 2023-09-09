@@ -80,11 +80,6 @@ if [ $INSTALL_BACKEND = "y" ]; then
   cp src/*.bin bin/
   cd $INSTALLER_ROOT
 
-  echo "Building xtohashcat tools"
-  cd backend/xtohashcat/scripts/
-  make -j$COMPILER_THREADS
-  cd $INSTALLER_ROOT
-
   echo "Building pwd-dist tool"
   cd backend/pwd_dist
   make -j$COMPILER_THREADS
@@ -96,9 +91,6 @@ if [ $INSTALL_BACKEND = "y" ]; then
   echo "Updating Fitcrack backend..."
   mkdir $APACHE_DOCUMENT_ROOT/fitcrackBE
   cp -Rf backend/* $APACHE_DOCUMENT_ROOT/fitcrackBE/
-
-  rm -f backend/xtohashcat/scripts/zip2john
-  rm -f backend/xtohashcat/scripts/rar2john
 
   # Set permissions and ownership to Apache user and group
   chmod -R 775 $APACHE_DOCUMENT_ROOT/fitcrackBE
