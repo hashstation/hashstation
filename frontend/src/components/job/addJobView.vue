@@ -122,7 +122,7 @@
           </v-stepper-step>
           <v-stepper-content step="1">
             <v-container>
-              <v-row class="mb-4">
+              <v-row>
                 <v-btn-toggle
                   v-model="inputMethod"
                   mandatory
@@ -325,37 +325,56 @@
                 </v-col>
               </v-row>
               <v-row>
-                <v-btn
-                  v-if="dev"
-                  text
-                  color="success"
-                  @click="getRandomHash"
-                >
-                  <v-icon left>
-                    mdi-auto-fix
-                  </v-icon>
-                  Random SHA1
-                </v-btn>
-                <v-checkbox
-                  v-show="invalidHashes.length > 0"
-                  v-model="ignoreHashes"
-                  label="Ignore invalid hashes"
-                  hide-details
-                  :height="15"
-                  color="error"
-                  class="ml-2 mt-1"
-                />
+                <v-col>
+                  <v-btn
+                    v-if="dev"
+                    text
+                    color="success"
+                    @click="getRandomHash"
+                  >
+                    <v-icon left>
+                      mdi-auto-fix
+                    </v-icon>
+                    Random SHA1
+                  </v-btn>
+                </v-col>
+                <v-col>
+                  <v-select
+                    :items="inputFormats"
+                    label="Input format"
+                    v-model="inputFormat"
+                    @change="validateHashes(null)"
+                  >
+                  </v-select>
+                </v-col>
+                <v-col>
+                  <v-checkbox
+                    v-show="invalidHashes.length > 0"
+                    v-model="ignoreHashes"
+                    label="Ignore invalid hashes"
+                    hide-details
+                    :height="15"
+                    color="error"
+                    class="ml-2 mt-1"
+                  >
+                  </v-checkbox>
+                </v-col>
+                <v-col>
+                  <v-btn
+                    v-show="hashList !== ''"
+                    color="error"
+                    class="mr-2"
+                    text
+                    @click="clearInput"
+                  >
+                    Reset
+                  </v-btn>
+                </v-col>
+              </v-row>
+              <v-row>
                 <v-spacer />
                 <v-btn
-                  v-show="hashList !== ''"
-                  color="error"
-                  class="mr-2"
-                  text
-                  @click="clearInput"
-                >
-                  Reset
-                </v-btn>
-                <v-btn
+                  class="mr-6 mt-4"
                   color="primary"
                   @click="step = 2"
                 >
@@ -763,6 +782,11 @@
         hashListError: false,
         selectedTemplateName: '',
         attacks,
+        inputFormat: 0,
+        inputFormats: [
+          { text: 'Hashes only', value: 0 },
+          { text: 'Hashes with usernames', value: 1 }
+        ],
         templates: [
           {
             name: 'Empty',
@@ -904,8 +928,9 @@
         }
 
         this.axios.post(this.$serverAddr + '/job/verifyHash', {
-          'hashtype': this.hashType.code,
-          'hashes': data
+          'hash_type': this.hashType.code,
+          'hashes': data,
+          'input_format': this.inputFormat
         }).then((response) => {
           this.hashListError = response.data.error
           this.validatedHashes = response.data.items

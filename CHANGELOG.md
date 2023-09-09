@@ -19,6 +19,7 @@ New features:
 * Added support to automatically extract hashes from Bitcoin/Litecoin/Ethereum/Exodus/MetaMask/Electrum wallets.
 * Added possibility to set priority (low/normal/high) of a new job in 'Scheduling settings'.
 * Added possibility to resume timeouted jobs.
+* Added possibility to input hashes / upload hashlists with usernames.
 
 General improvements:
 * Improved/reimplemeted generator and scheduling logic. Better precision, more predictable workunit sizes. Default desired seconds per workunit changed to 600 seconds.

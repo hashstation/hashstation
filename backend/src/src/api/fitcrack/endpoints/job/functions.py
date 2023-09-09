@@ -246,7 +246,7 @@ def verifyHashFormat(hash, hash_type, abortOnFail=False, binaryHash=False):
             hash_validity = {}
             with open(hash, "r") as hashFile:
                 for h in hashFile.readlines():
-                    hash_validity[h.strip()] = "OK"
+                    hash_validity[h.strip()] = "OK" if result['returnCode'] == 0 else "HASH Token length exception"
 
             bad_hash_lines = result['msg'].rstrip().split('\n')
             for line in bad_hash_lines:
@@ -303,6 +303,24 @@ def verifyHashFormat(hash, hash_type, abortOnFail=False, binaryHash=False):
                 'items': hashesArr,
                 'error': hasError
             }
+
+def verifyHashes(hashes, hash_type, input_format, abortOnFail=False, binaryHash=False):
+    if hashes.startswith('BASE64:'):
+        decoded = base64.decodebytes(hashes[7:].encode())
+        with tempfile.NamedTemporaryFile() as fp:
+            fp.write(decoded)
+            fp.seek(0)
+            result = verifyHashFormat(fp.name, hash_type, binaryHash=hashes)
+    else:
+        # Ignore usernames for validation
+        if input_format == 1: 
+            hashes = '\n'.join([line[line.index(':') + 1:].strip() if ':' in line else line for line in hashes.split('\n')])
+
+        with tempfile.NamedTemporaryFile() as fp:
+            fp.write(hashes.encode())
+            fp.seek(0)
+            result = verifyHashFormat(fp.name, hash_type)
+    return result
 
 def computeCrackingTime(data):
     total_power = 0

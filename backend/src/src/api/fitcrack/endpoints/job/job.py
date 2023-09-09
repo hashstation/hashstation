@@ -26,7 +26,7 @@ from src.api.fitcrack.endpoints.host.responseModels import page_of_hosts_model
 from src.api.fitcrack.endpoints.job.argumentsParser import jobList_parser, jobWorkunit_parser, \
     jobOperation, verifyHash_argument, crackingTime_argument, addJob_model, editHostMapping_argument, \
     editJob_argument, multiEditHosts_argument, jobList_argument, multiJobOperation_argument, job_permissions_arguments
-from src.api.fitcrack.endpoints.job.functions import verifyHashFormat, create_job, \
+from src.api.fitcrack.endpoints.job.functions import verifyHashes, create_job, \
     stop_job, start_job, resume_job, kill_job, computeCrackingTime, visible_jobs_ids, editable_jobs_ids, actionable_jobs_ids, \
     can_view_job, can_edit_job, can_operate_job
 from src.api.fitcrack.endpoints.job.responseModels import page_of_jobs_model, page_of_jobs_model, \
@@ -589,20 +589,10 @@ class verifyHash(Resource):
 
         args = verifyHash_argument.parse_args(request)
         hashes = args.get('hashes')
-        hashtype = args.get('hashtype')
+        hash_type = args.get('hash_type')
+        input_format = args.get('input_format')
 
-        if hashes.startswith('BASE64:'):
-            decoded = base64.decodebytes(hashes[7:].encode())
-            with tempfile.NamedTemporaryFile() as fp:
-                fp.write(decoded)
-                fp.seek(0)
-                result = verifyHashFormat(fp.name, hashtype, binaryHash=hashes)
-        else:
-            with tempfile.NamedTemporaryFile() as fp:
-                fp.write(hashes.encode())
-                fp.seek(0)
-                result = verifyHashFormat(fp.name, hashtype)
-        return result
+        return verifyHashes(hashes, hash_type, input_format)
 
 
 @ns.route('/crackingTime')

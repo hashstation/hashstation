@@ -26,8 +26,9 @@ jobWorkunit_parser = pagination.copy()
 verifyHash_argument = reqparse.RequestParser()
 verifyHash_argument.add_argument('hashes', type=str, required=True, help='hash to verify',
                                  default='79c2b46ce2594ecbcb5b73e928345492')
-verifyHash_argument.add_argument('hashtype', type=str, required=True,
+verifyHash_argument.add_argument('hash_type', type=str, required=True,
                                  default='0', help='hash code from /hashcat/hashTypes')
+verifyHash_argument.add_argument('input_format', type=int, required=True, default=0, help='input format')
 
 crackingTime_argument = reqparse.RequestParser()
 crackingTime_argument.add_argument('hash_type_code', type=str, required=True, help='hash type', default='0')
