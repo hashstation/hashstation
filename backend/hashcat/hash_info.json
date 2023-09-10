@@ -14126,6 +14126,62 @@
             "HEX"
         ]
     },
+    "31500": {
+        "name": "Domain Cached Credentials (DCC), MS Cache (NT)",
+        "category": "Operating System",
+        "slow_hash": true,
+        "password_len_min": 32,
+        "password_len_max": 32,
+        "is_deprecated": false,
+        "is_salted": true,
+        "salt_type": "generic",
+        "salt_len_min": 0,
+        "salt_len_max": 256,
+        "kernel_type": [
+            "pure"
+        ],
+        "example_hash_format": "plain",
+        "example_hash": "c896b3c6963e03c86ade3a38370bbb09:54161084332",
+        "example_pass": "b4b9b02e6f09a9bd760f388b67351e2b",
+        "benchmark_mask": "?a?a?a?a?a?a?a?axxxxxxxxxxxxxxxx",
+        "benchmark_charset1": "N/A",
+        "autodetect_enabled": false,
+        "self_test_enabled": true,
+        "potfile_enabled": true,
+        "custom_plugin": true,
+        "plaintext_encoding": [
+            "ASCII",
+            "HEX"
+        ]
+    },
+    "31600": {
+        "name": "Domain Cached Credentials 2 (DCC2), MS Cache 2, (NT)",
+        "category": "Operating System",
+        "slow_hash": true,
+        "password_len_min": 32,
+        "password_len_max": 32,
+        "is_deprecated": false,
+        "is_salted": true,
+        "salt_type": "embedded",
+        "salt_len_min": 0,
+        "salt_len_max": 256,
+        "kernel_type": [
+            "pure"
+        ],
+        "example_hash_format": "plain",
+        "example_hash": "$DCC2$10240#6848#e2829c8af2232fa53797e2f0e35e4626",
+        "example_pass": "b4b9b02e6f09a9bd760f388b67351e2b",
+        "benchmark_mask": "?a?a?a?a?a?a?a?axxxxxxxxxxxxxxxx",
+        "benchmark_charset1": "N/A",
+        "autodetect_enabled": false,
+        "self_test_enabled": true,
+        "potfile_enabled": true,
+        "custom_plugin": false,
+        "plaintext_encoding": [
+            "ASCII",
+            "HEX"
+        ]
+    },
     "31700": {
         "name": "md5(md5(md5($pass).$salt1).$salt2)",
         "category": "Raw Hash salted and/or iterated",
@@ -14197,7 +14253,7 @@
             "pure"
         ],
         "example_hash_format": "plain",
-        "example_hash": "$metamaskMobile$MjU1NTA5MTU2ODY5MjY4OQ==$3cccb51c401e54abc82987fd9310a8d3$WQhIECN0blOaV31RC3lKfQ==",
+        "example_hash": "$metamaskMobile$JV4j2dUDl7n+sujyqW3Wvg==$398f9b04c822d36bfcbdd1e68c82d1e8$auj3J2TwOZ4ev3UIGmNa7VXLh0Nmzr3rDbpXRRrONr4=",
         "example_pass": "hashcat1",
         "benchmark_mask": "?b?b?b?b?b?b?b",
         "benchmark_charset1": "N/A",
@@ -14675,6 +14731,34 @@
         ],
         "example_hash_format": "plain",
         "example_hash": "a2c0342a2617026fbaeed01130c826cc3f58242799894b3ecc1abfa811ede03fd712efd14a886af6fa74045502f22c9feb1c45a291cf2d7bbe9bb94c388b6403:deadbeef",
+        "example_pass": "hashcat",
+        "benchmark_mask": "?b?b?b?b?b?b?b",
+        "benchmark_charset1": "N/A",
+        "autodetect_enabled": true,
+        "self_test_enabled": true,
+        "potfile_enabled": true,
+        "custom_plugin": false,
+        "plaintext_encoding": [
+            "ASCII",
+            "HEX"
+        ]
+    },
+    "32700": {
+        "name": "Kremlin Encrypt 3.0 w/NewDES",
+        "category": "Archive",
+        "slow_hash": true,
+        "password_len_min": 0,
+        "password_len_max": 256,
+        "is_deprecated": false,
+        "is_salted": true,
+        "salt_type": "embedded",
+        "salt_len_min": 0,
+        "salt_len_max": 256,
+        "kernel_type": [
+            "pure"
+        ],
+        "example_hash_format": "plain",
+        "example_hash": "$kgb$0ab30cf7a52dad93$82a7c454246fc7570224e9f24279791aa2a63bf4",
         "example_pass": "hashcat",
         "benchmark_mask": "?b?b?b?b?b?b?b",
         "benchmark_charset1": "N/A",

@@ -1,9 +1,9 @@
-/**
+/*
  * Author: David Bolvansky
  * Based on hashcat's dictstat.c
  * https://github.com/hashcat/hashcat/blob/master/src/dictstat.c
  * 
-**/
+*/
 
 #ifndef DICTSTAT_HPP
 #define DICTSTAT_HPP
@@ -13,7 +13,7 @@
 #include <cstdint>
 
 #define DICTSTAT_FILENAME "hashcat.dictstat2"
-#define DICTSTAT_VERSION (0x6863646963743200 | 0x02)
+#define DICTSTAT_VERSION (0x6863646963743200 | 0x03)
 
 #if defined(__unix__) || defined(__APPLE__)
 #define _POSIX

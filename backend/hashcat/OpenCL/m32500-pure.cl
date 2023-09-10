@@ -94,30 +94,30 @@ CONSTANT_VK u32 base64_table[64] =
 };
 
 // Wow it's the right file
-u32 base64_encode_three_bytes_better (u32 in)
+DECLSPEC u32 base64_encode_three_bytes_better (u32 in)
 {
   //in has 3 u8s in, first u8 is not set)
-  u32 out;
+  u32 out = 0;
 
-  out  = base64_table[(in >> 18) & 0x3F] << 24;
+  out |= base64_table[(in >> 18) & 0x3F] << 24;
   out |= base64_table[(in >> 12) & 0x3F] << 16;
   out |= base64_table[(in >>  6) & 0x3F] << 8;
-  out |= base64_table[(in      ) & 0x3F];
+  out |= base64_table[(in >>  0) & 0x3F] << 0;
 
   return out;
 }
 
-void base64_encode_sha256 (u32 *out, const u32 *in)
+DECLSPEC void base64_encode_sha256 (u32 *out, const u32 *in)
 {
   out[0] = base64_encode_three_bytes_better(                (in[0] >>  8));
   out[1] = base64_encode_three_bytes_better((in[0] << 16) | (in[1] >> 16));
   out[2] = base64_encode_three_bytes_better((in[1] <<  8) | (in[2] >> 24));
-  out[3] = base64_encode_three_bytes_better((in[2]      ));
+  out[3] = base64_encode_three_bytes_better((in[2] <<  0));
 
   out[4] = base64_encode_three_bytes_better(                (in[3] >>  8));
   out[5] = base64_encode_three_bytes_better((in[3] << 16) | (in[4] >> 16));
   out[6] = base64_encode_three_bytes_better((in[4] <<  8) | (in[5] >> 24));
-  out[7] = base64_encode_three_bytes_better((in[5]      ));
+  out[7] = base64_encode_three_bytes_better((in[5] <<  0));
 
   out[8] = base64_encode_three_bytes_better(                (in[6] >>  8));
   out[9] = base64_encode_three_bytes_better((in[6] << 16) | (in[7] >> 16));
@@ -139,7 +139,7 @@ KERNEL_FQ void m32500_init (KERN_ATTR_TMPS_ESALT (doge_tmp_t, payload_t))
   sha256_update_global_swap (&ctx, pws[gid].i, pws[gid].pw_len);
   sha256_final (&ctx);
 
-  u32 w[16] = { 0 }; // only uses 11, but have to be 16 for sha256_hmac_init_global function
+  u32 w[16] = { 0 }; // only uses 11, but have to be 16 for sha256_hmac_init function
 
   base64_encode_sha256 (w, ctx.h);
 
@@ -147,7 +147,7 @@ KERNEL_FQ void m32500_init (KERN_ATTR_TMPS_ESALT (doge_tmp_t, payload_t))
 
   sha256_hmac_ctx_t sha256_hmac_ctx;
 
-  sha256_hmac_init_global (&sha256_hmac_ctx, w, 44);
+  sha256_hmac_init (&sha256_hmac_ctx, w, 44);
 
   tmps[gid].ipad[0] = sha256_hmac_ctx.ipad.h[0];
   tmps[gid].ipad[1] = sha256_hmac_ctx.ipad.h[1];
