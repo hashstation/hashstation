@@ -20,15 +20,17 @@ New features:
 * Added possibility to set priority (low/normal/high) of a new job in 'Scheduling settings'.
 * Added possibility to resume timeouted jobs.
 * Added possibility to input hashes / upload hashlists with usernames.
+* Added possibility to input hashes / upload hashlists in "LM:NT" format (output format of tools like impacket).
 
 General improvements:
 * Improved/reimplemeted generator and scheduling logic. Better precision, more predictable workunit sizes. Default desired seconds per workunit changed to 600 seconds.
 * Improved benchmarking logic.
 * Improved 'Add New Job' UI, small redesign.
+* Added dropdown menu to specify input format.
 * It is now possible to upload dictionaries from any folders on the server.
 * It is now possible to upgrade standard (non-dockerized) Fitcrack to newer versions. Please see UPGRADE.md file.
-* New settings per hosts.
-* Extract hashes from files using file2hashcat tool.
+* Added new settings per hosts.
+* Extraction of hashes from files using file2hashcat tool.
 * Updated to BOINC v7.23.
 * Updated backend dependencies.
 

@@ -305,6 +305,8 @@ def verifyHashFormat(hash, hash_type, abortOnFail=False, binaryHash=False):
             }
 
 def verifyHashes(hashes, hash_type, input_format, abortOnFail=False, binaryHash=False):
+    hashes = hashes.rstrip()
+
     if hashes.startswith('BASE64:'):
         decoded = base64.decodebytes(hashes[7:].encode())
         with tempfile.NamedTemporaryFile() as fp:
@@ -312,9 +314,13 @@ def verifyHashes(hashes, hash_type, input_format, abortOnFail=False, binaryHash=
             fp.seek(0)
             result = verifyHashFormat(fp.name, hash_type, binaryHash=hashes)
     else:
-        # Ignore usernames for validation
-        if input_format == 1: 
-            hashes = '\n'.join([line[line.index(':') + 1:].strip() if ':' in line else line for line in hashes.split('\n')])
+        try:
+            if input_format == 1: 
+                hashes = '\n'.join([line[line.index(':') + 1:].strip() for line in hashes.split('\n')])
+            elif input_format == 2: 
+                hashes = '\n'.join([line.split(':')[3] for line in hashes.split('\n')]) 
+        except Exception:
+            abort(500, 'Unable to extract hashes from input for hash format validation.')
 
         with tempfile.NamedTemporaryFile() as fp:
             fp.write(hashes.encode())

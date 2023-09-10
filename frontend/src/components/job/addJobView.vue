@@ -785,7 +785,8 @@
         inputFormat: 0,
         inputFormats: [
           { text: 'Hashes only', value: 0 },
-          { text: 'Hashes with usernames', value: 1 }
+          { text: 'Hashes with usernames', value: 1 },
+          { text: 'LM:NT hashes', value: 2 }
         ],
         templates: [
           {
