@@ -67,7 +67,7 @@ class hashCache(Resource):
         else:
             hashes = hashes.order_by(FcHash.id.desc())
 
-        return hashes.paginate(page, per_page, error_out=True)
+        return hashes.paginate(page=page, per_page=per_page, error_out=True)
     
     @api.expect(hashList_argument)
     @api.response(200, 'Hashes successfully deleted.')

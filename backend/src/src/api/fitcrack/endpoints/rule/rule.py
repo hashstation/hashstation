@@ -160,4 +160,4 @@ class downloadRule(Resource):
 
         rule = FcRule.query.filter(FcRule.id == id).first()
         path = os.path.join(RULE_DIR, rule.path)
-        return send_file(path, attachment_filename=rule.path, as_attachment=True)
+        return send_file(path, download_name=rule.path, as_attachment=True)

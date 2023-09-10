@@ -84,7 +84,7 @@ class markov(Resource):
 
         HcStat = FcHcstat.query.filter(FcHcstat.id == id).first()
         path = os.path.join(HCSTATS_DIR, HcStat.path)
-        return send_file(path, attachment_filename=HcStat.path, as_attachment=True)
+        return send_file(path, download_name=HcStat.path, as_attachment=True)
 
     @api.marshal_with(simpleResponse)
     def delete(self, id):

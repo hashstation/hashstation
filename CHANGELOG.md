@@ -30,6 +30,7 @@ General improvements:
 * New settings per hosts.
 * Extract hashes from files using file2hashcat tool.
 * Updated to BOINC v7.23.
+* Updated backend dependencies.
 
 Fixes:
 * Fixed slow loading of a host detail page.

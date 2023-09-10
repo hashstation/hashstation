@@ -13,7 +13,7 @@ from src.database.models import FcNotification
 def getNotifications(userID, page, per_page, markAsSeen):
     notifications = []
     DBnotifications = FcNotification.query.filter(FcNotification.user_id == userID).order_by(
-        desc(FcNotification.time)).paginate(page, per_page, error_out=True)
+        desc(FcNotification.time)).paginate(page=page, per_page=per_page, error_out=True)
     for notif in DBnotifications.items:
         notifications.append(
             {

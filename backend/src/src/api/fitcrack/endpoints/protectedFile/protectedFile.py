@@ -140,5 +140,5 @@ class protectedFile(Resource):
         """
         encryptedFile = FcEncryptedFile.query.filter(FcEncryptedFile.id == id).first()
         path = os.path.join(PROTECTEDFILES_DIR, encryptedFile.path)
-        return send_file(path, attachment_filename=encryptedFile.path, as_attachment=True)
+        return send_file(path, download_name=encryptedFile.path, as_attachment=True)
 

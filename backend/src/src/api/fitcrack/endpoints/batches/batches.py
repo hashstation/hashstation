@@ -85,7 +85,7 @@ class batches(Resource):
         if not current_user.role.VIEW_ALL_JOBS:
             query = query.filter_by(creator_id=current_user.id)
         query = query.order_by(FcBatch.id.desc())
-        batches_page = query.paginate(page, per_page, error_out=True)
+        batches_page = query.paginate(page=page, per_page=per_page, error_out=True)
 
         return batches_page
 

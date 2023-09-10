@@ -29,6 +29,6 @@ class notification_services(Resource):
         page = args.get('page', 1)
         per_page = args.get('per_page', 10)
 
-        notification_services = FcNotificationService.query.paginate(page, per_page, error_out=True)
+        notification_services = FcNotificationService.query.paginate(page=page, per_page=per_page, error_out=True)
         print(notification_services)
         return notification_services

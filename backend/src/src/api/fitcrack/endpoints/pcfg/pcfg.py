@@ -65,7 +65,7 @@ class pcfg(Resource):
         if is_dir:
             makeshift_zip = '/tmp/pcfg/' + pcfg.path
             shutil.make_archive(makeshift_zip, 'zip', path)
-            return send_file(makeshift_zip + '.zip', attachment_filename=pcfg.path + '.zip', as_attachment=True)
+            return send_file(makeshift_zip + '.zip', download_name=pcfg.path + '.zip', as_attachment=True)
         else:
             abort(404, 'Can\'t find PCFG grammar directory')
 

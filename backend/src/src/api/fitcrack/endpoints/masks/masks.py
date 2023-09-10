@@ -127,4 +127,4 @@ class downloadMask(Resource):
 
         maskSet = FcMasksSet.query.filter(FcMasksSet.id == id).first()
         path = os.path.join(MASKS_DIR, maskSet.path)
-        return send_file(path, attachment_filename=maskSet.path, as_attachment=True)
+        return send_file(path, download_name=maskSet.path, as_attachment=True)

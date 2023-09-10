@@ -122,4 +122,4 @@ class downloadCharset(Resource):
         """
 
         charset = FcCharset.query.filter(FcCharset.id == id).first()
-        return send_file(os.path.join(CHARSET_DIR, charset.path), as_attachment=True, attachment_filename=charset.path)
+        return send_file(os.path.join(CHARSET_DIR, charset.path), as_attachment=True, download_name=charset.path)

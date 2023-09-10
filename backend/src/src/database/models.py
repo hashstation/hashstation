@@ -663,10 +663,6 @@ class Host(Base):
             FcHostStatus.query.filter(FcHostStatus.boinc_host_id == self.id, FcHostStatus.deleted == True).first() \
             else False
 
-    @deleted.expression
-    def deleted(cls):
-        return select([FcHostStatus.deleted]).where(and_(cls.id == FcHostStatus.boinc_host_id, FcHostStatus.deleted == 1)).as_scalar()
-
 
 class FcWorkunit(Base):
     __tablename__ = 'fc_workunit'

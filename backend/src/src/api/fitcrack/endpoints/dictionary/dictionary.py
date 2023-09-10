@@ -89,7 +89,7 @@ class dictionaryDownload(Resource):
         if not dictionary:
             abort(500, 'Can\'t find dictionary')
         path = os.path.join(DICTIONARY_DIR, dictionary.path)
-        return send_file(path, attachment_filename=dictionary.path, as_attachment=True)
+        return send_file(path, download_name=dictionary.path, as_attachment=True)
 
 @ns.route('/<id>/data')
 class dictionaryData(Resource):
@@ -133,10 +133,6 @@ class dictionaryData(Resource):
                 'status': True,
                 'data': ''.join(head)
             }
-
-        # return send_from_directory(UPLOAD_DIR,
-        #                            dict.name)
-
 
 
 @ns.route('/add')

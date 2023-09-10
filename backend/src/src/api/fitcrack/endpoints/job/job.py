@@ -92,7 +92,7 @@ class jobsCollection(Resource):
         else:
             jobs_query = jobs_query.order_by(FcJob.id.desc())
 
-        jobs_page = jobs_query.paginate(page, per_page, error_out=True)
+        jobs_page = jobs_query.paginate(page=page, per_page=per_page, error_out=True)
 
         return jobs_page
 
@@ -478,7 +478,7 @@ class jobsHost(Resource):
         hosts_query = FcHost.query.filter_by(job_id=id)
 
 
-        hosts_page = hosts_query.paginate(page, per_page, error_out=True)
+        hosts_page = hosts_query.paginate(page=page, per_page=per_page, error_out=True)
 
         return hosts_page
 
@@ -535,7 +535,7 @@ class workunitsJob(Resource):
         jobs_query = FcWorkunit.query.filter_by(job_id=id)
 
 
-        jobs_page = jobs_query.paginate(page, per_page, error_out=True)
+        jobs_page = jobs_query.paginate(page=page, per_page=per_page, error_out=True)
 
         return jobs_page
 

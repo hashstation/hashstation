@@ -41,9 +41,9 @@ class hostsCollection(Resource):
         hosts_page = Host.query
 
         if args.showDeleted:
-            hosts_page = hosts_page.filter(Host.deleted == 1)
+            hosts_page = hosts_page.filter(Host.deleted == True)
         else:
-            hosts_page = hosts_page.filter(Host.deleted == None)
+            hosts_page = hosts_page.filter(Host.deleted == False)
 
 
         if args.name:
@@ -63,7 +63,7 @@ class hostsCollection(Resource):
                 'items': hosts_page.all()
             }
         else:
-            return hosts_page.paginate(page, per_page, error_out=True)
+            return hosts_page.paginate(page=page, per_page=per_page, error_out=True)
 
 
 @ns.route('/<int:id>')
