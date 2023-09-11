@@ -98,7 +98,7 @@ else # Create Fitcrack project
   ##################################
 
   # Copy server measure script
-  cp -f server/server_bin/measureUsage.py $BOINC_PROJECT_DIR/bin/
+  cp -f server/server_bin/measure_usage.py $BOINC_PROJECT_DIR/bin/
 
   # Copy pcfg-monitor script
   cp -f server/server_bin/pcfg_monitor.py $BOINC_PROJECT_DIR/bin/
@@ -236,14 +236,14 @@ else # Create Fitcrack project
   sed -i "s|<log_dir>.*<\/log_dir>|<log_fitcrack_dir>/var/log/fitcrack</log_fitcrack_dir>|g" $BOINC_PROJECT_DIR/config.xml
 
   # Fix backend URI
-  sed -i "s|PROJECT_USER = '.*|PROJECT_USER = '$BOINC_USER'|g" /srv/backend/src/settings.py
-  sed -i "s|PROJECT_NAME = '.*|PROJECT_NAME = '$BOINC_PROJECT'|g" /srv/backend/src/settings.py
-  sed -i "s|FLASK_SERVER_NAME = '.*|FLASK_SERVER_NAME = 'localhost:$BACKEND_PORT'|g" /srv/backend/src/settings.py
-  sed -i "s|SQLALCHEMY_DATABASE_URI = '.*|SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://$DB_USER:$DB_PW@localhost/$DB_NAME'|g" /srv/backend/src/settings.py
-  sed -i "s|BOINC_SERVER_URI = '.*|BOINC_SERVER_URI = '$BOINC_URL'|g" /srv/backend/src/settings.py
+  sed -i "s|PROJECT_USER = '.*|PROJECT_USER = '$BOINC_USER'|g" /srv/fitcrack/backend/src/settings.py
+  sed -i "s|PROJECT_NAME = '.*|PROJECT_NAME = '$BOINC_PROJECT'|g" /srv/fitcrack/backend/src/settings.py
+  sed -i "s|FLASK_SERVER_NAME = '.*|FLASK_SERVER_NAME = 'localhost:$BACKEND_PORT'|g" /srv/fitcrack/backend/src/settings.py
+  sed -i "s|SQLALCHEMY_DATABASE_URI = '.*|SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://$DB_USER:$DB_PW@localhost/$DB_NAME'|g" /srv/fitcrack/backend/src/settings.py
+  sed -i "s|BOINC_SERVER_URI = '.*|BOINC_SERVER_URI = '$BOINC_URL'|g" /srv/fitcrack/backend/src/settings.py
 
   # Copy it to the /var/www/html/
-  cp -R /srv/backend/* $APACHE_DOCUMENT_ROOT/fitcrackBE/
+  cp -R /srv/fitcrack/backend/* $APACHE_DOCUMENT_ROOT/fitcrackBE/
   chown -R $APACHE_USER:$APACHE_USER $APACHE_DOCUMENT_ROOT/fitcrackBE
 
   # Set WSGI path
@@ -281,7 +281,7 @@ else # Create Fitcrack project
   # Copy frontend files
   echo "Installing Fitcrack frontend..."
   mkdir $APACHE_DOCUMENT_ROOT/fitcrackFE
-  cp -Rf /srv/frontend/dist/* $APACHE_DOCUMENT_ROOT/fitcrackFE/
+  cp -Rf /srv/fitcrack/frontend/dist/* $APACHE_DOCUMENT_ROOT/fitcrackFE/
 
   # Set BACKEND_URI for window.serverAddress
   sed -i "s|http://localhost:5000|$BACKEND_URI:$BACKEND_PORT|g" $APACHE_DOCUMENT_ROOT/fitcrackFE/static/configuration.js
