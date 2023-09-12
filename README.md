@@ -94,7 +94,7 @@ configure the workload profile for fine-tuning of the performance, etc.
 Simply create a file `/etc/fitcrack.conf` (Linux/macOS hosts) or
 `C:\ProgramData\BOINC\fitcrack.conf` (Windows hosts).
 If the file exists and is readable for the BOINC client user, the
-**Runner** subsystem will append the content of 'extra_hashcat_args' to
+**Agent** subsystem will append the content of 'extra_hashcat_args' to
 **hashcat's arguments**.
 
 #### Example
@@ -114,7 +114,7 @@ from server to hosts.
 $ echo 'prestored_dicts_path=/etc/fitcrack' > /etc/fitcrack.conf
 ```
 
-Fitcrack client (Runner) will search for prestored dictionaries in /etc/fitcrack. So for example,
+Fitcrack client (Agent) will search for prestored dictionaries in /etc/fitcrack. So for example,
 if you use rockyou.txt for this job, copy rockyou.txt to /etc/fitcrack. Please also ensure that
 /etc/fitcrack is readable for BOINC. Run:
 
