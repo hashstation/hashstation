@@ -293,7 +293,6 @@ class JobByID(Resource):
                 d['name'] = dct.dictionary.name
                 args['left_dictionaries'].append(d)
 
-        rule_file = job.rulesFile
         job.name = args['name']
         job.comment = args['comment']
         job.seconds_per_workunit = args['seconds_per_job']
@@ -310,13 +309,9 @@ class JobByID(Resource):
             else:
                 new_hc_keyspace = job.hc_keyspace
 
-            ruleFileMultiplier = 0
-            if rule_file:
-                ruleFileMultiplier = rule_file.count
-
             new_keyspace = new_hc_keyspace
-            if ruleFileMultiplier != 0:
-                new_keyspace = new_hc_keyspace * ruleFileMultiplier
+            if job.rules_multiplifier != 0:
+                new_keyspace = new_hc_keyspace * job.rules_multiplifier
 
             if new_keyspace > (2 ** 63) - 1: # due db's bigint range
                 abort(400, 'Job keyspace is higher than maximal allowed value 2^64.')
