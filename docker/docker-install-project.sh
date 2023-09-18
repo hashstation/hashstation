@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Setup Fitcrack logging directory
+mkdir /var/log/fitcrack
 chgrp fitcrack /var/log/fitcrack
 chmod 775 /var/log/fitcrack
 
@@ -102,10 +103,11 @@ chmod +x /etc/init.d/fitcrack
 update-rc.d fitcrack defaults
 
 # Setup the default Fitcrack user
-chmod +x ./tools/./setup_default_fitcrack_user.py
-./tools/./setup_default_fitcrack_user.py
+chmod +x ./docker/setup_default_fitcrack_user.py
+./docker/setup_default_fitcrack_user.py
 
 # Set ownership and permissions
+mkdir /usr/share/assets
 chown -R $APACHE_USER:$APACHE_GROUP /usr/share/assets
 chmod -R 777 /usr/share/assets
 
@@ -134,6 +136,7 @@ sed -i "s|SQLALCHEMY_DATABASE_URI = '.*|SQLALCHEMY_DATABASE_URI = 'mysql+pymysql
 sed -i "s|BOINC_SERVER_URI = '.*|BOINC_SERVER_URI = '$BOINC_URL'|g" /srv/fitcrack/backend/src/settings.py
 
 # Copy it to the /var/www/html/
+mkdir $APACHE_DOCUMENT_ROOT/fitcrackBE/
 cp -R /srv/fitcrack/backend/* $APACHE_DOCUMENT_ROOT/fitcrackBE/
 chown -R $APACHE_USER:$APACHE_USER $APACHE_DOCUMENT_ROOT/fitcrackBE
 
@@ -259,4 +262,5 @@ else
     sed -i "s@serverAddress.*@serverAddress = \"$BACKEND_URL\"@g" /var/www/html/fitcrackFE/static/configuration.js
 fi
 
+service mysql start
 service fitcrack start

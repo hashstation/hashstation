@@ -42,6 +42,8 @@ RUN apt-get -y update && apt install --no-install-recommends -yq \
     libapache2-mod-wsgi-py3 \
     g++-mingw-w64-x86-64 \
     npm \
+    cpanminus \
+    nano \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN yes | cpan -i Compress::Raw::Zlib Compress::Raw::Lzma
+RUN cpanm -q Compress::Raw::Zlib Compress::Raw::Lzma

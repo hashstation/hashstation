@@ -62,16 +62,16 @@ services:
           - ${FRONTEND_PORT}:${FRONTEND_PORT}       # Mapping of Fitcrack frontend
           #- ${BOINC_PORT}:${BOINC_PORT} # BOINC port (uncomment if different from Fitcrack)
       volumes:
+        - "../assets:/usr/share/assets"                    # Assets of dictionaries, masks, etc. (host-mapped!)
+        - "./fitcrack-data/logs:/var/log/fitcrack"         # Log directory (host-mapped!)
+        - "./fitcrack-data/certificates:/srv/certificates" # Certificate directory (host-mapped!)
+
         - "mysql:/var/lib/mysql"                           # MySQL server data directory
-        - "assets:/usr/share/assets"                       # Assets of dictionaries, masks, etc.
         - "boincadm:/home/boincadm"                        # BOINC server user home directory
         - "apache:/etc/apache2"                            # Apache config directory
         - "apache-conf:/etc/init.d"                        # Directory with service init scripts
         - "fitcrack-be:/var/www/html/fitcrackBE"           # Fitcrack backend installation
         - "fitcrack-fe:/var/www/html/fitcrackFE"           # Fitcrack frontend installation
-        - "./fitcrack-data/logs:/var/log/fitcrack"         # Log directory (host-mapped!)
-        - "./fitcrack-data/certificates:/srv/certificates" # Certificate directory (host-mapped!)
-
         # NOTE: Fitcrack backend copy, frontend Node.JS build, and server + runner binaries are
         #       built using Dockerfile when the image is created. The entrypoint started with
         #       'docker-compose up' only installs the Fitcrack server from pre-built binaries.

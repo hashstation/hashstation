@@ -1,6 +1,6 @@
-# Deploying Fitcrack using a pre-built image from Docker Hub
+# Deploying Fitcrack using a custom Docker build
 
-This document describes how to install Fitcrack server using a pre-built Docker image.
+This document describes how to prepare and run a custom Docker build of Fitcrack server.
 
 ### Requirements
 Install **Docker Engine 20.10.x**. See instructions for you distro here: [https://docs.docker.com/engine/install/](https://docs.docker.com/engine/install/)
@@ -12,6 +12,17 @@ sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-
 
 **NOTE:** Stick with the recommended versions if possible. Older versions may not work. Newer releases were not tested.
 
+### Checking if you have BOINC submodule
+Fitcrack relies on [BOINC](https://boinc.berkeley.edu), which is used as a submodule. Therefore, it is recommended to clone Fitcrack with the `--recursive` option:
+```
+git clone --recursive https://github.com/nesfit/fitcrack
+```
+If you did not (and the `boinc` directory is empty), you can fix this by typing
+```
+git submodule init
+git submodule update
+```
+
 ### Preparing the .env configuration file
 Create a new **.env** config file from the example attached:
 ```
@@ -21,23 +32,45 @@ cp env.example .env
 ![Fitcrack-architecture](img/dockerenv.png)
 
 Edit the newly-created **.env** file and configure:
-- `FITCRACK_SERVER_HOST` to the domain name or IP of your host machine
+- `server_HOST` to the domain name or IP of your host machine
 - In most cases, it is fine to default ports: `80` for the WebAdmin frontend and the BOINC server, and `5000`for the WebAdmin backend. But you can change them if you want.
 - It is **recommended** to change the MySQL password `FITCRACK_DB_PW`.
 - The default WebAdmin login is `fitcrack`/`FITCRACK`. We **highly recommend** to change it by modifying the `WEBADMIN_LOGIN` and `WEBADMIN_PW` variables.
 - SSL is disabled by default. If you want to enable it, follow the instructions below.
 
-### Starting the fitcrack_server container
-Once the `.env` file is configured, you can run the server container using:
+### Building Fitcrack image
+Once you have everything prepared, go to **docker** directory and build base image with all dependencies.
+```
+bash build-base-image.sh
+```
+
+Now you can start the build of your own server (preconfigured via `.env`file) with:
+```
+docker-compose build
+```
+Please note that this process will compile everything from source and it may take some time.
+
+Once done, you can type
+```
+docker image ls
+```
+to see whether you have your image ready. You should see something like this:
+```
+REPOSITORY        TAG       IMAGE ID       CREATED       SIZE
+server   latest    9742ce4d598a   3 hours ago   3.79GB
+```
+
+
+### Starting the server container
+Once the `server` image is built, you can run the server container using:
 ```
 docker-compose up
 ```
-Note that if you are running Fitcrack for the first time, it may take several minutes to pull the image from the Docker Hub.
 
 ![Fitcrack-architecture](img/dockerstart.png)
 
 This is fine for debugging. For serious use, you may want the container to run on background.
-This can be dome by starting the container in the detached mode:
+This can be done by starting the container in the detached mode:
 ```
 docker-compose up -d
 ```
@@ -47,10 +80,10 @@ For next runs (in case you restart the container), it will automatically load th
 from the host-stored volumes.
 
 Once installed, you should be able to access the WebAdmin using:
-`http(s)://FITCRACK_SERVER_HOST:FRONTEND_PORT` that is `http://localhost` with default settings.
+`http(s)://server_HOST:FRONTEND_PORT` that is `http://localhost` with default settings.
 
 Hosts may connect using BOINC client, as described in [How to connect new hosts](https://nesfit.github.io/fitcrack/#/guide/hosts?id=connecting-hosts)
-For connection, you should use the `http(s)://FITCRACK_SERVER_HOST:BOINC_PORT/fitcrack`.
+For connection, you should use the `http(s)://server_HOST:BOINC_PORT/fitcrack`.
 In case localhost is used , the BOINC client needs to connect to
 `http://127.0.0.1/fitcrack` with default settings.
 
@@ -84,7 +117,7 @@ Now, you can configure SSL in the `.env` file.
 
 Configure Fitcrack server hostname to **your domain name**:
 ```
-FITCRACK_SERVER_HOST="my.fitcrack.com"  # The IP or domain name of Fitcrack server
+server_HOST="my.fitcrack.com"  # The IP or domain name of Fitcrack server
 ```
 
 Configure the certificate and private key file names if they are different from above:
@@ -137,8 +170,7 @@ modifications of the `.env` variables. Whenever you modify the variables, you sh
 reinstall the Fitcrack server, i.e., remove the running container and volumes
 using `./remove_docker_installation.sh` and stsart over to apply changes.
 
-For debugging WebAdmin, you should
-first check if the backend is running, e.g.: `http://localhost:5000`.
+For debugging WebAdmin, you should first check if the backend is running, e.g.: `http://localhost:5000`.
 You can also check the frontend configuration file `http://localhost/static/configuration.js`
 if it is connecting to the proper address. By default, backend's hostname is taken
 from you browser URL hostname. This can be disabled using the `DYNAMIC_BACKEND_URL` variable.
@@ -162,7 +194,7 @@ in `/var/www/html/fitcrackBE`. Good luck!
 
 
 ### Removing existing installation
-To remove an existing installation, you should delete the `fitcrack_server` container and all related volumes.
+To remove an existing installation, you should delete the `server` container and all related volumes.
 To automate the process, you can run:
 ```
 ./remove_docker_installation.sh

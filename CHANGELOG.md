@@ -20,7 +20,7 @@ New features:
 * Added possibility to set priority (low/normal/high) of a new job in 'Scheduling settings'.
 * Added possibility to resume timeouted jobs.
 * Added possibility to input hashes / upload hashlists with usernames.
-* Added possibility to input hashes / upload hashlists in "LM:NT" format (output format of tools like impacket).
+* Added possibility to input hashes / upload hashlists in 'LM:NT' format (output format of tools like impacket).
 * Added column 'Username' in 'Job Info' -> 'Hashes'.
 * Added column 'Username' in 'Hashes'.
 * Added dropdown menu to specify input format.
@@ -37,6 +37,7 @@ General improvements:
 * Extraction of hashes from files using file2hashcat tool.
 * Updated to BOINC v7.23.
 * Updated backend dependencies.
+* Reworked 'dockerization'.
 
 Fixes:
 * Fixed slow loading of a host detail page.

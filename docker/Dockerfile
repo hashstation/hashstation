@@ -1,5 +1,7 @@
 FROM base:latest
 
+USER root
+
 # Add BOINC server user and fitcrack group
 RUN useradd -m -c "BOINC Administrator" boincadm -s /bin/bash && \
     groupadd fitcrack && \
@@ -60,6 +62,43 @@ WORKDIR /srv/fitcrack/frontend
 RUN npm ci && npm run build
 
 # Install project
+
+ARG USER
+ARG DB_HOST
+ARG DB_NAME
+ARG DB_USER
+ARG DB_PW
+ARG FITCRACK_HOST
+ARG FITCRACK_PROTO
+ARG BACKEND_PORT
+ARG FRONTEND_PORT
+ARG SSL_FITCRACK
+ARG FITCRACK_USER
+ARG FITCRACK_EMAIL
+ARG FITCRACK_PW
+ARG DYNAMIC_BACKEND_URL
+ARG BOINC_HOST
+ARG BOINC_PROTO
+ARG BOINC_PORT
+ARG SSL_BOINC
+ARG BOINC_URL
+ARG BOINC_USER
+ARG BOINC_GROUP
+ARG BOINC_HOME
+ARG BOINC_PROJECT
+ARG BOINC_PROJECT_DIR
+ARG OPS_LOGIN
+ARG OPS_PW
+ARG SERVICE_INSTALL
+ARG PROJECT_HTTPD_CONF
+ARG SSL_CERTIFICATE_FILE
+ARG SSL_CERTIFICATE_KEYFILE
+ARG APACHE_USER
+ARG APACHE_CONFIG_DIR
+ARG APACHE_CONFIG_FILE
+ARG APACHE_DOCUMENT_ROOT
+ARG APACHE_SERVICE
+
 WORKDIR /srv/fitcrack/
 
 RUN chmod +x ./docker/docker-install-project.sh
@@ -68,7 +107,6 @@ RUN ./docker/docker-install-project.sh
 EXPOSE 80
 EXPOSE 5000
 
-# Ensure Apache runs in the foreground
-CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
+ENTRYPOINT ["./docker/entrypoint.sh"]
 
 HEALTHCHECK --interval=5s --timeout=20s CMD ps -ef | grep apache2 | grep -v grep || exit 1
