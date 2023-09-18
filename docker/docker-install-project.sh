@@ -253,7 +253,6 @@ fi
 if [[ $? != 0 ]]; then
     echo "Listen $FRONTEND_PORT" >> $APACHE_CONFIG_DIR/ports.conf
 fi
-echo "Done"
 
 if [ $DYNAMIC_BACKEND_URL = "y" ]; then
     sed -i "s@serverAddress.*@serverAddress = \"$FITCRACK_PROTO://\"+window.location.hostname+\":${BACKEND_PORT}\"@g" /var/www/html/fitcrackFE/static/configuration.js
@@ -262,5 +261,4 @@ else
     sed -i "s@serverAddress.*@serverAddress = \"$BACKEND_URL\"@g" /var/www/html/fitcrackFE/static/configuration.js
 fi
 
-service mysql start
-service fitcrack start
+echo "Done"

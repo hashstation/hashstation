@@ -32,7 +32,7 @@ cp env.example .env
 ![Fitcrack-architecture](img/dockerenv.png)
 
 Edit the newly-created **.env** file and configure:
-- `server_HOST` to the domain name or IP of your host machine
+- `FITCRACK_SERVER_HOST` to the domain name or IP of your host machine
 - In most cases, it is fine to default ports: `80` for the WebAdmin frontend and the BOINC server, and `5000`for the WebAdmin backend. But you can change them if you want.
 - It is **recommended** to change the MySQL password `FITCRACK_DB_PW`.
 - The default WebAdmin login is `fitcrack`/`FITCRACK`. We **highly recommend** to change it by modifying the `WEBADMIN_LOGIN` and `WEBADMIN_PW` variables.
@@ -80,10 +80,10 @@ For next runs (in case you restart the container), it will automatically load th
 from the host-stored volumes.
 
 Once installed, you should be able to access the WebAdmin using:
-`http(s)://server_HOST:FRONTEND_PORT` that is `http://localhost` with default settings.
+`http(s)://FITCRACK_SERVER_HOST:FRONTEND_PORT` that is `http://localhost` with default settings.
 
 Hosts may connect using BOINC client, as described in [How to connect new hosts](https://nesfit.github.io/fitcrack/#/guide/hosts?id=connecting-hosts)
-For connection, you should use the `http(s)://server_HOST:BOINC_PORT/fitcrack`.
+For connection, you should use the `http(s)://FITCRACK_SERVER_HOST:BOINC_PORT/fitcrack`.
 In case localhost is used , the BOINC client needs to connect to
 `http://127.0.0.1/fitcrack` with default settings.
 
@@ -117,7 +117,7 @@ Now, you can configure SSL in the `.env` file.
 
 Configure Fitcrack server hostname to **your domain name**:
 ```
-server_HOST="my.fitcrack.com"  # The IP or domain name of Fitcrack server
+FITCRACK_SERVER_HOST="my.fitcrack.com"  # The IP or domain name of Fitcrack server
 ```
 
 Configure the certificate and private key file names if they are different from above:
