@@ -142,6 +142,14 @@
                     Extract from wallet
                   </v-btn>
                 </v-btn-toggle>
+                <v-spacer />
+                <v-select
+                  :items="inputFormats"
+                  label="Input format"
+                  v-model="inputFormat"
+                  @change="validateHashes(null)"
+                >
+                </v-select>
                 <v-autocomplete
                   id="hash-type-select"
                   v-model="hashType"
@@ -337,15 +345,6 @@
                     </v-icon>
                     Random SHA1
                   </v-btn>
-                </v-col>
-                <v-col>
-                  <v-select
-                    :items="inputFormats"
-                    label="Input format"
-                    v-model="inputFormat"
-                    @change="validateHashes(null)"
-                  >
-                  </v-select>
                 </v-col>
                 <v-col>
                   <v-checkbox
