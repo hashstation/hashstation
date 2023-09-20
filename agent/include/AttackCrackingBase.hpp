@@ -19,12 +19,19 @@ class AttackCrackingBase: public AttackBase {
 
         std::string attack_submode_;    /**< Submode from TLV */
 
+        bool external_generator_;        /**< True when attack is using external generator */
+
         std::vector<std::string> files_to_delete_; /**< Files to delete after attack is finished */
 
         /**
          * @brief   Adds all attack specific arguments
          */
         void addSpecificArguments();
+
+        /**
+         * @brief   Adds all attack hashcat-specific arguments
+         */
+        void addHashcatSpecificArguments();
 
         /**
          * @brief   Adds requred file form directory to arguments
@@ -49,9 +56,8 @@ class AttackCrackingBase: public AttackBase {
          * @brief   Basic constructor
          * @param   config [in] Representation of config file
          * @param   directory [in] Working directory
-         * @param   attack_mode [in] Attack mode
          */
-        AttackCrackingBase(const ConfigTask& config, Directory& directory, const char* attack_mode = nullptr);
+        AttackCrackingBase(const ConfigTask& config, Directory& directory, bool external_generator = false);
 
         ~AttackCrackingBase();
 };

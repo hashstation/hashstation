@@ -63,9 +63,8 @@ class AttackBase {
          * @brief   Searches for key in config_, if found adds it to the arguments_
          * @param   key [in] Search selector (TLV key)
          * @param   argument [in] Argument to add if found
-         * @param   override_arg_value [in] Override arg with this value
          */
-        bool findAndAdd(const std::string& key, const std::string& argument, const char *override_arg_value = nullptr);
+        bool findAndAdd(const std::string& key, const std::string& argument);
         /**
          * @brief   Searches for key in config_, if found adds argument and its value to arguments_,
          *          else throws exception
@@ -93,10 +92,8 @@ class AttackBase {
          *          else throws exception
          * @param   key [in] Search selector (TLV key)
          * @param   argument [in] Argument to add if found
-         * @param   override_arg_value [in] Override arg with this value
          */
-        void findAndAddRequired(const std::string& key, const std::string& argument,
-                                const char *override_arg_value = nullptr);
+        void findAndAddRequired(const std::string& key, const std::string& argument);
 
       public:
         /**

@@ -7,16 +7,12 @@
 
 /* Private */
 
-bool AttackBase::findAndAdd(const std::string& key, const std::string& argument, const char *override_arg_value) {
+bool AttackBase::findAndAdd(const std::string& key, const std::string& argument) {
   std::string value;
 
   if (config_.find(key, value)) {
     addArgument(argument);
-    if (override_arg_value) {
-      addArgument(override_arg_value);
-    } else {
-      addArgument(value);
-    }
+    addArgument(value);
     return true;
   }
   return false;
@@ -58,8 +54,8 @@ void AttackBase::findAndAddRequired(const std::string& key) {
   AgentUtils::runtimeException(key + "is missing in config");
 }
 
-void AttackBase::findAndAddRequired(const std::string& key, const std::string& argument, const char *override_arg_value) {
-  if (!findAndAdd(key, argument, override_arg_value))
+void AttackBase::findAndAddRequired(const std::string& key, const std::string& argument) {
+  if (!findAndAdd(key, argument))
   AgentUtils::runtimeException(key + "is missing in config");
 }
 

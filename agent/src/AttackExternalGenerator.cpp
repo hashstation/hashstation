@@ -4,7 +4,7 @@ AttackExternalGenerator::AttackExternalGenerator(const ConfigTask &config, Direc
 	AttackCrackingBase(
 		config,
 		directory,
-		/*attack_mode=*/"0" //change the specific mode to dictionary mode for piping in
+		/* external_generator */ true
 	)
 {}
 

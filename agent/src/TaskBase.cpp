@@ -5,8 +5,6 @@
 
 #include "TaskBase.hpp"
 #include "Attack.hpp"
-#include "Trickle.hpp"
-
 /* Protected */
 
 void TaskBase::actualizeComputedHashes(
@@ -53,6 +51,50 @@ void TaskBase::writeOutputFile(std::string &output_message) {
   output_stream.close();
 }
 
+void TaskBase::reportHashcatProgress(Trickle &trickle_xml, double percent_done) {
+    if (status_info_.empty())
+        return;
+
+    uint64_t cracking_time = getRunTime();
+
+    trickle_xml.addElement("cracking_time", cracking_time);
+    // ETA from hashcat is not reliable it seems.. tried with slow hash and it was a bit off.
+    // uint64_t time_start = status_info_.at("time_start");
+    // uint64_t estimated_stop = status_info_.at("estimated_stop");
+    // uint64_t remaining_time = estimated_stop - time_start;
+    uint64_t remaining_time = ((100.0 / percent_done) * cracking_time) - cracking_time;
+    trickle_xml.addElement("remaining_time", remaining_time);
+
+    // Also see TaskBenchmark
+    uint64_t salt_count = status_info_.at("recovered_salts").at(1);
+    salt_count = std::max<uint64_t>(salt_count, 1);
+
+    uint64_t total_hashrate = getTotalHashrate();
+    if (total_hashrate == 0) {
+        // Workaround: hashcat may sometimes report zero speeds during status
+        // updates. Compute total speed from total hashes and cracking time.
+        total_hashrate = total_hashes_ / cracking_time;
+    }
+    trickle_xml.addElement("hashrate", total_hashrate);
+    trickle_xml.addElement("speed", total_hashrate / salt_count);
+
+    for (const auto &device : status_info_.at("devices")) {
+        std::string id = std::to_string((int)device.at("device_id"));
+        std::string name = device.at("device_name");
+        std::string type = device.at("device_type");
+        int64_t hashrate = device.at("speed");
+        int64_t temp = device.value("temp", -1); // -1 when hwmon is disabled
+        int64_t util = device.at("util");
+
+        trickle_xml.addElement("device_" + id + "_name", name);
+        trickle_xml.addElement("device_" + id + "_type", type);
+        trickle_xml.addElement("device_" + id + "_hashrate", hashrate);
+        trickle_xml.addElement("device_" + id + "_speed", hashrate / salt_count);
+        trickle_xml.addElement("device_" + id + "_temp", temp);
+        trickle_xml.addElement("device_" + id + "_util", util);
+    }
+}
+
 void TaskBase::reportProgress() {
   double fraction_done, percent_done;
   fraction_done = fractionDone();
@@ -71,46 +113,7 @@ void TaskBase::reportProgress() {
     trickle_xml.addElement("workunit_name", workunit_name_);
     trickle_xml.addElement("progress", percent_done);
 
-    if (!status_info_.empty()) {
-      uint64_t cracking_time = getRunTime();
-
-      trickle_xml.addElement("cracking_time", cracking_time);
-      // ETA from hashcat is not reliable it seems.. tried with slow hash and it was a bit off.
-      // uint64_t time_start = status_info_.at("time_start");
-      // uint64_t estimated_stop = status_info_.at("estimated_stop");
-      // uint64_t remaining_time = estimated_stop - time_start;
-      uint64_t remaining_time = ((100.0 / percent_done) * cracking_time) - cracking_time;
-      trickle_xml.addElement("remaining_time", remaining_time);
-
-      // Also see TaskBenchmark
-      uint64_t salt_count = status_info_.at("recovered_salts").at(1);
-      salt_count = std::max<uint64_t>(salt_count, 1);
-
-      uint64_t total_hashrate = getTotalHashrate();
-      if (total_hashrate == 0) {
-        // Workaround: hashcat may sometimes report zero speeds during status
-        // updates. Compute total speed from total hashes and cracking time.
-        total_hashrate = total_hashes_ / cracking_time;
-      }
-      trickle_xml.addElement("hashrate", total_hashrate);
-      trickle_xml.addElement("speed", total_hashrate / salt_count);
-
-      for (const auto &device : status_info_.at("devices")) {
-        std::string id = std::to_string((int)device.at("device_id"));
-        std::string name = device.at("device_name");
-        std::string type = device.at("device_type");
-        int64_t hashrate = device.at("speed");
-        int64_t temp = device.value("temp", -1); // -1 when hwmon is disabled
-        int64_t util = device.at("util");
-
-        trickle_xml.addElement("device_" + id + "_name", name);
-        trickle_xml.addElement("device_" + id + "_type", type);
-        trickle_xml.addElement("device_" + id + "_hashrate", hashrate);
-        trickle_xml.addElement("device_" + id + "_speed", hashrate / salt_count);
-        trickle_xml.addElement("device_" + id + "_temp", temp);
-        trickle_xml.addElement("device_" + id + "_util", util);
-      }
-    }
+    reportHashcatProgress(trickle_xml, percent_done);
 
     trickle_message_ = trickle_xml.getXml();
     int ret = boinc_send_trickle_up(

@@ -16,7 +16,7 @@ class TaskBenchmarkAll: public TaskBase {
 private:
 
 	std::map<unsigned, uint64_t> results_; ///< Results for each hash type.
-	ProcessBase *process_hashcat_;          /**< Pointer to process executing the task */
+	ProcessBase *process_cracking_engine_;          /**< Pointer to process executing the task */
 	NamedMutex hashcat_mutex_;
 
 public:

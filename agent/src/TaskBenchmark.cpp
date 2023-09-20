@@ -33,7 +33,7 @@ std::string TaskBenchmark::generateOutputMessage() {
 
   std::string output_message = "";
 
-  exit_code_ = process_hashcat_->getExitCode();
+  exit_code_ = process_cracking_engine_->getExitCode();
 
   output_message += mode_ + "\n";
 
@@ -49,7 +49,7 @@ std::string TaskBenchmark::generateOutputMessage() {
 
     output_message += ProjectConstants::TaskFinalStatus::Error + "\n";
     output_message +=
-        AgentUtils::toString(process_hashcat_->getExitCode()) + "\n";
+        AgentUtils::toString(process_cracking_engine_->getExitCode()) + "\n";
     output_message += getErrorMessage() + "\n";
   }
 
@@ -78,15 +78,15 @@ void TaskBenchmark::progress() {
   PRINT_POSITION_IN_CODE();
 
   while (true) {
-    if (!process_hashcat_->isRunning()) {
+    if (!process_cracking_engine_->isRunning()) {
       Logging::debugPrint(Logging::Detail::GeneralInfo,
-                         "Hashcat finished.");
+                         "Benchmark finished.");
       break;
     }
 
     PRINT_POSITION_IN_CODE();
 
-    line = process_hashcat_->readOutPipeLine();
+    line = process_cracking_engine_->readOutPipeLine();
 
     PRINT_POSITION_IN_CODE();
 

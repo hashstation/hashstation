@@ -16,6 +16,7 @@
 #include "File.hpp"
 
 #include "AgentUtils.hpp"
+#include "Trickle.hpp"
 
 #include <cmath>
 
@@ -126,13 +127,12 @@ public:
    * @brief   Pure virtual function handling progress notifications
    */
   virtual void progress() = 0;
-
   /**
    * @brief   Reports current progress to boinc-client and project server
    * @return  Progress of the task as percentage
    */
   void reportProgress();
-
+  void reportHashcatProgress(Trickle &trickle_xml, double percent_done);
   /**
    * @brief   Spawns the computation process
    */

@@ -22,7 +22,7 @@ class TaskComputeBase: public TaskBase {
 
 	    AttackBase *attack_;            /**< Pointer to Attack, set by initAttack */
 
-        ProcessBase *process_hashcat_;          /**< Pointer to process executing the task */
+        ProcessBase *process_cracking_engine_;          /**< Pointer to process executing the task */
         ProcessBase *process_external_generator_; /**< Pointer to external generator process executing the task */
         ProcessBase *parent_process_; /**< Pointer to parent process */
 

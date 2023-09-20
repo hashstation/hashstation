@@ -162,7 +162,7 @@ std::string TaskNormal::generateOutputMessage() {
 
   std::string output_info = "";
 
-  exit_code_ = process_hashcat_->getExitCode();
+  exit_code_ = process_cracking_engine_->getExitCode();
   readPasswordsFromFile();
 
   output_info += mode_ + "\n";
@@ -184,7 +184,7 @@ std::string TaskNormal::generateOutputMessage() {
 
     output_info += ProjectConstants::TaskFinalStatus::Error + "\n";
     output_info += AgentUtils::toString(exit_code_) + "\n";
-    output_info += process_hashcat_->readErrPipeAvailableLines() + "\n";
+    output_info += process_cracking_engine_->readErrPipeAvailableLines() + "\n";
 
     /*
   } else if (exit_code == 4) {
@@ -223,15 +223,14 @@ void TaskNormal::progress() {
   PRINT_POSITION_IN_CODE();
 
   while (true) {
-    if (!process_hashcat_->isRunning()) {
-      Logging::debugPrint(Logging::Detail::GeneralInfo,
-                         "Hashcat finished.");
+    if (!process_cracking_engine_->isRunning()) {
+      Logging::debugPrint(Logging::Detail::GeneralInfo, "Cracking finished.");
       break;
     }
 
     PRINT_POSITION_IN_CODE();
 
-    line = process_hashcat_->readOutPipeLine();
+    line = process_cracking_engine_->readOutPipeLine();
 
     PRINT_POSITION_IN_CODE();
 

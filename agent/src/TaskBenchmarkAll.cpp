@@ -18,7 +18,7 @@ TaskBenchmarkAll::TaskBenchmarkAll(Directory &directory,
 }
 
 TaskBenchmarkAll::~TaskBenchmarkAll() {
-  delete process_hashcat_;
+  delete process_cracking_engine_;
 }
 
 std::string TaskBenchmarkAll::generateOutputMessage() {
@@ -71,14 +71,14 @@ void TaskBenchmarkAll::progress() {
   args.push_back("--quiet");
   args.push_back("--machine-readable");
 
-  process_hashcat_ = Process::create(args, directory_);
+  process_cracking_engine_ = Process::create(args, directory_);
 
   hashcat_mutex_.lock();
-  process_hashcat_->run();
+  process_cracking_engine_->run();
 
-  while (process_hashcat_->isRunning()) {
+  while (process_cracking_engine_->isRunning()) {
 
-    line = process_hashcat_->readOutPipeLine();
+    line = process_cracking_engine_->readOutPipeLine();
     int device_id, corespeed_dev, memoryspeed_dev;
     float exec_msec_dev;
     unsigned hash_mode;
@@ -97,10 +97,10 @@ void TaskBenchmarkAll::progress() {
     }
   }
 
-  exit_code_ = process_hashcat_->finish();
+  exit_code_ = process_cracking_engine_->finish();
   hashcat_mutex_.unlock();
 }
 
 double TaskBenchmarkAll::getRunTime() const {
-  return process_hashcat_->getExecutionTime();
+  return process_cracking_engine_->getExecutionTime();
 }

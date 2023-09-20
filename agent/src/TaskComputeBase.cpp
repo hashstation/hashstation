@@ -29,7 +29,7 @@ TaskComputeBase::TaskComputeBase(
 ):
   TaskBase(directory, task_config, host_config, output_file, workunit_name),
   attack_(nullptr),
-  process_hashcat_(nullptr),
+  process_cracking_engine_(nullptr),
   process_external_generator_(nullptr),
   hashcat_mutex_(AgentConstants::HashcatMutexName),
   attack_type(Attack::detectAttackType(task_config_))
@@ -38,24 +38,24 @@ TaskComputeBase::TaskComputeBase(
 TaskComputeBase::~TaskComputeBase() {
   delete attack_;
 
-  delete process_hashcat_;
+  delete process_cracking_engine_;
 
   delete process_external_generator_;
 }
 
 std::string TaskComputeBase::getErrorMessage() {
-  return process_hashcat_->readErrPipeAvailableLines();
+  return process_cracking_engine_->readErrPipeAvailableLines();
 }
 
 double TaskComputeBase::getRunTime() const {
-  return process_hashcat_->getExecutionTime();
+  return process_cracking_engine_->getExecutionTime();
 }
 
 int TaskComputeBase::finish() {
 
   PRINT_POSITION_IN_CODE();
 
-  exit_code_ = process_hashcat_->finish();
+  exit_code_ = process_cracking_engine_->finish();
 
   PRINT_POSITION_IN_CODE();
 
@@ -64,7 +64,7 @@ int TaskComputeBase::finish() {
   PRINT_POSITION_IN_CODE();
 
   if (exit_code_ == (unsigned char)HashcatConstant::status_codes::Error) {
-    std::string msg = std::string("Hashcat failed to run! Exit code: -1. ") + process_hashcat_->readErrPipeAvailableLines();
+    std::string msg = std::string("Hashcat failed to run! Exit code: -1. ") + process_cracking_engine_->readErrPipeAvailableLines();
     AgentUtils::runtimeException(msg);
   } else if (exit_code_ == (unsigned char)HashcatConstant::status_codes::GpuAlarm) {
     printProcessErr();
@@ -88,8 +88,8 @@ void TaskComputeBase::initialize() {
     getAllArguments();
   }
 
-  if (process_hashcat_ == nullptr) {
-    process_hashcat_ = Process::create(hashcat_arguments_, directory_);
+  if (process_cracking_engine_ == nullptr) {
+    process_cracking_engine_ = Process::create(hashcat_arguments_, directory_);
   }
   //create external generator if necessary
   std::string externalGeneratorName = attack_->getExternalGeneratorName();
@@ -98,13 +98,13 @@ void TaskComputeBase::initialize() {
     process_external_generator_ = Process::create(externalGeneratorName, attack_->getExternalGeneratorArguments(), directory_);
   }
   if (process_external_generator_) {
-    process_hashcat_->setInPipe(process_external_generator_->GetPipeOut());
+    process_cracking_engine_->setInPipe(process_external_generator_->GetPipeOut());
   }
 }
 
 void TaskComputeBase::printProcessOut() {
   PRINT_POSITION_IN_CODE();
-  Logging::debugPrint(Logging::Detail::Important, "Hashcat available stdout : \n" + process_hashcat_->readOutPipeAvailableLines());
+  Logging::debugPrint(Logging::Detail::Important, "Hashcat available stdout : \n" + process_cracking_engine_->readOutPipeAvailableLines());
   PRINT_POSITION_IN_CODE();
 }
 
@@ -112,7 +112,7 @@ void TaskComputeBase::printProcessErr() {
   PRINT_POSITION_IN_CODE();
   Logging::debugPrint(Logging::Detail::Important,
                       "TaskComputeBase: hashcat available stderr : \n" +
-                          process_hashcat_->readErrPipeAvailableLines());
+                          process_cracking_engine_->readErrPipeAvailableLines());
   PRINT_POSITION_IN_CODE();
 }
 
@@ -124,11 +124,11 @@ void TaskComputeBase::startComputation() {
     process_external_generator_->GetPipeOut()->waitForAvailableOutput();
     Logging::debugPrint(Logging::Detail::GeneralInfo, "Waiting for the external generator output ended");
   }
-  if(!process_hashcat_->isRunning())
+  if(!process_cracking_engine_->isRunning())
   {
     hashcat_mutex_.lock();
-    process_hashcat_->killIfRunning();
-    process_hashcat_->run();
+    process_cracking_engine_->killIfRunning();
+    process_cracking_engine_->run();
     Logging::debugPrint(Logging::Detail::GeneralInfo,
                         "Hashcat process has started.");
   }
