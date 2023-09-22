@@ -142,7 +142,7 @@ class FcHcstat(Base):
     __tablename__ = 'fc_hcstats'
 
     id = Column(Integer, primary_key=True)
-    name = Column(String(100), nullable=False)
+    name = Column(String(255), nullable=False)
     path = Column(String(400), nullable=False)
     time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
     deleted = Column(Integer, nullable=False, server_default=text("'0'"))
@@ -954,6 +954,7 @@ class FcHash(Base):
     job_id = Column(BigInteger, ForeignKey(FcJob.id), nullable=True)
     hash_type = Column(Integer, nullable=False)
     hash = Column(LargeBinary, nullable=False)
+    username = Column(String(255), nullable=True)
     result = Column(String(400, collation='utf8_bin'))
     added = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
     time_cracked = Column(DateTime)

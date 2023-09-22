@@ -546,6 +546,9 @@ class exportCrackedHashes(Resource):
         job = FcJob.query.filter(FcJob.id == id).one()
         for job_hash in job.hashes:
             if job_hash.result:
+                if job_hash.username:
+                    crackedHashes.write(job_hash.username.encode('utf-8'))
+                    crackedHashes.write(b':')
                 crackedHashes.write(job_hash.hashText.encode('utf-8'))
                 crackedHashes.write(b':')
                 crackedHashes.write(job_hash.password.encode('utf-8'))
@@ -566,6 +569,9 @@ class exportNonCrackedHashes(Resource):
         job = FcJob.query.filter(FcJob.id == id).one()
         for job_hash in job.hashes:
             if job_hash.result is None:
+                if job_hash.username:
+                    nonCrackedHashes.write(job_hash.username.encode('utf-8'))
+                    nonCrackedHashes.write(b':')
                 nonCrackedHashes.write(job_hash.hashText.encode('utf-8'))
                 nonCrackedHashes.write(b'\n')
 

@@ -17,9 +17,10 @@ from src.api.fitcrack.responseModels import pagination, host_short_model, job_sh
 
 hashes_model = api.model('Hashes model', {
     'id': fields.Integer(readOnly=True, required=False),
-    'password': fields.String(),
+    'username': fields.String(),
     'hash_type_name': fields.String(),
     'hash': fields.String(attribute='hashText'),
+    'password': fields.String(),
     'added': fields.DateTime(),
     'job': fields.Nested(job_short_model)
 })

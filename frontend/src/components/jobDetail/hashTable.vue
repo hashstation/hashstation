@@ -23,11 +23,8 @@ export default {
   data () {
     return {
       headers: [
-        {
-          text: 'Hash',
-          align: 'start',
-          value: 'hashText'
-        },
+        {text: 'Username', value: 'username', align: 'start'},
+        {text: 'Hash', value: 'hashText', align: 'start'},
         {text: 'Password', value: 'password', align: 'end'}
       ],
       footer: {

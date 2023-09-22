@@ -69,6 +69,7 @@ mask_model = api.model('Mask', {
 
 hash_model = api.model('Hash', {
     'hashText': fields.String(),
+    'username': fields.String(),
     'password': fields.String(),
     'time_cracked': fields.DateTime()
 })
@@ -83,6 +84,7 @@ page_of_workunits_model = api.inherit('Page of workunits', pagination, {
 
 verifyHash_model = api.model('Verified hash', {
     'hash': fields.String(required=True, description='Hash being validated'),
+    'username': fields.String(required=False, description='Username associated with the hash'),
     'result': fields.String(required=True, description='Whether the hash is valid'),
     'isInCache': fields.Boolean()
 })

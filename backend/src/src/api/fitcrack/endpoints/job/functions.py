@@ -209,7 +209,7 @@ def create_job(data):
     lookupKnownHashes = job.get('lookup_known_hashes', 1)
 
     for hashObj in data['hash_settings']['hash_list']:
-        hash = FcHash(job_id=db_job.id, hash_type=job['hash_settings']['hash_type'], hash=hashObj['hash'])
+        hash = FcHash(job_id=db_job.id, hash_type=job['hash_settings']['hash_type'], hash=hashObj['hash'], username=hashObj['username'])
 
         if lookupKnownHashes:
             known_hash = FcHash.query.filter(FcHash.hash == hash.hash, FcHash.result != None).first()
@@ -226,7 +226,7 @@ def create_job(data):
     return db_job
 
 
-def verifyHashFormat(hash, hash_type, abortOnFail=False, binaryHash=False):
+def verifyHashFormat(hash, hash_type, usernames=None, abortOnFail=False, binaryHash=False):
     hashes = []
     settings = FcSetting.query.first()
     if not settings.verify_hash_format:
@@ -270,7 +270,7 @@ def verifyHashFormat(hash, hash_type, abortOnFail=False, binaryHash=False):
 
     hashesArr = []
     hasError = False
-    for hash in hashes:
+    for idx, hash in enumerate(hashes):
         hashArr = hash.rsplit(' ', 1)
 
         isInCache = False
@@ -287,6 +287,7 @@ def verifyHashFormat(hash, hash_type, abortOnFail=False, binaryHash=False):
         if hashArr[0] == '':
             hashesArr.append({
                 'hash': hashArr[0],
+                'username' : None,
                 'result': 'Empty hash',
                 'isInCache': False
             })
@@ -294,6 +295,7 @@ def verifyHashFormat(hash, hash_type, abortOnFail=False, binaryHash=False):
         else:
             hashesArr.append({
                 'hash': hashArr[0],
+                'username' : usernames[idx] if usernames else None,
                 'result': hashArr[1],
                 'isInCache': isInCache
             })
@@ -314,8 +316,10 @@ def verifyHashes(hashes, hash_type, input_format, abortOnFail=False, binaryHash=
             fp.seek(0)
             result = verifyHashFormat(fp.name, hash_type, binaryHash=hashes)
     else:
+        usernames = None
         try:
             if input_format == 1: 
+                usernames = [line[:line.index(':')] for line in hashes.split('\n')]
                 hashes = '\n'.join([line[line.index(':') + 1:].strip() for line in hashes.split('\n')])
             elif input_format == 2: 
                 hashes = '\n'.join([line.split(':')[3] for line in hashes.split('\n')]) 
@@ -325,7 +329,7 @@ def verifyHashes(hashes, hash_type, input_format, abortOnFail=False, binaryHash=
         with tempfile.NamedTemporaryFile() as fp:
             fp.write(hashes.encode())
             fp.seek(0)
-            result = verifyHashFormat(fp.name, hash_type)
+            result = verifyHashFormat(fp.name, hash_type, usernames)
     return result
 
 def computeCrackingTime(data):

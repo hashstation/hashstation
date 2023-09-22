@@ -191,10 +191,10 @@
         uploadCrackedHashesDialog: false,
         selectedHashes: [],
         headers: [
-          {text: 'Password', value: 'password', align: 'start', sortable: true},
+          {text: 'Username', value: 'username', align: 'start', sortable: true},
           {text: 'Hash type', value: 'hash_type_name', align: 'start', sortable: true},
           {text: 'Hash', value: 'hash', align: 'start', sortable: true},
-          {text: 'Added', value: 'added', align: 'start', sortable: true},
+          {text: 'Password', value: 'password', align: 'start', sortable: true},
           {text: 'Job', value: 'job', align: 'end', sortable: true}
         ],
         hashes:

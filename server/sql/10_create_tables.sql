@@ -68,6 +68,7 @@ CREATE TABLE IF NOT EXISTS`fc_hash` (
   `job_id` bigint(20) unsigned DEFAULT NULL,
   `hash_type` int(11) unsigned NOT NULL,
   `hash` longblob NOT NULL,
+  `username` varchar(255) DEFAULT NULL,
   `result` longtext DEFAULT NULL,
   `added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `time_cracked` timestamp NULL DEFAULT NULL,
