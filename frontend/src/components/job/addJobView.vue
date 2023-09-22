@@ -312,7 +312,7 @@
                           <span>{{ hashObj.result }}</span>
                         </v-tooltip>
                         <v-tooltip
-                          v-if="hashObj.isInCache"
+                          v-if="hashObj.password"
                           left
                         >
                           <template v-slot:activator="{ on }">
@@ -325,7 +325,7 @@
                               error_circle_outlined
                             </v-icon>
                           </template>
-                          <span>hash already in hashcache</span>
+                          <span>hash in internal hash cache</span>
                         </v-tooltip>
                       </div>
                     </div>
@@ -567,15 +567,6 @@
               </v-row>
               <v-row>
                 <v-col>
-                  <v-checkbox
-                    v-model="lookupKnownHashes"
-                    label="Internal hash lookup"
-                  />
-                  <div class="sublabel-text">Retrieve passwords from previously cracked hashes. This reduces the need to re-crack known hashes, saving time and resources.</div>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col>
                   <v-textarea
                     id="extra-hc-args-input"
                     v-model="extraHcArgs"
@@ -800,7 +791,7 @@
       ...mapTwoWayState('jobForm', twoWayMap([
         'step', 'attackSettingsTab', 'validatedHashes', 'name', 'inputMethod', 'hashList', 'hashType', 'ignoreHashes', 'startDate', 
         'endDate', 'template', 'comment', 'hosts', 'startNow', 'endNever', 'timeForJob', 'deviceTypes', 'workloadProfile', 'priority',
-        'optimized', 'extraHcArgs', 'fixedWorkunitSize', 'lookupKnownHashes',
+        'optimized', 'extraHcArgs', 'fixedWorkunitSize',
       ])),
       ...mapGetters('jobForm', ['jobSettings', 'valid', 'validAttackSpecificSettings', 'keyspaceKnown']),
       templateItems () {

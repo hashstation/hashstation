@@ -206,16 +206,12 @@ def create_job(data):
         db_host_activity = FcHostActivity(job_id=db_job.id, boinc_host_id=db_host.id)
         db.session.add(db_host_activity)
 
-    lookupKnownHashes = job.get('lookup_known_hashes', 1)
-
     for hashObj in data['hash_settings']['hash_list']:
         hash = FcHash(job_id=db_job.id, hash_type=job['hash_settings']['hash_type'], hash=hashObj['hash'], username=hashObj['username'])
 
-        if lookupKnownHashes:
-            known_hash = FcHash.query.filter(FcHash.hash == hash.hash, FcHash.result != None).first()
-            if known_hash:
-                hash.result = known_hash.result
-                hash.time_cracked = datetime.datetime.utcnow()
+        if hashObj['password']:
+            hash.result = hashObj['password']
+            hash.time_cracked = datetime.datetime.utcnow()
 
         db.session.add(hash)
 
@@ -273,11 +269,7 @@ def verifyHashFormat(hash, hash_type, usernames=None, abortOnFail=False, binaryH
     for idx, hash in enumerate(hashes):
         hashArr = hash.rsplit(' ', 1)
 
-        isInCache = False
         dbHash = FcHash.query.filter(FcHash.hash == bytes(hashArr[0], 'utf8'), FcHash.result != None).first()
-        if dbHash:
-            isInCache = True
-
 
         if abortOnFail and hashArr[1] != 'OK':
             abort(500, 'Hash ' + hashArr[0] + ' has wrong format (' + hashArr[1] + ' exception).')
@@ -289,7 +281,7 @@ def verifyHashFormat(hash, hash_type, usernames=None, abortOnFail=False, binaryH
                 'hash': hashArr[0],
                 'username' : None,
                 'result': 'Empty hash',
-                'isInCache': False
+                'password': None
             })
             hasError = True
         else:
@@ -297,7 +289,7 @@ def verifyHashFormat(hash, hash_type, usernames=None, abortOnFail=False, binaryH
                 'hash': hashArr[0],
                 'username' : usernames[idx] if usernames else None,
                 'result': hashArr[1],
-                'isInCache': isInCache
+                'password': dbHash.result if dbHash else None
             })
             if hashArr[1] != 'OK':
                 hasError = True

@@ -84,9 +84,10 @@ page_of_workunits_model = api.inherit('Page of workunits', pagination, {
 
 verifyHash_model = api.model('Verified hash', {
     'hash': fields.String(required=True, description='Hash being validated'),
-    'username': fields.String(required=False, description='Username associated with the hash'),
+    'username': fields.String(required=True, description='Username associated with the hash'),
     'result': fields.String(required=True, description='Whether the hash is valid'),
-    'isInCache': fields.Boolean()
+    'isInCache': fields.Boolean(),
+    'password': fields.String(required=True, description='Password found in internal cache'),
 })
 
 verifyHashes_model = api.model('Verified hashes', {
