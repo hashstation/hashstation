@@ -37,8 +37,7 @@ const testView = () => import('@/components/test/test.vue')
 const PageNotFound = () => import('@/components/pageNotFound.vue')
 const EncryptedFiles = () => import('@/components/encryptedFile/encryptedFilesView.vue')
 const Server = () => import('@/components/server/serverMonitor.vue')
-const SystemSettings = () => import('@/components/settings/systemSettingsView.vue')
-const NotificationSettings = () => import('@/components/settings/notificationSettingsView.vue')
+const Settings = () => import('@/components/settings/settingsView.vue')
 const Transfer = () => import('@/components/settings/dataTransfer.vue')
 const UnauthorizedError = () => import('@/components/errorPages/unauthorized.vue')
 
@@ -252,7 +251,7 @@ const appRoutes = [
     name: 'markovChains',
     component: markovChains,
     meta: {
-      title: 'Markov Chains',
+      title: 'Markov chains',
       icon: 'mdi-matrix',
       navtab: 1
     }
@@ -273,7 +272,7 @@ const appRoutes = [
     component: manageUsers,
     meta: {
       guard: 'MANAGE_USERS',
-      title: 'Manage Users',
+      title: 'Manage users',
       icon: 'mdi-folder-account',
       navtab: 2
     }
@@ -283,7 +282,7 @@ const appRoutes = [
     name: 'myAccount',
     component: myAccount,
     meta: {
-      title: 'My Account',
+      title: 'My account',
       icon: 'mdi-account'
     }
   },
@@ -292,27 +291,17 @@ const appRoutes = [
     name: 'server',
     component: Server,
     meta: {
-      title: 'Server Monitor',
+      title: 'Server monitor',
       icon: 'mdi-gauge',
       navtab: 2
     }
   },
   {
-    path: '/notificationSettings',
-    name: 'notificationSettings',
-    component: NotificationSettings,
+    path: '/settings',
+    name: 'settings',
+    component: Settings,
     meta: {
-      title: 'Notification Settings',
-      icon: 'mdi-alert-circle',
-      navtab: 2
-    }
-  },
-  {
-    path: '/systemSettings',
-    name: 'systemSettings',
-    component: SystemSettings,
-    meta: {
-      title: 'System Settings',
+      title: 'Settings',
       icon: 'mdi-cogs',
       navtab: 2
     }

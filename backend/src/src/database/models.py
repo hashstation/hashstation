@@ -749,27 +749,6 @@ class FcHostActivity(Base):
     def host(self):
         return self.boinc_host.fc_host
 
-class FcNotificationService(Base):
-    __tablename__ = 'fc_notification_service'
-
-    id = Column(Integer, primary_key=True)
-    service = Column(String(20), nullable=False)
-    target = Column(String(255), nullable=False)
-    app_password = Column(String(255), nullable=False)
-    chat_id = Column(String(255), nullable=False)
-    last_notification_id = Column(Integer, server_default=text("'0'"))
-    enabled = Column(Integer, nullable=False, server_default=text("'0'"))
-
-    @hybrid_property
-    def service_name(self):
-        mapping = { "discord" : "Discord", "mail" : "E-mail", "telegram" : "Telegram" }
-        return mapping[self.service]
-    
-    @hybrid_property
-    def target_name(self):
-        mapping = { "discord" : "Webhook URL", "mail" : "E-mail address", "telegram" : "Bot Token" }
-        return mapping[self.service]
-
 
 class FcNotification(Base):
     __tablename__ = 'fc_notification'

@@ -244,21 +244,12 @@
               </v-list-item-content>
             </v-list-item>
 
-            <v-list-item :to="{ name: 'notificationSettings'}">
+            <v-list-item :to="{ name: 'settings'}">
               <v-list-item-action>
-                <v-icon>{{ routeIcon('notificationSettings') }}</v-icon>
+                <v-icon>{{ routeIcon('settings') }}</v-icon>
               </v-list-item-action>
               <v-list-item-content>
-                <v-list-item-title>Notification Settings</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-
-            <v-list-item :to="{ name: 'systemSettings'}">
-              <v-list-item-action>
-                <v-icon>{{ routeIcon('systemSettings') }}</v-icon>
-              </v-list-item-action>
-              <v-list-item-content>
-                <v-list-item-title>System Settings</v-list-item-title>
+                <v-list-item-title>Settings</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
 
@@ -555,7 +546,7 @@
 </template>
 
 <script>
-  import notifications from '@/components/notifications/fc_notifications_wrapper.vue'
+  import notifications from '@/components/notification/fc_notifications_wrapper.vue'
   import bins from '@/components/job/bins.vue'
   import { routeIcon } from '@/router'
   import store from '@/store'
