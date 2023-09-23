@@ -528,10 +528,11 @@ class FcTemplate(Base):
     created = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
     template = Column(JSON, nullable=False)
 
-class FcSetting(Base):
+class FcSettings(Base):
     __tablename__ = 'fc_settings'
 
     id = Column(Integer, primary_key=True)
+    user_id = Column(ForeignKey('fc_user.id'))
     default_seconds_per_workunit = Column(Integer, nullable=False, server_default=text("'600'"))
     workunit_timeout_factor = Column(Integer, nullable=False, server_default=text("'2'"))
     hwmon_temp_abort = Column(Integer, nullable=False, server_default=text("'90'"))
@@ -540,6 +541,8 @@ class FcSetting(Base):
     auto_add_hosts_to_running_jobs = Column(Integer, nullable=False, server_default=text("'0'"))
     bench_runtime_limit = Column(Integer, nullable=False, server_default=text("'30'"))
     workunit_status_update = Column(Integer, nullable=False, server_default=text("'5'"))
+
+    user = relationship('FcUser')
 
 class FcJobGraph(Base):
     __tablename__ = 'fc_job_graph'
@@ -728,7 +731,7 @@ class FcWorkunit(Base):
     def remaining_time_str(self):
         if not self.finished: # active wu
             if self.keyspace == 0: # benchmark wu has runtime limit in seconds
-                settings = FcSetting.query.first()
+                settings = FcSettings.query.filter_by(user_id=current_user.id).one()
                 remaining_time = 0 if self.cracking_time > settings.bench_runtime_limit else settings.bench_runtime_limit - self.cracking_time
                 return str(datetime.timedelta(seconds=math.floor(remaining_time)))
             elif self.keyspace > 0: # normal wu

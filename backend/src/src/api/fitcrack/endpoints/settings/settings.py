@@ -6,6 +6,7 @@
 import logging
 
 from flask import request
+from flask_login import current_user
 from flask_restx import Resource, abort
 from sqlalchemy import exc
 
@@ -14,7 +15,7 @@ from src.api.fitcrack.endpoints.settings.argumentsParser import settings_argumen
 from src.api.fitcrack.endpoints.settings.responseModels import settings_model
 from src.api.fitcrack.responseModels import simpleResponse
 from src.database import db
-from src.database.models import FcSetting
+from src.database.models import FcSettings
 
 log = logging.getLogger(__name__)
 ns = api.namespace('settings', description='Endpoints for manipulating system settings.')
@@ -27,7 +28,7 @@ class settings(Resource):
         """
         Returns all system settings.
         """
-        settings = FcSetting.query.first() # single row table
+        settings = FcSettings.query.filter_by(user_id=current_user.id).one_or_none()
         return settings
 
     @api.expect(settings_arguments)
@@ -46,7 +47,9 @@ class settings(Resource):
         bench_runtime_limit = args['bench_runtime_limit']
         workunit_status_update = args['workunit_status_update']
 
-        settings = FcSetting.query.first()
+        settings = FcSettings.query.filter_by(user_id=current_user.id).one_or_none()
+        if not settings:
+            abort(404, 'User settings not found.')
         if (default_seconds_per_workunit is not None): settings.default_seconds_per_workunit = default_seconds_per_workunit
         if (workunit_timeout_factor is not None): settings.workunit_timeout_factor = workunit_timeout_factor
         if (hwmon_temp_abort is not None): settings.hwmon_temp_abort = hwmon_temp_abort

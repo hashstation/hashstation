@@ -70,9 +70,10 @@ CJob::CJob(DbMap &jobMap, CSqlLoader * sqlLoader)
         /** Load parameters used for adaptive planning */
         m_secondsPassed = m_sqlLoader->getSecondsPassed(this->m_id);
         m_totalPower = m_sqlLoader->getTotalPower(this->m_id);
+        m_owner = m_sqlLoader->getJobOwner(this->m_id);
 
         /** Load workunit timeout */
-        m_timeoutFactor = m_sqlLoader->getTimeoutFactor();
+        m_timeoutFactor = m_sqlLoader->getTimeoutFactor(m_owner);
         if (this->m_timeoutFactor < Config::minTimeoutFactor)
         {
             Tools::printDebugJob(Config::DebugType::Warn, this->m_id,
@@ -82,10 +83,10 @@ CJob::CJob(DbMap &jobMap, CSqlLoader * sqlLoader)
         }
 
         /** Temperature threshold */
-        m_hwTempAbort = m_sqlLoader->getHWTempAbort();
+        m_hwTempAbort = m_sqlLoader->getHWTempAbort(m_owner);
 
-        m_benchRuntimeLimit = m_sqlLoader->getBenchRuntimeLimit();
-        m_workunitStatusUpdate = m_sqlLoader->getWorkunitStatusUpdate();
+        m_benchRuntimeLimit = m_sqlLoader->getBenchRuntimeLimit(m_owner);
+        m_workunitStatusUpdate = m_sqlLoader->getWorkunitStatusUpdate(m_owner);
     }
     catch(std::logic_error & error)
     {
@@ -230,6 +231,10 @@ uint64_t CJob::getId() const
     return this->m_id;
 }
 
+uint64_t CJob::getOwner() const
+{
+    return this->m_owner;
+}
 
 const std::string & CJob::getAttack() const
 {

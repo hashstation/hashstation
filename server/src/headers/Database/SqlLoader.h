@@ -168,6 +168,12 @@ class CSqlLoader {
          * @return True if now() is greater than time_end of supplied job, False otherwise
          */
         bool isJobTimeout(uint64_t jobId);
+        /**
+         * @brief Returns owner (user) of the job
+         * @param jobId ID of job
+         * @return Owner user ID
+         */
+        uint64_t getJobOwner(uint64_t jobId);
 
         /**
          * @brief Inserts new workunit to fc_workunit table
@@ -179,25 +185,25 @@ class CSqlLoader {
          * @brief Reads default_workunit_timeout_factor from fc_settings
          * @return Number from DB
          */
-        unsigned int getTimeoutFactor();
+        unsigned int getTimeoutFactor(uint64_t userId);
 
         /**
          * @brief Reads hwmon_temp_abort from fc_settings
          * @return Number from DB
          */
-        unsigned int getHWTempAbort();
+        unsigned int getHWTempAbort(uint64_t userId);
 
         /**
          * @brief Reads bench_runtime_limit from fc_settings
          * @return Runtime in seconds
          */
-        uint64_t getBenchRuntimeLimit();
+        uint64_t getBenchRuntimeLimit(uint64_t userId);
 
         /**
          * @brief Reads workunit_status_update from fc_settings
          * @return Status update frequency in seconds
          */
-        uint64_t getWorkunitStatusUpdate();
+        uint64_t getWorkunitStatusUpdate(uint64_t userId);
 
         /**
          * Returns fresh host status from DB

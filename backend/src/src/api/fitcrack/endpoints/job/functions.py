@@ -26,7 +26,7 @@ from src.api.fitcrack.lang import status_to_code, attack_modes
 from src.api.fitcrack.functions import shellExec, lenStr
 from src.database import db
 from src.database.models import FcJob, FcHostActivity, FcBenchmark, Host, FcDictionary, FcJobDictionary, \
-    FcJobGraph, FcRule, FcHash, FcMask, FcUserPermission, FcSetting, FcWorkunit, FcDeviceInfo
+    FcJobGraph, FcRule, FcHash, FcMask, FcUserPermission, FcSettings, FcWorkunit, FcDeviceInfo
 from src.api.fitcrack.endpoints.pcfg.functions import extractNameFromZipfile
 
 
@@ -95,7 +95,7 @@ def create_job(data):
     if len(data['hash_settings']['hash_list']) == 0:
         abort(500, 'Hash list can not be empty.')
 
-    settings = FcSetting.query.first()
+    settings = FcSettings.query.filter_by(user_id=current_user.id).one()
     if settings.verify_hash_format:
         hashes = '\n'.join([hashObj['hash'] for hashObj in data['hash_settings']['hash_list']])
         if hashes.startswith('BASE64:'):
@@ -224,7 +224,7 @@ def create_job(data):
 
 def verifyHashFormat(hash, hash_type, usernames=None, abortOnFail=False, binaryHash=False):
     hashes = []
-    settings = FcSetting.query.first()
+    settings = FcSettings.query.filter_by(user_id=current_user.id).one()
     if not settings.verify_hash_format:
         if binaryHash:
             hashes = ["HASH OK"]

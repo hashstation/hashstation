@@ -33,6 +33,7 @@ General improvements:
 * It is now possible to upload dictionaries from any folders on the server.
 * It is now possible to upgrade standard (non-dockerized) Fitcrack to newer versions. Please see UPGRADE.md file.
 * Added new settings per hosts.
+* System settings are per user now.
 * Extraction of hashes from files using file2hashcat tool.
 * Updated to BOINC v7.23.
 * Updated backend dependencies.

@@ -113,6 +113,7 @@ class CJob {
          */
 
         uint64_t    m_id;
+        uint64_t    m_owner;
         std::string m_attack;
         uint32_t    m_attackMode;
         uint32_t    m_attackSubmode;
@@ -176,6 +177,7 @@ class CJob {
          */
 
         uint64_t getId() const;
+        uint64_t getOwner() const;
         const std::string &getAttack() const;
         uint32_t getAttackMode() const;
         uint32_t getAttackSubmode() const;

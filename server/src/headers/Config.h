@@ -55,6 +55,7 @@ namespace Config {
     extern std::string tableNameJobRule;
     extern std::string tableNameHash;
     extern std::string tableNamePcfgGrammar;
+    extern std::string tableNameUserPermissions;
 
     /** Path to dictionaries/markov/rules */
     extern std::string dictDir;

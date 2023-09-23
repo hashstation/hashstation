@@ -21,7 +21,7 @@ from src.api.fitcrack.endpoints.user.responseModels import fc_user_model, login_
     user_list_model, userSuccessResponse_model
 from src.api.fitcrack.responseModels import simpleResponse
 from src.database import db
-from src.database.models import FcUser, FcRole, AnonUser
+from src.database.models import FcUser, FcSettings, FcRole, AnonUser
 
 log = logging.getLogger(__name__)
 ns = api.namespace('user', description='Endpoints for authorization.')
@@ -78,6 +78,10 @@ class userCollection(Resource):
         user = FcUser(mail=args['mail'], username=args['username'], role_id=args['role_id'])
         user.set_password(password=args['password'])
         db.session.add(user)
+        db.session.commit()
+
+        settings = FcSettings(user_id=user.id)
+        db.session.add(settings)
         db.session.commit()
         return {
             'status': True,

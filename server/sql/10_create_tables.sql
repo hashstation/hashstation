@@ -484,15 +484,17 @@ CREATE TABLE `fc_pcfg_grammar` (
 
 CREATE TABLE IF NOT EXISTS `fc_settings` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
   `default_seconds_per_workunit` int(10) unsigned NOT NULL DEFAULT '600',
-  `workunit_timeout_factor` int(10) unsigned NOT NULL DEFAULT '6',
+  `workunit_timeout_factor` int(10) unsigned NOT NULL DEFAULT '48',
   `hwmon_temp_abort` int(10) unsigned NOT NULL DEFAULT '90',
-  `bench_all` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `bench_all` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `verify_hash_format` tinyint(1) unsigned NOT NULL DEFAULT '1',
   `auto_add_hosts_to_running_jobs` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `bench_runtime_limit` int(10) unsigned NOT NULL DEFAULT '30',
   `workunit_status_update` int(10) unsigned NOT NULL DEFAULT '5',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------

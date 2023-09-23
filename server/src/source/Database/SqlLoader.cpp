@@ -200,6 +200,10 @@ bool CSqlLoader::isJobTimeout(uint64_t jobId)
     return (isTimeout > 0);
 }
 
+uint64_t CSqlLoader::getJobOwner(uint64_t jobId) {
+    return (uint64_t)(getSqlNumber(formatQuery("SELECT `user_id` FROM `%s` WHERE job_id = %" PRIu64 " AND owner = '1' LIMIT 1;",
+                                                  Config::tableNameUserPermissions.c_str(), jobId)));
+}
 
 void CSqlLoader::addNewWorkunit(PtrWorkunit workunit)
 {
@@ -213,33 +217,33 @@ void CSqlLoader::addNewWorkunit(PtrWorkunit workunit)
 }
 
 
-unsigned int CSqlLoader::getTimeoutFactor()
+unsigned int CSqlLoader::getTimeoutFactor(uint64_t userId)
 {
-    return (unsigned int)(getSqlNumber(formatQuery("SELECT `workunit_timeout_factor` FROM `%s` LIMIT 1",
-                                                  Config::tableNameSettings.c_str())));
+    return (unsigned int)(getSqlNumber(formatQuery("SELECT `workunit_timeout_factor` FROM `%s` WHERE user_id = %" PRIu64 " LIMIT 1;",
+                                                  Config::tableNameSettings.c_str(), userId)));
 }
 
-unsigned int CSqlLoader::getHWTempAbort()
+unsigned int CSqlLoader::getHWTempAbort(uint64_t userId)
 {
-    return getSqlNumber(formatQuery("SELECT `hwmon_temp_abort` FROM `%s` LIMIT 1",
-                                                  Config::tableNameSettings.c_str()));
+    return getSqlNumber(formatQuery("SELECT `hwmon_temp_abort` FROM `%s` WHERE user_id = %" PRIu64 " LIMIT 1;",
+                                                  Config::tableNameSettings.c_str(), userId));
 }
 
-uint64_t CSqlLoader::getBenchRuntimeLimit()
+uint64_t CSqlLoader::getBenchRuntimeLimit(uint64_t userId)
 {
-    return getSqlNumber(formatQuery("SELECT `bench_runtime_limit` FROM `%s` LIMIT 1",
-                                                  Config::tableNameSettings.c_str()));
+    return getSqlNumber(formatQuery("SELECT `bench_runtime_limit` FROM `%s` WHERE user_id = %" PRIu64 " LIMIT 1;",
+                                                  Config::tableNameSettings.c_str(), userId));
 }
 
-uint64_t CSqlLoader::getWorkunitStatusUpdate()
+uint64_t CSqlLoader::getWorkunitStatusUpdate(uint64_t userId)
 {
-    return getSqlNumber(formatQuery("SELECT `workunit_status_update` FROM `%s` LIMIT 1",
-                                                  Config::tableNameSettings.c_str()));
+    return getSqlNumber(formatQuery("SELECT `workunit_status_update` FROM `%s` WHERE user_id = %" PRIu64 " LIMIT 1;",
+                                                  Config::tableNameSettings.c_str(), userId));
 }
 
 uint32_t CSqlLoader::getHostStatus(uint64_t host_id)
 {
-    return (uint32_t)(getSqlNumber(formatQuery("SELECT `status` FROM `%s` WHERE id = %" PRIu64 " LIMIT 1",
+    return (uint32_t)(getSqlNumber(formatQuery("SELECT `status` FROM `%s` WHERE id = %" PRIu64 " LIMIT 1;",
                                                Config::tableNameHost.c_str(), host_id)));
 }
 

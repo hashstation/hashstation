@@ -1,12 +1,4 @@
 --
--- Insert default settings row
---
-
-INSERT INTO `fc_settings` (`default_seconds_per_workunit`, `workunit_timeout_factor`, `hwmon_temp_abort`, `bench_all`, `verify_hash_format`, `auto_add_hosts_to_running_jobs`) VALUES
-(600, 48, 90, 0, 1, 0);
-
-
---
 -- Insert default charsets
 
 INSERT INTO `fc_charset` (`id`, `name`, `path`, `keyspace`, `time`, `deleted`) VALUES
@@ -6660,16 +6652,16 @@ INSERT INTO `fc_rule` (`id`, `name`, `path`, `count`, `time`, `deleted`) VALUES
 (5,	'prince_generated.rule',	'prince_generated.rule', 8452, '2018-08-18 12:00:00',	0),
 (6,	'prince_optimized.rule',	'prince_optimized.rule',  1156,	'2018-08-18 12:00:00',	0);
 
-
 --
 -- Insert default user ( username: fitcrack , password: FITCRACK)
 --
 
 INSERT INTO `fc_role` (`name`, `MANAGE_USERS`, `ADD_NEW_JOB`, `UPLOAD_DICTIONARIES`, `VIEW_ALL_JOBS`, `EDIT_ALL_JOBS`, `OPERATE_ALL_JOBS`, `ADD_USER_PERMISSIONS_TO_JOB`) VALUES
-('admin', 1, 1, 1, 1, 1, 1, 1);
+('admin', 1, 1, 1, 1, 1, 1, 1),
+('user', 0, 1, 1, 1, 1, 1, 1);
 
 INSERT INTO `fc_user` (`username`, `password`, `mail`, `role_id`, `deleted`) VALUES
-('fitcrack', 'pbkdf2:sha256:50000$YqLJFcXh$430310718869b9783680c546a5fb1a50e9b34d7e49cc1bd1dd2a508b46c7409c', 'ihranicky@fit.vutbr.cz', 1, 0);
+('fitcrack', 'pbkdf2:sha256:50000$YqLJFcXh$430310718869b9783680c546a5fb1a50e9b34d7e49cc1bd1dd2a508b46c7409c', 'admin@fitcrack.com', 1, 0);
 
 --
 -- Give admin ownership of jobs shipping with fitcrack
@@ -6683,3 +6675,10 @@ INSERT INTO `fc_user_permissions` (`job_id`, `user_id`, `owner`) VALUES
 (5, 1, 1),
 (6, 1, 1),
 (7, 1, 1);
+
+--
+-- Insert default settings row
+--
+
+INSERT INTO `fc_settings` (`user_id`, `default_seconds_per_workunit`, `workunit_timeout_factor`, `hwmon_temp_abort`, `bench_all`, `verify_hash_format`, `auto_add_hosts_to_running_jobs`) VALUES
+(1, 600, 48, 90, 0, 1, 0);
