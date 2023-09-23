@@ -39,6 +39,9 @@ from src.api.fitcrack.endpoints.pcfg.pcfg import ns as pcfg_ns
 from src.api.fitcrack.endpoints.settings.settings import ns as settings_ns
 
 from src.database import db
+from src.database.models import FcUser
+
+from flask_apscheduler import APScheduler
 
 app = Flask(__name__)
 
@@ -119,6 +122,18 @@ login_manager.init_app(app)
 
 db.init_app(app)
 
+def my_job():
+    with app.app_context():
+        # Read from User table
+        users = FcUser.query.all()
+        print("List of users:")
+        for user in users:
+            print(user.username)
+
+scheduler = APScheduler()
+scheduler.init_app(app)
+# scheduler.add_job(id='my_job_id', func=my_job, trigger='interval', seconds=5)
+scheduler.start()
 
 if __name__ == "__main__":
     main()
