@@ -1,6 +1,6 @@
 version: '3'
 services:
-    server:
+    fitcrack:
       image: base:latest
       hostname: fitcrack
       cap_add:
@@ -63,8 +63,7 @@ services:
           #- ${BOINC_PORT}:${BOINC_PORT} # BOINC port (uncomment if different from Fitcrack)
       volumes:
         - "../assets:/usr/share/assets"                    # Assets of dictionaries, masks, etc. (host-mapped!)
-        - "./fitcrack-data/logs:/var/log/fitcrack"         # Log directory (host-mapped!)
-        - "./fitcrack-data/certificates:/srv/certificates" # Certificate directory (host-mapped!)
+        - "./logs:/var/log/fitcrack"                       # Log directory (host-mapped!)
 
         - "mysql:/var/lib/mysql"                           # MySQL server data directory
         - "boincadm:/home/boincadm"                        # BOINC server user home directory
@@ -88,4 +87,3 @@ volumes:
   fitcrack-be:
   fitcrack-fe:
   logs:
-  certificates:

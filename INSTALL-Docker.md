@@ -105,13 +105,11 @@ First, remove **any previous installations** of Fitcrack server:
 ./remove_docker_installation.sh
 ```
 
-Create a directory named `./fitcrack-data/certificates` in your installation
-directory. Make sure to set the permissions right that the docker-compose
-can access the files. Copy the certificate and associated private key file
-in PEM format into the directory:
+Copy the certificate and associated private key file in PEM format into
+the directory `certificates` (inside `docker` directory):
 ```
-cp fullchain.pem ./fitcrack-data/certificates/
-cp privkey.pem ./fitcrack-data/certificates/
+cp fullchain.pem ./certificates/
+cp privkey.pem ./certificates/
 ```
 Now, you can configure SSL in the `.env` file.
 

@@ -157,8 +157,8 @@ echo "    Require all granted" >> $BE_CONFIG_FILE
 echo "  </Directory>" >> $BE_CONFIG_FILE
 if [ $SSL_FITCRACK = "y" ]; then
     echo "  SSLEngine on" >> $BE_CONFIG_FILE
-    echo "  SSLCertificateFile /srv/certificates/$SSL_CERTIFICATE_FILE" >> $BE_CONFIG_FILE
-    echo "  SSLCertificateKeyFile /srv/certificates/$SSL_CERTIFICATE_KEYFILE" >> $BE_CONFIG_FILE
+    echo "  SSLCertificateFile /srv/fitcrack/docker/certificates/$SSL_CERTIFICATE_FILE" >> $BE_CONFIG_FILE
+    echo "  SSLCertificateKeyFile /srv/fitcrack/docker/certificates/$SSL_CERTIFICATE_KEYFILE" >> $BE_CONFIG_FILE
 fi
 echo "  ErrorLog /var/log/fitcrack/backend-error.log" >> $BE_CONFIG_FILE
 echo "  CustomLog /var/log/fitcrack/backend-access.log combined" >> $BE_CONFIG_FILE
@@ -206,8 +206,8 @@ fi
 
 if [ $SSL_FITCRACK = "y" ]; then
     echo "  SSLEngine on" >> $FE_CONFIG_FILE
-    echo "  SSLCertificateFile /srv/certificates/$SSL_CERTIFICATE_FILE" >> $FE_CONFIG_FILE
-    echo "  SSLCertificateKeyFile /srv/certificates/$SSL_CERTIFICATE_KEYFILE" >> $FE_CONFIG_FILE
+    echo "  SSLCertificateFile /srv/fitcrack/docker/certificates/$SSL_CERTIFICATE_FILE" >> $FE_CONFIG_FILE
+    echo "  SSLCertificateKeyFile /srv/fitcrack/docker/certificates/$SSL_CERTIFICATE_KEYFILE" >> $FE_CONFIG_FILE
 fi
 echo "</VirtualHost>" >> $FE_CONFIG_FILE
 
@@ -227,8 +227,8 @@ if [ $FRONTEND_PORT != $BOINC_PORT ]; then
 
     if [ $SSL_BOINC = "y" ]; then
         echo "  SSLEngine on" >> $BOINC_APACHE_CONFIG
-        echo "  SSLCertificateFile /srv/certificates/$SSL_CERTIFICATE_FILE" >> $BOINC_APACHE_CONFIG
-        echo "  SSLCertificateKeyFile /srv/certificates/$SSL_CERTIFICATE_KEYFILE" >> $BOINC_APACHE_CONFIG
+        echo "  SSLCertificateFile /srv/fitcrack/docker/certificates/$SSL_CERTIFICATE_FILE" >> $BOINC_APACHE_CONFIG
+        echo "  SSLCertificateKeyFile /srv/fitcrack/docker/certificates/$SSL_CERTIFICATE_KEYFILE" >> $BOINC_APACHE_CONFIG
     fi
     echo "</VirtualHost>" >> $BOINC_APACHE_CONFIG
 
