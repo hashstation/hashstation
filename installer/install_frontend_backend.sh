@@ -115,6 +115,17 @@ else
   echo "    RewriteCond %{REQUEST_FILENAME} !-d" >> $FE_CONFIG_FILE
   echo "    RewriteRule . /index.html [L]" >> $FE_CONFIG_FILE
   echo "  </Directory>" >> $FE_CONFIG_FILE
+
+  # Disable directory listing for assets/
+  echo "  <Directory $APACHE_DOCUMENT_ROOT/fitcrackFE/assets/>" >> $FE_CONFIG_FILE
+  echo "    Options -Indexes" >> $FE_CONFIG_FILE
+  echo "  </Directory>" >> $FE_CONFIG_FILE
+
+  # Disable directory listing for static/
+  echo "  <Directory $APACHE_DOCUMENT_ROOT/fitcrackFE/static/>" >> $FE_CONFIG_FILE
+  echo "    Options -Indexes" >> $FE_CONFIG_FILE
+  echo "  </Directory>" >> $FE_CONFIG_FILE
+
   echo "</VirtualHost>" >> $FE_CONFIG_FILE
 
   echo "Creating a symlink: $APACHE_CONFIG_DIR/sites-enabled/fitcrackFE.conf"
