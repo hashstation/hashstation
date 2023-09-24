@@ -50,6 +50,7 @@ mysql> exit
 a2enmod cgi       # enable mod CGI
 a2enmod rewrite   # enable mod rewrite
 a2enmod wsgi      # enable mod wsgi
+a2enmod headers   # enable mod headers
 systemctl restart apache2
 ```
 
