@@ -35,6 +35,7 @@ General improvements:
 * Added new settings per hosts.
 * System settings are per user now.
 * Extraction of hashes from files using file2hashcat tool.
+* More secure system, fixed multiple small security issues reported by web security scanners.
 * Updated to BOINC v7.23.
 * Updated backend dependencies.
 
