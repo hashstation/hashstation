@@ -5,13 +5,13 @@
 # Author: Radek Hranicky (ihranicky@fit.vutbr.cz)
 
 # Save installer root
-INSTALLER_ROOT=$(pwd)
+export INSTALLER_ROOT=$(pwd)
 
 ###################
 # Compiler threads
 ###################
 read -e -p "Enter the number of compiler threads (default: 1, recommended): " COMPILER_THREADS
-COMPILER_THREADS=${COMPILER_THREADS:-1}
+export COMPILER_THREADS=${COMPILER_THREADS:-1}
 
 re='^[0-9]+$'
 if ! [[ $COMPILER_THREADS =~ $re ]] ; then
@@ -26,7 +26,7 @@ fi
 # BOINC user
 #############
 read -e -p "Enter the name for BOINC user (default: boincadm): " BOINC_USER
-BOINC_USER=${BOINC_USER:-boincadm}
+export BOINC_USER=${BOINC_USER:-boincadm}
 
 if ! id "$BOINC_USER" >/dev/null 2>&1; then
   echo "Error: User $APACHE_USER does not exist!"
@@ -37,7 +37,7 @@ fi
 # BOINC group
 ###############
 read -e -p "Enter the name of BOINC group (default: $BOINC_USER): " BOINC_GROUP
-BOINC_GROUP=${BOINC_GROUP:-$BOINC_USER}
+export BOINC_GROUP=${BOINC_GROUP:-$BOINC_USER}
 
 if ! grep -q "^${BOINC_GROUP}:" /etc/group
 then
@@ -50,7 +50,7 @@ fi
 ############################
 
 read -e -p "Enter BOINC user home directory (default: /home/$BOINC_USER): " BOINC_HOME
-BOINC_HOME=${BOINC_HOME:-/home/$BOINC_USER}
+export BOINC_HOME=${BOINC_HOME:-/home/$BOINC_USER}
 
 if ! [ -d "$BOINC_HOME" ]; then
   echo "Selected directory does not exist!"
@@ -62,19 +62,18 @@ fi
 #####################
 
 read -e -p "Enter BOINC project name (default: fitcrack): " BOINC_PROJECT
-BOINC_PROJECT=${BOINC_PROJECT:-fitcrack}
+export BOINC_PROJECT=${BOINC_PROJECT:-fitcrack}
 
 ##########################
 # BOINC project directory
 #########################
 
-BOINC_PROJECT_DIR="$BOINC_HOME/projects/$BOINC_PROJECT"
-export BOINC_PROJECT_DIR
+export BOINC_PROJECT_DIR="$BOINC_HOME/projects/$BOINC_PROJECT"
 
 ##############################
 # BOINC project HTTPD CONFIG #
 ##############################
-PROJECT_HTTPD_CONF="$BOINC_PROJECT_DIR/$BOINC_PROJECT.httpd.conf"
+export PROJECT_HTTPD_CONF="$BOINC_PROJECT_DIR/$BOINC_PROJECT.httpd.conf"
 
 #########################################################
 # BOINC project URL base (for connecting cracking nodes)
@@ -82,7 +81,7 @@ PROJECT_HTTPD_CONF="$BOINC_PROJECT_DIR/$BOINC_PROJECT.httpd.conf"
 
 read -e -p "Enter BOINC project URL_BASE (default: http://127.0.0.1): " BOINC_URL
 BOINC_URL=${BOINC_URL:-http://127.0.0.1}
-BOINC_URL=${BOINC_URL%/}
+export BOINC_URL=${BOINC_URL%/}
 
 #############
 # Apache user
@@ -163,28 +162,28 @@ fi
 #############
 
 read -e -p "Enter MySQL hostname (default: localhost): " DB_HOST
-DB_HOST=${DB_HOST:-localhost}
+export DB_HOST=${DB_HOST:-localhost}
 
 ################
 # MySQL db name
 ################
 
 read -e -p "Enter MySQL database name (default: fitcrack): " DB_NAME
-DB_NAME=${DB_NAME:-fitcrack}
+export DB_NAME=${DB_NAME:-fitcrack}
 
 ##################
 # MySQL user name
 ##################
 
 read -e -p "Enter MySQL user name (default: fitcrack): " DB_USER
-DB_USER=${DB_USER:-fitcrack}
+export DB_USER=${DB_USER:-fitcrack}
 
 ######################
 # MySQL user password
 ######################
 
 read -e -p "Enter MySQL user password (default: mypassword): " DB_PW
-DB_PW=${DB_PW:-mypassword}
+export DB_PW=${DB_PW:-mypassword}
 
 # Check DB connection
 mysql -h $DB_HOST -u $DB_USER -p"$DB_PW" -D"$DB_NAME" -e ";" 2>/dev/null

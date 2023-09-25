@@ -62,7 +62,7 @@ mkdir $BOINC_PROJECT_DIR/apps/fitcrack/1
 cp -Rf server/client_bin/* $BOINC_PROJECT_DIR/apps/fitcrack/1/
 
 # Install server daemons
-source installer/install_daemons.sh
+python3 installer/install_daemons.py
 
 # Add app app_versions
 MYDIR=$(pwd)

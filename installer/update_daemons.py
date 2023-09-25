@@ -2,7 +2,7 @@ import os
 import subprocess
 from getpass import getpass
 
-def update_deamons():
+def update_daemons():
     print(" " * 58)
     print("=" * 12 + " Fitcrack server daemons update " + "=" * 12)
     print(" " * 58)
@@ -37,7 +37,7 @@ def update_deamons():
         subprocess.run("./installer/build_server.sh", shell=True)
 
         print("Reinstalling Fitcrack daemons...")
-        subprocess.run("./installer/install_daemons.sh", shell=True)
+        subprocess.run("./installer/install_daemons.py", shell=True)
 
         print("Starting Fitcrack server...")
         subprocess.run(f"sudo -u {boinc_user} ./bin/start", shell=True, cwd=boinc_project_dir)
@@ -47,4 +47,4 @@ def update_deamons():
     print("All done.")
 
 if __name__ == "__main__":
-    update_deamons()
+    update_daemons()
