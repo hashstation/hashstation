@@ -33,14 +33,14 @@ if [[ $1 == "-s" ]]; then
     # Set user variables (default values)
     source installer/set_default_vars.sh
     if [[ $2 == "-2" ]]; then
-        source installer/update_daemons.sh
+        python3 installer/update_daemons.py
         exit
     elif [[ $2 == "-3" ]]; then
         source installer/update_frontend_backend.sh
         exit
     elif [[ $2 == "-4" ]]; then
         source installer/migrate_db.sh
-        source installer/update_daemons.sh
+        python3 installer/update_daemons.py
         source installer/update_frontend_backend.sh
         (cd agent ; python3 update_binaries.py)
         exit
@@ -74,14 +74,14 @@ while ! $finished; do
     if [ $OPERATION -eq 1 ]; then
       finished=true
     elif [ $OPERATION -eq 2 ]; then
-      source installer/update_daemons.sh
+      python3 installer/update_daemons.py
       exit
     elif [ $OPERATION -eq 3 ]; then
       source installer/update_frontend_backend.sh
       exit
     elif [ $OPERATION -eq 4 ]; then
       source installer/migrate_db.sh
-      source installer/update_daemons.sh
+      python3 installer/update_daemons.py
       source installer/update_frontend_backend.sh
       (cd agent ; python3 update_binaries.py)
       exit
