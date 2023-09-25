@@ -110,8 +110,8 @@ else
   echo "  <Directory $APACHE_DOCUMENT_ROOT/fitcrackFE/>" >> $FE_CONFIG_FILE
   echo "    Header always set X-Frame-Options \"SAMEORIGIN\"" >> $FE_CONFIG_FILE
   echo "    Header always set X-Content-Type-Options \"nosniff\"" >> $FE_CONFIG_FILE
-  echo "    Header always set Permissions-Policy \"geolocation=(); microphone=(); camera=();\"" >> $FE_CONFIG_FILE
-  echo "    Header always set Content-Security-Policy \"default-src 'self'; script-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'self';\"" >> $FE_CONFIG_FILE
+  echo "    Header always set Permissions-Policy \"geolocation=(), microphone=(), camera=()\"" >> $FE_CONFIG_FILE
+  echo "    Header always set Content-Security-Policy \"default-src *; script-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; style-src 'self' 'unsafe-inline';\"" >> $FE_CONFIG_FILE
 
   echo "    RewriteEngine On" >> $FE_CONFIG_FILE
   echo "    RewriteBase /" >> $FE_CONFIG_FILE
