@@ -39,7 +39,7 @@ CREATE TRIGGER `job_notification` AFTER UPDATE ON `fc_job`
 			    IF done THEN
 			    	LEAVE user_loop;
 			    END IF;
-				INSERT INTO fc_notification  VALUES (DEFAULT, userID, DEFAULT,NEW.id,OLD.status,NEW.status, DEFAULT, DEFAULT, DEFAULT);
+				INSERT INTO fc_notification  VALUES (DEFAULT, userID, DEFAULT,NEW.id,OLD.status,NEW.status, DEFAULT, DEFAULT, DEFAULT, DEFAULT);
 			END LOOP;
 		CLOSE usersCursor;
 	END IF;

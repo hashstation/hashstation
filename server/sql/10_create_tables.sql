@@ -229,6 +229,7 @@ CREATE TABLE IF NOT EXISTS `fc_notification` (
   `new_value` smallint(6) DEFAULT NULL,
   `seen` tinyint(1) DEFAULT '0',
   `discord_sent` tinyint(1) DEFAULT '0',
+  `telegram_sent` tinyint(1) DEFAULT '0',
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
@@ -496,7 +497,10 @@ CREATE TABLE IF NOT EXISTS `fc_settings` (
   `workunit_status_update` int(10) unsigned NOT NULL DEFAULT '5',
 
   `discord_notifications` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `discord_webhook_url` varchar(200) NULL,
+  `discord_webhook_url` varchar(200) DEFAULT NULL,
+  `telegram_notifications` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `telegram_bot_token` varchar(200) DEFAULT NULL,
+  `telegram_chat_id` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin;

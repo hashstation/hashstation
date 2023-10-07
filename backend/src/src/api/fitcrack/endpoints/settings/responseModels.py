@@ -18,4 +18,7 @@ settings_model = api.model('Settings', {
     'workunit_status_update': fields.Integer(),
     'discord_notifications': fields.Boolean(),
     'discord_webhook_url': fields.String(),
+    'telegram_notifications': fields.Boolean(),
+    'telegram_bot_token': fields.String(),
+    'tolegram_chat_id': fields.String(),
 })

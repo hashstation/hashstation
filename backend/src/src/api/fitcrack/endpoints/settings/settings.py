@@ -49,6 +49,9 @@ class settings(Resource):
 
         discord_notifications = args['discord_notifications']
         discord_webhook_url = args['discord_webhook_url']
+        telegram_notifications = args['telegram_notifications']
+        telegram_bot_token = args['telegram_bot_token']
+        telegram_chat_id = args['telegram_chat_id']
 
         settings = FcSettings.query.filter_by(user_id=current_user.id).one_or_none()
         if not settings:
@@ -65,12 +68,29 @@ class settings(Resource):
         if discord_notifications:
             if not discord_webhook_url:
                     abort(400, 'Discord webhook URL is required when enabling Discord notifications.')
+            
+            if not settings.discord_notifications: # If discord notifications were previously disabled, mark all notifications as sent
+                FcNotification.query.filter(FcNotification.user_id == current_user.id).update({FcNotification.discord_sent: True})
+
             settings.discord_notifications = discord_notifications
 
-            FcNotification.query.filter(FcNotification.user_id == current_user.id).update({FcNotification.discord_sent: True})
+        if telegram_notifications:
+            if not telegram_bot_token:
+                    abort(400, 'Telegram bot token is required when enabling Telegram notifications.')
+            if not telegram_chat_id:
+                    abort(400, 'Telegram chat ID is required when enabling Telegram notifications.')
+            
+            if not settings.telegram_notifications:
+                FcNotification.query.filter(FcNotification.user_id == current_user.id).update({FcNotification.telegram_sent: True})
+
+            settings.telegram_notifications = telegram_notifications
 
         if discord_webhook_url: 
             settings.discord_webhook_url = discord_webhook_url
+        if telegram_bot_token:
+            settings.telegram_bot_token = telegram_bot_token
+        if telegram_chat_id:
+            settings.telegram_chat_id = telegram_chat_id
 
         db.session.commit()
 

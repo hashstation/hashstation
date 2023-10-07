@@ -17,3 +17,7 @@ settings_arguments.add_argument('workunit_status_update', type=int, help='', req
 
 settings_arguments.add_argument('discord_notifications', type=bool, help='', required=False, location='json')
 settings_arguments.add_argument('discord_webhook_url', type=str, help='', required=False, location='json')
+
+settings_arguments.add_argument('telegram_notifications', type=bool, help='', required=False, location='json')
+settings_arguments.add_argument('telegram_bot_token', type=str, help='', required=False, location='json')
+settings_arguments.add_argument('telegram_chat_id', type=str, help='', required=False, location='json')

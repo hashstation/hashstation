@@ -169,6 +169,29 @@
                 persistent-hint
                 class="mb-4 mt-0"
               />
+              <v-divider />
+              <v-switch
+                v-model="settings.telegram_notifications"
+                :loading="loading"
+                outlined
+                label="Telegram notifications"
+                persistent-hint
+                class="mb-4 mt-0"
+              />
+              <v-text-field
+                v-model="settings.telegram_bot_token"
+                outlined
+                label="Telegram bot token"
+                persistent-hint
+                class="mb-4 mt-0"
+              />
+              <v-text-field
+                v-model="settings.telegram_chat_id"
+                outlined
+                label="Telegram chat ID"
+                persistent-hint
+                class="mb-4 mt-0"
+              />
             </v-card-text>
         </v-card>
         <v-expansion-panels flat class="mt-6">

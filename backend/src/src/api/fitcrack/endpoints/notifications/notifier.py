@@ -17,15 +17,25 @@ def notify(userId):
     if settings.discord_notifications:
         apobj.add(settings.discord_webhook_url)
 
-        for user in FcUser.query.all():
-            new_notifications = FcNotification.query.filter(FcNotification.user_id == userId).filter(FcNotification.discord_sent == False)
-            
-            for notif in new_notifications:
-                title = notif.source.name if notif.source else '<Removed Job>'
-                body = title + ": " + job_status_text_info_to_code_dict[notif.new_value]
-                print(title, body)
-            
-                apobj.notify(body=body)
-                notif.discord_sent = True
+        new_discord_notifications = FcNotification.query.filter(FcNotification.user_id == userId).filter(FcNotification.discord_sent == False)
+        for notif in new_discord_notifications:
+            title = notif.source.name if notif.source else '<Removed Job>'
+            body = title + ": " + job_status_text_info_to_code_dict[notif.new_value]
+        
+            apobj.notify(body=body)
+            notif.discord_sent = True
 
-            db.session.commit()
+        db.session.commit()
+
+    if settings.telegram_notifications:
+        apobj.add('tgram://' + settings.telegram_bot_token + '/' + settings.telegram_chat_id)
+
+        new_telegram_notifications = FcNotification.query.filter(FcNotification.user_id == userId).filter(FcNotification.telegram_sent == False)
+        for notif in new_telegram_notifications:
+            title = notif.source.name if notif.source else '<Removed Job>'
+            body = title + ": " + job_status_text_info_to_code_dict[notif.new_value]
+        
+            apobj.notify(body=body)
+            notif.telegram_sent = True
+
+        db.session.commit()
