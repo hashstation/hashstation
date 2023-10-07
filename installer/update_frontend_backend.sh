@@ -74,7 +74,7 @@ fi
 if [ $INSTALL_BACKEND = "y" ]; then
   echo "Building hashcat-utils"
   cd backend/hashcat-utils/src
-  make
+  make -j$COMPILER_THREADS hcstat2gen
   cd ..
   mkdir -p bin
   cp src/*.bin bin/
