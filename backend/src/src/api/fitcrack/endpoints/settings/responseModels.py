@@ -16,4 +16,6 @@ settings_model = api.model('Settings', {
     'auto_add_hosts_to_running_jobs': fields.Boolean(),
     'bench_runtime_limit': fields.Integer(),
     'workunit_status_update': fields.Integer(),
+    'discord_notifications': fields.Boolean(),
+    'discord_webhook_url': fields.String(),
 })

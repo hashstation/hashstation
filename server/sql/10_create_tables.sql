@@ -228,6 +228,7 @@ CREATE TABLE IF NOT EXISTS `fc_notification` (
   `old_value` smallint(6) DEFAULT NULL,
   `new_value` smallint(6) DEFAULT NULL,
   `seen` tinyint(1) DEFAULT '0',
+  `discord_sent` tinyint(1) DEFAULT '0',
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
@@ -493,6 +494,9 @@ CREATE TABLE IF NOT EXISTS `fc_settings` (
   `auto_add_hosts_to_running_jobs` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `bench_runtime_limit` int(10) unsigned NOT NULL DEFAULT '30',
   `workunit_status_update` int(10) unsigned NOT NULL DEFAULT '5',
+
+  `discord_notifications` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `discord_webhook_url` varchar(200) NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin;

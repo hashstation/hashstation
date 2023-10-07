@@ -38,6 +38,8 @@ from src.api.fitcrack.endpoints.status.status import ns as status_ns
 from src.api.fitcrack.endpoints.pcfg.pcfg import ns as pcfg_ns
 from src.api.fitcrack.endpoints.settings.settings import ns as settings_ns
 
+from src.api.fitcrack.endpoints.notifications.notifier import notify
+
 from src.database import db
 from src.database.models import FcUser
 
@@ -122,17 +124,14 @@ login_manager.init_app(app)
 
 db.init_app(app)
 
-def my_job():
+def notifier():
     with app.app_context():
-        # Read from User table
-        users = FcUser.query.all()
-        print("List of users:")
-        for user in users:
-            print(user.username)
+        for user in FcUser.query.all():
+            notify(user.id)
 
 scheduler = APScheduler()
 scheduler.init_app(app)
-# scheduler.add_job(id='my_job_id', func=my_job, trigger='interval', seconds=5)
+scheduler.add_job(id='notifier', func=notifier, trigger='interval', seconds=10)
 scheduler.start()
 
 if __name__ == "__main__":

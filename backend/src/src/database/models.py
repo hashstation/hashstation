@@ -542,6 +542,9 @@ class FcSettings(Base):
     bench_runtime_limit = Column(Integer, nullable=False, server_default=text("'30'"))
     workunit_status_update = Column(Integer, nullable=False, server_default=text("'5'"))
 
+    discord_notifications = Column(Integer, nullable=False, server_default=text("'0'"))
+    discord_webhook_url = Column(String(200), nullable=True)
+
     user = relationship('FcUser')
 
 class FcJobGraph(Base):
@@ -763,6 +766,7 @@ class FcNotification(Base):
     old_value = Column(SmallInteger)
     new_value = Column(SmallInteger)
     seen = Column(Integer, server_default=text("'0'"))
+    discord_sent = Column(Integer, server_default=text("'0'"))
     time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
 
     source = relationship('FcJob')

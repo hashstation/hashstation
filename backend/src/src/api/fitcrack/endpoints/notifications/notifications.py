@@ -32,10 +32,9 @@ class notifications(Resource):
         args = notifications_parser.parse_args(request)
         page = args.get('page', 1)
         per_page = args.get('per_page', 10)
-        markAsSeen = args.get('seen', True)
+        mark_as_seen = args.get('seen', True)
 
-        notifications = getNotifications(current_user.id, page, per_page, markAsSeen)
-        # notifications = getNotifications(7, page, per_page, markAsSeen)
+        notifications = getNotifications(current_user.id, page, per_page, mark_as_seen)
         return notifications
 
 @ns.route('/count')
@@ -50,6 +49,4 @@ class notifications(Resource):
         count = FcNotification.query.filter(FcNotification.user_id == current_user.id).filter(
             FcNotification.seen == False).count()
 
-        # count = FcNotification.query.filter(FcNotification.user_id == 7).filter(
-        #     FcNotification.seen == False).count()
         return {'count': count}

@@ -14,3 +14,6 @@ settings_arguments.add_argument('verify_hash_format', type=bool, help='', requir
 settings_arguments.add_argument('auto_add_hosts_to_running_jobs', type=bool, help='', required=False, location='json')
 settings_arguments.add_argument('bench_runtime_limit', type=int, help='', required=False, location='json')
 settings_arguments.add_argument('workunit_status_update', type=int, help='', required=False, location='json')
+
+settings_arguments.add_argument('discord_notifications', type=bool, help='', required=False, location='json')
+settings_arguments.add_argument('discord_webhook_url', type=str, help='', required=False, location='json')

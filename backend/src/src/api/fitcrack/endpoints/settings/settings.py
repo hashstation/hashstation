@@ -15,7 +15,7 @@ from src.api.fitcrack.endpoints.settings.argumentsParser import settings_argumen
 from src.api.fitcrack.endpoints.settings.responseModels import settings_model
 from src.api.fitcrack.responseModels import simpleResponse
 from src.database import db
-from src.database.models import FcSettings
+from src.database.models import FcSettings, FcNotification
 
 log = logging.getLogger(__name__)
 ns = api.namespace('settings', description='Endpoints for manipulating system settings.')
@@ -47,6 +47,9 @@ class settings(Resource):
         bench_runtime_limit = args['bench_runtime_limit']
         workunit_status_update = args['workunit_status_update']
 
+        discord_notifications = args['discord_notifications']
+        discord_webhook_url = args['discord_webhook_url']
+
         settings = FcSettings.query.filter_by(user_id=current_user.id).one_or_none()
         if not settings:
             abort(404, 'User settings not found.')
@@ -58,6 +61,17 @@ class settings(Resource):
         if (auto_add_hosts_to_running_jobs is not None): settings.auto_add_hosts_to_running_jobs = auto_add_hosts_to_running_jobs
         if (bench_runtime_limit is not None): settings.bench_runtime_limit = bench_runtime_limit
         if (workunit_status_update is not None): settings.workunit_status_update = workunit_status_update
+
+        if discord_notifications:
+            if not discord_webhook_url:
+                    abort(400, 'Discord webhook URL is required when enabling Discord notifications.')
+            settings.discord_notifications = discord_notifications
+
+            FcNotification.query.filter(FcNotification.user_id == current_user.id).update({FcNotification.discord_sent: True})
+
+        if discord_webhook_url: 
+            settings.discord_webhook_url = discord_webhook_url
+
         db.session.commit()
 
         return {

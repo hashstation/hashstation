@@ -24,6 +24,7 @@ New features:
 * Added column 'Username' in 'Job Info' -> 'Hashes'.
 * Added column 'Username' in 'Hashes'.
 * Added dropdown menu to specify input format.
+* Discord notifications.
 
 General improvements:
 * Improved/reimplemeted generator and scheduling logic. Better precision, more predictable workunit sizes. Default desired seconds per workunit changed to 600 seconds.

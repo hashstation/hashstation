@@ -58,12 +58,12 @@
             </v-card-text>
 
             <v-card-title>
-            <v-icon left>
-              mdi-cursor-pointer
-            </v-icon>
-            <span>Behavior</span>
-          </v-card-title>
-          <v-card-text>
+              <v-icon left>
+                mdi-cursor-pointer
+              </v-icon>
+              <span>Behavior</span>
+            </v-card-title>
+            <v-card-text>
             <v-row>
               <v-col>
                 <v-switch
@@ -146,6 +146,30 @@
               />
             </v-row>
            </v-card-text>
+
+            <v-card-title>
+              <v-icon left>
+                mdi-alert-circle-outline
+              </v-icon>
+              <span>Notifications</span>
+            </v-card-title>
+            <v-card-text>
+              <v-switch
+                v-model="settings.discord_notifications"
+                :loading="loading"
+                outlined
+                label="Discord notifications"
+                persistent-hint
+                class="mb-4 mt-0"
+              />
+              <v-text-field
+                v-model="settings.discord_webhook_url"
+                outlined
+                label="Discord webhook URL"
+                persistent-hint
+                class="mb-4 mt-0"
+              />
+            </v-card-text>
         </v-card>
         <v-expansion-panels flat class="mt-6">
           <v-expansion-panel>
