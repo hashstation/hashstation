@@ -12,21 +12,21 @@ window.docsLink = "https://nesfit.github.io/fitcrack" // link to docs for help b
 // Set up color schemes for light and dark appearances
 window.theme = {
   light: {
-    primary: '#F17734',
-    secondary: '#978DCE',
-    accent: '#FFCBAD',
-    error: '#EA5176',
-    info: '#6DA8ED',
-    success: '#5CDEA0',
-    warning: '#FF975E'
+    primary: '#1976D2',    // Blue
+    secondary: '#4CAF50',  // Green
+    accent: '#FF5722',     // Deep Orange
+    error: '#F44336',      // Red
+    info: '#9C27B0',       // Purple
+    success: '#8BC34A',    // Light Green
+    warning: '#FFC107'     // Amber
   },
   dark: {
-    primary: '#F17734',
-    secondary: '#978DCE',
-    accent: '#FFCBAD',
-    error: '#EA5176',
-    info: '#6DA8ED',
-    success: '#5CDEA0',
-    warning: '#FF975E'
+    primary: '#1565C0',    // Dark Blue
+    secondary: '#2E7D32',  // Dark Green
+    accent: '#E64A19',     // Dark Deep Orange
+    error: '#C62828',      // Dark Red
+    info: '#6A1B9A',       // Dark Purple
+    success: '#7CB342',    // Dark Light Green
+    warning: '#FFAB00'     // Dark Amber
   }
 }
