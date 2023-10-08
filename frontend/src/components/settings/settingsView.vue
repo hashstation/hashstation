@@ -163,9 +163,17 @@
                 class="mb-4 mt-0"
               />
               <v-text-field
-                v-model="settings.discord_webhook_url"
+                v-model="settings.discord_webhook_id"
                 outlined
-                label="Discord webhook URL"
+                label="Discord webhook ID"
+                persistent-hint
+                class="mb-4 mt-0"
+              />
+              <v-text-field
+                v-model="settings.discord_webhook_token"
+                outlined
+                label="Discord webhook token"
+                type="password"
                 persistent-hint
                 class="mb-4 mt-0"
               />
@@ -182,6 +190,7 @@
                 v-model="settings.telegram_bot_token"
                 outlined
                 label="Telegram bot token"
+                type="password"
                 persistent-hint
                 class="mb-4 mt-0"
               />
@@ -189,6 +198,30 @@
                 v-model="settings.telegram_chat_id"
                 outlined
                 label="Telegram chat ID"
+                persistent-hint
+                class="mb-4 mt-0"
+              />
+              <v-divider />
+              <v-switch
+                v-model="settings.email_notifications"
+                :loading="loading"
+                outlined
+                label="E-mail notifications"
+                persistent-hint
+                class="mb-4 mt-0"
+              />
+              <v-text-field
+                v-model="settings.email_address"
+                outlined
+                label="E-mail address"
+                persistent-hint
+                class="mb-4 mt-0"
+              />
+              <v-text-field
+                v-model="settings.email_password"
+                outlined
+                label="E-mail (app) password"
+                type="password"
                 persistent-hint
                 class="mb-4 mt-0"
               />
@@ -202,7 +235,7 @@
                 <v-icon left>
                   mdi-puzzle
                 </v-icon>
-                <span class="text-h6">{{ open ? '' : 'Show '}}Advanced Settings</span>
+                <span class="text-h6">Advanced Settings</span>
               </span>
               </template>
             </v-expansion-panel-header>

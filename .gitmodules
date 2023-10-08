@@ -9,6 +9,8 @@
 [submodule "backend/file2hashcat"]
 	path = backend/file2hashcat
 	url = https://github.com/hashstation/file2hashcat
+	ignore = dirty
 [submodule "backend/hashcat-utils"]
 	path = backend/hashcat-utils
 	url = https://github.com/hashcat/hashcat-utils
+	ignore = dirty

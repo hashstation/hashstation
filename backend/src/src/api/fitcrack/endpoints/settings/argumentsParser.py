@@ -16,8 +16,13 @@ settings_arguments.add_argument('bench_runtime_limit', type=int, help='', requir
 settings_arguments.add_argument('workunit_status_update', type=int, help='', required=False, location='json')
 
 settings_arguments.add_argument('discord_notifications', type=bool, help='', required=False, location='json')
-settings_arguments.add_argument('discord_webhook_url', type=str, help='', required=False, location='json')
+settings_arguments.add_argument('discord_webhook_id', type=str, help='', required=False, location='json')
+settings_arguments.add_argument('discord_webhook_token', type=str, help='', required=False, location='json')
 
 settings_arguments.add_argument('telegram_notifications', type=bool, help='', required=False, location='json')
 settings_arguments.add_argument('telegram_bot_token', type=str, help='', required=False, location='json')
 settings_arguments.add_argument('telegram_chat_id', type=str, help='', required=False, location='json')
+
+settings_arguments.add_argument('email_notifications', type=bool, help='', required=False, location='json')
+settings_arguments.add_argument('email_address', type=str, help='', required=False, location='json')
+settings_arguments.add_argument('email_password', type=str, help='', required=False, location='json')

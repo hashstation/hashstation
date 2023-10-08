@@ -48,10 +48,14 @@ class settings(Resource):
         workunit_status_update = args['workunit_status_update']
 
         discord_notifications = args['discord_notifications']
-        discord_webhook_url = args['discord_webhook_url']
+        discord_webhook_id = args['discord_webhook_id']
+        discord_webhook_token = args['discord_webhook_token']
         telegram_notifications = args['telegram_notifications']
         telegram_bot_token = args['telegram_bot_token']
         telegram_chat_id = args['telegram_chat_id']
+        email_notifications = args['email_notifications']
+        email_address = args['email_address']
+        email_password = args['email_password']
 
         settings = FcSettings.query.filter_by(user_id=current_user.id).one_or_none()
         if not settings:
@@ -66,8 +70,10 @@ class settings(Resource):
         if (workunit_status_update is not None): settings.workunit_status_update = workunit_status_update
 
         if discord_notifications:
-            if not discord_webhook_url:
-                    abort(400, 'Discord webhook URL is required when enabling Discord notifications.')
+            if not discord_webhook_id:
+                abort(400, 'Discord webhook ID is required when enabling Discord notifications.')
+            if not discord_webhook_token:
+                abort(400, 'Discord webhook token is required when enabling Discord notifications.')
             
             if not settings.discord_notifications: # If discord notifications were previously disabled, mark all notifications as sent
                 FcNotification.query.filter(FcNotification.user_id == current_user.id).update({FcNotification.discord_sent: True})
@@ -76,21 +82,40 @@ class settings(Resource):
 
         if telegram_notifications:
             if not telegram_bot_token:
-                    abort(400, 'Telegram bot token is required when enabling Telegram notifications.')
+                abort(400, 'Telegram bot token is required when enabling Telegram notifications.')
             if not telegram_chat_id:
-                    abort(400, 'Telegram chat ID is required when enabling Telegram notifications.')
+                abort(400, 'Telegram chat ID is required when enabling Telegram notifications.')
             
             if not settings.telegram_notifications:
                 FcNotification.query.filter(FcNotification.user_id == current_user.id).update({FcNotification.telegram_sent: True})
 
             settings.telegram_notifications = telegram_notifications
 
-        if discord_webhook_url: 
-            settings.discord_webhook_url = discord_webhook_url
+        if email_notifications:
+            if not email_address:
+                abort(400, 'E-mail address is required when enabling E-mail notifications.')
+            if not email_password:
+                abort(400, 'E-mail password is required when enabling E-mail notifications.')
+            if not "@" in email_address:
+                abort(400, 'Invalid e-mail address.')
+
+            if not settings.email_notifications:
+                FcNotification.query.filter(FcNotification.user_id == current_user.id).update({FcNotification.email_sent: True})
+
+            settings.email_notifications = email_notifications
+
+        if discord_webhook_id: 
+            settings.discord_webhook_id = discord_webhook_id
+        if discord_webhook_token:
+            settings.discord_webhook_token = discord_webhook_token
         if telegram_bot_token:
             settings.telegram_bot_token = telegram_bot_token
         if telegram_chat_id:
             settings.telegram_chat_id = telegram_chat_id
+        if email_address:
+            settings.email_address = email_address
+        if email_password:
+            settings.email_password = email_password
 
         db.session.commit()
 

@@ -543,10 +543,14 @@ class FcSettings(Base):
     workunit_status_update = Column(Integer, nullable=False, server_default=text("'5'"))
 
     discord_notifications = Column(Integer, nullable=False, server_default=text("'0'"))
-    discord_webhook_url = Column(String(200), nullable=True)
+    discord_webhook_id = Column(String(200), nullable=True)
+    discord_webhook_token = Column(String(200), nullable=True)
     telegram_notifications = Column(Integer, nullable=False, server_default=text("'0'"))
     telegram_bot_token = Column(String(200), nullable=True)
     telegram_chat_id = Column(String(200), nullable=True)
+    email_notifications = Column(Integer, nullable=False, server_default=text("'0'"))
+    email_address = Column(String(200), nullable=True)
+    email_password = Column(String(200), nullable=True)
 
     user = relationship('FcUser')
 
@@ -771,6 +775,7 @@ class FcNotification(Base):
     seen = Column(Integer, server_default=text("'0'"))
     discord_sent = Column(Integer, server_default=text("'0'"))
     telegram_sent = Column(Integer, server_default=text("'0'"))
+    email_sent = Column(Integer, server_default=text("'0'"))
     time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
 
     source = relationship('FcJob')

@@ -127,7 +127,7 @@ db.init_app(app)
 def notifier():
     with app.app_context():
         for user in FcUser.query.all():
-            notify(user.id)
+            notify(user)
 
 scheduler = APScheduler()
 scheduler.init_app(app)

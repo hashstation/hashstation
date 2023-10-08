@@ -10,12 +10,13 @@ class Notification:
         self.title = title
         self.body = body
 
-def notify(userId):
+def notify(user):
+    userId = user.id
     settings = FcSettings.query.filter_by(user_id=userId).one()
     apobj = apprise.Apprise()
 
     if settings.discord_notifications:
-        apobj.add(settings.discord_webhook_url)
+        apobj.add('discord://' + settings.discord_webhook_id + '/' + settings.discord_webhook_token)
 
         new_discord_notifications = FcNotification.query.filter(FcNotification.user_id == userId).filter(FcNotification.discord_sent == False)
         for notif in new_discord_notifications:
@@ -37,5 +38,24 @@ def notify(userId):
         
             apobj.notify(body=body)
             notif.telegram_sent = True
+
+        db.session.commit()
+
+    if settings.email_notifications:
+        email_parts = settings.email_address.split('@')
+        if len(email_parts) != 2:
+            return
+
+        username = email_parts[0]
+        domain = email_parts[1]
+        apobj.add('mailto://' + username + ':' + settings.email_password + '@' + domain +'?from=' + user.username)
+
+        new_email_notifications = FcNotification.query.filter(FcNotification.user_id == userId).filter(FcNotification.email_sent == False)
+        for notif in new_email_notifications:
+            title = notif.source.name if notif.source else '<Removed Job>'
+            body = job_status_text_info_to_code_dict[notif.new_value]
+        
+            apobj.notify(body=body, title=title)
+            notif.email_sent = True
 
         db.session.commit()
