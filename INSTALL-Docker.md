@@ -3,6 +3,8 @@
 This document describes how to prepare and run a custom Docker build of Fitcrack server.
 
 ### Requirements
+x86-64 (in future we may add Arm support)
+
 Install **Docker Engine 20.10.x**. See instructions for you distro here: [https://docs.docker.com/engine/install/](https://docs.docker.com/engine/install/)
 
 Install **docker-compose 1.29.x**. You can use the following command:
