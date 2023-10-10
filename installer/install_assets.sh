@@ -41,12 +41,7 @@ if ! [ -d "/usr/share/assets/rules" ]; then
 fi
 
 if ! [ -d "/usr/share/assets/pcfg" ]; then
-  #cp -R assets/pcfg /usr/share/assets/
-  cp assets/pcfg.tar.gz /usr/share/assets/
-  cd /usr/share/assets/
-  tar xzvf pcfg.tar.gz
-  rm pcfg.tar.gz
-  cd $INSTALLER_ROOT
+  cp -R assets/pcfg /usr/share/assets/
 fi
 
 # Set ownership and permissions

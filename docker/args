@@ -1,0 +1,47 @@
+USER=root                      # root should be used for installation
+
+# MySQL database environment variables
+DB_HOST=${FITCRACK_DB_HOST}    # Database hostname
+DB_NAME=${FITCRACK_DB_NAME}    # Database name
+DB_USER=${FITCRACK_DB_USER}    # Database username
+DB_PW=${FITCRACK_DB_PW}        # Database password
+
+# Fitcrack environment variables
+FITCRACK_HOST=${FITCRACK_HOST}    # Fitcrack hostname
+FITCRACK_PROTO=${FITCRACK_PROTO}  # Fitcrack protocol ('http' or 'https')
+BACKEND_PORT=${BACKEND_PORT}      # Fitcrack backend port
+FRONTEND_PORT=${FRONTEND_PORT}    # Fitcrack frontend port
+SSL_FITCRACK=${SSL_FITCRACK}      # SSL engine state for Fitcrack ('y' or 'n')
+FITCRACK_USER=${FITCRACK_LOGIN}   # Login for the default Fitcrack account
+FITCRACK_EMAIL=${FITCRACK_EMAIL}  # Email for the default Fitcrack account
+FITCRACK_PW=${FITCRACK_PW}        # Password for the default Fitcrack account
+
+DYNAMIC_BACKEND_URL=${DYNAMIC_BACKEND_URL}
+
+# BOINC server environment variables
+BOINC_HOST=${BOINC_HOST}          # BOINC server hostname
+BOINC_PROTO=${BOINC_PROTO}        # BOINC protocol ('http' or 'https')
+BOINC_PORT=${BOINC_PORT}          # BOINC public port needed to set up URLs
+SSL_BOINC=${SSL_BOINC}            # SSL engine state for BOINC ('y' or 'n')
+BOINC_URL=${BOINC_PROTO}://${BOINC_HOST}:${BOINC_PORT}
+BOINC_USER=boincadm               # User that runs the BOINC server
+BOINC_GROUP=boincadm              # User group that runs the BOINC server
+BOINC_HOME=/home/boincadm         # Home directory of the BOINC server user
+BOINC_PROJECT=fitcrack            # Name of the BOINC project
+BOINC_PROJECT_DIR=/home/boincadm/projects/fitcrack
+OPS_LOGIN=${FITCRACK_LOGIN}       # Login for http(s):/HOST/fitcrack_ops
+OPS_PW=${FITCRACK_PW}             # Password for http(s):/HOST/fitcrack_ops
+SERVICE_INSTALL=y                 # Install Fitcrack as a service (needed)
+PROJECT_HTTPD_CONF=/home/boincadm/projects/fitcrack/fitcrack.httpd.conf
+
+# SSL certificate file names (used if SSL_FITCRACK='y' or SSL_BOINC='y')
+SSL_CERTIFICATE_FILE=${SSL_CERTIFICATE_FILE}
+SSL_CERTIFICATE_KEYFILE=${SSL_CERTIFICATE_KEYFILE}
+
+# Apache web server environment variables
+APACHE_USER=www-data                            # Apache web server user
+APACHE_CONFIG_DIR=/etc/apache2                  # Apache configuration directory
+APACHE_CONFIG_FILE=/etc/apache2/apache2.conf    # Apache main config file
+APACHE_DOCUMENT_ROOT=/var/www/html              # Apache document root
+APACHE_SERVICE=apache2                          # Apach servic name
+PYTHONUNBUFFERED=1                              # Backend python buffering

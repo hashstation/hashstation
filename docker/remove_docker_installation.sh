@@ -9,4 +9,4 @@ docker network rm $(docker network ls -q --no-trunc --filter name=fitcrack) > /d
 docker volume rm $(docker volume ls --filter name=fitcrack) --force > /dev/null 2>&1
 docker container prune --force
 docker volume prune --force
-rm -rf fitcrack-data
+rm -rf logs

@@ -1,100 +1,34 @@
-#
-# File: Dockerfile
-#
-#####################################################
-#   FITCRACK DISTRIBUTED PASSWORD CRACKING SYSTEM   #
-#####################################################
-#
-# Dockerfile for building Fitcrack server docker image
-# Copyright: Fitcrack Team <ihranicky@fit.vutbr.cz>
-# https://fitcrack.fit.vutbr.cz/
-#
-
-# Base image
-FROM ubuntu:22.04
-
-LABEL maintainer="Fitcrack Team <ihranicky@fit.vutbr.cz>"
+FROM base:latest
 
 USER root
-WORKDIR /tmp
-
-# Just testing input .env values passed from .env --> docker-compose --> Dockerfile
-ARG COMPILER_THREADS
-
-RUN apt-get -y update && apt install -yq curl wget vim
-RUN apt install -y iputils-ping
-RUN apt install -y net-tools && apt install -y telnet
-
-# Configure timezone
-ENV TZ UTC
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
-RUN apt install -yq sudo
-
-# noninteractive keyboard configuration
-COPY ./docker/keyboard /etc/default/keyboard
-RUN export DEBIAN_FRONTEND=noninteractive
-RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
-RUN apt-get install -y -q
-RUN apt-get install -y -q keyboard-configuration
-
-# MySQL database server
-RUN apt install -y mysql-server
-
-# Install Node.JS for frontend compilation
-RUN mkdir -p /usr/local/lib/nodejs
-RUN apt install -y wget xz-utils
-RUN wget https://nodejs.org/dist/v16.15.0/node-v16.15.0-linux-x64.tar.xz \
-&& tar -xJvf node-v16.15.0-linux-x64.tar.xz -C /usr/local/lib/nodejs
-
-
-######################################################################################
-############################# BOINC Server dependencies ##############################
 
 # Add BOINC server user and fitcrack group
-RUN useradd -m -c "BOINC Administrator" boincadm  -s /bin/bash
-RUN groupadd fitcrack
-RUN usermod -a -G fitcrack boincadm
-
-# Dependencies for building BOINC Server
-RUN apt install -yq build-essential
-RUN apt install -yq m4 dh-autoreconf pkg-config git \
-                    libmysqlclient-dev zlib1g zlib1g-dev \
-                    liblzma-dev libcurl4-openssl-dev
-
-# Install MySQL client
-RUN apt install -yq mysql-client
-
-# Perl
-RUN apt install -yq perl libcompress-raw-lzma-perl
-RUN yes | cpan -i Compress::Raw::Zlib
-RUN yes | cpan -i Compress::Raw::Lzma
-
-# PHP and modules
-RUN apt install -yq php php-xml php-mysql php-cli php-gd
-
-# Python3 with MySQL connectors
-RUN apt install -yq python3 python3-pymysql python3-pip python3-mysqldb
-RUN pip3 install urllib3==1.26.15
-RUN ln -s /usr/bin/python3 /usr/bin/python
+RUN useradd -m -c "BOINC Administrator" boincadm -s /bin/bash && \
+    groupadd fitcrack && \
+    usermod -a -G fitcrack boincadm
 
 # Apache with necessary mods
-RUN apt install -yq apache2 apache2-utils libapache2-mod-php libapache2-mod-wsgi-py3
 RUN a2enmod cgi
 RUN a2enmod rewrite
 RUN a2enmod wsgi
-RUN service apache2 restart
+RUN a2enmod headers
 
-######################################################################################
-################################# BOINC Server build #################################
+# Copy required files
+COPY ../installer /srv/fitcrack/installer
+COPY ../server /srv/fitcrack/server
+COPY ../boinc /srv/fitcrack/boinc
+COPY ../agent /srv/fitcrack/agent
+COPY ../frontend /srv/fitcrack/frontend
+COPY ../backend /srv/fitcrack/backend
+COPY ../docker /srv/fitcrack/docker
 
-COPY ../ /srv/fitcrack/
+# Boinc server build
 WORKDIR /srv/fitcrack
 
 # Apply fitcrack specific changes to boinc
 RUN patch -p0 < installer/fitcrack_changes_in_boinc.patch
 
-# Copy server files to BOINC server Root
+# Copy server files to BOINC server root
 RUN cp -f server/src/headers/*.h              boinc/sched/
 RUN cp -f server/src/headers/AttackModes/*.h  boinc/sched/
 RUN cp -f server/src/headers/Generators/*.h   boinc/sched/
@@ -114,47 +48,66 @@ RUN rm -f installer/.server_built 2>/dev/null
 WORKDIR /srv/fitcrack/boinc
 RUN chmod +x _autosetup && ./_autosetup
 RUN chmod +x configure && ./configure --disable-client --disable-manager
-RUN make -j$COMPILER_THREADS
+RUN make -j
 
-# Prepare project creation script
-WORKDIR /srv/fitcrack/
+# Backend setup
+WORKDIR /srv/fitcrack/backend
 
-# Build agent
-WORKDIR /srv/fitcrack/agent
-RUN apt-get install -y g++-mingw-w64-x86-64
-RUN chmod +x ./update_client_bins.sh
-RUN bash ./update_client_bins.sh
+RUN pip3 install -r src/requirements.txt
+RUN cd hashcat-utils/src && make -j
+RUN cd pwd_dist && make -j
 
-WORKDIR /srv/fitcrack/
-
-######################################################################################
-################################# Webadmin backend ###################################
-
-RUN pip3 install -r backend/src/requirements.txt
-
-RUN cd backend/hashcat-utils/src && make
-RUN cd backend/pwd_dist && make
-
-######################################################################################
-################################# Webadmin frontend ###################################
-
+# Frontend setup
 WORKDIR /srv/fitcrack/frontend
-RUN export PATH=/usr/local/lib/nodejs/node-v16.15.0-linux-x64/bin:$PATH \
-&& npm ci && npm run build
 
-######################################################################################
+RUN npm ci && npm run build
+
+# Install project
+
+ARG USER
+ARG DB_HOST
+ARG DB_NAME
+ARG DB_USER
+ARG DB_PW
+ARG FITCRACK_HOST
+ARG FITCRACK_PROTO
+ARG BACKEND_PORT
+ARG FRONTEND_PORT
+ARG SSL_FITCRACK
+ARG FITCRACK_USER
+ARG FITCRACK_EMAIL
+ARG FITCRACK_PW
+ARG DYNAMIC_BACKEND_URL
+ARG BOINC_HOST
+ARG BOINC_PROTO
+ARG BOINC_PORT
+ARG SSL_BOINC
+ARG BOINC_URL
+ARG BOINC_USER
+ARG BOINC_GROUP
+ARG BOINC_HOME
+ARG BOINC_PROJECT
+ARG BOINC_PROJECT_DIR
+ARG OPS_LOGIN
+ARG OPS_PW
+ARG SERVICE_INSTALL
+ARG PROJECT_HTTPD_CONF
+ARG SSL_CERTIFICATE_FILE
+ARG SSL_CERTIFICATE_KEYFILE
+ARG APACHE_USER
+ARG APACHE_CONFIG_DIR
+ARG APACHE_CONFIG_FILE
+ARG APACHE_DOCUMENT_ROOT
+ARG APACHE_SERVICE
 
 WORKDIR /srv/fitcrack/
-COPY ./docker/entrypoint-fitcrack.sh /srv/fitcrack/
 
-# Copy database init-script
-RUN mkdir /srv/db_init
+RUN chmod +x ./docker/docker-install-project.sh
+RUN ./docker/docker-install-project.sh
 
-# ports and env values
 EXPOSE 80
 EXPOSE 5000
 
-# Entrypoint
-ENTRYPOINT ["/srv/fitcrack/entrypoint-fitcrack.sh"]
+ENTRYPOINT ["./docker/entrypoint.sh"]
 
 HEALTHCHECK --interval=5s --timeout=20s CMD ps -ef | grep apache2 | grep -v grep || exit 1

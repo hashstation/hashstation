@@ -2,11 +2,10 @@
 
 import psutil
 import time
-import urllib3.request
+import requests
 import datetime
 
 server = "http://localhost:5000"
-http = urllib3.PoolManager()
 
 def main():
     minutes = 0
@@ -62,15 +61,16 @@ def main():
         usage_data['hdd_write'] = str(hdd_write)
 
         try:
-            http.request('POST', server + "/serverInfo/usageData", fields=usage_data)
+            response = requests.post(server + "/serverInfo/usageData", data=usage_data)
+            response.raise_for_status()
         except Exception as e:
             print(datetime.datetime.utcnow(),
                     '[WARN]: Unknown exception occured in sending usage data:', e)
 
         if minutes == 7 * 24 * 60: # 7 days
             try:
-                http.request('DELETE', server +
-                             "/serverInfo/usageData", fields={'days': 7})
+                response = requests.delete(server + "/serverInfo/usageData", data={'days': 7})
+                response.raise_for_status()
                 print("deleted")
             except Exception as e:
                 print(datetime.datetime.utcnow(),
