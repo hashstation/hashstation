@@ -55,7 +55,6 @@ void ConfigTask::convertLineToOption(std::string& line) {
 }
 
 void ConfigTask::initSupported() {
-  /** All the options from https://fitcrack.cz/trac/wiki/Fitcrack_Server_Komunikace_FromServer */
   supported_.push_back("mode");
   supported_.push_back("attack_mode");
   supported_.push_back("attack_submode");
