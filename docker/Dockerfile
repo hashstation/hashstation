@@ -14,13 +14,13 @@ RUN a2enmod wsgi
 RUN a2enmod headers
 
 # Copy required files
-COPY ../installer /srv/fitcrack/installer
-COPY ../server /srv/fitcrack/server
-COPY ../boinc /srv/fitcrack/boinc
-COPY ../agent /srv/fitcrack/agent
-COPY ../frontend /srv/fitcrack/frontend
-COPY ../backend /srv/fitcrack/backend
-COPY ../docker /srv/fitcrack/docker
+COPY installer /srv/fitcrack/installer
+COPY server /srv/fitcrack/server
+COPY boinc /srv/fitcrack/boinc
+COPY agent /srv/fitcrack/agent
+COPY frontend /srv/fitcrack/frontend
+COPY backend /srv/fitcrack/backend
+COPY docker /srv/fitcrack/docker
 
 # Boinc server build
 WORKDIR /srv/fitcrack
@@ -54,7 +54,7 @@ RUN make -j
 WORKDIR /srv/fitcrack/backend
 
 RUN pip3 install -r src/requirements.txt
-RUN cd hashcat-utils/src && make -j
+RUN cd hashcat-utils/src && make -j hcstat2gen
 RUN cd pwd_dist && make -j
 
 # Frontend setup
