@@ -10,7 +10,7 @@ namespace BoincConstants {
   std::string TrickleDeamonName;
 };
 
-const std::string AgentConstants::HashcatMutexName = "FitcrackAgentHashcatMutex";
+const std::string AgentConstants::HashcatMutexName = "HashstationAgentHashcatMutex";
 
 void BoincConstants::setProjectName(const std::string& workunit_name) {
   if (workunit_name == "LocalWorkunit") {

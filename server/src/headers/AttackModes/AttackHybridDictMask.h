@@ -1,5 +1,5 @@
-#ifndef FITCRACK_HEADER_ATTACK_HYBRID_DICTMASK_H_
-#define FITCRACK_HEADER_ATTACK_HYBRID_DICTMASK_H_
+#ifndef HASHSTATION_HEADER_ATTACK_HYBRID_DICTMASK_H_
+#define HASHSTATION_HEADER_ATTACK_HYBRID_DICTMASK_H_
 
 #include <AttackMode.h>
 
@@ -14,7 +14,7 @@ class CAttackHybridDictMask : public AttackMode {
 		CAttackHybridDictMask(PtrJob job, PtrHost &host, uint64_t seconds, CSqlLoader *sqlLoader);
 
 		/**
-		 * @brief Creates BOINC workunit, adds entry to fc_workunit
+		 * @brief Creates BOINC workunit, adds entry to hs_workunit
 		 * @return True if a workunit was planned, False otherwise
 		 */
 		bool makeWorkunit() override ;
@@ -33,4 +33,4 @@ class CAttackHybridDictMask : public AttackMode {
 		bool generateWorkunit() override ;
 };
 
-#endif //FITCRACK_HEADER_ATTACK_HYBRID_DICTMASK_H_
+#endif //HASHSTATION_HEADER_ATTACK_HYBRID_DICTMASK_H_

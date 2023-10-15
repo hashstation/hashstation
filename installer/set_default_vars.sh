@@ -1,14 +1,14 @@
 #!/bin/bash
 
 # Set variable values to default ones
-# This file is part of Fitcrack installer
+# This file is part of Hashstation installer
 # Author: David Bolvansky
 
 export INSTALLER_ROOT=$(pwd)
 export BOINC_USER=${BOINC_USER:-boincadm}
 export BOINC_GROUP=${BOINC_GROUP:-$BOINC_USER}
 export BOINC_HOME=${BOINC_HOME:-/home/$BOINC_USER}
-export BOINC_PROJECT=${BOINC_PROJECT:-fitcrack}
+export BOINC_PROJECT=${BOINC_PROJECT:-hashstation}
 export BOINC_PROJECT_DIR="$BOINC_HOME/projects/$BOINC_PROJECT"
 export PROJECT_HTTPD_CONF="$BOINC_PROJECT_DIR/$BOINC_PROJECT.httpd.conf"
 export BOINC_URL=${BOINC_URL:-http://127.0.0.1}
@@ -20,6 +20,6 @@ export APACHE_CONFIG_FILE=${APACHE_CONFIG_FILE:-$DEFAULT_APACHE_CONFIG_FILE}
 export APACHE_SERVICE=${APACHE_SERVICE:-$DEFAULT_APACHE_SERVICE}
 export APACHE_DOCUMENT_ROOT=${APACHE_DOCUMENT_ROOT:-$DEFAULT_APACHE_DOCUMENT_ROOT}
 export DB_HOST=${DB_HOST:-localhost}
-export DB_NAME=${DB_NAME:-fitcrack}
-export DB_USER=${DB_USER:-fitcrack}
+export DB_NAME=${DB_NAME:-hashstation}
+export DB_USER=${DB_USER:-hashstation}
 export DB_PW=${DB_PW:-mypassword}

@@ -19,7 +19,7 @@
 
 void usage(char *name)
 {
-    Tools::printDebug("This is an Fitcrack BOINC work generator.\n"
+    Tools::printDebug("This is an Hashstation BOINC work generator.\n"
         "This work generator has the following properties\n"
         "  It attempts to maintain a \"cushion\" of 2 unsent job instances for each host.\n"
         "- Creates work for the application \"example_app\".\n"
@@ -28,7 +28,7 @@ void usage(char *name)
         "  and sequence number, so that they're unique.\n\n"
         "Usage: %s [OPTION]...\n\n"
         "Options:\n"
-        "  [ --app X                Application name (default: fitcrack)\n"
+        "  [ --app X                Application name (default: hashstation)\n"
         "  [ -h | --help ]          Shows this help text.\n", name);
 }
 
@@ -196,7 +196,7 @@ void parseArguments(int argc, char * argv[])
 
 int main(int argc, char * argv[])
 {
-    Tools::printDebugTimestamp("Starting Fitcrack WorkGenerator ...\n");
+    Tools::printDebugTimestamp("Starting Hashstation WorkGenerator ...\n");
 
     /** BOINC argument parsing */
     parseArguments(argc, argv);

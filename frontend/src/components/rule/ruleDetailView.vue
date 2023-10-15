@@ -87,8 +87,8 @@
 
 <script>
   import fmt from '@/assets/scripts/numberFormat'
-  import tile from '@/components/tile/fc_tile.vue'
-  import fcTextarea from '@/components/textarea/fc_textarea.vue'
+  import tile from '@/components/tile/hs_tile.vue'
+  import fcTextarea from '@/components/textarea/hs_textarea.vue'
   export default {
     name: "RuleDetailView",
     components: {

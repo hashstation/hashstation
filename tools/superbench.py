@@ -82,8 +82,8 @@ def main():
     parser = argparse.ArgumentParser(description='Superbench')
 
     parser.add_argument("--api-url", action="store", default='http://localhost:5000')
-    parser.add_argument("--user", action="store", default='fitcrack')
-    parser.add_argument("--password", action="store", default='FITCRACK')
+    parser.add_argument("--user", action="store", default='hashstation')
+    parser.add_argument("--password", action="store", default='HASHSTATION')
     parser.add_argument("--host-id", action="store", type=int, default=1)
     parser.add_argument("--host-name", action="store")
     parser.add_argument("--delay", action="store", type=int, default=60)

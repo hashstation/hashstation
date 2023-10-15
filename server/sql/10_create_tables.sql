@@ -10,10 +10,10 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table definition for `fc_benchmark`
+-- Table definition for `hs_benchmark`
 --
 
-CREATE TABLE IF NOT EXISTS `fc_benchmark` (
+CREATE TABLE IF NOT EXISTS `hs_benchmark` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `boinc_host_id` bigint(20) unsigned NOT NULL,
   `hash_type` int(11) unsigned DEFAULT NULL,
@@ -26,10 +26,10 @@ CREATE TABLE IF NOT EXISTS `fc_benchmark` (
 -- --------------------------------------------------------
 
 --
--- Table definition for `fc_charset`
+-- Table definition for `hs_charset`
 --
 
-CREATE TABLE IF NOT EXISTS `fc_charset` (
+CREATE TABLE IF NOT EXISTS `hs_charset` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `path` varchar(400) NOT NULL,
@@ -42,10 +42,10 @@ CREATE TABLE IF NOT EXISTS `fc_charset` (
 -- --------------------------------------------------------
 
 --
--- Table definition for `fc_dictionary`
+-- Table definition for `hs_dictionary`
 --
 
-CREATE TABLE IF NOT EXISTS `fc_dictionary` (
+CREATE TABLE IF NOT EXISTS `hs_dictionary` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `path` varchar(400) NOT NULL,
@@ -60,10 +60,10 @@ CREATE TABLE IF NOT EXISTS `fc_dictionary` (
 -- --------------------------------------------------------
 
 --
--- Table definition for `fc_hash`
+-- Table definition for `hs_hash`
 --
 
-CREATE TABLE IF NOT EXISTS`fc_hash` (
+CREATE TABLE IF NOT EXISTS`hs_hash` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `job_id` bigint(20) unsigned DEFAULT NULL,
   `hash_type` int(11) unsigned NOT NULL,
@@ -79,10 +79,10 @@ CREATE TABLE IF NOT EXISTS`fc_hash` (
 -- --------------------------------------------------------
 
 --
--- Table definition for `fc_hcstats`
+-- Table definition for `hs_hcstats`
 --
 
-CREATE TABLE IF NOT EXISTS `fc_hcstats` (
+CREATE TABLE IF NOT EXISTS `hs_hcstats` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `path` varchar(400) NOT NULL,
@@ -94,10 +94,10 @@ CREATE TABLE IF NOT EXISTS `fc_hcstats` (
 -- --------------------------------------------------------
 
 --
--- Table definition for `fc_host`
+-- Table definition for `hs_host`
 --
 
-CREATE TABLE IF NOT EXISTS `fc_host` (
+CREATE TABLE IF NOT EXISTS `hs_host` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `boinc_host_id` bigint(20) unsigned NOT NULL,
   `power` bigint(20) unsigned NOT NULL DEFAULT '0',
@@ -110,10 +110,10 @@ CREATE TABLE IF NOT EXISTS `fc_host` (
 -- --------------------------------------------------------
 
 --
--- Table definition for `fc_device`
+-- Table definition for `hs_device`
 --
 
-CREATE TABLE IF NOT EXISTS `fc_device` (
+CREATE TABLE IF NOT EXISTS `hs_device` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `boinc_host_id` bigint(20) unsigned NOT NULL,
   `hc_id` bigint(20) unsigned NOT NULL,
@@ -125,13 +125,13 @@ CREATE TABLE IF NOT EXISTS `fc_device` (
 -- --------------------------------------------------------
 
 --
--- Table definition for `fc_device_info`
+-- Table definition for `hs_device_info`
 --
 
-CREATE TABLE IF NOT EXISTS `fc_device_info` (
+CREATE TABLE IF NOT EXISTS `hs_device_info` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `device_id` bigint(20) unsigned NOT NULL,   -- fc_device
-  `workunit_id` bigint(20) unsigned NOT NULL, -- fc_workunit
+  `device_id` bigint(20) unsigned NOT NULL,   -- hs_device
+  `workunit_id` bigint(20) unsigned NOT NULL, -- hs_workunit
   `hashrate` bigint(20) unsigned NOT NULL,
   `speed` bigint(20) unsigned NOT NULL,
   `temperature` int(11) NOT NULL,
@@ -143,10 +143,10 @@ CREATE TABLE IF NOT EXISTS `fc_device_info` (
 -- --------------------------------------------------------
 
 --
--- Table definition for `fc_host_activity`
+-- Table definition for `hs_host_activity`
 --
 
-CREATE TABLE IF NOT EXISTS `fc_host_activity` (
+CREATE TABLE IF NOT EXISTS `hs_host_activity` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `boinc_host_id` bigint(20) unsigned NOT NULL,
   `job_id` bigint(20) unsigned NOT NULL DEFAULT '0',
@@ -156,10 +156,10 @@ CREATE TABLE IF NOT EXISTS `fc_host_activity` (
 -- --------------------------------------------------------
 
 --
--- Table definition for `fc_workunit`
+-- Table definition for `hs_workunit`
 --
 
-CREATE TABLE IF NOT EXISTS `fc_workunit` (
+CREATE TABLE IF NOT EXISTS `hs_workunit` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `job_id` bigint(20) NOT NULL,
   `workunit_id` bigint(20) unsigned NOT NULL,
@@ -186,10 +186,10 @@ CREATE TABLE IF NOT EXISTS `fc_workunit` (
 -- --------------------------------------------------------
 
 --
--- Table definition for `fc_mask`
+-- Table definition for `hs_mask`
 --
 
-CREATE TABLE IF NOT EXISTS `fc_mask` (
+CREATE TABLE IF NOT EXISTS `hs_mask` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `job_id` bigint(20) unsigned NOT NULL,
   `mask` varchar(30) COLLATE utf8_bin DEFAULT NULL,
@@ -202,10 +202,10 @@ CREATE TABLE IF NOT EXISTS `fc_mask` (
 -- --------------------------------------------------------
 
 --
--- Table definition for `fc_masks_set`
+-- Table definition for `hs_masks_set`
 --
 
-CREATE TABLE IF NOT EXISTS `fc_masks_set` (
+CREATE TABLE IF NOT EXISTS `hs_masks_set` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `path` varchar(400) NOT NULL,
@@ -217,10 +217,10 @@ CREATE TABLE IF NOT EXISTS `fc_masks_set` (
 -- --------------------------------------------------------
 
 --
--- Table definition for `fc_notification`
+-- Table definition for `hs_notification`
 --
 
-CREATE TABLE IF NOT EXISTS `fc_notification` (
+CREATE TABLE IF NOT EXISTS `hs_notification` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL,
   `source_type` int(11) DEFAULT '0',
@@ -240,10 +240,10 @@ CREATE TABLE IF NOT EXISTS `fc_notification` (
 -- --------------------------------------------------------
 
 --
--- Table definition for `fc_protected_file`
+-- Table definition for `hs_protected_file`
 --
 
-CREATE TABLE IF NOT EXISTS `fc_protected_file` (
+CREATE TABLE IF NOT EXISTS `hs_protected_file` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `path` varchar(400) NOT NULL,
@@ -257,10 +257,10 @@ CREATE TABLE IF NOT EXISTS `fc_protected_file` (
 -- --------------------------------------------------------
 
 --
--- Table definition for `fc_bin`
+-- Table definition for `hs_bin`
 --
 
-CREATE TABLE IF NOT EXISTS `fc_bin` (
+CREATE TABLE IF NOT EXISTS `hs_bin` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
   `position` int(11),
@@ -271,10 +271,10 @@ CREATE TABLE IF NOT EXISTS `fc_bin` (
 -- --------------------------------------------------------
 
 --
--- Table definition for `fc_batch`
+-- Table definition for `hs_batch`
 --
 
-CREATE TABLE IF NOT EXISTS `fc_batch` (
+CREATE TABLE IF NOT EXISTS `hs_batch` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
   `creator_id` int(11),
@@ -285,10 +285,10 @@ CREATE TABLE IF NOT EXISTS `fc_batch` (
 -- --------------------------------------------------------
 
 --
--- Table definition for `fc_job`
+-- Table definition for `hs_job`
 --
 
-CREATE TABLE IF NOT EXISTS `fc_job` (
+CREATE TABLE IF NOT EXISTS `hs_job` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `attack` varchar(40) COLLATE utf8_bin NOT NULL,
   `attack_mode` tinyint(3) unsigned NOT NULL,
@@ -341,10 +341,10 @@ CREATE TABLE IF NOT EXISTS `fc_job` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
 --
--- Table definition for `fc_bin_job` (M2M junction)
+-- Table definition for `hs_bin_job` (M2M junction)
 --
 
-CREATE TABLE IF NOT EXISTS `fc_bin_job` (
+CREATE TABLE IF NOT EXISTS `hs_bin_job` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `job_id` bigint(20) unsigned NOT NULL,
   `bin_id` int(11) NOT NULL,
@@ -358,10 +358,10 @@ CREATE TABLE IF NOT EXISTS `fc_bin_job` (
 -- --------------------------------------------------------
 
 --
--- Table definition for `fc_job_dictionary`
+-- Table definition for `hs_job_dictionary`
 --
 
-CREATE TABLE IF NOT EXISTS `fc_job_dictionary` (
+CREATE TABLE IF NOT EXISTS `hs_job_dictionary` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `job_id` bigint(20) unsigned NOT NULL,
   `dictionary_id` bigint(20) unsigned NOT NULL,
@@ -374,10 +374,10 @@ CREATE TABLE IF NOT EXISTS `fc_job_dictionary` (
 -- --------------------------------------------------------
 
 --
--- Table definition for `fc_job_rule`
+-- Table definition for `hs_job_rule`
 --
 
-CREATE TABLE IF NOT EXISTS `fc_job_rule` (
+CREATE TABLE IF NOT EXISTS `hs_job_rule` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `job_id` bigint(20) unsigned NOT NULL,
   `rule_id` bigint(20) unsigned NOT NULL,
@@ -387,10 +387,10 @@ CREATE TABLE IF NOT EXISTS `fc_job_rule` (
 -- --------------------------------------------------------
 
 --
--- Table definition for `fc_job_graph`
+-- Table definition for `hs_job_graph`
 --
 
-CREATE TABLE IF NOT EXISTS `fc_job_graph` (
+CREATE TABLE IF NOT EXISTS `hs_job_graph` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `progress` decimal(5,2) NOT NULL,
   `job_id` bigint(20) unsigned NOT NULL,
@@ -402,10 +402,10 @@ CREATE TABLE IF NOT EXISTS `fc_job_graph` (
 -- --------------------------------------------------------
 
 --
--- Table definition for `fc_template`
+-- Table definition for `hs_template`
 --
 
-CREATE TABLE IF NOT EXISTS `fc_template` (
+CREATE TABLE IF NOT EXISTS `hs_template` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(64) NOT NULL,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -416,10 +416,10 @@ CREATE TABLE IF NOT EXISTS `fc_template` (
 -- --------------------------------------------------------
 
 --
--- Table definition for `fc_role`
+-- Table definition for `hs_role`
 --
 
-CREATE TABLE IF NOT EXISTS `fc_role` (
+CREATE TABLE IF NOT EXISTS `hs_role` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
   `MANAGE_USERS` tinyint(1) NOT NULL DEFAULT '0',
@@ -435,10 +435,10 @@ CREATE TABLE IF NOT EXISTS `fc_role` (
 -- --------------------------------------------------------
 
 --
--- Table definition for `fc_rule`
+-- Table definition for `hs_rule`
 --
 
-CREATE TABLE IF NOT EXISTS `fc_rule` (
+CREATE TABLE IF NOT EXISTS `hs_rule` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `path` varchar(400) NOT NULL,
@@ -451,10 +451,10 @@ CREATE TABLE IF NOT EXISTS `fc_rule` (
 -- --------------------------------------------------------
 
 --
--- Table definition for `fc_pcfg_preterminals`
+-- Table definition for `hs_pcfg_preterminals`
 --
 
-CREATE TABLE `fc_pcfg_preterminals` (
+CREATE TABLE `hs_pcfg_preterminals` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `job_id` bigint(20) unsigned NOT NULL,
   `workunit_id` bigint(20) unsigned NOT NULL,
@@ -465,10 +465,10 @@ CREATE TABLE `fc_pcfg_preterminals` (
 -- --------------------------------------------------------
 
 --
--- Table definition for `fc_pcfg_grammar`
+-- Table definition for `hs_pcfg_grammar`
 --
 
-CREATE TABLE `fc_pcfg_grammar` (
+CREATE TABLE `hs_pcfg_grammar` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `path` varchar(400) NOT NULL,
@@ -482,10 +482,10 @@ CREATE TABLE `fc_pcfg_grammar` (
 -- --------------------------------------------------------
 
 --
--- Table definition for `fc_settings`
+-- Table definition for `hs_settings`
 --
 
-CREATE TABLE IF NOT EXISTS `fc_settings` (
+CREATE TABLE IF NOT EXISTS `hs_settings` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `default_seconds_per_workunit` int(10) unsigned NOT NULL DEFAULT '600',
@@ -513,10 +513,10 @@ CREATE TABLE IF NOT EXISTS `fc_settings` (
 -- --------------------------------------------------------
 
 --
--- Table definition for `fc_user`
+-- Table definition for `hs_user`
 --
 
-CREATE TABLE IF NOT EXISTS `fc_user` (
+CREATE TABLE IF NOT EXISTS `hs_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(64) NOT NULL,
   `password` varchar(128) NOT NULL,
@@ -530,10 +530,10 @@ CREATE TABLE IF NOT EXISTS `fc_user` (
 -- --------------------------------------------------------
 
 --
--- Table definition for `fc_user_permissions`
+-- Table definition for `hs_user_permissions`
 --
 
-CREATE TABLE IF NOT EXISTS `fc_user_permissions` (
+CREATE TABLE IF NOT EXISTS `hs_user_permissions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `job_id` bigint(20) unsigned NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -549,10 +549,10 @@ CREATE TABLE IF NOT EXISTS `fc_user_permissions` (
 -- --------------------------------------------------------
 
 --
--- Table definition for `fc_host_status`
+-- Table definition for `hs_host_status`
 --
 
-CREATE TABLE IF NOT EXISTS `fc_host_status` (
+CREATE TABLE IF NOT EXISTS `hs_host_status` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `boinc_host_id` bigint(20) unsigned NOT NULL,
   `last_seen` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -567,10 +567,10 @@ CREATE TABLE IF NOT EXISTS `fc_host_status` (
 
 
 --
--- Table definition for `fc_job_status`
+-- Table definition for `hs_job_status`
 --
 
-CREATE TABLE IF NOT EXISTS `fc_job_status` (
+CREATE TABLE IF NOT EXISTS `hs_job_status` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `job_id` bigint(20) unsigned NOT NULL,
   `status` smallint(1) unsigned NOT NULL,
@@ -581,10 +581,10 @@ CREATE TABLE IF NOT EXISTS `fc_job_status` (
 -- --------------------------------------------------------
 
 --
--- Table definition for `fc_server_usage`
+-- Table definition for `hs_server_usage`
 --
 
-CREATE TABLE IF NOT EXISTS `fc_server_usage` (
+CREATE TABLE IF NOT EXISTS `hs_server_usage` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `cpu` decimal(10,0) NOT NULL,
@@ -599,55 +599,55 @@ CREATE TABLE IF NOT EXISTS `fc_server_usage` (
 -- --------------------------------------------------------
 
 --
--- Constraints for `fc_job`
+-- Constraints for `hs_job`
 --
-ALTER TABLE `fc_job`
-  ADD CONSTRAINT `batch_link` FOREIGN KEY (`batch_id`) REFERENCES `fc_batch` (`id`) ON DELETE SET NULL;
+ALTER TABLE `hs_job`
+  ADD CONSTRAINT `batch_link` FOREIGN KEY (`batch_id`) REFERENCES `hs_batch` (`id`) ON DELETE SET NULL;
 
 --
--- Constraints for `fc_batch`
+-- Constraints for `hs_batch`
 --
-ALTER TABLE `fc_batch`
-  ADD CONSTRAINT `user_link` FOREIGN KEY (`creator_id`) REFERENCES `fc_user` (`id`) ON DELETE SET NULL;
+ALTER TABLE `hs_batch`
+  ADD CONSTRAINT `user_link` FOREIGN KEY (`creator_id`) REFERENCES `hs_user` (`id`) ON DELETE SET NULL;
 
 --
--- Constraints for `fc_job_status`
+-- Constraints for `hs_job_status`
 --
-ALTER TABLE `fc_job_status`
-  ADD CONSTRAINT `fc_job_status_ibfk_1` FOREIGN KEY (`job_id`) REFERENCES `fc_job` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
-
---
--- Constraints for `fc_notification`
---
-ALTER TABLE `fc_notification`
-  ADD CONSTRAINT `fc_notification_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `fc_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fc_notification_ibfk_2` FOREIGN KEY (`source_id`) REFERENCES `fc_job` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `hs_job_status`
+  ADD CONSTRAINT `hs_job_status_ibfk_1` FOREIGN KEY (`job_id`) REFERENCES `hs_job` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 --
--- Constraints for `fc_bin_job`
+-- Constraints for `hs_notification`
 --
-ALTER TABLE `fc_bin_job`
-  ADD CONSTRAINT `fc_bin_job_jobfk` FOREIGN KEY (`job_id`) REFERENCES `fc_job` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fc_bin_job_binfk` FOREIGN KEY (`bin_id`) REFERENCES `fc_bin` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `hs_notification`
+  ADD CONSTRAINT `hs_notification_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `hs_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `hs_notification_ibfk_2` FOREIGN KEY (`source_id`) REFERENCES `hs_job` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 --
--- Constraints for `fc_job_graph`
+-- Constraints for `hs_bin_job`
 --
-ALTER TABLE `fc_job_graph`
-  ADD CONSTRAINT `fc_job_graph_ibfk_1` FOREIGN KEY (`job_id`) REFERENCES `fc_job` (`id`);
+ALTER TABLE `hs_bin_job`
+  ADD CONSTRAINT `hs_bin_job_jobfk` FOREIGN KEY (`job_id`) REFERENCES `hs_job` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `hs_bin_job_binfk` FOREIGN KEY (`bin_id`) REFERENCES `hs_bin` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
 
 --
--- Constraints for `fc_user`
+-- Constraints for `hs_job_graph`
 --
-ALTER TABLE `fc_user`
-  ADD CONSTRAINT `fc_user_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `fc_role` (`id`);
+ALTER TABLE `hs_job_graph`
+  ADD CONSTRAINT `hs_job_graph_ibfk_1` FOREIGN KEY (`job_id`) REFERENCES `hs_job` (`id`);
 
 --
--- Constraints for `fc_user_permissions`
+-- Constraints for `hs_user`
 --
-ALTER TABLE `fc_user_permissions`
-  ADD CONSTRAINT `fc_user_permissions_ibfk_1` FOREIGN KEY (`job_id`) REFERENCES `fc_job` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fc_user_permissions_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `fc_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `hs_user`
+  ADD CONSTRAINT `hs_user_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `hs_role` (`id`);
+
+--
+-- Constraints for `hs_user_permissions`
+--
+ALTER TABLE `hs_user_permissions`
+  ADD CONSTRAINT `hs_user_permissions_ibfk_1` FOREIGN KEY (`job_id`) REFERENCES `hs_job` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `hs_user_permissions_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `hs_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;

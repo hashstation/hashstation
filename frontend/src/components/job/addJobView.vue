@@ -732,7 +732,7 @@
   import pcfgAttack from '@/components/job/attacks/pcfg.vue'
   import princeAttack from '@/components/job/attacks/prince.vue'
   import FileUploader from "@/components/fileUploader/fileUploader.vue";
-  import fcTextarea from '@/components/textarea/fc_textarea.vue'
+  import fcTextarea from '@/components/textarea/hs_textarea.vue'
   import hostSelector from '@/components/selector/hostSelector.vue'
   import templateModal from '@/components/jobTemplate/templateModal.vue'
   import dtPicker from '@/components/picker/datetime.vue'

@@ -133,7 +133,7 @@
 
 <script>
   import fmt from '@/assets/scripts/numberFormat'
-  import tile from '@/components/tile/fc_tile.vue'
+  import tile from '@/components/tile/hs_tile.vue'
   import serverBrowser from '@/components/serverBrowser/serverBrowser.vue'
   import FileUploader from "@/components/fileUploader/fileUploader.vue";
 

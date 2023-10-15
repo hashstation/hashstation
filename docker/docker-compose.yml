@@ -1,8 +1,8 @@
 version: '3'
 services:
-    fitcrack:
+    hashstation:
       image: base:latest
-      hostname: fitcrack
+      hostname: hashstation
       cap_add:
         - SYS_NICE
       build:
@@ -12,20 +12,20 @@ services:
           - USER=root                      # root should be used for installation
 
           # MySQL database environment variables
-          - DB_HOST=${FITCRACK_DB_HOST}    # Database hostname
-          - DB_NAME=${FITCRACK_DB_NAME}    # Database name
-          - DB_USER=${FITCRACK_DB_USER}    # Database username
-          - DB_PW=${FITCRACK_DB_PW}        # Database password
+          - DB_HOST=${HASHSTATION_DB_HOST}    # Database hostname
+          - DB_NAME=${HASHSTATION_DB_NAME}    # Database name
+          - DB_USER=${HASHSTATION_DB_USER}    # Database username
+          - DB_PW=${HASHSTATION_DB_PW}        # Database password
 
-          # Fitcrack environment variables
-          - FITCRACK_HOST=${FITCRACK_HOST}    # Fitcrack hostname
-          - FITCRACK_PROTO=${FITCRACK_PROTO}  # Fitcrack protocol ('http' or 'https')
-          - BACKEND_PORT=${BACKEND_PORT}      # Fitcrack backend port
-          - FRONTEND_PORT=${FRONTEND_PORT}    # Fitcrack frontend port
-          - SSL_FITCRACK=${SSL_FITCRACK}      # SSL engine state for Fitcrack ('y' or 'n')
-          - FITCRACK_USER=${FITCRACK_LOGIN}   # Login for the default Fitcrack account
-          - FITCRACK_EMAIL=${FITCRACK_EMAIL}  # Email for the default Fitcrack account
-          - FITCRACK_PW=${FITCRACK_PW}        # Password for the default Fitcrack account
+          # Hashstation environment variables
+          - HASHSTATION_HOST=${HASHSTATION_HOST}    # Hashstation hostname
+          - HASHSTATION_PROTO=${HASHSTATION_PROTO}  # Hashstation protocol ('http' or 'https')
+          - BACKEND_PORT=${BACKEND_PORT}      # Hashstation backend port
+          - FRONTEND_PORT=${FRONTEND_PORT}    # Hashstation frontend port
+          - SSL_HASHSTATION=${SSL_HASHSTATION}      # SSL engine state for Hashstation ('y' or 'n')
+          - HASHSTATION_USER=${HASHSTATION_LOGIN}   # Login for the default Hashstation account
+          - HASHSTATION_EMAIL=${HASHSTATION_EMAIL}  # Email for the default Hashstation account
+          - HASHSTATION_PW=${HASHSTATION_PW}        # Password for the default Hashstation account
 
           - DYNAMIC_BACKEND_URL=${DYNAMIC_BACKEND_URL}
 
@@ -38,14 +38,14 @@ services:
           - BOINC_USER=boincadm               # User that runs the BOINC server
           - BOINC_GROUP=boincadm              # User group that runs the BOINC server
           - BOINC_HOME=/home/boincadm         # Home directory of the BOINC server user
-          - BOINC_PROJECT=fitcrack            # Name of the BOINC project
-          - BOINC_PROJECT_DIR=/home/boincadm/projects/fitcrack
-          - OPS_LOGIN=${FITCRACK_LOGIN}       # Login for http(s):/HOST/fitcrack_ops
-          - OPS_PW=${FITCRACK_PW}             # Password for http(s):/HOST/fitcrack_ops
-          - SERVICE_INSTALL=y                 # Install Fitcrack as a service (needed)
-          - PROJECT_HTTPD_CONF=/home/boincadm/projects/fitcrack/fitcrack.httpd.conf
+          - BOINC_PROJECT=hashstation            # Name of the BOINC project
+          - BOINC_PROJECT_DIR=/home/boincadm/projects/hashstation
+          - OPS_LOGIN=${HASHSTATION_LOGIN}       # Login for http(s):/HOST/hashstation_ops
+          - OPS_PW=${HASHSTATION_PW}             # Password for http(s):/HOST/hashstation_ops
+          - SERVICE_INSTALL=y                 # Install Hashstation as a service (needed)
+          - PROJECT_HTTPD_CONF=/home/boincadm/projects/hashstation/hashstation.httpd.conf
 
-          # SSL certificate file names (used if SSL_FITCRACK='y' or SSL_BOINC='y')
+          # SSL certificate file names (used if SSL_HASHSTATION='y' or SSL_BOINC='y')
           - SSL_CERTIFICATE_FILE=${SSL_CERTIFICATE_FILE}
           - SSL_CERTIFICATE_KEYFILE=${SSL_CERTIFICATE_KEYFILE}
 
@@ -58,22 +58,22 @@ services:
           - PYTHONUNBUFFERED=1                              # Backend python buffering
       restart: always
       ports:
-          - ${BACKEND_PORT}:${BACKEND_PORT}         # Mapping of Fitcrack backend
-          - ${FRONTEND_PORT}:${FRONTEND_PORT}       # Mapping of Fitcrack frontend
-          #- ${BOINC_PORT}:${BOINC_PORT} # BOINC port (uncomment if different from Fitcrack)
+          - ${BACKEND_PORT}:${BACKEND_PORT}         # Mapping of Hashstation backend
+          - ${FRONTEND_PORT}:${FRONTEND_PORT}       # Mapping of Hashstation frontend
+          #- ${BOINC_PORT}:${BOINC_PORT} # BOINC port (uncomment if different from Hashstation)
       volumes:
         - "../assets:/usr/share/assets"                    # Assets of dictionaries, masks, etc. (host-mapped!)
-        - "./logs:/var/log/fitcrack"                       # Log directory (host-mapped!)
+        - "./logs:/var/log/hashstation"                       # Log directory (host-mapped!)
 
         - "mysql:/var/lib/mysql"                           # MySQL server data directory
         - "boincadm:/home/boincadm"                        # BOINC server user home directory
         - "apache:/etc/apache2"                            # Apache config directory
         - "apache-conf:/etc/init.d"                        # Directory with service init scripts
-        - "fitcrack-be:/var/www/html/fitcrackBE"           # Fitcrack backend installation
-        - "fitcrack-fe:/var/www/html/fitcrackFE"           # Fitcrack frontend installation
-        # NOTE: Fitcrack backend copy, frontend Node.JS build, and server + runner binaries are
+        - "hashstation-be:/var/www/html/hashstationBE"           # Hashstation backend installation
+        - "hashstation-fe:/var/www/html/hashstationFE"           # Hashstation frontend installation
+        # NOTE: Hashstation backend copy, frontend Node.JS build, and server + runner binaries are
         #       built using Dockerfile when the image is created. The entrypoint started with
-        #       'docker-compose up' only installs the Fitcrack server from pre-built binaries.
+        #       'docker-compose up' only installs the Hashstation server from pre-built binaries.
         #       Modifying the sources when a pre-built image is used will have no effect.
         #       In case you modify the implementation, you need to rebuild the image first:
         #       using 'docker-compose build' or 'docker-compose build --no-cache'.
@@ -84,6 +84,6 @@ volumes:
   assets:
   apache:
   apache-conf:
-  fitcrack-be:
-  fitcrack-fe:
+  hashstation-be:
+  hashstation-fe:
   logs:

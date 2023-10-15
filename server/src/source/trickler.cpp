@@ -12,7 +12,7 @@
 // table column) <progress>Y</progress> (Y = float, from 0.0 to 100.0)
 //
 // mandatory arguments:
-//   --variety fitcrack
+//   --variety hashstation
 
 #include "sched_msgs.h"
 #include "trickle_handler.h"
@@ -63,7 +63,7 @@ int handle_trickle(MSG_FROM_HOST &mfh) {
   std::string cracking_time;
   std::string hashrate;
   std::map<uint32_t, Device> devices;
-  uint64_t fc_workunit_id;
+  uint64_t hs_workunit_id;
 
   log_messages.printf(MSG_NORMAL,
                       "Got trickle-up message from hostId #%lu:\n%s\n\n",
@@ -80,9 +80,9 @@ int handle_trickle(MSG_FROM_HOST &mfh) {
       std::cerr << "Succesfully parsed workunit_name: " << wu_name << std::endl;
       got_wu_name = true;
 
-      // Get workunit_id from fc_workunit
+      // Get workunit_id from hs_workunit
       snprintf(buf, SQL_BUF_SIZE,
-               "SELECT id FROM `fc_workunit` WHERE `workunit_id` IN "
+               "SELECT id FROM `hs_workunit` WHERE `workunit_id` IN "
                "(SELECT id "
                "FROM workunit WHERE name = '%s') LIMIT 1 ;",
                wu_name.c_str());
@@ -106,9 +106,9 @@ int handle_trickle(MSG_FROM_HOST &mfh) {
       MYSQL_ROW row;
       row = mysql_fetch_row(rp);
       if (row && row[0])
-        fc_workunit_id = std::stoull(row[0]);
+        hs_workunit_id = std::stoull(row[0]);
       
-      std::cerr << "fc_workunit_id: " << fc_workunit_id << std::endl;
+      std::cerr << "hs_workunit_id: " << hs_workunit_id << std::endl;
       mysql_free_result(rp);
       continue;
     }
@@ -216,9 +216,9 @@ int handle_trickle(MSG_FROM_HOST &mfh) {
   std::cerr << "Updating workunit progress..." << std::endl;
 
   snprintf(buf, SQL_BUF_SIZE,
-           "UPDATE `fc_workunit` SET `progress` = %f WHERE `progress` < %f AND "
+           "UPDATE `hs_workunit` SET `progress` = %f WHERE `progress` < %f AND "
            "`id` = %" PRIu64 " LIMIT 1 ;",
-           progress, progress, fc_workunit_id);
+           progress, progress, hs_workunit_id);
 
   int retval = boinc_db.do_query(buf);
   if (retval) {
@@ -233,9 +233,9 @@ int handle_trickle(MSG_FROM_HOST &mfh) {
     std::cerr << "Updating workunit speed..." << std::endl;
 
     snprintf(buf, SQL_BUF_SIZE,
-             "UPDATE `fc_workunit` SET `speed` = %" PRIu64
+             "UPDATE `hs_workunit` SET `speed` = %" PRIu64
              " WHERE `id` = %" PRIu64 " LIMIT 1 ;",
-             workunit_speed, fc_workunit_id);
+             workunit_speed, hs_workunit_id);
 
     retval = boinc_db.do_query(buf);
     if (retval) {
@@ -251,9 +251,9 @@ int handle_trickle(MSG_FROM_HOST &mfh) {
     std::cerr << "Updating workunit hash rate..." << std::endl;
 
     snprintf(buf, SQL_BUF_SIZE,
-             "UPDATE `fc_workunit` SET `hashrate` = %" PRIu64
+             "UPDATE `hs_workunit` SET `hashrate` = %" PRIu64
              " WHERE `id` = %" PRIu64 " LIMIT 1 ;",
-             workunit_hashrate, fc_workunit_id);
+             workunit_hashrate, hs_workunit_id);
 
     retval = boinc_db.do_query(buf);
     if (retval) {
@@ -267,9 +267,9 @@ int handle_trickle(MSG_FROM_HOST &mfh) {
   std::cerr << "Updating workunit remaining time..." << std::endl;
 
   snprintf(buf, SQL_BUF_SIZE,
-           "UPDATE `fc_workunit` SET `remaining_time` = %" PRIu64
+           "UPDATE `hs_workunit` SET `remaining_time` = %" PRIu64
            " WHERE `id` = %" PRIu64 " LIMIT 1 ;",
-           std::stoull(remaining_time), fc_workunit_id);
+           std::stoull(remaining_time), hs_workunit_id);
 
   retval = boinc_db.do_query(buf);
   if (retval) {
@@ -282,9 +282,9 @@ int handle_trickle(MSG_FROM_HOST &mfh) {
   std::cerr << "Updating workunit cracking time..." << std::endl;
 
   snprintf(buf, SQL_BUF_SIZE,
-           "UPDATE `fc_workunit` SET `cracking_time` = %" PRIu64
+           "UPDATE `hs_workunit` SET `cracking_time` = %" PRIu64
            " WHERE `id` = %" PRIu64 " LIMIT 1 ;",
-           std::stoull(cracking_time), fc_workunit_id);
+           std::stoull(cracking_time), hs_workunit_id);
 
   retval = boinc_db.do_query(buf);
   if (retval) {
@@ -297,9 +297,9 @@ int handle_trickle(MSG_FROM_HOST &mfh) {
   // -----------------------------------
 
   for (auto &device : devices) {
-    // Get device id from fc_device
+    // Get device id from hs_device
     std::snprintf(buf, SQL_BUF_SIZE,
-                  "SELECT id FROM `fc_device` WHERE `boinc_host_id` = %" PRIu64
+                  "SELECT id FROM `hs_device` WHERE `boinc_host_id` = %" PRIu64
                   " AND `hc_id` = %" PRIu64 " LIMIT 1 ;",
                   mfh.hostid, device.first);
     int retval = boinc_db.do_query(buf);
@@ -318,16 +318,16 @@ int handle_trickle(MSG_FROM_HOST &mfh) {
       exit(1);
     }
 
-    uint32_t fc_device_id;
+    uint32_t hs_device_id;
     MYSQL_ROW row;
     row = mysql_fetch_row(rp);
     if (row && row[0]) {
-      std::cerr << " fc_device_id " << row[0] << std::endl;
-      fc_device_id = std::stoull(row[0]);
+      std::cerr << " hs_device_id " << row[0] << std::endl;
+      hs_device_id = std::stoull(row[0]);
     } else {
       // This device does not exist in DB, insert new entry
       std::snprintf(buf, SQL_BUF_SIZE,
-                    "INSERT INTO `fc_device` "
+                    "INSERT INTO `hs_device` "
                     "(`boinc_host_id`,`hc_id`,`name`,`"
                     "type`) VALUES (%" PRIu64 ", %" PRIu64 ", '%s'"
                     ", '%s');",
@@ -341,19 +341,19 @@ int handle_trickle(MSG_FROM_HOST &mfh) {
         exit(1);
       }
 
-      fc_device_id = boinc_db.insert_id();
+      hs_device_id = boinc_db.insert_id();
     }
 
     mysql_free_result(rp);
 
-    std::cerr << "Inserting data to fc_device_info..." << std::endl;
+    std::cerr << "Inserting data to hs_device_info..." << std::endl;
 
     std::snprintf(buf, SQL_BUF_SIZE,
-                  "INSERT INTO `fc_device_info` "
+                  "INSERT INTO `hs_device_info` "
                   "(`device_id`,`workunit_id`,`hashrate`,`speed`,`temperature`,`"
                   "utilization`) VALUES (%" PRIu64 ", %" PRIu64 ", %" PRId64 ", %" PRId64
                   ", %" PRId64 ", %" PRId64 ");",
-                  fc_device_id, fc_workunit_id, std::stoll(device.second.hashrate),
+                  hs_device_id, hs_workunit_id, std::stoll(device.second.hashrate),
                   std::stoll(device.second.speed),
                   std::stoll(device.second.temp),
                   std::stoll(device.second.util));

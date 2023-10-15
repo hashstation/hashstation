@@ -1,18 +1,18 @@
-# Fitcrack server README
+# Hashstation server README
 
-This readme describes the process process of manual Fitcrack server installation. Namely:
+This readme describes the process process of manual Hashstation server installation. Namely:
 * **Download server** (directory accessible over Apache)
 * **Upload server** (directory accessible over Apache)
 * **Scheduler** (Native BOINC app running on FastCGI over Apache)
 * **feeder** (native BOINC daemon)
 * **dransitioner** (native BOINC daemon)
 * **file_deleter** (native BOINC daemon)
-* **work_generator** (Fitcrack-specific BOINC daemon)
-* **bitwise_validator** (Fitcrack-specific BOINC daemon)
-* **assimilator** (Fitcrack-specific BOINC daemon)
-* **trickler** (Fitcrack-specific BOINC daemon)
-* **measure_usage.py** (Fitcrack-specific BOINC daemon)
-* **pcfg_monitor.py** (Fitcrack-specific BOINC daemon)
+* **work_generator** (Hashstation-specific BOINC daemon)
+* **bitwise_validator** (Hashstation-specific BOINC daemon)
+* **assimilator** (Hashstation-specific BOINC daemon)
+* **trickler** (Hashstation-specific BOINC daemon)
+* **measure_usage.py** (Hashstation-specific BOINC daemon)
+* **pcfg_monitor.py** (Hashstation-specific BOINC daemon)
 
 (Note: For **Agent** and **Webadmin**, there are separate READMEs)
 
@@ -92,15 +92,15 @@ sudo addgroup boincadm
 sudo usermod -a -G boincadm www-data
 ```
 
-## Create a MySQL database and a user account for Fitcrack server
+## Create a MySQL database and a user account for Hashstation server
 Create a MySQL database and a user that has full access to it, e.g.:
 ```
 mysql -u root -p
-mysql> create database fitcrack;
-mysql> GRANT ALL PRIVILEGES ON fitcrack.* TO 'fitcrack'@'localhost' IDENTIFIED BY 'SUPERSECRET';
+mysql> create database hashstation;
+mysql> GRANT ALL PRIVILEGES ON hashstation.* TO 'hashstation'@'localhost' IDENTIFIED BY 'SUPERSECRET';
 ```
 
-# Copy Fitcrack sources to the BOINC source directory
+# Copy Hashstation sources to the BOINC source directory
 All `.h` and `.cpp` files from `server/src` must be copied into the `boinc/sched/` directory
 before the compilation:
 ```
@@ -132,7 +132,7 @@ make
 sudo make install
 ```
 
-## Make and configure the Fitcrack project
+## Make and configure the Hashstation project
 Use the `boinc/tools/make_project` script to create your project:
 * `--url_base` is the protocol (http/https) and IP/hostname of your server
 * `--srcdir` source directory with complied BOINC server
@@ -140,7 +140,7 @@ Use the `boinc/tools/make_project` script to create your project:
 * `--project_host` is the IP or hostname of your server
 * `--project_root` is the path to your new project (needs to be accesible by the BOINC server user)
 * `--db_user` is the MySQL user name
-* `--db_name` is the name of the database for Fitcrack server
+* `--db_name` is the name of the database for Hashstation server
 * `--db_passwd` is the mysql user password
 
 Example:
@@ -149,10 +149,10 @@ Example:
   --url_base http://127.0.0.1 \
   --srcdir boinc --user_name boincadm \
   --project-host 127.0.0.1 \
-  --project-root /home/boincadm/projects/fitcrack
+  --project-root /home/boincadm/projects/hashstation
   --db_host 127.0.0.1 \
-  --db_name fitcrack
-  --db_user fitcrack \
+  --db_name hashstation
+  --db_user hashstation \
   --db_passwd SUPERSECRET
 ```
 Note: User `127.0.0.1` insted of `localhost`.
@@ -191,15 +191,15 @@ sudo /usr/sbin/apache2ctl restart
 ```
 vim /home/boincadm/projects/<your_project_name>/config.xml
 :%s/    <\/config>/        <enable_assignment>1<\/enable_assignment>\r        <next_rpc_delay>10<\/next_rpc_delay>\r        <maintenance_delay>60<\/maintenance_delay>\r        <max_wus_in_progress>1<\/max_wus_in_progress>\r        <max_ncpus>1<\/max_ncpus>\r        <prefer_primary_platform>1<\/prefer_primary_platform>\r        <min_sendwork_interval>6<\/min_sendwork_interval>\r    <\/config>\r/g
-:%s/example_app/fitcrack/g
-:%s/sample_work_generator -d 3/work_generator -d 3 --app fitcrack/g
+:%s/example_app/hashstation/g
+:%s/sample_work_generator -d 3/work_generator -d 3 --app hashstation/g
 :%s/sample_assimilator/assimilator/g
 :%s/sample_bitwise_validator/bitwise_validator/g
-:%s/</daemons>/    <daemon>\r            <cmd>trickler --variety fitcrack</cmd>\r        </daemon>\r    </daemons>/g
+:%s/</daemons>/    <daemon>\r            <cmd>trickler --variety hashstation</cmd>\r        </daemon>\r    </daemons>/g
 :wq
 ```
 
-## Copy Fitcrack templates and project.xml
+## Copy Hashstation templates and project.xml
 ```
 cd ~
 cp templates/* /home/boincadm/projects/<your_project_name>/templates/
@@ -208,8 +208,8 @@ cp project.xml /home/boincadm/projects/<your_project_name>/
 
 
 ## See the binary-creation info
-Copy binaries of your host applications (Agent, Fitcrack, hashcat) to
-`/home/boincadm/project/<your_project_name>/app/fitcrack/<version_number>/`
+Copy binaries of your host applications (Agent, Hashstation, hashcat) to
+`/home/boincadm/project/<your_project_name>/app/hashstation/<version_number>/`
 
 The `<version_number>` directory has to contain subfolder named as the targeted
 platform. All platforms detected by BOINC can
@@ -224,14 +224,14 @@ to the system and stages it for sending to clients.
 
 
 ## Create the client-side binaries
-Create a directory for version 1 of the fitcrack client app:
+Create a directory for version 1 of the hashstation client app:
 ```
-mkdir /home/boincadm/projects/<your_project_name>/apps/fitcrack/1/
+mkdir /home/boincadm/projects/<your_project_name>/apps/hashstation/1/
 ```
 
 You can use our pre-build binaries:
 ```
-cp -r client_bin/* /home/boincadm/projects/<your_project_name>/apps/fitcrack/1/
+cp -r client_bin/* /home/boincadm/projects/<your_project_name>/apps/hashstation/1/
 ```
 
 Or you can prepare your own.
@@ -248,7 +248,7 @@ What is needed inside?
   * `hashcat.hcstat2` - Markov hcstat2 file
   * `hashcat.hctune` - hashcat's hctune settings
   * `hash_info.json` - info about the supported hash algorithms
-* `agent1.bin` or `agent1.exe` - Fitcrack agent comppiled for the platform's architecture (See `agent/README.md`)
+* `agent1.bin` or `agent1.exe` - Hashstation agent comppiled for the platform's architecture (See `agent/README.md`)
 * `princeprocessor1.bin` or `princeprocessor1.exe` - the [princeprocessor](https://github.com/hashcat/princeprocessor) app for PRINCE attacks compile for the platform's architecture.
 * `pcfg-manager1.bin` or `pcfg-manager1.exe` - NESatFIT [PCFG Manager](https://github.com/nesfit/pcfg-manager) compiled for the platform's architecture.
 * `version.xml` - version file with the definition of all the above-shown files that should be transferred to the host cracking stations. See example below:
@@ -267,18 +267,18 @@ What is needed inside?
 
 **Note 1**: We highly recommends to use **statically compiled** binaries
 to prevent any dependency problems on hosta stations.
-All Fitcrack-related binaries can be compiled statically.
+All Hashstation-related binaries can be compiled statically.
 
 **Note 2:** With changes, the file name must also change. This is why use the
 numbering in the filename, e.g.
 `hashcat1.bin` stands for hashcat binary for BOINC app version 1.
 
 
-## Create Fitcrack-specific MySQL tables, triggers, and data
+## Create Hashstation-specific MySQL tables, triggers, and data
 
 Import the `sql/*` scripts into the  `<your_project_name>` MySQL database, e.g.:
 ```
-mysql -h $DB_HOST -u fitcrack -D"$DB_NAME" < server/sql/10_create_tables.sql
+mysql -h $DB_HOST -u hashstation -D"$DB_NAME" < server/sql/10_create_tables.sql
 mysql -h $DB_HOST -u $DB_USER -D"$DB_NAME" < server/sql/20_create_triggers.sql
 mysql -h $DB_HOST -u $DB_USER -D"$DB_NAME" < server/sql/30_insert_data.sql
 ```

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Frontend and backend installer
-# This file is part of Fitcrack installer
+# This file is part of Hashstation installer
 # Author: Radek Hranicky (ihranicky@fit.vutbr.cz)
 
 ##################################
@@ -84,7 +84,7 @@ if [ $FRONTEND_PORT_FREE = "N" ]; then
   echo "Resolve the problem or try again with another port number!"
   exit
 else
-  echo "Creating frontend config: $APACHE_CONFIG_DIR/sites-available/fitcrackFE.conf"
+  echo "Creating frontend config: $APACHE_CONFIG_DIR/sites-available/hashstationFE.conf"
 
   ADD_LISTEN_DIRECTIVE="y"
   cat $APACHE_CONFIG_FILE | grep "^Listen $FRONTEND_PORT" >/dev/null
@@ -98,16 +98,16 @@ else
     fi
   fi
 
-  FE_CONFIG_FILE=$APACHE_CONFIG_DIR/sites-available/fitcrackFE.conf
-  echo "# Fitcrack frontend config" > $FE_CONFIG_FILE
+  FE_CONFIG_FILE=$APACHE_CONFIG_DIR/sites-available/hashstationFE.conf
+  echo "# Hashstation frontend config" > $FE_CONFIG_FILE
 
   if [ $ADD_LISTEN_DIRECTIVE = "y" ]; then
     echo "Listen $FRONTEND_PORT" >> $FE_CONFIG_FILE
   fi
 
   echo "<VirtualHost *:$FRONTEND_PORT>" >> $FE_CONFIG_FILE
-  echo "  DocumentRoot $APACHE_DOCUMENT_ROOT/fitcrackFE" >> $FE_CONFIG_FILE
-  echo "  <Directory $APACHE_DOCUMENT_ROOT/fitcrackFE/>" >> $FE_CONFIG_FILE
+  echo "  DocumentRoot $APACHE_DOCUMENT_ROOT/hashstationFE" >> $FE_CONFIG_FILE
+  echo "  <Directory $APACHE_DOCUMENT_ROOT/hashstationFE/>" >> $FE_CONFIG_FILE
   echo "    Header always set X-Frame-Options \"SAMEORIGIN\"" >> $FE_CONFIG_FILE
   echo "    Header always set X-Content-Type-Options \"nosniff\"" >> $FE_CONFIG_FILE
   echo "    Header always set Permissions-Policy \"geolocation=(), microphone=(), camera=()\"" >> $FE_CONFIG_FILE
@@ -122,19 +122,19 @@ else
   echo "  </Directory>" >> $FE_CONFIG_FILE
 
   # Disable directory listing for assets/
-  echo "  <Directory $APACHE_DOCUMENT_ROOT/fitcrackFE/assets/>" >> $FE_CONFIG_FILE
+  echo "  <Directory $APACHE_DOCUMENT_ROOT/hashstationFE/assets/>" >> $FE_CONFIG_FILE
   echo "    Options -Indexes" >> $FE_CONFIG_FILE
   echo "  </Directory>" >> $FE_CONFIG_FILE
 
   # Disable directory listing for static/
-  echo "  <Directory $APACHE_DOCUMENT_ROOT/fitcrackFE/static/>" >> $FE_CONFIG_FILE
+  echo "  <Directory $APACHE_DOCUMENT_ROOT/hashstationFE/static/>" >> $FE_CONFIG_FILE
   echo "    Options -Indexes" >> $FE_CONFIG_FILE
   echo "  </Directory>" >> $FE_CONFIG_FILE
 
   echo "</VirtualHost>" >> $FE_CONFIG_FILE
 
-  echo "Creating a symlink: $APACHE_CONFIG_DIR/sites-enabled/fitcrackFE.conf"
-  ln -sf $APACHE_CONFIG_DIR/sites-available/fitcrackFE.conf $APACHE_CONFIG_DIR/sites-enabled/fitcrackFE.conf
+  echo "Creating a symlink: $APACHE_CONFIG_DIR/sites-enabled/hashstationFE.conf"
+  ln -sf $APACHE_CONFIG_DIR/sites-available/hashstationFE.conf $APACHE_CONFIG_DIR/sites-enabled/hashstationFE.conf
   echo "Frontend Apache configuration done"
 fi
 
@@ -143,7 +143,7 @@ fi
 # Get BACKEND_URI #
 ###################
 
-read -e -p "Enter Fitcrack backend URI (default: ${BOINC_URL}): " BACKEND_URI
+read -e -p "Enter Hashstation backend URI (default: ${BOINC_URL}): " BACKEND_URI
 BACKEND_URI=${BACKEND_URI:-${BOINC_URL}}
 BACKEND_URI=${BACKEND_URI%/}
 
@@ -178,7 +178,7 @@ if [ $BACKEND_PORT_FREE = "N" ]; then
   echo "Resolve the problem or try again with another port number!"
   exit
 else
-  echo "Creating backend config: $APACHE_CONFIG_DIR/sites-available/fitcrackBE.conf"
+  echo "Creating backend config: $APACHE_CONFIG_DIR/sites-available/hashstationBE.conf"
 
   ADD_LISTEN_DIRECTIVE="y"
   cat $APACHE_CONFIG_FILE | grep "^Listen $BACKEND_PORT" >/dev/null
@@ -192,40 +192,40 @@ else
     fi
   fi
 
-  BE_CONFIG_FILE=$APACHE_CONFIG_DIR/sites-available/fitcrackBE.conf
-  echo "# Fitcrack backend config" > $BE_CONFIG_FILE
+  BE_CONFIG_FILE=$APACHE_CONFIG_DIR/sites-available/hashstationBE.conf
+  echo "# Hashstation backend config" > $BE_CONFIG_FILE
 
   if [ $ADD_LISTEN_DIRECTIVE = "y" ]; then
     echo "Listen $BACKEND_PORT" >> $BE_CONFIG_FILE
   fi
 
   echo "<VirtualHost *:$BACKEND_PORT>" >> $BE_CONFIG_FILE
-  echo "  WSGIDaemonProcess fitcrack user=$APACHE_USER group=$APACHE_USER threads=5" >> $BE_CONFIG_FILE
-  echo "  WSGIScriptAlias / $APACHE_DOCUMENT_ROOT/fitcrackBE/src/wsgi.py" >> $BE_CONFIG_FILE
+  echo "  WSGIDaemonProcess hashstation user=$APACHE_USER group=$APACHE_USER threads=5" >> $BE_CONFIG_FILE
+  echo "  WSGIScriptAlias / $APACHE_DOCUMENT_ROOT/hashstationBE/src/wsgi.py" >> $BE_CONFIG_FILE
   echo "  WSGIPassAuthorization On" >> $BE_CONFIG_FILE
-  echo "  <Directory $APACHE_DOCUMENT_ROOT/fitcrackBE/src/>" >> $BE_CONFIG_FILE
-  echo "    WSGIProcessGroup fitcrack" >> $BE_CONFIG_FILE
+  echo "  <Directory $APACHE_DOCUMENT_ROOT/hashstationBE/src/>" >> $BE_CONFIG_FILE
+  echo "    WSGIProcessGroup hashstation" >> $BE_CONFIG_FILE
   echo "    WSGIApplicationGroup %{GLOBAL}" >> $BE_CONFIG_FILE
   echo "    WSGIScriptReloading On" >> $BE_CONFIG_FILE
   echo "    Require all granted" >> $BE_CONFIG_FILE
   echo "  </Directory>" >> $BE_CONFIG_FILE
   echo "</VirtualHost>" >> $BE_CONFIG_FILE
 
-  echo "Creating a symlink: $APACHE_CONFIG_DIR/sites-enabled/fitcrackBE.conf"
-  ln -sf $APACHE_CONFIG_DIR/sites-available/fitcrackBE.conf $APACHE_CONFIG_DIR/sites-enabled/fitcrackBE.conf
+  echo "Creating a symlink: $APACHE_CONFIG_DIR/sites-enabled/hashstationBE.conf"
+  ln -sf $APACHE_CONFIG_DIR/sites-available/hashstationBE.conf $APACHE_CONFIG_DIR/sites-enabled/hashstationBE.conf
   echo "Frontend Apache configuration done"
 fi
 
 ##########################################################
-# Install Fitcrack frontend (fitcrackFE) files #
+# Install Hashstation frontend (hashstationFE) files #
 ##########################################################
 
-if [ -d "$APACHE_DOCUMENT_ROOT/fitcrackFE" ]; then
-  echo "Frontend already seems to be installed in $APACHE_DOCUMENT_ROOT/fitcrackFE."
+if [ -d "$APACHE_DOCUMENT_ROOT/hashstationFE" ]; then
+  echo "Frontend already seems to be installed in $APACHE_DOCUMENT_ROOT/hashstationFE."
   read -e -p "Reinstall frontend? [y/N] (default: N): " REINSTALL_FRONTEND
   REINSTALL_FRONTEND=${REINSTALL_FRONTEND:-N}
   if [ $REINSTALL_FRONTEND = "y" ]; then
-    rm -Rf $APACHE_DOCUMENT_ROOT/fitcrackFE
+    rm -Rf $APACHE_DOCUMENT_ROOT/hashstationFE
     INSTALL_FRONTEND="y"
   else
     INSTALL_FRONTEND="N"
@@ -236,30 +236,30 @@ fi
 
 # Install frontend
 if [ $INSTALL_FRONTEND = "y" ]; then
-  echo "Installing Fitcrack frontend..."
-  mkdir $APACHE_DOCUMENT_ROOT/fitcrackFE
-  cp -Rf frontend/dist/* $APACHE_DOCUMENT_ROOT/fitcrackFE/
+  echo "Installing Hashstation frontend..."
+  mkdir $APACHE_DOCUMENT_ROOT/hashstationFE
+  cp -Rf frontend/dist/* $APACHE_DOCUMENT_ROOT/hashstationFE/
 
   # Set BACKEND_URI for window.serverAddress
-  sed -i "s|http://localhost:5000|$BACKEND_URI:$BACKEND_PORT|g" $APACHE_DOCUMENT_ROOT/fitcrackFE/static/configuration.js
+  sed -i "s|http://localhost:5000|$BACKEND_URI:$BACKEND_PORT|g" $APACHE_DOCUMENT_ROOT/hashstationFE/static/configuration.js
 
   # Set permissions and ownership to Apache user and group
-  chmod -R 775 $APACHE_DOCUMENT_ROOT/fitcrackFE
-  chown -R $APACHE_USER:$APACHE_GROUP $APACHE_DOCUMENT_ROOT/fitcrackFE
+  chmod -R 775 $APACHE_DOCUMENT_ROOT/hashstationFE
+  chown -R $APACHE_USER:$APACHE_GROUP $APACHE_DOCUMENT_ROOT/hashstationFE
 
-  echo "Installed to $APACHE_DOCUMENT_ROOT/fitcrackFE."
+  echo "Installed to $APACHE_DOCUMENT_ROOT/hashstationFE."
 fi
 
 #########################################################
-# Install Fitcrack backend (fitcrackBE) file #
+# Install Hashstation backend (hashstationBE) file #
 #########################################################
 
-if [ -d "$APACHE_DOCUMENT_ROOT/fitcrackBE" ]; then
-  echo "Backend already seems to be installed in $APACHE_DOCUMENT_ROOT/fitcrackBE."
+if [ -d "$APACHE_DOCUMENT_ROOT/hashstationBE" ]; then
+  echo "Backend already seems to be installed in $APACHE_DOCUMENT_ROOT/hashstationBE."
   read -e -p "Reinstall backend? [y/N] (default: N): " REINSTALL_BACKEND
   REINSTALL_BACKEND=${REINSTALL_BACKEND:-N}
   if [ $REINSTALL_BACKEND = "y" ]; then
-    rm -Rf $APACHE_DOCUMENT_ROOT/fitcrackBE
+    rm -Rf $APACHE_DOCUMENT_ROOT/hashstationBE
     INSTALL_BACKEND="y"
   else
     INSTALL_BACKEND="N"
@@ -272,7 +272,7 @@ fi
 if [ $INSTALL_BACKEND = "y" ]; then
   echo "Building hashcat-utils"
   cd backend/hashcat-utils/src
-  make -j$COMPILER_THREADS hcstat2gen
+  make -j$COMPILER_THREADS hcstat2gen.bin
   cd ..
   mkdir -p bin
   cp src/*.bin bin/
@@ -283,17 +283,17 @@ if [ $INSTALL_BACKEND = "y" ]; then
   make -j$COMPILER_THREADS
   cd $INSTALLER_ROOT
 
-  echo "Installing Fitcrack backend..."
+  echo "Installing Hashstation backend..."
 
 
-  mkdir $APACHE_DOCUMENT_ROOT/fitcrackBE
-  cp -Rf backend/* $APACHE_DOCUMENT_ROOT/fitcrackBE/
+  mkdir $APACHE_DOCUMENT_ROOT/hashstationBE
+  cp -Rf backend/* $APACHE_DOCUMENT_ROOT/hashstationBE/
 
   # Set permissions and ownership to Apache user and group
-  chmod -R 775 $APACHE_DOCUMENT_ROOT/fitcrackBE
-  chown -R $APACHE_USER:$APACHE_GROUP $APACHE_DOCUMENT_ROOT/fitcrackBE
+  chmod -R 775 $APACHE_DOCUMENT_ROOT/hashstationBE
+  chown -R $APACHE_USER:$APACHE_GROUP $APACHE_DOCUMENT_ROOT/hashstationBE
 
-  echo "Installed to $APACHE_DOCUMENT_ROOT/fitcrackBE."
+  echo "Installed to $APACHE_DOCUMENT_ROOT/hashstationBE."
 fi
 
 sed -i "s|http://localhost:5000|$BACKEND_URI:$BACKEND_PORT|g" $BOINC_PROJECT_DIR/bin/measure_usage.py
@@ -304,7 +304,7 @@ sed -i "s|http://localhost:5000|$BACKEND_URI:$BACKEND_PORT|g" $BOINC_PROJECT_DIR
 
 echo "Configuring frontend..."
 # Set port to backend
-sed -i "s|http://localhost:5000|$BACKEND_URI:$BACKEND_PORT|g" $APACHE_DOCUMENT_ROOT/fitcrackFE/static/configuration.js
+sed -i "s|http://localhost:5000|$BACKEND_URI:$BACKEND_PORT|g" $APACHE_DOCUMENT_ROOT/hashstationFE/static/configuration.js
 echo "Done."
 
 #######################
@@ -316,24 +316,24 @@ echo "Configuring backend..."
 read -e -p "Exposed to the internet? Do you wish to disable token signin and install HTTPS manually? [y/N] (default: N) " EXPOSED_INTERNET
 EXPOSED_INTERNET=${EXPOSED_INTERNET:-N}
 if [ $EXPOSED_INTERNET = "y" ]; then
-  sed -i "s|ALLOW_TOKEN_SIGNIN = .*|ALLOW_TOKEN_SIGNIN = False|g" $APACHE_DOCUMENT_ROOT/fitcrackBE/src/settings.py
+  sed -i "s|ALLOW_TOKEN_SIGNIN = .*|ALLOW_TOKEN_SIGNIN = False|g" $APACHE_DOCUMENT_ROOT/hashstationBE/src/settings.py
 fi
 
 # Set credentials
-sed -i "s|PROJECT_USER = '.*|PROJECT_USER = '$BOINC_USER'|g" $APACHE_DOCUMENT_ROOT/fitcrackBE/src/settings.py
-sed -i "s|PROJECT_NAME = '.*|PROJECT_NAME = '$BOINC_PROJECT'|g" $APACHE_DOCUMENT_ROOT/fitcrackBE/src/settings.py
-sed -i "s|FLASK_SERVER_NAME = '.*|FLASK_SERVER_NAME = 'localhost:$BACKEND_PORT'|g" $APACHE_DOCUMENT_ROOT/fitcrackBE/src/settings.py
-sed -i "s|SQLALCHEMY_DATABASE_URI = '.*|SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://$DB_USER:$DB_PW@$DB_HOST/$DB_NAME'|g" $APACHE_DOCUMENT_ROOT/fitcrackBE/src/settings.py
-sed -i "s|BOINC_SERVER_URI = '.*|BOINC_SERVER_URI = '$BOINC_URL'|g" $APACHE_DOCUMENT_ROOT/fitcrackBE/src/settings.py
+sed -i "s|PROJECT_USER = '.*|PROJECT_USER = '$BOINC_USER'|g" $APACHE_DOCUMENT_ROOT/hashstationBE/src/settings.py
+sed -i "s|PROJECT_NAME = '.*|PROJECT_NAME = '$BOINC_PROJECT'|g" $APACHE_DOCUMENT_ROOT/hashstationBE/src/settings.py
+sed -i "s|FLASK_SERVER_NAME = '.*|FLASK_SERVER_NAME = 'localhost:$BACKEND_PORT'|g" $APACHE_DOCUMENT_ROOT/hashstationBE/src/settings.py
+sed -i "s|SQLALCHEMY_DATABASE_URI = '.*|SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://$DB_USER:$DB_PW@$DB_HOST/$DB_NAME'|g" $APACHE_DOCUMENT_ROOT/hashstationBE/src/settings.py
+sed -i "s|BOINC_SERVER_URI = '.*|BOINC_SERVER_URI = '$BOINC_URL'|g" $APACHE_DOCUMENT_ROOT/hashstationBE/src/settings.py
 
 # Set port to backend
-sed -i "s|sys.path.insert(0.*|sys.path.insert(0,\"$APACHE_DOCUMENT_ROOT/fitcrackBE/src/\")|g" $APACHE_DOCUMENT_ROOT/fitcrackBE/src/wsgi.py
+sed -i "s|sys.path.insert(0.*|sys.path.insert(0,\"$APACHE_DOCUMENT_ROOT/hashstationBE/src/\")|g" $APACHE_DOCUMENT_ROOT/hashstationBE/src/wsgi.py
 echo "Done."
 
 ##################
 # Restart Apache #
 ##################
 
-echo "Fitcrack frontend and backend installed. Restarting Apache..."
+echo "Hashstation frontend and backend installed. Restarting Apache..."
 service_restart $APACHE_SERVICE
 echo "Done."

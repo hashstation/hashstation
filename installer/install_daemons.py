@@ -41,7 +41,7 @@ def install_daemons():
     pcfg_monitor = os.path.join(boinc_project_dir, 'bin', 'pcfg_monitor.py')
     patch_script(pcfg_monitor, db_host, db_name, db_user, db_pw)
 
-    # Copy Fitcrack communication templates
+    # Copy Hashstation communication templates
     src_template_folder = 'server/templates/'
     dest_template_folder = os.path.join(boinc_project_dir, 'templates')
     shutil.copytree(src_template_folder, dest_template_folder, dirs_exist_ok = True)

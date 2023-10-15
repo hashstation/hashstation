@@ -29,9 +29,9 @@ public:
 		  // Try other directories...
           // https://github.com/BOINC/boinc/issues/4125
           std::vector<std::string> possible_paths = {
-              "/var/lib/boinc-client/FitcrackAgentMutex_" + name,
-              "/var/lib/boinc/FitcrackAgentMutex_" + name,
-              "/tmp/FitcrackAgentMutex_" + name};
+              "/var/lib/boinc-client/HashstationAgentMutex_" + name,
+              "/var/lib/boinc/HashstationAgentMutex_" + name,
+              "/tmp/HashstationAgentMutex_" + name};
 
           for (auto &path : possible_paths) {
             handle =

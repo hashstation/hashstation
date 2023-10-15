@@ -100,7 +100,7 @@
 <script>
   import fmt from '@/assets/scripts/numberFormat'
   import iconv from 'iconv-lite'
-  import tile from '@/components/tile/fc_tile.vue'
+  import tile from '@/components/tile/hs_tile.vue'
   import { Buffer } from 'buffer'
   export default {
     name: "CharsetDetailView",

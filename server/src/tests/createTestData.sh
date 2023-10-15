@@ -14,7 +14,7 @@ else
 	HASHCAT_BINARY=hashcat64_v600_1.bin
 fi
 
-TMPDIR=/tmp/fitcrackServerTestHashcatDir
+TMPDIR=/tmp/hashstationServerTestHashcatDir
 mkdir -p $TMPDIR
 cp -a $HASHCAT_SRC_DIR/$HASHCAT_BINARY $TMPDIR
 unzip -o $HASHCAT_SRC_DIR/hashcat_files_v600_1.zip -d $TMPDIR > /dev/null

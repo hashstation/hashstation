@@ -7,4 +7,4 @@ This is why you can sometimes see the message _Hash already in hash cache_ when 
 
 If a hash doesn't fit the table, it will be truncated with ellipsis. You can see all of it by clicking on it, which will pop up a box with the full hash.
 
-The Fitcrack installation also comes with a set of preloaded hashes. These function as a default rainbow table.
+The Hashstation installation also comes with a set of preloaded hashes. These function as a default rainbow table.

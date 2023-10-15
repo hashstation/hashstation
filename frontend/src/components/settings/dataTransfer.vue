@@ -84,8 +84,8 @@
               v-model="packageFile"
               filled
               truncate-length="100"
-              label="Select a Fitcrack package"
-              hint="Fitcrack packages are binary files with the FCP extension"
+              label="Select a Hashstation package"
+              hint="Hashstation packages are binary files with the FCP extension"
               persistent-hint
             />
             <div v-if="packageContents">
@@ -371,7 +371,7 @@ export default {
         const blobUrl = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement('a');
         link.href = blobUrl;
-        link.setAttribute('download', "fitcrack-export.fcp");
+        link.setAttribute('download', "hashstation-export.fcp");
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);

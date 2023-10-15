@@ -3,16 +3,16 @@
 --
 DROP TRIGGER IF EXISTS `job_notification`;
 DELIMITER // 
-CREATE TRIGGER `job_notification` AFTER UPDATE ON `fc_job`
+CREATE TRIGGER `job_notification` AFTER UPDATE ON `hs_job`
  FOR EACH ROW BEGIN
 	DECLARE userID int;
 	DECLARE done INT DEFAULT FALSE;
-	DECLARE usersCursor CURSOR FOR (SELECT id FROM fc_user);
+	DECLARE usersCursor CURSOR FOR (SELECT id FROM hs_user);
 	DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
 
 	-- insert progress info to graph table
 	IF NEW.indexes_verified <> OLD.indexes_verified THEN
-		INSERT INTO fc_job_graph (progress, job_id) VALUES (
+		INSERT INTO hs_job_graph (progress, job_id) VALUES (
 	        IF(NEW.hc_keyspace = 0 OR NEW.status = 1 OR NEW.status = 2,
 	           100,
 	           ROUND((NEW.indexes_verified / IF( NEW.attack_mode = 1 OR NEW.attack_mode = 6 OR NEW.attack_mode = 7, NEW.keyspace, NEW.hc_keyspace )) * 100, 2)
@@ -25,11 +25,11 @@ CREATE TRIGGER `job_notification` AFTER UPDATE ON `fc_job`
 	IF NEW.status <> OLD.status THEN
 
 		IF NEW.status = 10 AND OLD.indexes_verified = 0 THEN
-			INSERT INTO fc_job_graph (progress, job_id) VALUES ( 0, NEW.id);
+			INSERT INTO hs_job_graph (progress, job_id) VALUES ( 0, NEW.id);
 		END IF;
 
 		IF NEW.status = 1 OR NEW.status = 2 THEN
-			INSERT INTO fc_job_graph (progress, job_id) VALUES ( 100, NEW.id);
+			INSERT INTO hs_job_graph (progress, job_id) VALUES ( 100, NEW.id);
 		END IF;
 
 		-- send notification to admins that can view this job
@@ -39,7 +39,7 @@ CREATE TRIGGER `job_notification` AFTER UPDATE ON `fc_job`
 			    IF done THEN
 			    	LEAVE user_loop;
 			    END IF;
-				INSERT INTO fc_notification  VALUES (DEFAULT, userID, DEFAULT,NEW.id,OLD.status,NEW.status, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT);
+				INSERT INTO hs_notification  VALUES (DEFAULT, userID, DEFAULT,NEW.id,OLD.status,NEW.status, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT);
 			END LOOP;
 		CLOSE usersCursor;
 	END IF;
@@ -54,7 +54,7 @@ DELIMITER ;
 --
 DROP TRIGGER IF EXISTS `bench_retry_finish`;
 DELIMITER //
-CREATE TRIGGER `bench_retry_finish` BEFORE UPDATE ON `fc_workunit`
+CREATE TRIGGER `bench_retry_finish` BEFORE UPDATE ON `hs_workunit`
  FOR EACH ROW BEGIN
 	IF (NEW.retry = 1 AND OLD.retry = 0 AND NEW.hc_keyspace = 0)
 	THEN
@@ -73,15 +73,15 @@ CREATE TRIGGER `client_error_trigger` BEFORE UPDATE ON `result`
  FOR EACH ROW BEGIN
 	IF (NEW.outcome = 3 AND OLD.outcome != 3)
 	THEN
-		UPDATE `fc_workunit` SET retry = 1 WHERE `workunit_id` = NEW.workunitid LIMIT 1;
-		-- UPDATE `fc_host` SET `status` = 0, `power` = 0 WHERE id IN (SELECT `host_id` FROM `fc_workunit` WHERE `workunit_id` = NEW.workunitid) LIMIT 1;
-		UPDATE `fc_job` SET `status` = 10 WHERE `status` = 12 AND id IN (SELECT `job_id` FROM `fc_workunit` WHERE `workunit_id` = NEW.workunitid) LIMIT 1;
+		UPDATE `hs_workunit` SET retry = 1 WHERE `workunit_id` = NEW.workunitid LIMIT 1;
+		-- UPDATE `hs_host` SET `status` = 0, `power` = 0 WHERE id IN (SELECT `host_id` FROM `hs_workunit` WHERE `workunit_id` = NEW.workunitid) LIMIT 1;
+		UPDATE `hs_job` SET `status` = 10 WHERE `status` = 12 AND id IN (SELECT `job_id` FROM `hs_workunit` WHERE `workunit_id` = NEW.workunitid) LIMIT 1;
 	END IF;
 	IF (NEW.outcome = 7 AND OLD.outcome != 7)
 	THEN
-		UPDATE `fc_workunit` SET retry = 1 WHERE `workunit_id` = NEW.workunitid LIMIT 1;
-		-- UPDATE `fc_host` SET `status` = 0, `power` = 0 WHERE id IN (SELECT `host_id` FROM `fc_workunit` WHERE `workunit_id` = NEW.workunitid) LIMIT 1;
-		UPDATE `fc_job` SET `status` = 10 WHERE `status` = 12 AND id IN (SELECT `job_id` FROM `fc_workunit` WHERE `workunit_id` = NEW.workunitid) LIMIT 1;
+		UPDATE `hs_workunit` SET retry = 1 WHERE `workunit_id` = NEW.workunitid LIMIT 1;
+		-- UPDATE `hs_host` SET `status` = 0, `power` = 0 WHERE id IN (SELECT `host_id` FROM `hs_workunit` WHERE `workunit_id` = NEW.workunitid) LIMIT 1;
+		UPDATE `hs_job` SET `status` = 10 WHERE `status` = 12 AND id IN (SELECT `job_id` FROM `hs_workunit` WHERE `workunit_id` = NEW.workunitid) LIMIT 1;
 	END IF;
 END
 //
@@ -102,30 +102,30 @@ FOR EACH ROW BEGIN
 	DECLARE autoAddHostsToRunningJobs INT;
 	DECLARE runningJobId int;
 	DECLARE done INT DEFAULT FALSE;
-	DECLARE runningJobsCursor CURSOR FOR (SELECT `id` FROM `fc_job` WHERE `status` = 10);
+	DECLARE runningJobsCursor CURSOR FOR (SELECT `id` FROM `hs_job` WHERE `status` = 10);
 	DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
 
 	-- Add host to host_status
-	INSERT INTO fc_host_status (`id`, `boinc_host_id`, `last_seen`) VALUES (DEFAULT, NEW.id, DEFAULT);
+	INSERT INTO hs_host_status (`id`, `boinc_host_id`, `last_seen`) VALUES (DEFAULT, NEW.id, DEFAULT);
 
 	-- Run bench_all
-	SET benchAll = (SELECT `bench_all` FROM `fc_settings` LIMIT 1);
+	SET benchAll = (SELECT `bench_all` FROM `hs_settings` LIMIT 1);
 
 	IF (benchAll)
 	THEN		
-		SET currentState = (SELECT `status` FROM `fc_job` WHERE `id` = 1 LIMIT 1);
+		SET currentState = (SELECT `status` FROM `hs_job` WHERE `id` = 1 LIMIT 1);
 
 		IF (currentState < 10)
         	THEN
-			DELETE FROM `fc_host_activity` WHERE `job_id` = 1 ;
-			UPDATE `fc_job` SET `time_start` = NOW() WHERE `id` = 1 LIMIT 1;
+			DELETE FROM `hs_host_activity` WHERE `job_id` = 1 ;
+			UPDATE `hs_job` SET `time_start` = NOW() WHERE `id` = 1 LIMIT 1;
 		END IF;
 
-		INSERT INTO `fc_host_activity` (`boinc_host_id`, `job_id`) VALUES (NEW.id, 1);
-		UPDATE `fc_job` SET `status` = 10, `time_end` = NULL WHERE `id` = 1 LIMIT 1;
+		INSERT INTO `hs_host_activity` (`boinc_host_id`, `job_id`) VALUES (NEW.id, 1);
+		UPDATE `hs_job` SET `status` = 10, `time_end` = NULL WHERE `id` = 1 LIMIT 1;
 	END IF;
 
-	SET autoAddHostsToRunningJobs = (SELECT `auto_add_hosts_to_running_jobs` FROM `fc_settings` LIMIT 1);
+	SET autoAddHostsToRunningJobs = (SELECT `auto_add_hosts_to_running_jobs` FROM `hs_settings` LIMIT 1);
 	IF (autoAddHostsToRunningJobs)
 	THEN
 		OPEN runningJobsCursor;
@@ -134,7 +134,7 @@ FOR EACH ROW BEGIN
 				IF done THEN
 					LEAVE running_jobs_loop;
 				END IF;
-				INSERT INTO `fc_host_activity` (`boinc_host_id`, `job_id`) VALUES (NEW.id, runningJobId);
+				INSERT INTO `hs_host_activity` (`boinc_host_id`, `job_id`) VALUES (NEW.id, runningJobId);
 			END LOOP;
 		CLOSE runningJobsCursor;
 	END IF;
@@ -151,8 +151,8 @@ CREATE TRIGGER `timeout_v1` AFTER UPDATE ON `result`
  FOR EACH ROW BEGIN
 	IF (NEW.server_state = 5 AND OLD.server_state != 5 AND UNIX_TIMESTAMP() >= NEW.report_deadline)
 	THEN
-		UPDATE `fc_workunit` SET `retry` = 1 WHERE `workunit_id` = NEW.workunitid LIMIT 1 ;
-        UPDATE `fc_host` SET `status` = 0, `power` = 0 WHERE id IN (SELECT `host_id` FROM `fc_workunit` WHERE `workunit_id` = NEW.workunitid) LIMIT 1;
+		UPDATE `hs_workunit` SET `retry` = 1 WHERE `workunit_id` = NEW.workunitid LIMIT 1 ;
+        UPDATE `hs_host` SET `status` = 0, `power` = 0 WHERE id IN (SELECT `host_id` FROM `hs_workunit` WHERE `workunit_id` = NEW.workunitid) LIMIT 1;
 	END IF;
 END
 //
@@ -163,9 +163,9 @@ DELIMITER ;
 --
 DROP TRIGGER IF EXISTS `job_status_changes_new`;
 DELIMITER //
-CREATE TRIGGER `job_status_changes_new` AFTER INSERT ON `fc_job`
+CREATE TRIGGER `job_status_changes_new` AFTER INSERT ON `hs_job`
  FOR EACH ROW BEGIN
- INSERT INTO `fc_job_status` (`job_id`, `status`, `time`) VALUES (NEW.id, NEW.status, NOW());
+ INSERT INTO `hs_job_status` (`job_id`, `status`, `time`) VALUES (NEW.id, NEW.status, NOW());
 END
 //
 DELIMITER ;
@@ -177,10 +177,10 @@ DELIMITER ;
 --
 DROP TRIGGER IF EXISTS `job_status_changes_edit`;
 DELIMITER //
-CREATE TRIGGER `job_status_changes_edit` BEFORE UPDATE ON `fc_job` FOR EACH ROW
+CREATE TRIGGER `job_status_changes_edit` BEFORE UPDATE ON `hs_job` FOR EACH ROW
 BEGIN
     IF NEW.status <> OLD.status THEN
-    	INSERT INTO fc_job_status (`job_id`, `status`, `time`)
+    	INSERT INTO hs_job_status (`job_id`, `status`, `time`)
     	VALUES (NEW.id, NEW.status, NOW());
 			-- update end time if stopping
 			IF NEW.status BETWEEN 1 AND 9 THEN
@@ -215,14 +215,14 @@ end;
 --
 start transaction;
 -- set job to new state
-update fc_job set status = new_status 
+update hs_job set status = new_status 
 where id = job_id and status >= 10 limit 1;
 -- get job batch details
 select batch_id, queue_position into b_id, q_p
-from fc_job where id = job_id;
+from hs_job where id = job_id;
 -- find successor id
 select id into succ_id 
-from fc_job where batch_id = b_id
+from hs_job where batch_id = b_id
 and queue_position > q_p
 and status = 0 -- ready
 order by queue_position asc
@@ -231,12 +231,12 @@ limit 1;
 set r_cnt = 0;
 if new_status between 1 and 9 then
   select count(id) into r_cnt
-	from fc_job where batch_id = b_id
+	from hs_job where batch_id = b_id
 	and status >= 10;
 end if;
 -- start succeessor if one exists
 if succ_id is not null and r_cnt = 0 and new_status <> 0 then
-  update fc_job set status = 10 where id = succ_id;
+  update hs_job set status = 10 where id = succ_id;
 end if;
 --
 commit;
@@ -253,10 +253,10 @@ drop trigger if exists assign_bin_position;
 
 delimiter //
 create trigger assign_bin_position
-before insert on fc_bin for each row
+before insert on hs_bin for each row
 begin
 declare pos int;
-set pos = (select max(position) from fc_bin);
+set pos = (select max(position) from hs_bin);
 if pos is null then
   set NEW.position = 0;
 else
@@ -283,14 +283,14 @@ declare exit handler for sqlexception
 begin
 rollback;
 end;
-set pos = (select position from fc_bin where id=bin_id);
+set pos = (select position from hs_bin where id=bin_id);
 start transaction;
 if target > pos then
-update fc_bin set position = position - 1 where position between pos and target;
+update hs_bin set position = position - 1 where position between pos and target;
 else
-update fc_bin set position = position + 1 where position between target and pos;
+update hs_bin set position = position + 1 where position between target and pos;
 end if;
-update fc_bin set position = target where id = bin_id;
+update hs_bin set position = target where id = bin_id;
 commit;
 end //
 
@@ -305,10 +305,10 @@ declare exit handler for sqlexception
 begin
 rollback;
 end;
-set pos = (select position from fc_bin where id=bin_id);
+set pos = (select position from hs_bin where id=bin_id);
 start transaction;
-delete from fc_bin where id=bin_id;
-update fc_bin set position = position - 1 where position > pos;
+delete from hs_bin where id=bin_id;
+update hs_bin set position = position - 1 where position > pos;
 commit;
 end //
  

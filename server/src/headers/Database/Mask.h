@@ -1,6 +1,6 @@
 /**
  * @file Mask.h
- * @brief Header file for fc_mask entry
+ * @brief Header file for hs_mask entry
  * @authors Lukas Zobal (zobal.lukas(at)gmail.com)
  * @date 12. 12. 2018
  * @license MIT, see LICENSE
@@ -21,7 +21,7 @@ class CMask {
     private:
         /**
          * @brief Private constructor, called by create() static function
-         * @param maskMap [in] Map representing fc_mask table entry
+         * @param maskMap [in] Map representing hs_mask table entry
          * @param sqlLoader [in] Pointer to SqlLoader for database updates
          */
         explicit CMask(DbMap & maskMap, CSqlLoader * sqlLoader);
@@ -33,14 +33,14 @@ class CMask {
 
         /**
          * @brief Creating instance as a shared pointer from database select
-         * @param maskMap [in] Map representing fc_mask table entry
+         * @param maskMap [in] Map representing hs_mask table entry
          * @param sqlLoader [in] Pointer to SqlLoader for database updates
-         * @return Shared pointer to fc_mask entry object
+         * @return Shared pointer to hs_mask entry object
          */
         static PtrMask create(DbMap & maskMap, CSqlLoader * sqlLoader);
 
         /**
-         * @brief Get the mask SQL table name, usually fc_mask
+         * @brief Get the mask SQL table name, usually hs_mask
          * @return Mask SQL table name
          */
         static std::string getTableName();
@@ -57,7 +57,7 @@ class CMask {
         CSqlLoader * m_sqlLoader;         /**< SqlLoader for database updating */
 
         /**
-         * @section Table attributes of fc_mask
+         * @section Table attributes of hs_mask
          */
 
         uint64_t    m_id;

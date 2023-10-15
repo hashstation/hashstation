@@ -485,7 +485,7 @@
         </v-card-title>
         <v-card-text class="pb-0">
           The server daemons are services that carry out regular routines and <strong>are vital</strong>
-          for the inner workings of Fitcrack. It seems that, unfortunately, some have crashed. Here's a list of inactive daemons:
+          for the inner workings of Hashstation. It seems that, unfortunately, some have crashed. Here's a list of inactive daemons:
         </v-card-text>
         <v-card-text class="py-0">
           <v-list dense>
@@ -546,7 +546,7 @@
 </template>
 
 <script>
-  import notifications from '@/components/notification/fc_notifications_wrapper.vue'
+  import notifications from '@/components/notification/hs_notifications_wrapper.vue'
   import bins from '@/components/job/bins.vue'
   import { routeIcon } from '@/router'
   import store from '@/store'

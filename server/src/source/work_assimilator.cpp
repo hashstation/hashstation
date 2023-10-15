@@ -67,7 +67,7 @@
 /** Benchmark is usually much faster than real cracking, shrink the first 2 workunits times-: */
 #define FIRST_WU_SHRINK_FACTOR 1
 
-/** Special ID of special bench_all job in fc_job */
+/** Special ID of special bench_all job in hs_job */
 #define BENCHALL_JOB_ID 1
 
 /** TODO: THIS IS UGLY. REWORK!  */
@@ -81,14 +81,14 @@ const std::vector<int> BIN_HASH = {
 /** @section 3-hde table names */
 /*******************************/
 
-std::string mysql_table_workunit =      "fc_workunit";
-std::string mysql_table_job =           "fc_job";
-std::string mysql_table_host =          "fc_host";
-std::string mysql_table_host_activity = "fc_host_activtity";
-std::string mysql_table_mask =          "fc_mask";
-std::string mysql_table_settings =      "fc_settings";
-std::string mysql_table_benchmark =     "fc_benchmark";
-std::string mysql_table_hash =          "fc_hash";
+std::string mysql_table_workunit =      "hs_workunit";
+std::string mysql_table_job =           "hs_job";
+std::string mysql_table_host =          "hs_host";
+std::string mysql_table_host_activity = "hs_host_activtity";
+std::string mysql_table_mask =          "hs_mask";
+std::string mysql_table_settings =      "hs_settings";
+std::string mysql_table_benchmark =     "hs_benchmark";
+std::string mysql_table_hash =          "hs_hash";
 
 template <typename T> T convert_str_to_number(const char *str) {
   T num;
@@ -335,8 +335,8 @@ void cancel_workunits(vector<MysqlWorkunit *> workunits)
 
 
 /**
- * @brief Sets 'finish' column to number of 'fc_workunit' entries
- * @param workunits Vector of 'fc_workunit' entries
+ * @brief Sets 'finish' column to number of 'hs_workunit' entries
+ * @param workunits Vector of 'hs_workunit' entries
  */
 void finish_workunits(vector<MysqlWorkunit *> workunits)
 {
@@ -366,7 +366,7 @@ void set_retry_workunit(uint64_t workunit_id)
 }
 
 /**
- * @brief Search fc_benchmark table for all entries of current host
+ * @brief Search hs_benchmark table for all entries of current host
  * @param benchmarked_attackmodes_per_types out Returned set of benchmarked attack modes per hash types
  * @param host_id in Host ID used for searching
  * @return True if any benchmark results found, False otherwise
@@ -563,7 +563,7 @@ int assimilate_handler(WORKUNIT& wu, vector<RESULT>& /*results*/, RESULT& canoni
                     break;
                 }
 
-                /** Update fc_benchmark power */
+                /** Update hs_benchmark power */
                 std::snprintf(buf, SQL_BUF_SIZE, "SELECT hash_type FROM `%s` WHERE id = %" PRIu64 " LIMIT 1;", mysql_table_job.c_str(), job_id);
                 uint32_t hash_type = get_num_from_mysql(buf);
                 std::snprintf(buf, SQL_BUF_SIZE, "SELECT attack_mode FROM `%s` WHERE id = %" PRIu64 " LIMIT 1;", mysql_table_job.c_str(), job_id);
@@ -623,7 +623,7 @@ int assimilate_handler(WORKUNIT& wu, vector<RESULT>& /*results*/, RESULT& canoni
                   update_mysql(buf);
                 }
 
-                /** Update fc_host power */
+                /** Update hs_host power */
                 std::cerr << __LINE__ << " - New host power: " << workunit_speed << std::endl;
                 std::snprintf(buf, SQL_BUF_SIZE, "UPDATE `%s` SET power = %llu, status = %d, time = now() WHERE id = %" PRIu64 " ;", mysql_table_host.c_str(), workunit_speed, Host_normal, host_id);
                 update_mysql(buf);

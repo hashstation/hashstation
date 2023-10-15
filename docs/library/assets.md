@@ -1,7 +1,7 @@
 Cracking Assets
 ===============
 
-There are different kinds of assets used by the various attack modes available in Fitcrack, such as dictionaries, rulesets, and more. Many of these can be managed on their respective pages in Webadmin. You can edit or remove the ones shipping with Fitcrack, and you can, of course, upload new ones, extending the system's capabilities.
+There are different kinds of assets used by the various attack modes available in Hashstation, such as dictionaries, rulesets, and more. Many of these can be managed on their respective pages in Webadmin. You can edit or remove the ones shipping with Hashstation, and you can, of course, upload new ones, extending the system's capabilities.
 
 
 Dictionaries
@@ -25,7 +25,7 @@ To define a new one, you can upload a zip archive directly or select a dictionar
 Rulesets
 --------
 
-Rules define various modifications of password candidates. Such alterations include replacing and swapping of characters and substrings, password truncation, etc. Fitcrack uses Hashcat, which uses its own rule engine. Supported rules can be found in the [Hashcat docs](//hashcat.net/wiki/doku.php?id=rule_based_attack).
+Rules define various modifications of password candidates. Such alterations include replacing and swapping of characters and substrings, password truncation, etc. Hashstation uses Hashcat, which uses its own rule engine. Supported rules can be found in the [Hashcat docs](//hashcat.net/wiki/doku.php?id=rule_based_attack).
 
 While the combinator and hybrid attacks allow the use of only one rule definition for each part, the dictionary and PCFG attacks can use a ruleset file.
 

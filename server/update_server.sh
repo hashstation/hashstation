@@ -46,7 +46,7 @@ find $SCRIPT_DIR/src/headers $SCRIPT_DIR/src/source -name 'protocol' -prune -o \
 # Stop generator and assimilator
 printf "${GREEN}[4/6] Stopping server tools...${NC}\n"
 
-cd /home/boincadm/projects/fitcrack/
+cd /home/boincadm/projects/hashstation/
 ./bin/stop
 
 

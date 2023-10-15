@@ -1,5 +1,3 @@
-v2.4.0 -> v?
-
 New features:
 * New option 'Use local (prestored) dictionaries on hosts' when 'Fragmentation of dictionaries' is set to 'On hosts'. Check README for more details.
 * New option in the job detail view to export cracked/non-cracked hashes to file.
@@ -32,7 +30,7 @@ General improvements:
 * Improved 'Add New Job' UI, small redesign.
 * Added support for cracking hashes with usernames.
 * It is now possible to upload dictionaries from any folders on the server.
-* It is now possible to upgrade standard (non-dockerized) Fitcrack to newer versions. Please see UPGRADE.md file.
+* It is now possible to upgrade standard (non-dockerized) Hashstation to newer versions. Please see UPGRADE.md file.
 * Added new settings per hosts.
 * System settings are per user now.
 * Extraction of hashes from files using file2hashcat tool.

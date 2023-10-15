@@ -1141,7 +1141,7 @@ static void log_request() {
 
 static void notify_status() {
     char buf[256];
-    snprintf(buf, 256, "UPDATE fc_host_status SET last_seen = UTC_TIMESTAMP() WHERE boinc_host_id = %lu ;", g_reply->host.id);
+    snprintf(buf, 256, "UPDATE hs_host_status SET last_seen = UTC_TIMESTAMP() WHERE boinc_host_id = %lu ;", g_reply->host.id);
 
     int retval = boinc_db.do_query(buf);
     if (retval)

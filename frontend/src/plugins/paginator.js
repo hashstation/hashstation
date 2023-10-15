@@ -3,7 +3,7 @@
   * Licence: MIT, see LICENSE
 */
 
-const lskey = 'fitcrack-pagination-store'
+const lskey = 'hashstation-pagination-store'
 
 export default {
   install (Vue) {

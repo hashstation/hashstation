@@ -37,10 +37,10 @@ SERVER_BROWSER_ROOT = '/usr/share/assets/dictionaries'
 FILE2HASHCAT_PATH = ROOT_DIR + '/../file2hashcat/'
 FILE2HASHCAT_SCRIPT = FILE2HASHCAT_PATH + 'file2hashcat.py'
 
-# Fitcrack Settings
+# Hashstation Settings
 SECONDS_PER_JOB = 600
 PROJECT_USER = 'root'
-PROJECT_NAME = 'fitcrack'
+PROJECT_NAME = 'hashstation'
 PROJECT_DIR = '/home/' + PROJECT_USER + '/projects/' + PROJECT_NAME
 
 # Webadmin security
@@ -58,7 +58,7 @@ RESTX_ERROR_404_HELP = False
 
 # SQLAlchemy settings
 
-SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root@localhost/fitcrack'
+SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root@localhost/hashstation'
 
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 

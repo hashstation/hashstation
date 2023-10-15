@@ -16,7 +16,7 @@ log = logging.getLogger(__name__)
 
 
 # API Docs Header
-api = Api(version='1.0', title='Fitcrack API',
+api = Api(version='1.0', title='Hashstation API',
           description='')
 
 

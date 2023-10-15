@@ -1,6 +1,6 @@
 /**
  * @file Workunit.h
- * @brief Header file for fc_workunit entry
+ * @brief Header file for hs_workunit entry
  * @authors Lukas Zobal (zobal.lukas(at)gmail.com)
  * @date 12. 12. 2018
  * @license MIT, see LICENSE
@@ -21,7 +21,7 @@ class CWorkunit {
     private:
         /**
          * @brief Private constructor, called by create() static function
-         * @param workunitMap [in] Map representing fc_workunit table entry
+         * @param workunitMap [in] Map representing hs_workunit table entry
          * @param sqlLoader [in] Pointer to SqlLoader for database updates
          */
         explicit CWorkunit(DbMap & workunitMap);
@@ -41,9 +41,9 @@ class CWorkunit {
 
         /**
          * @brief Creating instance as a shared pointer from database select
-         * @param workunitMap [in] Map representing fc_workunit table entry
+         * @param workunitMap [in] Map representing hs_workunit table entry
          * @param sqlLoader [in] Pointer to SqlLoader for database updates
-         * @return Shared pointer to fc_workunit entry object
+         * @return Shared pointer to hs_workunit entry object
          */
         static PtrWorkunit create(DbMap & workunitMap, CSqlLoader * sqlLoader);
 
@@ -57,7 +57,7 @@ class CWorkunit {
                                   bool duplicated, uint64_t duplicate, bool retry);
 
         /**
-         * @brief Get the workunit SQL table name, usually fc_workunit
+         * @brief Get the workunit SQL table name, usually hs_workunit
          * @return Workunit SQL table name
          */
         static std::string getTableName();
@@ -65,7 +65,7 @@ class CWorkunit {
     private:
 
         /**
-         * @section Table attributes of fc_workunit
+         * @section Table attributes of hs_workunit
          */
 
         uint64_t m_id;

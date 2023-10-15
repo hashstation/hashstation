@@ -1,11 +1,11 @@
 Hash Input
 ==========
 
-When creating a job, you will have to provide the hash or hashes to crack. Fitcrack Webadmin offers three ways to do this.
+When creating a job, you will have to provide the hash or hashes to crack. Hashstation Webadmin offers three ways to do this.
 
 ![Input settings step](../../_media/img/add-job/input.png)
 
-Select a method using the toggle button __(1)__. Depending on the input method you choose, Fitcrack may be able to automatically detect the type of hash after you enter it. If not, you have to select the type manually from the dropdown __(3)__.
+Select a method using the toggle button __(1)__. Depending on the input method you choose, Hashstation may be able to automatically detect the type of hash after you enter it. If not, you have to select the type manually from the dropdown __(3)__.
 
 Let's take a look at the available input methods:
 

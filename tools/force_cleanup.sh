@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Completely purge Fitcrack
+# Completely purge Hashstation
 # Author: Radek Hranicky (ihranicky@fit.vutbr.cz)
 
 # Get functions for sysvinit/systemd
@@ -33,22 +33,22 @@ service_restart $APACHE_SERVICE
 
 
 # Remove startup scripts (if exist)
-if [ -f "/etc/init.d/fitcrack" ]; then
-  echo "Removing fitcrack system service..."
+if [ -f "/etc/init.d/hashstation" ]; then
+  echo "Removing hashstation system service..."
   # Remove runlevel symlinks
   case $DISTRO_ID in
     debian|ubuntu)
-      update-rc.d fitcrack remove
+      update-rc.d hashstation remove
     ;;
     centos|redhat)
-      chkconfig --level 2345 fitcrack off
-      chkconfig --del fitcrack
+      chkconfig --level 2345 hashstation off
+      chkconfig --del hashstation
     ;;
     suse|linux)
     ;;
   esac
   # Remove startup script
-  rm -f /etc/init.d/fitcrack
+  rm -f /etc/init.d/hashstation
 fi
 
 ####################
@@ -81,28 +81,28 @@ fi
 
 
 ####################
-# Fitcrack frontend and backend cleanup #
+# Hashstation frontend and backend cleanup #
 ####################
-rm -Rf $APACHE_DOCUMENT_ROOT/fitcrackFE
-rm -Rf $APACHE_DOCUMENT_ROOT/fitcrackAPI
+rm -Rf $APACHE_DOCUMENT_ROOT/hashstationFE
+rm -Rf $APACHE_DOCUMENT_ROOT/hashstationAPI
 
-if [ -f $APACHE_CONFIG_DIR/sites-enabled/fitcrackFE.conf ]; then
-  rm -Rf $APACHE_CONFIG_DIR/sites-enabled/fitcrackFE.conf
+if [ -f $APACHE_CONFIG_DIR/sites-enabled/hashstationFE.conf ]; then
+  rm -Rf $APACHE_CONFIG_DIR/sites-enabled/hashstationFE.conf
 fi
 
-if [ -f $APACHE_CONFIG_DIR/sites-enabled/fitcrackAPI.conf ]; then
-  rm -Rf $APACHE_CONFIG_DIR/sites-enabled/fitcrackAPI.conf
+if [ -f $APACHE_CONFIG_DIR/sites-enabled/hashstationAPI.conf ]; then
+  rm -Rf $APACHE_CONFIG_DIR/sites-enabled/hashstationAPI.conf
 fi
 
-if [ -f $APACHE_CONFIG_DIR/sites-available/fitcrackFE.conf ]; then
-  rm -Rf $APACHE_CONFIG_DIR/sites-available/fitcrackFE.conf
+if [ -f $APACHE_CONFIG_DIR/sites-available/hashstationFE.conf ]; then
+  rm -Rf $APACHE_CONFIG_DIR/sites-available/hashstationFE.conf
 fi
 
-if [ -f $APACHE_CONFIG_DIR/sites-available/fitcrackAPI.conf ]; then
-  rm -Rf $APACHE_CONFIG_DIR/sites-available/fitcrackAPI.conf
+if [ -f $APACHE_CONFIG_DIR/sites-available/hashstationAPI.conf ]; then
+  rm -Rf $APACHE_CONFIG_DIR/sites-available/hashstationAPI.conf
 fi
 
-echo "Fitcrack frontend and backend uninstalled. Restarting Apache..."
+echo "Hashstation frontend and backend uninstalled. Restarting Apache..."
 service_restart $APACHE_SERVICE
 
 

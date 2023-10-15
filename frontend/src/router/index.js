@@ -369,7 +369,7 @@ rt.beforeResolve(async (to, from, next) => {
 })
 
 rt.afterEach((to, from) => {
-  const project = rt.app.$store.state.project || 'Fitcrack'
+  const project = rt.app.$store.state.project || 'Hashstation'
   if (to.meta.title) {
     document.title = `${to.meta.title} – ${project}`
   } else {

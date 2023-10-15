@@ -1,14 +1,14 @@
 #!/bin/bash
 
-# Configure and build Fitcrack server
-# This file is part of Fitcrack installer
+# Configure and build Hashstation server
+# This file is part of Hashstation installer
 # Author: Radek Hranicky (ihranicky@fit.vutbr.cz)
 
 
-echo "Building Fitcrack server..."
+echo "Building Hashstation server..."
 
 (cd boinc ; git stash)
-patch -p0 < installer/fitcrack_changes_in_boinc.patch > /dev/null
+patch -p0 < installer/hashstation_changes_in_boinc.patch > /dev/null
 
 # Copy server files to BOINC server Root
 cp -f server/src/headers/*.h              boinc/sched/

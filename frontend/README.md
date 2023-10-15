@@ -21,7 +21,7 @@ pip3 install mysqlclient
 
 Install backend dependencies
 ```  
-cd /var/www/fitcrackAPI/src
+cd /var/www/hashstationAPI/src
 sudo pip3 install -r requirements.txt
 ```
 
@@ -45,7 +45,7 @@ wget https://nodejs.org/dist/v16.15.0/node-v16.15.0-linux-x64.tar.xz \
 Install frontend dependencies:
 ```
 export PATH=/usr/local/lib/nodejs/node-v16.15.0-linux-x64/bin:$PATH
-cd webadmin/fitcrackFE
+cd webadmin/hashstationFE
 npm run ci
 ```
 
@@ -62,13 +62,13 @@ New production build is in `fitcrakFE/dist`
 Copy backend sources to `/var/www`
 
 ```
-cp -a fitcrackAPI/. /var/www/fitcrackAPI
+cp -a hashstationAPI/. /var/www/hashstationAPI
 ```
 
 Copy frontend files to `var/www/html`
 
 ```  
-cp -a fitcrackFE/dist/. /var/www/html
+cp -a hashstationFE/dist/. /var/www/html
 ```  
 
 
@@ -80,11 +80,11 @@ Change `/etc/apache2/sites-available/000-default.conf` to:
 Listen 5000
 <VirtualHost *:5000>
 
-	 WSGIDaemonProcess fitcrack user=boincadm group=boincadm threads=5
-	 WSGIScriptAlias / /var/www/fitcrackAPI/src/wsgi.py
+	 WSGIDaemonProcess hashstation user=boincadm group=boincadm threads=5
+	 WSGIScriptAlias / /var/www/hashstationAPI/src/wsgi.py
 
-	<Directory /var/www/fitcrackAPI/src/>
-		 WSGIProcessGroup fitcrack
+	<Directory /var/www/hashstationAPI/src/>
+		 WSGIProcessGroup hashstation
 		 WSGIApplicationGroup %{GLOBAL}
 		 WSGIScriptReloading On
 		 Require all granted
@@ -123,9 +123,9 @@ To configure Frontend, change `var/www/html/static/configuration.js`. You can se
 window.serverAddress = 'http://localhost:5000'
 ```
 
-Backend configuration is stored in `var/www/fitcrackAPI/src/settings.py`. You will probably need to change Database URI. The default is:
+Backend configuration is stored in `var/www/hashstationAPI/src/settings.py`. You will probably need to change Database URI. The default is:
 ```
-SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root@localhost/fitcrack'
+SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root@localhost/hashstation'
 ```
 
 Sytax if database URI is:
@@ -135,7 +135,7 @@ mysql+pymysql://[user]:[password]@[server]/[database]
 
 
 ## Install assets
-Fitcrack server works with various resources (dictionaries, mask files, etc.).
+Hashstation server works with various resources (dictionaries, mask files, etc.).
 Those are by default stored under the `/usr/share/assets` directory.
 You should thus create it populate it:
 ```

@@ -27,7 +27,7 @@ import { Chart, registerables } from 'chart.js'
 import 'chartjs-adapter-moment'
 Chart.register(...registerables)
 
-document.title = window.projectName || 'Fitcrack'
+document.title = window.projectName || 'Hashstation'
 
 mdfSetup(moment)
 

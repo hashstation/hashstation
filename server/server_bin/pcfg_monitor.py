@@ -13,29 +13,29 @@ from psutil import process_iter
 from time import sleep
 
 DB_HOST = 'localhost'
-DB_NAME = 'fitcrack'
-DB_USER = 'fitcrack'
+DB_NAME = 'hashstation'
+DB_USER = 'hashstation'
 DB_PW = 'mypassword'
 
 PCFG_DIR = '/usr/share/assets/pcfg/'
 
 def connect_db():
-    """Accesses the Fitcrack DB.
+    """Accesses the Hashstation DB.
 
     :return: MySQL object
     """
     try:
-        fitcrack_db = mysql.connector.connect(
+        hashstation_db = mysql.connector.connect(
             host=DB_HOST,
             user=DB_USER,
             passwd=DB_PW,
             database=DB_NAME
         )
     except mysql.connector.Error as err:
-        print(datetime.datetime.utcnow(), '[ERROR]: Could not connect to Fitcrack DB:', err)
+        print(datetime.datetime.utcnow(), '[ERROR]: Could not connect to Hashstation DB:', err)
         exit(1)
 
-    return fitcrack_db
+    return hashstation_db
 
 
 def get_running_pcfg_jobs(cursor):
@@ -43,7 +43,7 @@ def get_running_pcfg_jobs(cursor):
 
     :return [int]:  List of running PCFG Job IDs
     """
-    cursor.execute('SELECT id FROM fc_job WHERE status = 10 AND attack_mode = 9 AND current_index < hc_keyspace')
+    cursor.execute('SELECT id FROM hs_job WHERE status = 10 AND attack_mode = 9 AND current_index < hc_keyspace')
     jobs = cursor.fetchall()
 
     return [x[0] for x in jobs]
@@ -76,25 +76,25 @@ def cancel_wus(job_id, cursor):
 
     :note: This is a duplicated 'cancel_jobs' BOINC function from backend_lib.h
     """
-    cursor.execute('SELECT id, workunit_id FROM fc_workunit WHERE job_id = %s AND finished = 0', (job_id, ))
+    cursor.execute('SELECT id, workunit_id FROM hs_workunit WHERE job_id = %s AND finished = 0', (job_id, ))
     wus = cursor.fetchall()
 
-    for wu_id, fitcrack_wu_id in wus:
+    for wu_id, hashstation_wu_id in wus:
         # Cancel results
         cursor.execute('UPDATE result SET server_state = 5, outcome = 5 WHERE server_state <= 2 AND workunitid = %s', (wu_id, ))
 
         # Cancel jobs
         cursor.execute('UPDATE workunit SET error_mask = error_mask|16, transition_time = %s WHERE id = %s', (int(time.time()), wu_id, ))
-        cursor.execute('UPDATE fc_workunit SET finished = 1 WHERE id = %s', (fitcrack_wu_id, ))
+        cursor.execute('UPDATE hs_workunit SET finished = 1 WHERE id = %s', (hashstation_wu_id, ))
 
 
 def purge_job(job_id, cursor):
     """Purges the job in case of some nasty crash before."""
-    cursor.execute('UPDATE fc_job SET status = 0 WHERE id = %s', (job_id, ))
+    cursor.execute('UPDATE hs_job SET status = 0 WHERE id = %s', (job_id, ))
     sleep(2)
     cancel_wus(job_id, cursor)
     sleep(2)
-    cursor.execute('UPDATE fc_job SET status = 10, indexes_verified = 0, current_index = 0 WHERE id = %s', (job_id, ))
+    cursor.execute('UPDATE hs_job SET status = 10, indexes_verified = 0, current_index = 0 WHERE id = %s', (job_id, ))
 
 
 def job_id_to_port(job_id):
@@ -104,15 +104,15 @@ def job_id_to_port(job_id):
 
 def get_keyspace(job_id, cursor):
     """Returns job keyspace from database."""
-    cursor.execute('SELECT hc_keyspace FROM fc_job WHERE id = %s', (str(job_id),))
+    cursor.execute('SELECT hc_keyspace FROM hs_job WHERE id = %s', (str(job_id),))
     return cursor.fetchone()[0]
 
 
 def get_grammar_name(job_id, cursor):
     """Returns job keyspace from database."""
-    cursor.execute('SELECT fc_pcfg_grammar.name FROM fc_pcfg_grammar '
-                   'LEFT JOIN fc_job ON fc_pcfg_grammar.id = fc_job.grammar_id '
-                   'WHERE fc_job.id = %s', (job_id,))
+    cursor.execute('SELECT hs_pcfg_grammar.name FROM hs_pcfg_grammar '
+                   'LEFT JOIN hs_job ON hs_pcfg_grammar.id = hs_job.grammar_id '
+                   'WHERE hs_job.id = %s', (job_id,))
     grammarName = cursor.fetchone()[0];
     try:
         # Older mySQL connectors return bytes
@@ -132,9 +132,9 @@ def run_new_manager(job_id, cursor):
 
 
 def main():
-    # Connect to fitcrack DB
-    fitcrack_db = connect_db()
-    f_cursor = fitcrack_db.cursor()
+    # Connect to hashstation DB
+    hashstation_db = connect_db()
+    f_cursor = hashstation_db.cursor()
 
     while True:
         pcfg_jobs = get_running_pcfg_jobs(f_cursor)
@@ -152,7 +152,7 @@ def main():
             run_new_manager(job_id, f_cursor)
 
         # To work around cache, we need to commit always
-        fitcrack_db.commit()
+        hashstation_db.commit()
 
         # Sleep before next check
         sleep(2)

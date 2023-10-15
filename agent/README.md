@@ -53,7 +53,7 @@ Format is just a part of hashcat command.
 
 ##### Example
 ```
-$ cat /etc/fitcrack.conf
+$ cat /etc/hashstation.conf
 -w 1 -d 1 --force
 ```
 It specifies to use workload 1, device with id 1 and by-pass all possible OpenCL

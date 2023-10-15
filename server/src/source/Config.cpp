@@ -22,21 +22,21 @@ std::map<std::pair<uint64_t, uint64_t>, std::ifstream* > Tools::m_fd_map;
 
 namespace Config {
     /** Table names, for easy configuration */
-    std::string tableNameBenchmark =       "fc_benchmark";
-    std::string tableNameWorkunit =        "fc_workunit";
-    std::string tableNameJob =             "fc_job";
-    std::string tableNameHost =            "fc_host";
-    std::string tableNameHostActivity =    "fc_host_activity";
-    std::string tableNameHostStatus =      "fc_host_status";
-    std::string tableNameMask =            "fc_mask";
-    std::string tableNameSettings =        "fc_settings";
-    std::string tableNameDictionary =      "fc_dictionary";
-    std::string tableNameRule =            "fc_rule";
-    std::string tableNameJobDictionary =   "fc_job_dictionary";
-    std::string tableNameJobRule =         "fc_job_rule";
-    std::string tableNameHash =            "fc_hash";
-    std::string tableNamePcfgGrammar =     "fc_pcfg_grammar";
-    std::string tableNameUserPermissions = "fc_user_permissions";
+    std::string tableNameBenchmark =       "hs_benchmark";
+    std::string tableNameWorkunit =        "hs_workunit";
+    std::string tableNameJob =             "hs_job";
+    std::string tableNameHost =            "hs_host";
+    std::string tableNameHostActivity =    "hs_host_activity";
+    std::string tableNameHostStatus =      "hs_host_status";
+    std::string tableNameMask =            "hs_mask";
+    std::string tableNameSettings =        "hs_settings";
+    std::string tableNameDictionary =      "hs_dictionary";
+    std::string tableNameRule =            "hs_rule";
+    std::string tableNameJobDictionary =   "hs_job_dictionary";
+    std::string tableNameJobRule =         "hs_job_rule";
+    std::string tableNameHash =            "hs_hash";
+    std::string tableNamePcfgGrammar =     "hs_pcfg_grammar";
+    std::string tableNameUserPermissions = "hs_user_permissions";
 
     /** Path to dictionaries */
     std::string dictDir = "/usr/share/assets/dictionaries/";

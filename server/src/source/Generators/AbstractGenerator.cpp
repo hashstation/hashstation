@@ -110,7 +110,7 @@ void CAbstractGenerator::deleteStickyFiles(PtrJob &job, std::vector<PtrHost> &jo
     if (stickyFiles.empty())
         return;
 
-    /** Send message to all hosts in fc_host working on job */
+    /** Send message to all hosts in hs_host working on job */
     for (PtrHost &host : jobHosts)
       for (const std::string &stickyFile : stickyFiles)
         create_delete_file_msg((int)host->getBoincHostId(), stickyFile.c_str());

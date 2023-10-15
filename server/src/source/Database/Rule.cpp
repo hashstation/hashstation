@@ -1,6 +1,6 @@
 /**
  * @file Rule.cpp
- * @brief Source file for fc_[rule_]dictionary entries
+ * @brief Source file for hs_[rule_]dictionary entries
  * @authors David Bolvansky
  * @license MIT, see LICENSE
  */

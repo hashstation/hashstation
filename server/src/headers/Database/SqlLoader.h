@@ -34,13 +34,13 @@ class CSqlLoader {
 
         /**
          * @brief Loads running jobs from database
-         * @return Vector of PtrJob instances from fc_job (status >= 10)
+         * @return Vector of PtrJob instances from hs_job (status >= 10)
          */
         std::vector<Config::Ptr<CJob>> loadRunningJobs();
 
         /**
          * @brief Loads all active hosts
-         * @return All rows in fc_host table
+         * @return All rows in hs_host table
          */
         std::vector<Config::Ptr<CHost>> loadActiveHosts(uint64_t jobId);
 
@@ -51,7 +51,7 @@ class CSqlLoader {
         std::vector<Config::Ptr<CHost>> loadFinishedHosts();
 
         /**
-         * @brief Removes finished/exhausted job hosts from fc_host
+         * @brief Removes finished/exhausted job hosts from hs_host
          */
         void removeFinishedHosts();
 
@@ -69,7 +69,7 @@ class CSqlLoader {
         uint64_t getBenchCount(uint64_t jobId, uint64_t hostId);
 
         /**
-         * @brief Return number of unfinished workunits in fc_workunit for supplied job-host combo
+         * @brief Return number of unfinished workunits in hs_workunit for supplied job-host combo
          * @param jobId Job ID used to filtering
          * @param hostId Host ID used for filtering
          * @return Number of workunit entries
@@ -86,7 +86,7 @@ class CSqlLoader {
         uint64_t getTotalWorkunitCount(uint64_t jobId, uint64_t hostId);
 
         /**
-         * @brief Return number of workunits in fc_workunit for supplied job
+         * @brief Return number of workunits in hs_workunit for supplied job
          * @param jobId Job ID used for filtering
          * @return Number of workunit entries
          */
@@ -106,56 +106,56 @@ class CSqlLoader {
         Config::Ptr<CWorkunit> getEasiestRetry(uint64_t jobId);
 
         /**
-         * @brief Updates status of a host in fc_host table
+         * @brief Updates status of a host in hs_host table
          * @param hostId [in] Host ID which status we are updating
          * @param newStatus [in] New status of this host
          */
         void updateHostStatus(uint64_t hostId, uint32_t newStatus);
 
         /**
-         * @brief Updates current_index of fc_mask entry
+         * @brief Updates current_index of hs_mask entry
          * @param maskId [in] ID of mask entry
          * @param newIndex [in] New index value
          */
         void updateMaskIndex(uint64_t maskId, uint64_t newIndex);
 
         /**
-         * @brief Updates current_index of fc_job_dictionary entry
+         * @brief Updates current_index of hs_job_dictionary entry
          * @param dictId [in] ID of job_dictionary entry
          * @param newIndex [in] New index value
          */
         void updateDictionaryIndex(uint64_t dictId, uint64_t newIndex);
 
         /**
-         * @brief Updates current_pos (file pos) of fc_job_dictionary entry
+         * @brief Updates current_pos (file pos) of hs_job_dictionary entry
          * @param dictId [in] ID of job_dictionary entry
          * @param newPos [in] New position in dictionary file
          */
         void updateDictionaryPos(uint64_t dictId, uint64_t newPos);
 
         /**
-         * @brief Updates current_index of fc_job entry
+         * @brief Updates current_index of hs_job entry
          * @param jobId [in] ID of the job entry
          * @param newIndex [in] New index value
          */
         void updateJobIndex(uint64_t jobId, uint64_t newIndex);
 
         /**
-         * @brief Updates current_index_2 of fc_job entry
+         * @brief Updates current_index_2 of hs_job entry
          * @param jobId [in] ID of job entry
          * @param newIndex2 [in] New index value
          */
         void updateJobIndex2(uint64_t jobId, uint64_t newIndex2);
 
         /**
-         * @brief Update status of fc_pacakge entry
+         * @brief Update status of hs_pacakge entry
          * @param jobId [in] ID of job entry
          * @param newStatus [in] New status value
          */
         void updateJobStatus(uint64_t jobId, uint32_t newStatus);
 
         /**
-         * @brief Update status of RUNNING fc_job entry, otherwise, does nothing
+         * @brief Update status of RUNNING hs_job entry, otherwise, does nothing
          * @param jobId [in] ID of job entry
          * @param newStatus [in] New status value
          * @note This is used for SQL atomic swap, so stopped job won't be switched to >= 10 by mistake
@@ -176,31 +176,31 @@ class CSqlLoader {
         uint64_t getJobOwner(uint64_t jobId);
 
         /**
-         * @brief Inserts new workunit to fc_workunit table
+         * @brief Inserts new workunit to hs_workunit table
          * @param workunit Pointer to workunit appended to database
          */
         void addNewWorkunit(Config::Ptr<CWorkunit> workunit);
 
         /**
-         * @brief Reads default_workunit_timeout_factor from fc_settings
+         * @brief Reads default_workunit_timeout_factor from hs_settings
          * @return Number from DB
          */
         unsigned int getTimeoutFactor(uint64_t userId);
 
         /**
-         * @brief Reads hwmon_temp_abort from fc_settings
+         * @brief Reads hwmon_temp_abort from hs_settings
          * @return Number from DB
          */
         unsigned int getHWTempAbort(uint64_t userId);
 
         /**
-         * @brief Reads bench_runtime_limit from fc_settings
+         * @brief Reads bench_runtime_limit from hs_settings
          * @return Runtime in seconds
          */
         uint64_t getBenchRuntimeLimit(uint64_t userId);
 
         /**
-         * @brief Reads workunit_status_update from fc_settings
+         * @brief Reads workunit_status_update from hs_settings
          * @return Status update frequency in seconds
          */
         uint64_t getWorkunitStatusUpdate(uint64_t userId);
@@ -208,7 +208,7 @@ class CSqlLoader {
         /**
          * Returns fresh host status from DB
          * @param host_id ID of the host
-         * @return status column form fc_host
+         * @return status column form hs_host
          */
         uint32_t getHostStatus(uint64_t host_id);
 
@@ -269,14 +269,14 @@ class CSqlLoader {
 
         /**
          * @brief Loads dictionary object from database with supplied ID
-         * @param dictId ID of the dictionary in fc_job_dictionary table
+         * @param dictId ID of the dictionary in hs_job_dictionary table
          * @return Loaded dictionary object
          */
         Config::Ptr<CDictionary> loadDictionary(uint64_t dictId);
 
         /**
          * @brief Loads rule object from database with supplied ID
-         * @param ruleId ID of the rule in fc_job_rule table
+         * @param ruleId ID of the rule in hs_job_rule table
          * @return Loaded rule object
          */
         Config::Ptr<CRule> loadRule(uint64_t ruleId);
@@ -297,7 +297,7 @@ class CSqlLoader {
 
         /**
          * @brief Returns number of seconds between time_start column and now()
-         * @param jobId ID of job from fc_job
+         * @param jobId ID of job from hs_job
          * @return Number of seconds
          */
         uint64_t getSecondsPassed(uint64_t jobId);
@@ -311,7 +311,7 @@ class CSqlLoader {
 
         /**
          * @brief Returns name of dictionary with supplied ID
-         * @param dictId [in] ID of dictionary in fc_dictionary
+         * @param dictId [in] ID of dictionary in hs_dictionary
          * @return Path (filename) of dictionary
          */
         std::string getDictFileName(uint64_t dictId);
@@ -344,7 +344,7 @@ class CSqlLoader {
         char * formatQuery(const char* format, ...);
 
         /**
-         * @brief Adds missing active hosts to fc_host
+         * @brief Adds missing active hosts to hs_host
          */
         void addNewHosts(uint64_t jobId);
 

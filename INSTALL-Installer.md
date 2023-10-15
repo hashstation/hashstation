@@ -1,9 +1,9 @@
-# Deploying Fitcrack server using installer
+# Deploying Hashstation server using installer
 
-Note: Since Fitcrack 2.4.0, [Docker](INSTALL-Docker.md) is the recommended way
+Note: Since Hashstation 2.4.0, [Docker](INSTALL-Docker.md) is the recommended way
 of deployment. Consider using Docker.
 
-This document describes how to install Fitcrack server using installer.
+This document describes how to install Hashstation server using installer.
 It contains cookbooks for various popular Linux distros + general installation
 instructions.
 
@@ -15,14 +15,14 @@ Table of Contents:
 * [Step-by-step guide for Debian 9 / Ubuntu 18.04 LTS](#instdeb9)
 * [Step-by-step guide for CentOS / RHEL 8](#instcentos8)
 * [General installation instructions (for Other Linux distros)](#instgen)
-* [Debugging your Fitcrack server installation](#debugging)
+* [Debugging your Hashstation server installation](#debugging)
 * [Removing an existing installation](#removal)
 
 
 <a name="instubu22"></a>
 ## Step-by-step: Install on Ubuntu 22.04 LTS
 
-Open a **root** terminal, go to the directory with Fitcrack sources and proceed as follows.
+Open a **root** terminal, go to the directory with Hashstation sources and proceed as follows.
 
 ### Install prerequisities
 ```
@@ -31,14 +31,14 @@ apt install -y m4 make dh-autoreconf pkg-config git vim apache2 libapache2-mod-p
 
 ### Setup the MySQL Database
 Set-up the mySQL root user password and
-create a database and user for Fitcrack. For example:
+create a database and user for Hashstation. For example:
 ```
 systemctl start mysql
 mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password by 'YOURROOTPASSWORD';"
 mysql -u root -p
-mysql> create database fitcrack;
-mysql> CREATE USER 'fitcrack'@'localhost' IDENTIFIED BY 'mypassword';
-mysql> GRANT ALL ON fitcrack.* TO 'fitcrack'@'localhost';
+mysql> create database hashstation;
+mysql> CREATE USER 'hashstation'@'localhost' IDENTIFIED BY 'mypassword';
+mysql> GRANT ALL ON hashstation.* TO 'hashstation'@'localhost';
 mysql> FLUSH PRIVILEGES;
 mysql> SET PERSIST log_bin_trust_function_creators = 1;
 mysql> SET PERSIST time_zone = '+00:00';
@@ -66,9 +66,9 @@ usermod -a -G boincadm www-data
 reboot
 ```
 
-### Install Fitcrack
+### Install Hashstation
 ```
-./install_fitcrack.sh
+./install_hashstation.sh
 ```
 
 And proceed according to your preferences...
@@ -80,7 +80,7 @@ And proceed according to your preferences...
 <a name="instdeb11"></a>
 ## Step-by-step: Install on Debian 11
 
-Open a **root** terminal, go to the directory with Fitcrack sources and proceed as follows.
+Open a **root** terminal, go to the directory with Hashstation sources and proceed as follows.
 
 ### Install and configure the MySQL server
 
@@ -108,11 +108,11 @@ apt install -y m4 make dh-autoreconf pkg-config git vim apache2 libapache2-mod-p
 
 ### Setup the MySQL Database
 Type `mysql -u root -p` and login with your MySQL root user password.
-Then create a database and user for Fitcrack. For example:
+Then create a database and user for Hashstation. For example:
 ```
-mysql> create database fitcrack;
-mysql> CREATE USER 'fitcrack'@'localhost' IDENTIFIED BY 'mypassword';
-mysql> GRANT ALL ON fitcrack.* TO 'fitcrack'@'localhost';
+mysql> create database hashstation;
+mysql> CREATE USER 'hashstation'@'localhost' IDENTIFIED BY 'mypassword';
+mysql> GRANT ALL ON hashstation.* TO 'hashstation'@'localhost';
 mysql> SET PERSIST log_bin_trust_function_creators = 1;
 mysql> SET PERSIST time_zone = '+00:00';
 mysql> exit
@@ -138,20 +138,20 @@ usermod -a -G boincadm www-data
 reboot
 ```
 
-### Install Fitcrack
+### Install Hashstation
 ```
-./install_fitcrack.sh
+./install_hashstation.sh
 ```
 
 
 <a name="instcentos9"></a>
 ## Step-by-step: Install on CentOS Stream 9
 
-Open a **root** terminal, go to the directory with Fitcrack sources and proceed as follows.
+Open a **root** terminal, go to the directory with Hashstation sources and proceed as follows.
 
 ### SELINUX
 The following tutorial assumes **SELINUX** in permissive or disabled mode.
-If you wish to use SELINUX enforcing mode on Fitcrack server machine, you have to configure policies to allow apache access to project directory and others.
+If you wish to use SELINUX enforcing mode on Hashstation server machine, you have to configure policies to allow apache access to project directory and others.
 ```
 sed -i s/^SELINUX=.*$/SELINUX=disabled/ /etc/selinux/config
 reboot
@@ -195,8 +195,8 @@ systemctl enable mariadb.service
 ```
 useradd -m -c "BOINC Administrator" boincadm  -s /bin/bash
 mysql -u root -p
-mysql> create database fitcrack;
-mysql> GRANT ALL PRIVILEGES ON fitcrack.* TO 'fitcrack'@'localhost' IDENTIFIED BY 'mypassword';
+mysql> create database hashstation;
+mysql> GRANT ALL PRIVILEGES ON hashstation.* TO 'hashstation'@'localhost' IDENTIFIED BY 'mypassword';
 ```
 
 ### Add Apache user to the boincadm group
@@ -205,23 +205,23 @@ usermod -a -G boincadm apache
 reboot
 ```
 
-### Install Fitcrack
+### Install Hashstation
 ```
-./install_fitcrack.sh
+./install_hashstation.sh
 ```
 
-### Enable Fitcrack service
-If you installed Fitcrack as a system service you may enable it:
+### Enable Hashstation service
+If you installed Hashstation as a system service you may enable it:
 ```
-/usr/lib/systemd/systemd-sysv-install enable fitcrack
+/usr/lib/systemd/systemd-sysv-install enable hashstation
 ```
-This will make Fitcrack start automatically on future boots.
+This will make Hashstation start automatically on future boots.
 
 
 <a name="instubu20"></a>
 ## Step-by-step: Install on Ubuntu 20.04 LTS
 
-Open a **root** terminal, go to the directory with Fitcrack sources and proceed as follows.
+Open a **root** terminal, go to the directory with Hashstation sources and proceed as follows.
 
 ### Install prerequisities
 ```
@@ -238,9 +238,9 @@ systemctl restart apache2
 ```
 useradd -m -c "BOINC Administrator" boincadm  -s /bin/bash
 mysql -u root -p
-mysql> create database fitcrack;
-mysql> CREATE USER 'fitcrack'@'localhost' IDENTIFIED BY 'mypassword';
-mysql> GRANT ALL ON fitcrack.* TO 'fitcrack'@'localhost';
+mysql> create database hashstation;
+mysql> CREATE USER 'hashstation'@'localhost' IDENTIFIED BY 'mypassword';
+mysql> GRANT ALL ON hashstation.* TO 'hashstation'@'localhost';
 mysql> SET PERSIST log_bin_trust_function_creators = 1;
 mysql> SET PERSIST time_zone = '+00:00';
 mysql> exit
@@ -252,16 +252,16 @@ usermod -a -G boincadm www-data
 reboot
 ```
 
-### Install Fitcrack
+### Install Hashstation
 ```
-./install_fitcrack.sh
+./install_hashstation.sh
 ```
 
 
 <a name="instdeb9"></a>
 ## Step-by-step: Install on Debian 9 / Ubuntu 18.04 LTS
 
-Open a **root** terminal, go to the directory with Fitcrack sources and proceed as follows.
+Open a **root** terminal, go to the directory with Hashstation sources and proceed as follows.
 
 ### Install prerequisities
 ```
@@ -278,8 +278,8 @@ systemctl restart apache2
 ```
 useradd -m -c "BOINC Administrator" boincadm  -s /bin/bash
 mysql -u root -p
-mysql> create database fitcrack;
-mysql> GRANT ALL PRIVILEGES ON fitcrack.* TO 'fitcrack'@'localhost' IDENTIFIED BY 'mypassword';
+mysql> create database hashstation;
+mysql> GRANT ALL PRIVILEGES ON hashstation.* TO 'hashstation'@'localhost' IDENTIFIED BY 'mypassword';
 ```
 
 ### Add Apache user to the boincadm group
@@ -288,20 +288,20 @@ usermod -a -G boincadm www-data
 reboot
 ```
 
-### Install Fitcrack
+### Install Hashstation
 ```
-./install_fitcrack.sh
+./install_hashstation.sh
 ```
 
 
 <a name="instcentos8"></a>
 ## Step-by-step: Install on CentOS/RHEL 8
 
-Open a **root** terminal, go to the directory with Fitcrack sources and proceed as follows.
+Open a **root** terminal, go to the directory with Hashstation sources and proceed as follows.
 
 ### SELINUX
 The following tutorial assumes **SELINUX** in permissive or disabled mode.
-If you wish to use SELINUX enforcing mode on Fitcrack server machine, you have to configure policies to allow apache access to project directory and others.
+If you wish to use SELINUX enforcing mode on Hashstation server machine, you have to configure policies to allow apache access to project directory and others.
 ```
 sed -i s/^SELINUX=.*$/SELINUX=disabled/ /etc/selinux/config
 reboot
@@ -352,8 +352,8 @@ systemctl enable mariadb.service
 ```
 useradd -m -c "BOINC Administrator" boincadm  -s /bin/bash
 mysql -u root -p
-mysql> create database fitcrack;
-mysql> GRANT ALL PRIVILEGES ON fitcrack.* TO 'fitcrack'@'localhost' IDENTIFIED BY 'mypassword';
+mysql> create database hashstation;
+mysql> GRANT ALL PRIVILEGES ON hashstation.* TO 'hashstation'@'localhost' IDENTIFIED BY 'mypassword';
 ```
 
 ### Add Apache user to the boincadm group
@@ -362,17 +362,17 @@ usermod -a -G boincadm apache
 reboot
 ```
 
-### Install Fitcrack
+### Install Hashstation
 ```
-./install_fitcrack.sh
+./install_hashstation.sh
 ```
 
-### Enable Fitcrack service
-If you installed Fitcrack as a system service you may enable it:
+### Enable Hashstation service
+If you installed Hashstation as a system service you may enable it:
 ```
-/usr/lib/systemd/systemd-sysv-install enable fitcrack
+/usr/lib/systemd/systemd-sysv-install enable hashstation
 ```
-This will make Fitcrack start automatically on future boots.
+This will make Hashstation start automatically on future boots.
 
 
 <a name="instgen"></a>
@@ -406,27 +406,27 @@ Create a user for running BOINC server
 ```
 useradd -m -c "BOINC Administrator" boincadm  -s /bin/bash
 ```
-Create a MySQL database and user account for Fitcrack
+Create a MySQL database and user account for Hashstation
 ```
 mysql -u root -p
-mysql> create database fitcrack;
-mysql> GRANT ALL PRIVILEGES ON fitcrack.* TO 'fitcrack'@'localhost' IDENTIFIED BY 'mypassword';
+mysql> create database hashstation;
+mysql> GRANT ALL PRIVILEGES ON hashstation.* TO 'hashstation'@'localhost' IDENTIFIED BY 'mypassword';
 ```
-As root, run the Fitcrack installer:
+As root, run the Hashstation installer:
 ```
-./install_fitcrack.sh
+./install_hashstation.sh
 ```
 
 
 <a name="removal"></a>
 ## Removing an existing installation
 
-As root, use the Fitcrack installer:
+As root, use the Hashstation installer:
 ```
-./install_fitcrack.sh
+./install_hashstation.sh
 ```
 In the main installer menu, select **Remove existing installation**,
-after that, select `y` for the parts of the Fitcrack server
+after that, select `y` for the parts of the Hashstation server
 that you want to remove.
 
 
@@ -449,16 +449,16 @@ what's wrong.
 
 For debugging BOINC server, check if the hostname, protocol and ports are set properly
 on both server and client machines. With default settings, BOINC clients should
-connect to the project server at `http://127.0.0.1/fitcrack`. In case of connectivity issues,
+connect to the project server at `http://127.0.0.1/hashstation`. In case of connectivity issues,
 check that the hostname/IP are correct. Also, see if all daemons are running
 on the WebAdmin: System - **Server monitor** page.
 For debugging your daemons (Generator, Assimilator, etc.), you can check
-logs in your BOINC project directory, e.g. `/home/boincadm/projects/fitcrack/logs`
+logs in your BOINC project directory, e.g. `/home/boincadm/projects/hashstation/logs`
 to see what's wrong.
 Configuration of the BOINC server is located in the `config.xml` file in your
-BOINC project directory, e.g. `/home/boincadm/projects/fitcrack/config.xml`.
+BOINC project directory, e.g. `/home/boincadm/projects/hashstation/config.xml`.
 Here, you can configure many parameters like the DB username and password, or what
-daemons and tasks should run when Fitcrack is started.
+daemons and tasks should run when Hashstation is started.
 Nevertheless, changing URL base in parameters like `master_url` is not enough to convince
 your hosts to use a different link. Changing the hostname/IP URL on-the-fly is not
 a simple task, as the URLs are hardcoded inside the BOINC database

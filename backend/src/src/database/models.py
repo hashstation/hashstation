@@ -15,17 +15,17 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from src.api.fitcrack.attacks.hashinfo import getHashNameById
-from src.api.fitcrack.functions import getStringBetween, get_batch_status
-from src.api.fitcrack.lang import job_status_text_to_code_dict, host_status_text_to_code_dict, \
+from src.api.hashstation.attacks.hashinfo import getHashNameById
+from src.api.hashstation.functions import getStringBetween, get_batch_status
+from src.api.hashstation.lang import job_status_text_to_code_dict, host_status_text_to_code_dict, \
     job_status_text_info_to_code_dict, status_to_code
 from src.database import db
 
 Base = db.Model
 
 
-class FcBenchmark(Base):
-    __tablename__ = 'fc_benchmark'
+class HsBenchmark(Base):
+    __tablename__ = 'hs_benchmark'
 
     id = Column(Integer, primary_key=True)
     boinc_host_id = Column(BigInteger, nullable=False)
@@ -44,13 +44,13 @@ class FcBenchmark(Base):
         }
 
 
-class FcHost(Base):
-    __tablename__ = 'fc_host'
+class HsHost(Base):
+    __tablename__ = 'hs_host'
 
     id = Column(BigInteger, primary_key=True)
     boinc_host_id = Column(ForeignKey('host.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
     power = Column(BigInteger, nullable=False, server_default=text("'0'"))
-    job_id = Column(BigInteger, ForeignKey('fc_job.id'), nullable=False)
+    job_id = Column(BigInteger, ForeignKey('hs_job.id'), nullable=False)
     status = Column(SmallInteger, nullable=False, server_default=text("'0'"))
     time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
 
@@ -59,11 +59,11 @@ class FcHost(Base):
         return host_status_text_to_code_dict.get(self.status)
 
     boinc_host = relationship("Host", uselist=False)
-    #devices = relationship("FcDevice", primaryjoin="FcHost.boinc_host_id==FcDevice.boinc_host_id", back_populates="host")
+    #devices = relationship("HsDevice", primaryjoin="HsHost.boinc_host_id==HsDevice.boinc_host_id", back_populates="host")
 
 
-class FcDevice(Base):
-    __tablename__ = 'fc_device'
+class HsDevice(Base):
+    __tablename__ = 'hs_device'
 
     id = Column(BigInteger, primary_key=True)
     boinc_host_id = Column(BigInteger, ForeignKey('host.id'), nullable=False)
@@ -72,38 +72,38 @@ class FcDevice(Base):
     type = Column(String(255), nullable=False)
 
     host = relationship("Host")
-    device_info = relationship("FcDeviceInfo", back_populates="device", order_by="desc(FcDeviceInfo.id)", lazy='dynamic')
-    #host = relationship("FcHost", primaryjoin="FcDevice.boinc_host_id==FcHost.boinc_host_id", back_populates="devices")
+    device_info = relationship("HsDeviceInfo", back_populates="device", order_by="desc(HsDeviceInfo.id)", lazy='dynamic')
+    #host = relationship("HsHost", primaryjoin="HsDevice.boinc_host_id==HsHost.boinc_host_id", back_populates="devices")
     #boinc_host = relationship("Host", uselist=False)
 
 
-class FcDeviceInfo(Base):
-    __tablename__ = 'fc_device_info'
+class HsDeviceInfo(Base):
+    __tablename__ = 'hs_device_info'
 
     id = Column(BigInteger, primary_key=True)
-    device_id = Column(BigInteger, ForeignKey('fc_device.id'), nullable=False)
-    workunit_id = Column(BigInteger, ForeignKey('fc_workunit.id'), nullable=False)
+    device_id = Column(BigInteger, ForeignKey('hs_device.id'), nullable=False)
+    workunit_id = Column(BigInteger, ForeignKey('hs_workunit.id'), nullable=False)
     hashrate = Column(BigInteger, nullable=False)
     speed = Column(BigInteger, nullable=False)
     temperature = Column(Integer, nullable=False)
     utilization = Column(Integer, nullable=False)
     time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
 
-    device = relationship("FcDevice")
-    workunit = relationship("FcWorkunit", back_populates="device_info")
+    device = relationship("HsDevice")
+    workunit = relationship("HsWorkunit", back_populates="device_info")
 
 
-class FcMask(Base):
-    __tablename__ = 'fc_mask'
+class HsMask(Base):
+    __tablename__ = 'hs_mask'
 
     id = Column(BigInteger, primary_key=True)
-    job_id = Column(BigInteger, ForeignKey('fc_job.id'), nullable=False)
+    job_id = Column(BigInteger, ForeignKey('hs_job.id'), nullable=False)
     mask = Column(String(30, 'utf8_bin'))
     current_index = Column(BigInteger, nullable=False)
     keyspace = Column(BigInteger, nullable=False)
     hc_keyspace = Column(BigInteger, nullable=False)
 
-    job = relationship("FcJob", back_populates="masks")
+    job = relationship("HsJob", back_populates="masks")
 
     @hybrid_property
     def progress(self):
@@ -114,8 +114,8 @@ class FcMask(Base):
         return round((self.current_index / self.hc_keyspace) * 100, 2)
 
 
-class FcDictionary(Base):
-    __tablename__ = 'fc_dictionary'
+class HsDictionary(Base):
+    __tablename__ = 'hs_dictionary'
 
     id = Column(Integer, primary_key=True)
     name = Column(String(100), nullable=False)
@@ -127,8 +127,8 @@ class FcDictionary(Base):
     deleted = Column(Integer, nullable=False, server_default=text("'0'"))
 
 
-class FcPcfg(Base):
-    __tablename__ = 'fc_pcfg_grammar'
+class HsPcfg(Base):
+    __tablename__ = 'hs_pcfg_grammar'
 
     id = Column(Integer, primary_key=True)
     name = Column(String(100), nullable=False)
@@ -138,8 +138,8 @@ class FcPcfg(Base):
     deleted = Column(Integer, nullable=False, server_default=text("'0'"))
 
 
-class FcHcstat(Base):
-    __tablename__ = 'fc_hcstats'
+class HsHcstat(Base):
+    __tablename__ = 'hs_hcstats'
 
     id = Column(Integer, primary_key=True)
     name = Column(String(255), nullable=False)
@@ -148,8 +148,8 @@ class FcHcstat(Base):
     deleted = Column(Integer, nullable=False, server_default=text("'0'"))
 
 
-class FcMasksSet(Base):
-    __tablename__ = 'fc_masks_set'
+class HsMasksSet(Base):
+    __tablename__ = 'hs_masks_set'
 
     id = Column(Integer, primary_key=True)
     name = Column(String(100), nullable=False)
@@ -158,8 +158,8 @@ class FcMasksSet(Base):
     deleted = Column(Integer, nullable=False, server_default=text("'0'"))
 
 
-class FcCharset(Base):
-    __tablename__ = 'fc_charset'
+class HsCharset(Base):
+    __tablename__ = 'hs_charset'
 
     id = Column(Integer, primary_key=True)
     name = Column(String(100), nullable=False)
@@ -169,8 +169,8 @@ class FcCharset(Base):
     deleted = Column(Integer, nullable=False, server_default=text("'0'"))
 
 
-class FcRule(Base):
-    __tablename__ = 'fc_rule'
+class HsRule(Base):
+    __tablename__ = 'hs_rule'
 
     id = Column(Integer, primary_key=True)
     name = Column(String(100), nullable=False)
@@ -180,32 +180,32 @@ class FcRule(Base):
     deleted = Column(Integer, nullable=False, server_default=text("'0'"))
 
 
-class FcJobDictionary(Base):
-    __tablename__ = 'fc_job_dictionary'
+class HsJobDictionary(Base):
+    __tablename__ = 'hs_job_dictionary'
 
     id = Column(BigInteger, primary_key=True)
-    job_id = Column(BigInteger, ForeignKey('fc_job.id'), nullable=False)
-    dictionary_id = Column(BigInteger, ForeignKey('fc_dictionary.id'), nullable=False)
+    job_id = Column(BigInteger, ForeignKey('hs_job.id'), nullable=False)
+    dictionary_id = Column(BigInteger, ForeignKey('hs_dictionary.id'), nullable=False)
     current_index = Column(BigInteger, nullable=False, server_default=text("'0'"))
     current_pos = Column(BigInteger, nullable=False, server_default=text("'0'"))
     is_left = Column(Integer, nullable=False, server_default=text("'1'"))
-    dictionary = relationship("FcDictionary")
+    dictionary = relationship("HsDictionary")
 
-bin_job_junction = Table('fc_bin_job', Base.metadata,
-    Column('job_id', Integer, ForeignKey('fc_job.id')),
-    Column('bin_id', Integer, ForeignKey('fc_bin.id'))
+bin_job_junction = Table('hs_bin_job', Base.metadata,
+    Column('job_id', Integer, ForeignKey('hs_job.id')),
+    Column('bin_id', Integer, ForeignKey('hs_bin.id'))
 )
 
-class FcJobRule(Base):
-    __tablename__ = 'fc_job_rule'
+class HsJobRule(Base):
+    __tablename__ = 'hs_job_rule'
 
     id = Column(BigInteger, primary_key=True)
-    job_id = Column(BigInteger, ForeignKey('fc_job.id'), nullable=False)
-    rule_id = Column(BigInteger, ForeignKey('fc_rule.id'), nullable=False)
-    rule = relationship("FcRule")
+    job_id = Column(BigInteger, ForeignKey('hs_job.id'), nullable=False)
+    rule_id = Column(BigInteger, ForeignKey('hs_rule.id'), nullable=False)
+    rule = relationship("HsRule")
 
-class FcJob(Base):
-    __tablename__ = 'fc_job'
+class HsJob(Base):
+    __tablename__ = 'hs_job'
 
     id = Column(BigInteger, primary_key=True)
     attack = Column(String(20, 'utf8_bin'), nullable=False)
@@ -231,9 +231,9 @@ class FcJob(Base):
     charset4 = Column(String(4096, 'utf8_bin'))
     rule_left = Column(String(255, 'utf8_bin'))
     rule_right = Column(String(255, 'utf8_bin'))
-    markov_hcstat = Column(String(100, 'utf8_bin'), ForeignKey('fc_hcstats.name'))
+    markov_hcstat = Column(String(100, 'utf8_bin'), ForeignKey('hs_hcstats.name'))
     markov_threshold = Column(Integer, nullable=False, server_default=text("'0'"))
-    grammar_id = Column(BigInteger, ForeignKey('fc_pcfg_grammar.id'), nullable=False)
+    grammar_id = Column(BigInteger, ForeignKey('hs_pcfg_grammar.id'), nullable=False)
     case_permute = Column(Integer, nullable=False, server_default=text("'0'"))
     check_duplicates = Column(Integer, nullable=False, server_default=text("'1'"))
     min_password_len = Column(Integer, nullable=False, server_default=text("'1'"))
@@ -251,32 +251,32 @@ class FcJob(Base):
     rule_application_mode = Column(Integer, nullable=False, server_default=text("'0'"))
     deleted = Column(Integer, nullable=False, server_default=text("'0'"))
     kill = Column(Integer, nullable=False, server_default=text("'0'"))
-    batch_id = Column(ForeignKey('fc_batch.id', ondelete='SET NULL'), index=True)
+    batch_id = Column(ForeignKey('hs_batch.id', ondelete='SET NULL'), index=True)
     queue_position = Column(Integer)
 
-    permission_records = relationship("FcUserPermission",
-                          primaryjoin="FcJob.id==FcUserPermission.job_id")
+    permission_records = relationship("HsUserPermission",
+                          primaryjoin="HsJob.id==HsUserPermission.job_id")
 
-    batch = relationship("FcBatch", back_populates="jobs")
+    batch = relationship("HsBatch", back_populates="jobs")
 
-    workunits = relationship("FcWorkunit")
-    masks = relationship('FcMask')
-    status_history = relationship('FcJobStatus')
+    workunits = relationship("HsWorkunit")
+    masks = relationship('HsMask')
+    status_history = relationship('HsJobStatus')
 
-    markov = relationship("FcHcstat",
-                          primaryjoin="FcJob.markov_hcstat==FcHcstat.name")
+    markov = relationship("HsHcstat",
+                          primaryjoin="HsJob.markov_hcstat==HsHcstat.name")
 
-    pcfg = relationship("FcPcfg",
-                          primaryjoin="FcJob.grammar_id==FcPcfg.id")
+    pcfg = relationship("HsPcfg",
+                          primaryjoin="HsJob.grammar_id==HsPcfg.id")
 
-    hosts = relationship("Host", secondary="fc_host_activity",
-                         primaryjoin="FcJob.id == FcHostActivity.job_id",
-                         secondaryjoin="FcHostActivity.boinc_host_id == Host.id",
+    hosts = relationship("Host", secondary="hs_host_activity",
+                         primaryjoin="HsJob.id == HsHostActivity.job_id",
+                         secondaryjoin="HsHostActivity.boinc_host_id == Host.id",
                          viewonly=True)
 
-    left_dictionaries = relationship("FcJobDictionary", primaryjoin=and_(FcJobDictionary.job_id == id, FcJobDictionary.is_left == True))
-    right_dictionaries = relationship("FcJobDictionary", primaryjoin=and_(FcJobDictionary.job_id == id, FcJobDictionary.is_left == False), overlaps="left_dictionaries")
-    rules = relationship('FcJobRule')
+    left_dictionaries = relationship("HsJobDictionary", primaryjoin=and_(HsJobDictionary.job_id == id, HsJobDictionary.is_left == True))
+    right_dictionaries = relationship("HsJobDictionary", primaryjoin=and_(HsJobDictionary.job_id == id, HsJobDictionary.is_left == False), overlaps="left_dictionaries")
+    rules = relationship('HsJobRule')
 
     @hybrid_property
     def cracked_hashes_str(self):
@@ -377,23 +377,23 @@ class FcJob(Base):
     @hybrid_property
     def estimated_cracking_time_str(self):
         boinc_host_ids = [host.id for host in self.hosts if host.last_active.online]
-        jobHosts = FcHost.query.filter(FcHost.job_id == self.id). \
-            filter(FcHost.boinc_host_id.in_(boinc_host_ids)).all()
+        jobHosts = HsHost.query.filter(HsHost.job_id == self.id). \
+            filter(HsHost.boinc_host_id.in_(boinc_host_ids)).all()
 
         hostsPower = {}
         for host in jobHosts:
             hostsPower[host.boinc_host_id] = host.power
 
-        hostBenchmarks = FcBenchmark.query.filter(FcBenchmark.hash_type == self.hash_type). \
-            filter(FcBenchmark.attack_mode == self.attack_mode). \
-            filter(FcBenchmark.boinc_host_id.in_(boinc_host_ids)).all()
+        hostBenchmarks = HsBenchmark.query.filter(HsBenchmark.hash_type == self.hash_type). \
+            filter(HsBenchmark.attack_mode == self.attack_mode). \
+            filter(HsBenchmark.boinc_host_id.in_(boinc_host_ids)).all()
 
         if not hostBenchmarks:
             # We were unable to find benchmark data for (host, job_hash_type, job_attack_mode).
             # Instead of no data, try to use less precise data for (host, job_hash_type, X)
             # where X is any attack mode
-            hostBenchmarks = FcBenchmark.query.filter(FcBenchmark.hash_type == self.hash_type). \
-                filter(FcBenchmark.boinc_host_id.in_(boinc_host_ids)).all()
+            hostBenchmarks = HsBenchmark.query.filter(HsBenchmark.hash_type == self.hash_type). \
+                filter(HsBenchmark.boinc_host_id.in_(boinc_host_ids)).all()
 
         total_power = 0
         for benchmark in hostBenchmarks:
@@ -455,7 +455,7 @@ class FcJob(Base):
     @hybrid_property
     def permissions(self):
         base = {'view': False, 'edit': False, 'operate': False, 'owner': False}
-        record = db.session.query(FcUserPermission).filter_by(user_id=current_user.id).filter_by(job_id=self.id).one_or_none()
+        record = db.session.query(HsUserPermission).filter_by(user_id=current_user.id).filter_by(job_id=self.id).one_or_none()
         if record:
             if record.owner:
                 base = {'view': True, 'edit': True, 'operate': True, 'owner': True}
@@ -465,16 +465,16 @@ class FcJob(Base):
                 base['operate'] = record.operate
         return base
 
-    hashes = relationship("FcHash", back_populates="job")
+    hashes = relationship("HsHash", back_populates="job")
 
-class FcBin(Base):
-    __tablename__ = 'fc_bin'
+class HsBin(Base):
+    __tablename__ = 'hs_bin'
 
     id = Column(Integer, primary_key=True)
     name = Column(String(50), nullable=False)
     position = Column(Integer)
 
-    jobs = relationship('FcJob',
+    jobs = relationship('HsJob',
                     secondary=bin_job_junction,
                     backref="bins",
                     lazy='dynamic',
@@ -484,21 +484,21 @@ class FcBin(Base):
     def job_count(self):
         query = self.jobs
         if not current_user.role.VIEW_ALL_JOBS:
-            ids = db.session.query(FcUserPermission.job_id).filter_by(user_id=current_user.id).filter_by(view=1).all()
+            ids = db.session.query(HsUserPermission.job_id).filter_by(user_id=current_user.id).filter_by(view=1).all()
             ids = [x[0] for x in ids]
-            query = query.filter(FcJob.id.in_(ids))
+            query = query.filter(HsJob.id.in_(ids))
         
-        return query.filter(FcJob.deleted == 0).count()
+        return query.filter(HsJob.deleted == 0).count()
 
-class FcBatch(Base):
-    __tablename__ = 'fc_batch'
+class HsBatch(Base):
+    __tablename__ = 'hs_batch'
 
     id = Column(Integer, primary_key=True)
     name = Column(String(50), nullable=False)
-    creator_id = Column(ForeignKey('fc_user.id', ondelete='SET NULL'), index=True)
+    creator_id = Column(ForeignKey('hs_user.id', ondelete='SET NULL'), index=True)
 
-    creator = relationship("FcUser", backref="batches")
-    jobs = relationship("FcJob")
+    creator = relationship("HsUser", backref="batches")
+    jobs = relationship("HsJob")
 
     @hybrid_property
     def total_jobs(self):
@@ -520,19 +520,19 @@ class FcBatch(Base):
     def current_user_can_operate(self):
         return self.creator_id == current_user.id or current_user.role.OPERATE_ALL_JOBS
 
-class FcTemplate(Base):
-    __tablename__ = 'fc_template'
+class HsTemplate(Base):
+    __tablename__ = 'hs_template'
 
     id = Column(Integer, primary_key=True)
     name = Column(String(64), nullable=False)
     created = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
     template = Column(JSON, nullable=False)
 
-class FcSettings(Base):
-    __tablename__ = 'fc_settings'
+class HsSettings(Base):
+    __tablename__ = 'hs_settings'
 
     id = Column(Integer, primary_key=True)
-    user_id = Column(ForeignKey('fc_user.id'))
+    user_id = Column(ForeignKey('hs_user.id'))
     default_seconds_per_workunit = Column(Integer, nullable=False, server_default=text("'600'"))
     workunit_timeout_factor = Column(Integer, nullable=False, server_default=text("'2'"))
     hwmon_temp_abort = Column(Integer, nullable=False, server_default=text("'90'"))
@@ -552,17 +552,17 @@ class FcSettings(Base):
     email_address = Column(String(200), nullable=True)
     email_password = Column(String(200), nullable=True)
 
-    user = relationship('FcUser')
+    user = relationship('HsUser')
 
-class FcJobGraph(Base):
-    __tablename__ = 'fc_job_graph'
+class HsJobGraph(Base):
+    __tablename__ = 'hs_job_graph'
 
     id = Column(BigInteger, primary_key=True)
     progress = Column(Numeric(5, 2), nullable=False)
-    job_id = Column(ForeignKey('fc_job.id'), nullable=False, index=True)
+    job_id = Column(ForeignKey('hs_job.id'), nullable=False, index=True)
     time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
 
-    job = relationship('FcJob')
+    job = relationship('HsJob')
 
     def as_graph(self):
         return {
@@ -571,11 +571,11 @@ class FcJobGraph(Base):
         }
 
 
-class FcJobStatus(Base):
-    __tablename__ = 'fc_job_status'
+class HsJobStatus(Base):
+    __tablename__ = 'hs_job_status'
 
     id = Column(BigInteger, primary_key=True)
-    job_id = Column(ForeignKey('fc_job.id'), nullable=False, index=True)
+    job_id = Column(ForeignKey('hs_job.id'), nullable=False, index=True)
     status = Column(SmallInteger, nullable=False, server_default=text("'0'"))
     time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
 
@@ -599,7 +599,7 @@ class FcJobStatus(Base):
         if code == status_to_code['exhausted'] or code == status_to_code['malformed']:
             return 'error'
 
-    job = relationship('FcJob')
+    job = relationship('HsJob')
 
 
 class Host(Base):
@@ -656,34 +656,34 @@ class Host(Base):
 
     user = relationship("User", back_populates="hosts")
 
-    devices = relationship("FcDevice", primaryjoin="Host.id == FcDevice.boinc_host_id", back_populates="host")
+    devices = relationship("HsDevice", primaryjoin="Host.id == HsDevice.boinc_host_id", back_populates="host")
 
-    workunits = relationship("FcWorkunit", secondary="fc_host_activity",
-                        primaryjoin="Host.id == FcHostActivity.boinc_host_id",
-                        secondaryjoin="FcHostActivity.job_id == FcWorkunit.id",
-                        order_by="desc(FcWorkunit.id)")
+    workunits = relationship("HsWorkunit", secondary="hs_host_activity",
+                        primaryjoin="Host.id == HsHostActivity.boinc_host_id",
+                        secondaryjoin="HsHostActivity.job_id == HsWorkunit.id",
+                        order_by="desc(HsWorkunit.id)")
 
-    last_active = relationship("FcHostStatus", uselist=False)
+    last_active = relationship("HsHostStatus", uselist=False)
 
-    jobs = relationship("FcJob", secondary="fc_host_activity",
-                        primaryjoin="Host.id == FcHostActivity.boinc_host_id",
-                        secondaryjoin="FcHostActivity.job_id == FcJob.id",
+    jobs = relationship("HsJob", secondary="hs_host_activity",
+                        primaryjoin="Host.id == HsHostActivity.boinc_host_id",
+                        secondaryjoin="HsHostActivity.job_id == HsJob.id",
                         viewonly=True)
 
     @hybrid_property
     def deleted(self):
         return True if \
-            FcHostStatus.query.filter(FcHostStatus.boinc_host_id == self.id, FcHostStatus.deleted == True).first() \
+            HsHostStatus.query.filter(HsHostStatus.boinc_host_id == self.id, HsHostStatus.deleted == True).first() \
             else False
 
 
-class FcWorkunit(Base):
-    __tablename__ = 'fc_workunit'
+class HsWorkunit(Base):
+    __tablename__ = 'hs_workunit'
 
     id = Column(BigInteger, primary_key=True)
-    job_id = Column(BigInteger, ForeignKey('fc_job.id'), nullable=False)
+    job_id = Column(BigInteger, ForeignKey('hs_job.id'), nullable=False)
     workunit_id = Column(BigInteger, ForeignKey('result.workunitid', onupdate="NO ACTION", ondelete="NO ACTION"), nullable=False)
-    host_id = Column(BigInteger, ForeignKey('fc_host.id'), nullable=False)
+    host_id = Column(BigInteger, ForeignKey('hs_host.id'), nullable=False)
     boinc_host_id = Column(Integer, ForeignKey('host.id'), nullable=False)
     start_index = Column(BigInteger, nullable=False)
     start_index_2 = Column(BigInteger, nullable=False)
@@ -692,7 +692,7 @@ class FcWorkunit(Base):
     speed = Column(BigInteger, nullable=False, server_default=text("'0'"))
     hashrate = Column(BigInteger, nullable=False, server_default=text("'0'"))
     remaining_time = Column(BigInteger, nullable=False, server_default=text("'0'"))
-    mask_id = Column(BigInteger, ForeignKey('fc_mask.id'), nullable=False)
+    mask_id = Column(BigInteger, ForeignKey('hs_mask.id'), nullable=False)
     dictionary_id = Column(BigInteger, nullable=False)
     duplicated = Column(Integer, nullable=False, server_default=text("'0'"))
     duplicate = Column(BigInteger, nullable=False, server_default=text("'0'"))
@@ -701,12 +701,12 @@ class FcWorkunit(Base):
     retry = Column(Integer, nullable=False, server_default=text("'0'"))
     finished = Column(Integer, nullable=False, server_default=text("'0'"))
 
-    job = relationship("FcJob", back_populates="workunits")
+    job = relationship("HsJob", back_populates="workunits")
     host = relationship("Host", back_populates="workunits")
-    mask = relationship('FcMask')
-    device_info = relationship("FcDeviceInfo")
+    mask = relationship('HsMask')
+    device_info = relationship("HsDeviceInfo")
 
-    result = relationship('Result',  uselist=False, primaryjoin="FcWorkunit.workunit_id==Result.workunitid", viewonly=True)
+    result = relationship('Result',  uselist=False, primaryjoin="HsWorkunit.workunit_id==Result.workunitid", viewonly=True)
 
     @hybrid_property
     def keyspace(self):
@@ -741,7 +741,7 @@ class FcWorkunit(Base):
     def remaining_time_str(self):
         if not self.finished: # active wu
             if self.keyspace == 0: # benchmark wu has runtime limit in seconds
-                settings = FcSettings.query.filter_by(user_id=current_user.id).one()
+                settings = HsSettings.query.filter_by(user_id=current_user.id).one()
                 remaining_time = 0 if self.cracking_time > settings.bench_runtime_limit else settings.bench_runtime_limit - self.cracking_time
                 return str(datetime.timedelta(seconds=math.floor(remaining_time)))
             elif self.keyspace > 0: # normal wu
@@ -749,27 +749,27 @@ class FcWorkunit(Base):
         return "–"
 
 
-class FcHostActivity(Base):
-    __tablename__ = 'fc_host_activity'
+class HsHostActivity(Base):
+    __tablename__ = 'hs_host_activity'
 
     id = Column(BigInteger, primary_key=True)
     boinc_host_id = Column(Integer, ForeignKey('host.id'), nullable=False)
-    job_id = Column(BigInteger, ForeignKey('fc_job.id'), nullable=False)
+    job_id = Column(BigInteger, ForeignKey('hs_job.id'), nullable=False)
 
     boinc_host = relationship("Host")
 
     @hybrid_property
     def host(self):
-        return self.boinc_host.fc_host
+        return self.boinc_host.hs_host
 
 
-class FcNotification(Base):
-    __tablename__ = 'fc_notification'
+class HsNotification(Base):
+    __tablename__ = 'hs_notification'
 
     id = Column(Integer, primary_key=True)
-    user_id = Column(ForeignKey('fc_user.id', ondelete='CASCADE', onupdate='CASCADE'), index=True)
+    user_id = Column(ForeignKey('hs_user.id', ondelete='CASCADE', onupdate='CASCADE'), index=True)
     source_type = Column(Integer, server_default=text("'0'"))
-    source_id = Column(ForeignKey('fc_job.id', ondelete='CASCADE', onupdate='CASCADE'), index=True)
+    source_id = Column(ForeignKey('hs_job.id', ondelete='CASCADE', onupdate='CASCADE'), index=True)
     old_value = Column(SmallInteger)
     new_value = Column(SmallInteger)
     seen = Column(Integer, server_default=text("'0'"))
@@ -778,12 +778,12 @@ class FcNotification(Base):
     email_sent = Column(Integer, server_default=text("'0'"))
     time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
 
-    source = relationship('FcJob')
-    user = relationship('FcUser')
+    source = relationship('HsJob')
+    user = relationship('HsUser')
 
 
-class FcRole(Base):
-    __tablename__ = 'fc_role'
+class HsRole(Base):
+    __tablename__ = 'hs_role'
 
     id = Column(Integer, primary_key=True)
     name = Column(String(50), nullable=False)
@@ -796,14 +796,14 @@ class FcRole(Base):
     ADD_USER_PERMISSIONS_TO_JOB = Column(Integer, nullable=False, server_default=text("'0'"))
 
 
-class FcUser(UserMixin, Base):
-    __tablename__ = 'fc_user'
+class HsUser(UserMixin, Base):
+    __tablename__ = 'hs_user'
 
     id = Column(Integer, primary_key=True)
     username = Column(String(64), nullable=False)
     password = Column(String(128), nullable=False)
     mail = Column(String(200), nullable=False)
-    role_id = Column(ForeignKey('fc_role.id'), nullable=False, index=True)
+    role_id = Column(ForeignKey('hs_role.id'), nullable=False, index=True)
     deleted = Column(Integer, nullable=False, server_default=text("'0'"))
 
     def set_password(self, password):
@@ -812,7 +812,7 @@ class FcUser(UserMixin, Base):
     def check_password(self, password):
         return check_password_hash(getattr(self, 'password'), password)
 
-    role = relationship('FcRole')
+    role = relationship('HsRole')
 
     def as_dict(self):
         return {
@@ -837,19 +837,19 @@ class AnonUser(AnonymousUserMixin):
         self.stuffs.append(stuff)
 
 
-class FcUserPermission(Base):
-    __tablename__ = 'fc_user_permissions'
+class HsUserPermission(Base):
+    __tablename__ = 'hs_user_permissions'
 
     id = Column(Integer, primary_key=True)
-    job_id = Column(ForeignKey('fc_job.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False, index=True)
-    user_id = Column(ForeignKey('fc_user.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False, index=True)
+    job_id = Column(ForeignKey('hs_job.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False, index=True)
+    user_id = Column(ForeignKey('hs_user.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False, index=True)
     view = Column(Integer, nullable=False, server_default=text("'0'"))
     modify = Column(Integer, nullable=False, server_default=text("'0'"))
     operate = Column(Integer, nullable=False, server_default=text("'0'"))
     owner = Column(Integer, nullable=False, server_default=text("'0'"))
 
-    job = relationship('FcJob')
-    user = relationship('FcUser')
+    job = relationship('HsJob')
+    user = relationship('HsUser')
 
     @hybrid_property
     def can_view(self): return self.view == 1 or self.owner == 1
@@ -898,8 +898,8 @@ class User(Base):
     hosts = relationship('Host')
 
 
-class FcEncryptedFile(Base):
-    __tablename__ = 'fc_protected_file'
+class HsEncryptedFile(Base):
+    __tablename__ = 'hs_protected_file'
 
     id = Column(Integer, primary_key=True)
     name = Column(String(100), nullable=False)
@@ -913,8 +913,8 @@ class FcEncryptedFile(Base):
         return getHashNameById(self.hash_type)
 
 
-class FcHostStatus(Base):
-    __tablename__ = 'fc_host_status'
+class HsHostStatus(Base):
+    __tablename__ = 'hs_host_status'
 
     id = Column(BigInteger, primary_key=True)
     boinc_host_id = Column(Integer, ForeignKey(Host.id), nullable=False)
@@ -942,11 +942,11 @@ class FcHostStatus(Base):
         return True if total_seconds <= 60 else False
 
 
-class FcHash(Base):
-    __tablename__ = 'fc_hash'
+class HsHash(Base):
+    __tablename__ = 'hs_hash'
 
     id = Column(BigInteger, primary_key=True)
-    job_id = Column(BigInteger, ForeignKey(FcJob.id), nullable=True)
+    job_id = Column(BigInteger, ForeignKey(HsJob.id), nullable=True)
     hash_type = Column(Integer, nullable=False)
     hash = Column(LargeBinary, nullable=False)
     username = Column(String(255), nullable=True)
@@ -955,7 +955,7 @@ class FcHash(Base):
     time_cracked = Column(DateTime)
     deleted = Column(Integer, nullable=False, server_default=text("'0'"))
 
-    job = relationship("FcJob", back_populates="hashes")
+    job = relationship("HsJob", back_populates="hashes")
 
     @hybrid_property
     def hashText(self):
@@ -1026,8 +1026,8 @@ class Result(Base):
             return getStringBetween(self.stderr_out.decode("utf-8"), '<stderr_txt>', '</stderr_txt>' ).replace('\r', '')
         except:
             return self.stderr_out.decode("utf-8", errors='ignore').replace('\r', '')
-class FcServerUsage(Base):
-    __tablename__ = 'fc_server_usage'
+class HsServerUsage(Base):
+    __tablename__ = 'hs_server_usage'
 
     id = Column(Integer, primary_key=True)
     time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))

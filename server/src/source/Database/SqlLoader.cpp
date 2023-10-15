@@ -555,7 +555,7 @@ void CSqlLoader::addNewHosts(uint64_t jobId)
         {
             newHostId = std::stoull(row[0]);
 
-            /** Insert new hosts to fc_host */
+            /** Insert new hosts to hs_host */
             updateSql(formatQuery("INSERT INTO `%s` (`boinc_host_id`, `job_id`) VALUES (%" PRIu64 ", %" PRIu64 ");",
                                   CHost::getTableName().c_str(), newHostId, jobId));
 

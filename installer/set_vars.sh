@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Ask user to set installer variables
-# This file is part of Fitcrack installer
+# This file is part of Hashstation installer
 # Author: Radek Hranicky (ihranicky@fit.vutbr.cz)
 
 # Save installer root
@@ -61,8 +61,8 @@ fi
 # BOINC project name
 #####################
 
-read -e -p "Enter BOINC project name (default: fitcrack): " BOINC_PROJECT
-export BOINC_PROJECT=${BOINC_PROJECT:-fitcrack}
+read -e -p "Enter BOINC project name (default: hashstation): " BOINC_PROJECT
+export BOINC_PROJECT=${BOINC_PROJECT:-hashstation}
 
 ##########################
 # BOINC project directory
@@ -168,15 +168,15 @@ export DB_HOST=${DB_HOST:-localhost}
 # MySQL db name
 ################
 
-read -e -p "Enter MySQL database name (default: fitcrack): " DB_NAME
-export DB_NAME=${DB_NAME:-fitcrack}
+read -e -p "Enter MySQL database name (default: hashstation): " DB_NAME
+export DB_NAME=${DB_NAME:-hashstation}
 
 ##################
 # MySQL user name
 ##################
 
-read -e -p "Enter MySQL user name (default: fitcrack): " DB_USER
-export DB_USER=${DB_USER:-fitcrack}
+read -e -p "Enter MySQL user name (default: hashstation): " DB_USER
+export DB_USER=${DB_USER:-hashstation}
 
 ######################
 # MySQL user password

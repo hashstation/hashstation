@@ -11,7 +11,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     darkAppearance: false,
-    project: window.projectName || 'Fitcrack'
+    project: window.projectName || 'Hashstation'
   },
   modules: {
     user,

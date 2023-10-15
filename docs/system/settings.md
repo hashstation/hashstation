@@ -13,7 +13,7 @@ Use appearance to set your preferred theme. This setting only affects your clien
 Various aspects of Webadmin as well as the system can be tuned in the behavior section.
 
 - __Job purge confirmation__ – Purging a job deletes all progress. To avoid accidental loss of data, turn this on. The purge button now effectively requires you to double-click.
-- __Verify hash format__ – When creating a job, your hashes will be verified by the Fitcrack server.
+- __Verify hash format__ – When creating a job, your hashes will be verified by the Hashstation server.
 - __Add new hosts to running jobs__ – When you connect a new host to the system, it can be assigned to any running job right away. Codename 'Automatically job'.
 - __Fully benchmark new hosts__ – Newly connected hosts will go through a full benchmark suite. This takes a while, so the default is to do benchmarks on demand later.
 

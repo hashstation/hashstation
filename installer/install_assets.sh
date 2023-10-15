@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Make assets directory tree
-# This file is part of Fitcrack installer
+# This file is part of Hashstation installer
 # Author: Radek Hranicky (ihranicky@fit.vutbr.cz)
 
 echo "Creating directories for common assets..."

@@ -13,35 +13,35 @@ from flask import abort, make_response, jsonify
 
 import settings
 from src.api.apiConfig import api
-from src.api.fitcrack.endpoints.chart.chart import ns as chart_namespace
-from src.api.fitcrack.endpoints.hashcat.hashcat import ns as hashcat_namespace
-from src.api.fitcrack.endpoints.host.hosts import ns as hosts_namespace
-from src.api.fitcrack.endpoints.notifications.notifications import ns as notifications_namespace
-from src.api.fitcrack.endpoints.job.job import ns as job_namespace
-from src.api.fitcrack.endpoints.bins.bins import ns as bins_namespace
-from src.api.fitcrack.endpoints.batches.batches import ns as batches_namespace
-from src.api.fitcrack.endpoints.serverInfo.server import ns as server_namespace
-from src.api.fitcrack.endpoints.user.user import login_manager
-from src.api.fitcrack.endpoints.user.user import ns as user_namespace
-from src.api.fitcrack.endpoints.dictionary.dictionary import ns as dictionary_namespace
-from src.api.fitcrack.endpoints.pcfg.pcfg import ns as pcfg_namespace
-from src.api.fitcrack.endpoints.markov.markov import ns as markov_namespace
-from src.api.fitcrack.endpoints.masks.masks import ns as masks_namespace
-from src.api.fitcrack.endpoints.rule.rule import ns as rule_namespace
-from src.api.fitcrack.endpoints.charset.charset import ns as charset_namespace
-from src.api.fitcrack.endpoints.directory.directory import ns as directory_ns
-from src.api.fitcrack.endpoints.protectedFile.protectedFile import ns as protected_files_ns
-from src.api.fitcrack.endpoints.hashCache.hashes import ns as hashes_ns
-from src.api.fitcrack.endpoints.jobTemplate.template import ns as template_ns
-from src.api.fitcrack.endpoints.logs.logs import ns as logs_ns
-from src.api.fitcrack.endpoints.status.status import ns as status_ns
-from src.api.fitcrack.endpoints.pcfg.pcfg import ns as pcfg_ns
-from src.api.fitcrack.endpoints.settings.settings import ns as settings_ns
+from src.api.hashstation.endpoints.chart.chart import ns as chart_namespace
+from src.api.hashstation.endpoints.hashcat.hashcat import ns as hashcat_namespace
+from src.api.hashstation.endpoints.host.hosts import ns as hosts_namespace
+from src.api.hashstation.endpoints.notifications.notifications import ns as notifications_namespace
+from src.api.hashstation.endpoints.job.job import ns as job_namespace
+from src.api.hashstation.endpoints.bins.bins import ns as bins_namespace
+from src.api.hashstation.endpoints.batches.batches import ns as batches_namespace
+from src.api.hashstation.endpoints.serverInfo.server import ns as server_namespace
+from src.api.hashstation.endpoints.user.user import login_manager
+from src.api.hashstation.endpoints.user.user import ns as user_namespace
+from src.api.hashstation.endpoints.dictionary.dictionary import ns as dictionary_namespace
+from src.api.hashstation.endpoints.pcfg.pcfg import ns as pcfg_namespace
+from src.api.hashstation.endpoints.markov.markov import ns as markov_namespace
+from src.api.hashstation.endpoints.masks.masks import ns as masks_namespace
+from src.api.hashstation.endpoints.rule.rule import ns as rule_namespace
+from src.api.hashstation.endpoints.charset.charset import ns as charset_namespace
+from src.api.hashstation.endpoints.directory.directory import ns as directory_ns
+from src.api.hashstation.endpoints.protectedFile.protectedFile import ns as protected_files_ns
+from src.api.hashstation.endpoints.hashCache.hashes import ns as hashes_ns
+from src.api.hashstation.endpoints.jobTemplate.template import ns as template_ns
+from src.api.hashstation.endpoints.logs.logs import ns as logs_ns
+from src.api.hashstation.endpoints.status.status import ns as status_ns
+from src.api.hashstation.endpoints.pcfg.pcfg import ns as pcfg_ns
+from src.api.hashstation.endpoints.settings.settings import ns as settings_ns
 
-from src.api.fitcrack.endpoints.notifications.notifier import notify
+from src.api.hashstation.endpoints.notifications.notifier import notify
 
 from src.database import db
-from src.database.models import FcUser
+from src.database.models import HsUser
 
 from flask_apscheduler import APScheduler
 
@@ -126,7 +126,7 @@ db.init_app(app)
 
 def notifier():
     with app.app_context():
-        for user in FcUser.query.all():
+        for user in HsUser.query.all():
             notify(user)
 
 scheduler = APScheduler()

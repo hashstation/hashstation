@@ -7,7 +7,7 @@
 import sys
 
 
-sys.path.insert(0,"/var/www/fitcrackAPI/src/")
+sys.path.insert(0,"/var/www/hashstationAPI/src/")
 
 from app import app as application
 application.debug = False

@@ -47,5 +47,5 @@ The main navigation links to every part of the system. You can find a very brief
   - __Job Templates__ – Lists saved job templates for management
   - __Manage Users__ – Allows administrators to create and change user accounts, and to create or assign roles
   - __Server Monitor__ – Shows server resource usage and service status
-  - __Settings__ – Shows various settings for Webadmin and also for the Fitcrack configuration
+  - __Settings__ – Shows various settings for Webadmin and also for the Hashstation configuration
   - __Data Transfer__ – Allows you to export and import jobs

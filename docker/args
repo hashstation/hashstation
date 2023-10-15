@@ -1,20 +1,20 @@
 USER=root                      # root should be used for installation
 
 # MySQL database environment variables
-DB_HOST=${FITCRACK_DB_HOST}    # Database hostname
-DB_NAME=${FITCRACK_DB_NAME}    # Database name
-DB_USER=${FITCRACK_DB_USER}    # Database username
-DB_PW=${FITCRACK_DB_PW}        # Database password
+DB_HOST=${HASHSTATION_DB_HOST}    # Database hostname
+DB_NAME=${HASHSTATION_DB_NAME}    # Database name
+DB_USER=${HASHSTATION_DB_USER}    # Database username
+DB_PW=${HASHSTATION_DB_PW}        # Database password
 
-# Fitcrack environment variables
-FITCRACK_HOST=${FITCRACK_HOST}    # Fitcrack hostname
-FITCRACK_PROTO=${FITCRACK_PROTO}  # Fitcrack protocol ('http' or 'https')
-BACKEND_PORT=${BACKEND_PORT}      # Fitcrack backend port
-FRONTEND_PORT=${FRONTEND_PORT}    # Fitcrack frontend port
-SSL_FITCRACK=${SSL_FITCRACK}      # SSL engine state for Fitcrack ('y' or 'n')
-FITCRACK_USER=${FITCRACK_LOGIN}   # Login for the default Fitcrack account
-FITCRACK_EMAIL=${FITCRACK_EMAIL}  # Email for the default Fitcrack account
-FITCRACK_PW=${FITCRACK_PW}        # Password for the default Fitcrack account
+# Hashstation environment variables
+HASHSTATION_HOST=${HASHSTATION_HOST}    # Hashstation hostname
+HASHSTATION_PROTO=${HASHSTATION_PROTO}  # Hashstation protocol ('http' or 'https')
+BACKEND_PORT=${BACKEND_PORT}      # Hashstation backend port
+FRONTEND_PORT=${FRONTEND_PORT}    # Hashstation frontend port
+SSL_HASHSTATION=${SSL_HASHSTATION}      # SSL engine state for Hashstation ('y' or 'n')
+HASHSTATION_USER=${HASHSTATION_LOGIN}   # Login for the default Hashstation account
+HASHSTATION_EMAIL=${HASHSTATION_EMAIL}  # Email for the default Hashstation account
+HASHSTATION_PW=${HASHSTATION_PW}        # Password for the default Hashstation account
 
 DYNAMIC_BACKEND_URL=${DYNAMIC_BACKEND_URL}
 
@@ -27,14 +27,14 @@ BOINC_URL=${BOINC_PROTO}://${BOINC_HOST}:${BOINC_PORT}
 BOINC_USER=boincadm               # User that runs the BOINC server
 BOINC_GROUP=boincadm              # User group that runs the BOINC server
 BOINC_HOME=/home/boincadm         # Home directory of the BOINC server user
-BOINC_PROJECT=fitcrack            # Name of the BOINC project
-BOINC_PROJECT_DIR=/home/boincadm/projects/fitcrack
-OPS_LOGIN=${FITCRACK_LOGIN}       # Login for http(s):/HOST/fitcrack_ops
-OPS_PW=${FITCRACK_PW}             # Password for http(s):/HOST/fitcrack_ops
-SERVICE_INSTALL=y                 # Install Fitcrack as a service (needed)
-PROJECT_HTTPD_CONF=/home/boincadm/projects/fitcrack/fitcrack.httpd.conf
+BOINC_PROJECT=hashstation            # Name of the BOINC project
+BOINC_PROJECT_DIR=/home/boincadm/projects/hashstation
+OPS_LOGIN=${HASHSTATION_LOGIN}       # Login for http(s):/HOST/hashstation_ops
+OPS_PW=${HASHSTATION_PW}             # Password for http(s):/HOST/hashstation_ops
+SERVICE_INSTALL=y                 # Install Hashstation as a service (needed)
+PROJECT_HTTPD_CONF=/home/boincadm/projects/hashstation/hashstation.httpd.conf
 
-# SSL certificate file names (used if SSL_FITCRACK='y' or SSL_BOINC='y')
+# SSL certificate file names (used if SSL_HASHSTATION='y' or SSL_BOINC='y')
 SSL_CERTIFICATE_FILE=${SSL_CERTIFICATE_FILE}
 SSL_CERTIFICATE_KEYFILE=${SSL_CERTIFICATE_KEYFILE}
 

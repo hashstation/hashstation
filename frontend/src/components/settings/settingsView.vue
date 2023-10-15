@@ -266,7 +266,7 @@
             <v-switch
               v-model="testmode"
               label="Developer mode"
-              hint="Enables useful utilities throughout the app when developing Fitcrack."
+              hint="Enables useful utilities throughout the app when developing Hashstation."
               persistent-hint
               class="mb-4"
             />
@@ -297,11 +297,11 @@
         appearanceHint () {
           switch (this.appearance) {
             case 'auto':
-              return 'Fitcrack will change appearance dynamically based on your system theme'
+              return 'Hashstation will change appearance dynamically based on your system theme'
             case 'light':
-              return 'Fitcrack will retain light appearance regardless of your system theme'
+              return 'Hashstation will retain light appearance regardless of your system theme'
             case 'dark':
-              return 'Fitcrack will retain dark appearance regardless of your system theme'
+              return 'Hashstation will retain dark appearance regardless of your system theme'
             default:
               return undefined
           }

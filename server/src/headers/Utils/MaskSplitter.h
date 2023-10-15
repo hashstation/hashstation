@@ -1,5 +1,5 @@
-#ifndef FITCRACK_MASK_SPLITTER_H_
-#define FITCRACK_MASK_SPLITTER_H_
+#ifndef HASHSTATION_MASK_SPLITTER_H_
+#define HASHSTATION_MASK_SPLITTER_H_
 
 #include <unordered_map>
 #include <string>
@@ -33,4 +33,4 @@ class MaskSplitterBenchmark: public MaskSplitter
 	virtual MaskSettings GetMaskSlice(const std::string &mask, uint64_t, uint64_t) override {return {mask, m_customCharsets, 0};}
 };
 
-#endif //FITCRACK_MASK_SPLITTER_H_
+#endif //HASHSTATION_MASK_SPLITTER_H_

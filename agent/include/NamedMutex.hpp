@@ -3,8 +3,8 @@
  * Licence: MIT, see LICENSE
  */
 
-#ifndef FC_AGENT_NAMED_MUTEX_HPP
-#define FC_AGENT_NAMED_MUTEX_HPP
+#ifndef HS_AGENT_NAMED_MUTEX_HPP
+#define HS_AGENT_NAMED_MUTEX_HPP
 
 #include <string>
 
@@ -54,4 +54,4 @@ private:
 	NamedMutex &operator=(NamedMutex);
 };
 
-#endif //FC_AGENT_NAMED_MUTEX_HPP
+#endif //HS_AGENT_NAMED_MUTEX_HPP

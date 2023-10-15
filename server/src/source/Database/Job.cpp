@@ -1,6 +1,6 @@
 /**
  * @file job.cpp
- * @brief Source file for fc_job entry
+ * @brief Source file for hs_job entry
  * @authors Lukas Zobal (zobal.lukas(at)gmail.com)
  * @date 12. 12. 2018
  * @license MIT, see LICENSE

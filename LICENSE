@@ -1,46 +1,46 @@
-Fitcrack system consists of multiple subsystems:
-- Fitcrack server daemons
-- Fitcrack runner
-- Fitcrack webadmin
+Hashstation system consists of multiple subsystems:
+- Hashstation server daemons
+- Hashstation agent
+- Hashstation frontend and backend
 - hashcat binaries
 - BOINC Server
-- Third-party utilities used by WebAdmin backend
+- Third-party utilities used by Hashstation backend
 
-Fitcrack server daemons
+Hashstation Server Daemons
 =======================
 - license: MIT license - see server/LICENSE
-- authors: Fitcrack team, see server/AUTHORS
+- authors: Hashstation / Fitcrack team, see server/AUTHORS
 - sources: server/src
 
-Fitcrack runner
+Hashstation Agent
 ===============
-- license: MIT license - see runner/LICENSE
-- authors: Fitcrack team, see runnner/AUTHORS
-- sources: runner
+- license: MIT license - see agent/LICENSE
+- authors: Hashstation / Fitcrack team, see agent/AUTHORS
+- sources: agent
 
-Fitcrack webadmin
+Hashstation Frontend and Backend
 =================
-- license: MIT license - see fitcrack/LICENSE
-- authors: Fitcrack team, see fitcrack/AUTHORS
-- sources: fitcrack/frontend (frontend) and fitcrack/backend/src (backend)
+- license: MIT license - see LICENSE
+- authors: Hashstation / Fitcrack team, see AUTHORS
+- sources: hashstation/frontend (frontend) and hashstation/backend/src (backend)
 
 hashcat binaries
 ================
 - license: MIT
-- location: server/client_bin and fitcrack/backend/hashcat-*
-- authors: see fitcrack/backend/hashcat-*/docs/credits.txt
+- location: server/client_bin and hashstation/backend/hashcat-*
+- authors: see hashstation/backend/hashcat-*/docs/credits.txt
 - homepage: hashcat.net
 
 BOINC server
 ============
 - license: GNU LGPL
 - location boinc
-- authors: University of Berkeley, slight modifications by Fitcrack team
+- authors: University of Berkeley, slight modifications by Hashstation / Fitcrack team
 - homepage: boinc.berkeley.edu
 
 Third-party utilities used by webadmin backend
 ==============================================
-- location: fitcrack/backend/*
+- location: hashstation/backend/*
 - hashcat-utils - by Jens "atom" Steube under MIT license
 - princeprocessor - by Jens "atom" Steube under MIT license
 - pcfg_trainer - by Matt "lakiw" Weir

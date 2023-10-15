@@ -17,8 +17,8 @@
         <user_friendly_name>Linux running on an AMD x86_64 or Intel EM64T CPU</user_friendly_name>
     </platform>
     <app>
-        <user_friendly_name>Fitcrack</user_friendly_name>
-        <name>fitcrack</name>
+        <user_friendly_name>Hashstation</user_friendly_name>
+        <name>hashstation</name>
     </app>
 </boinc>
 

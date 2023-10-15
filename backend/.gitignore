@@ -35,12 +35,12 @@ build
 __pycache__/
 src/__pycache__/
 src/api/__pycache__/
-src/api/fitcrack/__pycache__/
-src/api/fitcrack/attacks/__pycache__/
-src/api/fitcrack/endpoints/__pycache__/
-src/api/fitcrack/endpoints/hashcat/__pycache__/
-src/api/fitcrack/endpoints/host/__pycache__/
-src/api/fitcrack/endpoints/package/__pycache__/
-src/api/fitcrack/endpoints/serverInfo/__pycache__/
+src/api/hashstation/__pycache__/
+src/api/hashstation/attacks/__pycache__/
+src/api/hashstation/endpoints/__pycache__/
+src/api/hashstation/endpoints/hashcat/__pycache__/
+src/api/hashstation/endpoints/host/__pycache__/
+src/api/hashstation/endpoints/package/__pycache__/
+src/api/hashstation/endpoints/serverInfo/__pycache__/
 src/database/__pycache__/
 

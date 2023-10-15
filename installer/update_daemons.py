@@ -4,10 +4,10 @@ from getpass import getpass
 
 def update_daemons():
     print(" " * 58)
-    print("=" * 12 + " Fitcrack server daemons update " + "=" * 12)
+    print("=" * 12 + " Hashstation server daemons update " + "=" * 12)
     print(" " * 58)
 
-    print("You chose to update Fitcrack server daemons.")
+    print("You chose to update Hashstation server daemons.")
     print("We recommend to first stop the ongoing cracking jobs.")
     print(" ")
     print("This process will:")
@@ -30,16 +30,16 @@ def update_daemons():
             print("Please set the BOINC_PROJECT_DIR and BOINC_USER environment variables.")
             return
 
-        print("Stopping Fitcrack server...")
+        print("Stopping Hashstation server...")
         subprocess.run(f"sudo -u {boinc_user} ./bin/stop", shell=True, cwd=boinc_project_dir)
 
-        print("Rebuilding Fitcrack server...")
+        print("Rebuilding Hashstation server...")
         subprocess.run("./installer/build_server.sh", shell=True)
 
-        print("Reinstalling Fitcrack daemons...")
+        print("Reinstalling Hashstation daemons...")
         subprocess.run("./installer/install_daemons.py", shell=True)
 
-        print("Starting Fitcrack server...")
+        print("Starting Hashstation server...")
         subprocess.run(f"sudo -u {boinc_user} ./bin/start", shell=True, cwd=boinc_project_dir)
 
         print("Server daemons updated and started.")

@@ -40,7 +40,7 @@ class AttackMode {
         virtual ~AttackMode() = default;
 
         /**
-         * @brief Creates BOINC workunit, adds entry to fc_workunit
+         * @brief Creates BOINC workunit, adds entry to hs_workunit
          * @return True if a workunit was planned, False otherwise
          */
         virtual bool makeWorkunit() = 0;

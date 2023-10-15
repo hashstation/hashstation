@@ -1,6 +1,6 @@
 /**
  * @file Job.h
- * @brief Header file for fc_job entry
+ * @brief Header file for hs_job entry
  * @authors Lukas Zobal (zobal.lukas(at)gmail.com)
  * @date 12. 12. 2018
  * @license MIT, see LICENSE
@@ -28,7 +28,7 @@ class CJob {
     private:
         /**
          * @brief Private constructor, called by create() static function
-         * @param jobMap [in] Map representing fc_job table entry
+         * @param jobMap [in] Map representing hs_job table entry
          * @param sqlLoader [in] Pointer to SqlLoader for database updates
          */
         explicit CJob(DbMap & jobMap, CSqlLoader * sqlLoader);
@@ -39,14 +39,14 @@ class CJob {
 
         /**
          * @brief Creating instance as a shared pointer from database select
-         * @param hostMap [in] Map representing fc_job table entry
+         * @param hostMap [in] Map representing hs_job table entry
          * @param sqlLoader [in] Pointer to SqlLoader for database updates
-         * @return Shared pointer to fc_job entry object
+         * @return Shared pointer to hs_job entry object
          */
         static PtrJob create(DbMap &jobMap, CSqlLoader * sqlLoader);
 
         /**
-         * @brief Get the job SQL table name, usually fc_job
+         * @brief Get the job SQL table name, usually hs_job
          * @return Job SQL table name
          */
         static std::string getTableName();
@@ -109,7 +109,7 @@ class CJob {
         CSqlLoader * m_sqlLoader;         /**< SqlLoader for database updating */
 
         /**
-         * @section Table attributes of fc_job
+         * @section Table attributes of hs_job
          */
 
         uint64_t    m_id;

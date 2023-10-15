@@ -1,6 +1,6 @@
 {
-  "name": "Fitcrack Webadmin",
-  "short_name": "Fitcrack",
+  "name": "Hashstation Webadmin",
+  "short_name": "Hashstation",
   "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#000000",

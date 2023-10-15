@@ -17,7 +17,7 @@ int main(int argc, char **argv) {
   std::string exception_message;
 
   try {
-    Logging::debugPrint(Logging::Detail::Important, "Fitcrack Agent " AGENT_VERSION);
+    Logging::debugPrint(Logging::Detail::Important, "Hashstation Agent " AGENT_VERSION);
 
     Directory directory(".");
     File file;

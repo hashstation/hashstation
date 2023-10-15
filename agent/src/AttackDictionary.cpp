@@ -34,7 +34,7 @@ void AttackDictionary::addSpecificArguments() {
     if (!Directory::exists(prestoredDictsPath)) {
       AgentUtils::runtimeException("Unable to find prestored dict " + dict1Name);
     }
-    // Try to use prestored dictionary on host. In fitcrack.conf you can set
+    // Try to use prestored dictionary on host. In hashstation.conf you can set
     // custom dir where Agent should look for dictionaries. If the user enable
     // option to use prestored dictionaries, generator will send dictionary
     // name, so we will now search for this dictionary.

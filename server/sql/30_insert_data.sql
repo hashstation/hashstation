@@ -1,7 +1,7 @@
 --
 -- Insert default charsets
 
-INSERT INTO `fc_charset` (`id`, `name`, `path`, `keyspace`, `time`, `deleted`) VALUES
+INSERT INTO `hs_charset` (`id`, `name`, `path`, `keyspace`, `time`, `deleted`) VALUES
 -- generic charsets
 (1,	'alpha_ci',	'alpha_ci.hcchr', 52, '2022-02-17 12:00:00',	0),
 (2,	'alphanum_ci',	'alphanum_ci.hcchr', 62, '2022-02-17 12:00:00',	0),
@@ -21,7 +21,7 @@ INSERT INTO `fc_charset` (`id`, `name`, `path`, `keyspace`, `time`, `deleted`) V
 -- Insert default dictionaries
 --
 
-INSERT INTO `fc_dictionary` (`id`, `name`, `path`, `password_distribution`, `keyspace`, `time`, `hex_dict`, `deleted`) VALUES
+INSERT INTO `hs_dictionary` (`id`, `name`, `path`, `password_distribution`, `keyspace`, `time`, `hex_dict`, `deleted`) VALUES
 (1,	'honeynet.txt',	'honeynet.txt', '1:79;2:462;3:2319;4:7037;5:15178;6:38198;7:40560;8:58665;9:20256;10:15645;11:13217;12:6237;13:3669;14:2149;15:1232;16:618;17:257;18:126;19:59;20:48;21:27;22:7;23:9;24:4;25:5;26:5;27:2;28:2;29:1;30:2;31:2;32:1;34:1;39:1;50:1;',	226082,	'2018-08-18 12:00:00',	0, 0),
 (2,	'darkweb2017-top1000.txt',	'darkweb2017-top1000.txt',	'1:8;2:1;3:5;4:20;5:23;6:359;7:238;8:187;9:82;10:58;11:6;12:6;13:1;14:1;16:1;18:1;21:1;24:1;', 1000,	'2018-08-18 12:00:00',	0,	0),
 (3,	'myspace.txt',	'myspace.txt',	'1:23;2:17;3:41;4:176;5:278;6:5654;7:8391;8:8492;9:6427;10:5316;11:1136;12:455;13:210;14:118;15:74;16:65;17:31;18:29;19:22;20:24;21:18;22:12;23:7;24:17;25:4;26:7;27:10;28:7;29:11;30:2;31:7;32:6;33:3;34:7;35:3;37:2;38:1;39:3;40:2;41:1;42:2;43:3;44:4;45:2;47:1;49:1;50:1;57:1;58:1;59:4;60:1;63:1;65:1;73:1;77:1;85:1;89:1;95:1;96:1;98:1;130:1;154:1;1650:1;5296:1;6341:1;', 37123,	'2018-08-18 12:00:00',	0,	0),
@@ -36,7 +36,7 @@ INSERT INTO `fc_dictionary` (`id`, `name`, `path`, `password_distribution`, `key
 -- Insert default hashes
 --
 
-INSERT INTO `fc_hash` (`id`, `job_id`, `hash_type`, `hash`, `result`, `added`, `time_cracked`) VALUES
+INSERT INTO `hs_hash` (`id`, `job_id`, `hash_type`, `hash`, `result`, `added`, `time_cracked`) VALUES
 (1,	2,	0,	'1ffd9e753c8054cc61456ac7fac1ac89',	NULL,	'2018-08-18 12:00:00',	NULL),
 (2,	2,	0,	'79e262a81dd19d40ae008f74eb59edce',	NULL,	'2018-08-18 12:00:00',	NULL),
 (3,	2,	0,	'6517217c0041e7f36e9eae5caca8b69e',	NULL,	'2018-08-18 12:00:00',	NULL),
@@ -6554,7 +6554,7 @@ INSERT INTO `fc_hash` (`id`, `job_id`, `hash_type`, `hash`, `result`, `added`, `
 -- Insert default hcstats
 --
 
-INSERT INTO `fc_hcstats` (`id`, `name`, `path`, `time`, `deleted`) VALUES
+INSERT INTO `hs_hcstats` (`id`, `name`, `path`, `time`, `deleted`) VALUES
 (1,	'hashcat.hcstat2',	'hashcat.hcstat2',	'2018-08-18 12:00:00',	0);
 
 
@@ -6562,7 +6562,7 @@ INSERT INTO `fc_hcstats` (`id`, `name`, `path`, `time`, `deleted`) VALUES
 -- Insert default masks
 --
 
-INSERT INTO `fc_mask` (`id`, `job_id`, `mask`, `current_index`, `keyspace`, `hc_keyspace`) VALUES
+INSERT INTO `hs_mask` (`id`, `job_id`, `mask`, `current_index`, `keyspace`, `hc_keyspace`) VALUES
 (1,	4,	'?l',	0,	26,	1),
 (2,	4,	'?l?l',	0,	676,	26),
 (3,	4,	'?l?l?l',	0,	17576,	676),
@@ -6577,7 +6577,7 @@ INSERT INTO `fc_mask` (`id`, `job_id`, `mask`, `current_index`, `keyspace`, `hc_
 -- Insert default mask sets
 --
 
-INSERT INTO `fc_masks_set` (`id`, `name`, `path`, `time`, `deleted`) VALUES
+INSERT INTO `hs_masks_set` (`id`, `name`, `path`, `time`, `deleted`) VALUES
 (1,	'lower1-10.hcmask',	'lower1-10.hcmask',	'2018-08-18 12:00:00',	0),
 (2,	'upper1-10.hcmask',	'upper1-10.hcmask',	'2018-08-18 12:00:00',	0),
 (3,	'rockyou-3-3600.hcmask',	'rockyou-3-3600.hcmask',	'2018-08-18 12:00:00',	0),
@@ -6588,7 +6588,7 @@ INSERT INTO `fc_masks_set` (`id`, `name`, `path`, `time`, `deleted`) VALUES
 -- Instert default PCFGs
 --
 
-INSERT INTO `fc_pcfg_grammar` (`id`, `name`, `path`, `keyspace`, `time_added`, `deleted`) VALUES
+INSERT INTO `hs_pcfg_grammar` (`id`, `name`, `path`, `keyspace`, `time_added`, `deleted`) VALUES
 (1, 'john', 'john', 1321431161, '2019-08-30 12:14:53', 0),
 (2, 'facebook-pastebay', 'facebook-pastebay', 999, '2019-08-30 12:15:08', 0),
 (3, 'twitter-banned', 'twitter-banned', 1096, '2019-08-30 12:17:48', 0);
@@ -6597,14 +6597,14 @@ INSERT INTO `fc_pcfg_grammar` (`id`, `name`, `path`, `keyspace`, `time_added`, `
 -- Create default job bins
 --
 
-INSERT INTO `fc_bin` (`name`) VALUES
+INSERT INTO `hs_bin` (`name`) VALUES
 ('Samples');
 
 --
 -- Insert default BENCH_ALL job and sample jobs
 --
 
-INSERT INTO `fc_job` (`id`, `attack`, `attack_mode`, `attack_submode`, `distribution_mode`, `hash_type`, `status`, `keyspace`, `hc_keyspace`, `indexes_verified`, `current_index`, `current_index_2`, `time`, `name`, `comment`, `time_start`, `time_end`, `seconds_per_workunit`, `charset1`, `charset2`, `charset3`, `charset4`, `rules`, `rule_left`, `rule_right`, `markov_hcstat`, `markov_threshold`, `grammar_id`, `min_password_len`, `max_password_len`, `min_elem_in_chain`, `max_elem_in_chain`, `optimized`, `dict_deployment_mode`, `deleted`) VALUES
+INSERT INTO `hs_job` (`id`, `attack`, `attack_mode`, `attack_submode`, `distribution_mode`, `hash_type`, `status`, `keyspace`, `hc_keyspace`, `indexes_verified`, `current_index`, `current_index_2`, `time`, `name`, `comment`, `time_start`, `time_end`, `seconds_per_workunit`, `charset1`, `charset2`, `charset3`, `charset4`, `rules`, `rule_left`, `rule_right`, `markov_hcstat`, `markov_threshold`, `grammar_id`, `min_password_len`, `max_password_len`, `min_elem_in_chain`, `max_elem_in_chain`, `optimized`, `dict_deployment_mode`, `deleted`) VALUES
 (1, 'mask', 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, NOW(), 'BENCH_ALL', 'This is default job for benchmarking all hosts.', NULL, NULL, 3600, '', '', '', '', NULL, '', '', NULL, 0, NULL, 0, 0, 0, 0, 1, 0, 1),
 (2, 'dictionary',	0,	0,	0,  0,	0,	92431,	92431,	0,	0,	0,	'2018-08-18 12:00:00',	'sample-dict-md5-quick',	'Default hashcat MD5 hashlist',	NULL,	NULL,	120, '',	'',	'',	'',	NULL,	'',	'',	'',	0, NULL, 0, 0, 0, 0, 1, 0, 0),
 (3, 'dictionary',	0,	0,	0,  3200,	0,	226082,	226082,	0,	0,	0,	'2018-08-18 12:00:00',	'sample-dict-bcrypt',	'',	NULL,	NULL,	60,	'',	'',	'',	'',	NULL,	'',	'',	'',	0, NULL, 0, 0, 0, 0, 1, 0, 0),
@@ -6617,7 +6617,7 @@ INSERT INTO `fc_job` (`id`, `attack`, `attack_mode`, `attack_submode`, `distribu
 -- Insert default job dictionaries
 --
 
-INSERT INTO `fc_job_dictionary` (`id`, `job_id`, `dictionary_id`, `current_index`, `current_pos`, `is_left`) VALUES
+INSERT INTO `hs_job_dictionary` (`id`, `job_id`, `dictionary_id`, `current_index`, `current_pos`, `is_left`) VALUES
 (1,	2,	3,	0,	0,	1),
 (2,	2,	2,	0,	0,	1),
 (3,	2,	8,	0,	0,	1),
@@ -6631,7 +6631,7 @@ INSERT INTO `fc_job_dictionary` (`id`, `job_id`, `dictionary_id`, `current_index
 -- Assign sample jobs to Samples bin
 --
 
-INSERT INTO `fc_bin_job` (`job_id`, `bin_id`) VALUES
+INSERT INTO `hs_bin_job` (`job_id`, `bin_id`) VALUES
 (2, 1),
 (3, 1),
 (4, 1),
@@ -6644,7 +6644,7 @@ INSERT INTO `fc_bin_job` (`job_id`, `bin_id`) VALUES
 -- Insert default rules
 --
 
-INSERT INTO `fc_rule` (`id`, `name`, `path`, `count`, `time`, `deleted`) VALUES
+INSERT INTO `hs_rule` (`id`, `name`, `path`, `count`, `time`, `deleted`) VALUES
 (1,	'best64.rule',	'best64.rule',  77,  '2018-08-18 12:00:00',	0),
 (2,	'd3ad0ne.rule',	'd3ad0ne.rule', 34099,  '2018-08-18 12:00:00',	0),
 (3,	'leetspeak.rule',	'leetspeak.rule', 17, '2018-08-18 12:00:00',	0),
@@ -6653,21 +6653,21 @@ INSERT INTO `fc_rule` (`id`, `name`, `path`, `count`, `time`, `deleted`) VALUES
 (6,	'prince_optimized.rule',	'prince_optimized.rule',  1156,	'2018-08-18 12:00:00',	0);
 
 --
--- Insert default user ( username: fitcrack , password: FITCRACK)
+-- Insert default user ( username: hashstation , password: HASHSTATION)
 --
 
-INSERT INTO `fc_role` (`name`, `MANAGE_USERS`, `ADD_NEW_JOB`, `UPLOAD_DICTIONARIES`, `VIEW_ALL_JOBS`, `EDIT_ALL_JOBS`, `OPERATE_ALL_JOBS`, `ADD_USER_PERMISSIONS_TO_JOB`) VALUES
+INSERT INTO `hs_role` (`name`, `MANAGE_USERS`, `ADD_NEW_JOB`, `UPLOAD_DICTIONARIES`, `VIEW_ALL_JOBS`, `EDIT_ALL_JOBS`, `OPERATE_ALL_JOBS`, `ADD_USER_PERMISSIONS_TO_JOB`) VALUES
 ('admin', 1, 1, 1, 1, 1, 1, 1),
 ('user', 0, 1, 1, 1, 1, 1, 1);
 
-INSERT INTO `fc_user` (`username`, `password`, `mail`, `role_id`, `deleted`) VALUES
-('fitcrack', 'pbkdf2:sha256:50000$YqLJFcXh$430310718869b9783680c546a5fb1a50e9b34d7e49cc1bd1dd2a508b46c7409c', 'admin@fitcrack.com', 1, 0);
+INSERT INTO `hs_user` (`username`, `password`, `mail`, `role_id`, `deleted`) VALUES
+('hashstation', 'pbkdf2:sha256:600000$Q2hJkp6VUCBt6U8Q$f3bc7b3b059c9cecb28bd0c457185955aa129f3010548c9f520d7fd5ca184f0e', 'admin@hashstation.com', 1, 0);
 
 --
--- Give admin ownership of jobs shipping with fitcrack
+-- Give admin ownership of jobs shipping with hashstation
 --
 
-INSERT INTO `fc_user_permissions` (`job_id`, `user_id`, `owner`) VALUES
+INSERT INTO `hs_user_permissions` (`job_id`, `user_id`, `owner`) VALUES
 (1, 1, 1),
 (2, 1, 1),
 (3, 1, 1),
@@ -6680,5 +6680,5 @@ INSERT INTO `fc_user_permissions` (`job_id`, `user_id`, `owner`) VALUES
 -- Insert default settings row
 --
 
-INSERT INTO `fc_settings` (`user_id`, `default_seconds_per_workunit`, `workunit_timeout_factor`, `hwmon_temp_abort`, `bench_all`, `verify_hash_format`, `auto_add_hosts_to_running_jobs`) VALUES
+INSERT INTO `hs_settings` (`user_id`, `default_seconds_per_workunit`, `workunit_timeout_factor`, `hwmon_temp_abort`, `bench_all`, `verify_hash_format`, `auto_add_hosts_to_running_jobs`) VALUES
 (1, 600, 48, 90, 0, 1, 0);

@@ -36,7 +36,7 @@ In this first step, you input the hashes you want to try to crack. There are thr
 - Reading hashes from a file you upload
 - Extracting from a protected file, like a PDF
 
-The [next section](/jobs/creating/input.md) takes an in-depth look at each of them. Select a method using the toggle button __(1)__ and enter your hashes in the text area __(2)__ or upload your files. Depending on the input method you chose, Fitcrack may be able to automatically detect the type of hash. If not, you have to select it manually from the dropdown __(3)__.
+The [next section](/jobs/creating/input.md) takes an in-depth look at each of them. Select a method using the toggle button __(1)__ and enter your hashes in the text area __(2)__ or upload your files. Depending on the input method you chose, Hashstation may be able to automatically detect the type of hash. If not, you have to select it manually from the dropdown __(3)__.
 
 After setting the hash type, each hash is validated. __Green checkmarks__ indicate the hash is valid for this type (algorithm). Hashes that have already been entered into the system and are stored in the cache will have a __yellow exclamation mark__. This is purely informational. Invalid hashes, on the other hand, should not be used in the configuration. If one or more hashes are invalid, the input field is marked __red__ and you won't be able to create the job.
 
@@ -60,7 +60,7 @@ Assigning Hosts
 
 ![Hosts table](../../_media/img/add-job/host-assignment.png)
 
-In this step, you tap into the real potential of the Fitcrack system. The job we've been configuring until now will be distributed between compute nodes, called hosts, based on their measured computing power. You can select which of the hosts currently connected to the system will be participating in the cracking.
+In this step, you tap into the real potential of the Hashstation system. The job we've been configuring until now will be distributed between compute nodes, called hosts, based on their measured computing power. You can select which of the hosts currently connected to the system will be participating in the cracking.
 
 > Don't see any hosts in the table? See the guide in the [Host nodes](/guide/hosts.md?id=connecting-hosts) section of the introductory chapter.
 

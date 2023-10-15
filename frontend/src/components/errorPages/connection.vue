@@ -93,7 +93,7 @@
             <v-card-actions>
               <v-btn 
                 text
-                to="//github.com/nesfit/fitcrack/issues"
+                to="//github.com/nesfit/hashstation/issues"
                 target="_blank"
               >
                 <v-icon left>mdi-github</v-icon>
@@ -123,10 +123,10 @@
                   </span>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content class="limit-width">
-                  Are you connected to the right network? Your Fitcrack API server might be exposed to a different network, or your internet connection maybe isn't working right and the app loaded out of cache.
+                  Are you connected to the right network? Your Hashstation API server might be exposed to a different network, or your internet connection maybe isn't working right and the app loaded out of cache.
                   <ul>
                     <li>Check your internet connection</li>
-                    <li>Check where you are – do you need a VPN to connect to Fitcrack?</li>
+                    <li>Check where you are – do you need a VPN to connect to Hashstation?</li>
                     <li>If you are on the same network as the server, try to ping it</li>
                   </ul>
                 </v-expansion-panel-content>
@@ -142,7 +142,7 @@
                 <v-expansion-panel-content class="limit-width">
                   The webadmin app is configured to connect to the API on a specific address. Check if it hasn't changed server-side, or if it was configured correctly in the first place.
                   <ul>
-                    <li>Check if <code>window.serverAddress</code> in the <code>/public/static/configuration.js</code> file of FitcrackFE has the correct address</li>
+                    <li>Check if <code>window.serverAddress</code> in the <code>/public/static/configuration.js</code> file of HashstationFE has the correct address</li>
                     <li>Double-check the server's current address!</li>
                   </ul>
                 </v-expansion-panel-content>
@@ -156,10 +156,10 @@
                   </span>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content class="limit-width">
-                  The API server could be offline or malfunctoining. You could try to restart the Fitcrack service.
+                  The API server could be offline or malfunctoining. You could try to restart the Hashstation service.
                   <ul>
-                    <li>Access the server shell and check if the service is enabled with <code>service fitcrack status</code></li>
-                    <li>Try to start it up if needed with <code>service fitcrack start</code></li>
+                    <li>Access the server shell and check if the service is enabled with <code>service hashstation status</code></li>
+                    <li>Try to start it up if needed with <code>service hashstation start</code></li>
                   </ul>
                 </v-expansion-panel-content>
               </v-expansion-panel>

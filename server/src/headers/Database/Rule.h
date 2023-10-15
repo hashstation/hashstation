@@ -1,6 +1,6 @@
 /**
  * @file Rule.h
- * @brief Header file for fc_[rule_]dictionary entries
+ * @brief Header file for hs_[rule_]dictionary entries
  * @authors David Bolvansky
  * @license MIT, see LICENSE
  */
@@ -20,7 +20,7 @@ class CRule {
     private:
         /**
          * @brief Private constructor, called by create() static function
-         * @param dictMap [in] Map representing fc_[job_]dictionary table entries
+         * @param dictMap [in] Map representing hs_[job_]dictionary table entries
          * @param sqlLoader [in] Pointer to SqlLoader for database updates
          */
         explicit CRule(DbMap & dictMap, CSqlLoader * sqlLoader);
@@ -32,14 +32,14 @@ class CRule {
 
         /**
          * @brief Creating instance as a shared pointer from database select
-         * @param dictMap [in] Map representing fc_[rule_]dictionary table entries
+         * @param dictMap [in] Map representing hs_[rule_]dictionary table entries
          * @param sqlLoader [in] Pointer to SqlLoader for database updates
-         * @return Shared pointer to fc_[rule_]dictionary entries object
+         * @return Shared pointer to hs_[rule_]dictionary entries object
          */
         static PtrRule create(DbMap & dictMap, CSqlLoader * sqlLoader);
 
         /**
-        * @brief Get the mask SQL table name, usually fc_rule_dictionary
+        * @brief Get the mask SQL table name, usually hs_rule_dictionary
         * @return Mask SQL table name
         */
         static std::string getTableName();
@@ -49,7 +49,7 @@ class CRule {
         CSqlLoader * m_sqlLoader;         /**< SqlLoader for database updating */
 
         /**
-         * @section Table attributes of fc_[rule_]dictionary
+         * @section Table attributes of hs_[rule_]dictionary
          */
 
         std::string m_name;

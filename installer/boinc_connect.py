@@ -8,9 +8,9 @@ import time
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--url", type=str, default="http://127.0.0.1/fitcrack")
-    parser.add_argument("--email", type=str, default="fitcrack@test.cz")
-    parser.add_argument("--username", type=str, default="fitcrack")
+    parser.add_argument("--url", type=str, default="http://127.0.0.1/hashstation")
+    parser.add_argument("--email", type=str, default="hashstation@test.cz")
+    parser.add_argument("--username", type=str, default="hashstation")
     parser.add_argument("--password", type=str, default="mypassword")
     args = parser.parse_args()
 

@@ -30,7 +30,7 @@ class CAttackMarkov : public AttackMode {
         ~CAttackMarkov() override = default;
 
         /**
-         * @brief Creates BOINC workunit, adds entry to fc_workunit
+         * @brief Creates BOINC workunit, adds entry to hs_workunit
          * @return True if a workunit was planned, False otherwise
          */
         bool makeWorkunit() override ;

@@ -147,7 +147,7 @@
 <script>
 import { getColors } from '@/components/chart/helpers.js'
 import fmt from '@/assets/scripts/numberFormat'
-import fcTextarea from '@/components/textarea/fc_textarea.vue'
+import fcTextarea from '@/components/textarea/hs_textarea.vue'
 
 export default {
   components: {

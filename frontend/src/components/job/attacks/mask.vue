@@ -180,7 +180,7 @@
   import {twoWayMap} from '@/store'
 
   export default {
-    name: "FcMask",
+    name: "HsMask",
     components: {
       CharsetSelector,
       'mask-single': maskSingle,

@@ -1,6 +1,6 @@
 /**
  * @file Dictionary.cpp
- * @brief Source file for fc_[job_]dictionary entries
+ * @brief Source file for hs_[job_]dictionary entries
  * @authors Lukas Zobal (zobal.lukas(at)gmail.com)
  * @date 12. 12. 2018
  * @license MIT, see LICENSE

@@ -1,7 +1,7 @@
 Attack Modes
 ============
 
-Since Fitcrack uses Hashcat under the hood, it also provides the same attack modes. Attack modes refer to the different ways of cracking the hashes you provide as the job input.
+Since Hashstation uses Hashcat under the hood, it also provides the same attack modes. Attack modes refer to the different ways of cracking the hashes you provide as the job input.
 
 ![Attack modes](../../_media/img/add-job/attack-settings.png)
 
@@ -17,7 +17,7 @@ A dictionary attack will try every possible password from given password diction
 
 You can choose whether to perform dictionary fragmentation on the server or leave it to the host machines __(2)__.
 
-It is also possible to select a file with password-mangling rules from the bottom table __(3)__. The number of rules in each file is shown in the _count_ column. The rules enhance the repertoire of passwords, but they also increase the total keyspace of the job. This is because Fitcrack applies every rule from the rule file to each dictionary password. The total keyspace is calculated as the sum of dictionary keyspaces multiplied by the number of rules in the rule file.
+It is also possible to select a file with password-mangling rules from the bottom table __(3)__. The number of rules in each file is shown in the _count_ column. The rules enhance the repertoire of passwords, but they also increase the total keyspace of the job. This is because Hashstation applies every rule from the rule file to each dictionary password. The total keyspace is calculated as the sum of dictionary keyspaces multiplied by the number of rules in the rule file.
 
 
 Combination Attack
@@ -33,7 +33,7 @@ It is also possible to define password-mangling rules for both sides __(2)__. Th
 Brute Force Attack
 ------------------
 
-The brute-force attack allows the user to define one or more __password masks__ which define how a password may look like. Fitcrack then tries __every possible permutation of characters__ in each mask.
+The brute-force attack allows the user to define one or more __password masks__ which define how a password may look like. Hashstation then tries __every possible permutation of characters__ in each mask.
 
 ### Password mask
 
@@ -56,7 +56,7 @@ In masks, following basic substitute symbols are allowed:
 
 You can create a mask by using a mask editor. For crafting masks, you can either use the popup bar with buttons __(1)__ for inserting substitute symbols, or you can enter the mask by yourself in the input field __(2)__ as text. The editor will turn red and show you if there is an error. You can also use multiple masks – if you want to add a new mask, use the _Add masks_ button __(3)__. Click the trash can icon next to the input field to delete that mask.
 
-It is also possible to load masks. In Fitcrack, you do not have to enter masks manually every time you create a new job. You can have the masks stored in a mask set (.hcmask) file. Using the _Load masks_ button __(4)__, you can choose a mask file, and the masks will be imported automatically. To remove all masks and start over, use the _Reset masks_ button.
+It is also possible to load masks. In Hashstation, you do not have to enter masks manually every time you create a new job. You can have the masks stored in a mask set (.hcmask) file. Using the _Load masks_ button __(4)__, you can choose a mask file, and the masks will be imported automatically. To remove all masks and start over, use the _Reset masks_ button.
 
 ### Custom character sets
 
@@ -71,7 +71,7 @@ The basic set of substitute symbols can be enhanced by using custom character se
 
 ### Markov chains
 
-For generating passwords, the brute-force attack does not employ the traditional lexicographical order of characters by default (meaning __b__ will be after __a__, etc.), but uses Markov chains instead. The order of generating password candidates is defined by a probability matrix or matrices in a Markov statistics file (with __.hcstat2__ extension). For each brute-force attack, Fitcrack allows you to select the file with Markov statistics that will be used __(6)__.
+For generating passwords, the brute-force attack does not employ the traditional lexicographical order of characters by default (meaning __b__ will be after __a__, etc.), but uses Markov chains instead. The order of generating password candidates is defined by a probability matrix or matrices in a Markov statistics file (with __.hcstat2__ extension). For each brute-force attack, Hashstation allows you to select the file with Markov statistics that will be used __(6)__.
 
 You can select a mode or disable the use of markov chains to use lexicographical order, if you want. You can also define a threshold __(7)__, which will limit the keyspace of each character set to the number you choose.
 

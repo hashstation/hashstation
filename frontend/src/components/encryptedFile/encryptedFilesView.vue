@@ -45,7 +45,7 @@
 </template>
 
 <script>
-  import tile from '@/components/tile/fc_tile.vue'
+  import tile from '@/components/tile/hs_tile.vue'
   export default {
     name: "EncryptedFilesView",
     components: {

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Make Fitcrack project
-# This file is part of Fitcrack installer
+# Make Hashstation project
+# This file is part of Hashstation installer
 # Author: Radek Hranicky (ihranicky@fit.vutbr.cz)
 
 # Adding apache user to BOINC user Group
@@ -47,7 +47,7 @@ fi
 htpasswd -cb $BOINC_PROJECT_DIR/html/ops/.htpasswd "$OPS_LOGIN" "$OPS_PW"
 
 ##################################
-# Copy Fitcrack apps and daemons #
+# Copy Hashstation apps and daemons #
 ##################################
 
 # Copy server measure script
@@ -57,9 +57,9 @@ cp -f server/server_bin/measure_usage.py $BOINC_PROJECT_DIR/bin/
 cp -f server/server_bin/pcfg_monitor.py $BOINC_PROJECT_DIR/bin/
 
 # Copy client binaries
-mkdir $BOINC_PROJECT_DIR/apps/fitcrack
-mkdir $BOINC_PROJECT_DIR/apps/fitcrack/1
-cp -Rf server/client_bin/* $BOINC_PROJECT_DIR/apps/fitcrack/1/
+mkdir $BOINC_PROJECT_DIR/apps/hashstation
+mkdir $BOINC_PROJECT_DIR/apps/hashstation/1
+cp -Rf server/client_bin/* $BOINC_PROJECT_DIR/apps/hashstation/1/
 
 # Install server daemons
 python3 installer/install_daemons.py
@@ -90,37 +90,37 @@ fi
 service_restart $APACHE_SERVICE
 
 #############################
-# Install Fitcrack database #
+# Install Hashstation database #
 #############################
 export MYSQL_PWD="$DB_PW"
-echo "Creating Fitcrack tables..."
+echo "Creating Hashstation tables..."
 mysql -h $DB_HOST -u $DB_USER -D"$DB_NAME" < server/sql/10_create_tables.sql
 if [[ $? != 0 ]]; then
-  echo "Error: Unable to create Fitcrack DB tables"
+  echo "Error: Unable to create Hashstation DB tables"
   exit
 fi
-echo "Fitcrack tables created."
+echo "Hashstation tables created."
 
-echo "Creating Fitcrack database triggers..."
+echo "Creating Hashstation database triggers..."
 mysql -h $DB_HOST -u $DB_USER -D"$DB_NAME" < server/sql/20_create_triggers.sql
 if [[ $? != 0 ]]; then
-  echo "Error: Unable to create Fitcrack DB triggers"
+  echo "Error: Unable to create Hashstation DB triggers"
   exit
 fi
-echo "Fitcrack database triggers created."
+echo "Hashstation database triggers created."
 
 echo "Inserting initial data..."
 mysql -h $DB_HOST -u $DB_USER -D"$DB_NAME" < server/sql/30_insert_data.sql
 if [[ $? != 0 ]]; then
-  echo "Error: Unable to fill Fitcrack DB with initial data"
+  echo "Error: Unable to fill Hashstation DB with initial data"
   exit
 fi
 echo "Initial data inserted."
 
 # Install startup scripts
 if [ -z ${SERVICE_INSTALL+x} ]; then
-  echo "Adding Fitcrack as a service runs the daemons automatically on startup."
-  read -e -p "Add Fitcrack as a system service? [y/N] (default: y)" SERVICE_INSTALL
+  echo "Adding Hashstation as a service runs the daemons automatically on startup."
+  read -e -p "Add Hashstation as a system service? [y/N] (default: y)" SERVICE_INSTALL
   SERVICE_INSTALL=${SERVICE_INSTALL:-y}
 else
   SERVICE_INSTALL='y'
@@ -128,16 +128,16 @@ fi
 
 if [ $SERVICE_INSTALL = "y" ]; then
   # Add startup script
-  cp -f installer/init/fitcrack /etc/init.d/fitcrack
-  chmod +x /etc/init.d/fitcrack
+  cp -f installer/init/hashstation /etc/init.d/hashstation
+  chmod +x /etc/init.d/hashstation
   # Add runlevel symlinks
   case $DISTRO_ID in
     debian|ubuntu)
-      update-rc.d fitcrack defaults
+      update-rc.d hashstation defaults
     ;;
     centos|redhat|rocky)
-      chkconfig --add fitcrack
-      chkconfig --level 2345 fitcrack on
+      chkconfig --add hashstation
+      chkconfig --level 2345 hashstation on
     ;;
     suse|linux)
     ;;

@@ -41,10 +41,10 @@
 </template>
 
 <script>
-  import FcTile from '@/components/tile/fc_tile.vue'
+  import HsTile from '@/components/tile/hs_tile.vue'
   export default {
     components: {
-      FcTile
+      HsTile
     },
     data () {
       return {
