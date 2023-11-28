@@ -9,11 +9,8 @@
       class="fill-height"
       fluid
     >
-      <img 
-        :src="require('@/assets/motive.svg')"
-        class="motive"
-      >
       <div class="main mx-auto">
+        <!--
         <img
           v-if="$vuetify.theme.dark"
           :src="require(`@/assets/logo-dark.svg`)"
@@ -26,6 +23,7 @@
           class="mx-auto pt-3 pb-3 d-block logo"
           alt="logo"
         >
+        -->
         <div class="content">
           <v-progress-circular
             size="50"
@@ -61,7 +59,7 @@
               :disabled="!username || !password"
               @click.prevent="submit"
             >
-              sign in
+              Sign in
             </v-btn>
           </v-form>
         </div>
