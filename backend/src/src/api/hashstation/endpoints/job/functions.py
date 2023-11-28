@@ -223,21 +223,21 @@ def create_job(data):
 
 
 def verifyHashFormat(hash, hash_type, usernames=None, abortOnFail=False, binaryHash=False):
-    hashes = []
+    hashVerificationResults = []
     settings = HsSettings.query.filter_by(user_id=current_user.id).one()
     if not settings.verify_hash_format:
         if binaryHash:
-            hashes = ["HASH OK"]
+            hashVerificationResults = [('HASH', 'OK')]
         else:
             with open(hash, "r") as hashFile:
-                hashes = [(h.strip() + " OK") for h in hashFile.readlines()]
+                hashVerificationResults = [((h.strip(), 'OK')) for h in hashFile.readlines()]
     else:
         result = shellExec(
             "{} -m {} {} --show --machine-readable".format(HASHCAT_PATH, hash_type, hash), getReturnCode=True
         )
 
         if binaryHash:
-            hashes = ["HASH OK" if result['returnCode'] == 0 else "HASH Token length exception"]
+            hashVerificationResults = [('HASH', 'OK') if result['returnCode'] == 0 else ('HASH', 'Token length exception')]
         else:
             hash_validity = {}
             with open(hash, "r") as hashFile:
@@ -260,41 +260,40 @@ def verifyHashFormat(hash, hash_type, usernames=None, abortOnFail=False, binaryH
                     else:
                         hash_validity[bad_hash] = error
 
-            hashes = []
-            for h, s in hash_validity.items():
-                hashes.append("{} {}".format(h, s))
+            hashVerificationResults = list(hash_validity.items())
 
-    hashesArr = []
+    hashInfoResults = []
     hasError = False
-    for idx, hash in enumerate(hashes):
-        hashArr = hash.rsplit(' ', 1)
+    for idx, hashVerificationResult in enumerate(hashVerificationResults):
+        hash = hashVerificationResult[0]
+        verificationResult = hashVerificationResult[1]
 
-        dbHash = HsHash.query.filter(HsHash.hash == bytes(hashArr[0], 'utf8'), HsHash.result != None).first()
+        dbHash = HsHash.query.filter(HsHash.hash == bytes(hash, 'utf8'), HsHash.result != None).first()
 
-        if abortOnFail and hashArr[1] != 'OK':
-            abort(500, 'Hash ' + hashArr[0] + ' has wrong format (' + hashArr[1] + ' exception).')
+        if abortOnFail and verificationResult != 'OK':
+            abort(500, 'Hash ' + hash + ' has wrong format (validation error: ' + verificationResult + ').')
         if binaryHash:
-            hashArr[0] = binaryHash
+            hash = binaryHash
 
-        if hashArr[0] == '':
-            hashesArr.append({
-                'hash': hashArr[0],
+        if hash == '':
+            hashInfoResults.append({
+                'hash': hash,
                 'username' : None,
                 'result': 'Empty hash',
                 'password': None
             })
             hasError = True
         else:
-            hashesArr.append({
-                'hash': hashArr[0],
+            hashInfoResults.append({
+                'hash': hash,
                 'username' : usernames[idx] if usernames else None,
-                'result': hashArr[1],
+                'result': verificationResult,
                 'password': dbHash.result if dbHash else None
             })
-            if hashArr[1] != 'OK':
+            if verificationResult != 'OK':
                 hasError = True
     return {
-                'items': hashesArr,
+                'items': hashInfoResults,
                 'error': hasError
             }
 
