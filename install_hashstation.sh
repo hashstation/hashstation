@@ -35,7 +35,7 @@ if [[ $1 == "-s" ]]; then
         source installer/uninstall.sh
         cleanup_project
         cleanup_db
-        cleant_frontend_backend
+        cleanup_frontend_backend
         cleanup_assets
         exit
     fi
@@ -76,7 +76,7 @@ while ! $finished; do
       source installer/uninstall.sh
       cleanup_project
       cleanup_db
-      cleant_frontend_backend
+      cleanup_frontend_backend
       cleanup_assets
       exit
     elif [  $OPERATION -eq 6 ]; then
@@ -154,7 +154,7 @@ if [ -d "$APACHE_DOCUMENT_ROOT/hashstationFE" ]; then
   INSTALL_HASHSTATION=${INSTALL_HASHSTATION:-N}
   if [ $INSTALL_HASHSTATION = "y" ]; then
     source installer/uninstall.sh
-    cleant_frontend_backend
+    cleanup_frontend_backend
   fi
 else
   read -e -p "3) Install Hashstation frontend and backend? [y/N] (default: y): " INSTALL_HASHSTATION

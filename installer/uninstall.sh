@@ -129,7 +129,7 @@ fi
 # Hashstation frontend and backend cleanup #
 ####################
 
-function cleant_frontend_backend {
+function cleanup_frontend_backend {
 read -e -p "Uninstall Hashstation frontend and backend ? [y/N] (default: N): " UNINSTALL_HASHSTATION
 UNINSTALL_HASHSTATION=${UNINSTALL_HASHSTATION:-N}
 
